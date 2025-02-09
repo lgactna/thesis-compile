@@ -32,7 +32,7 @@ def process_markdown_text(text: str) -> str:
     text = re.sub(r"(.)\n{1,2}(#+ .*$\n)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE)
     
     # Reduce section headings by one level
-    text = re.sub(r"^#", r"", text)
+    text = re.sub(r"^\#", r"", text, flags=re.MULTILINE)
     
     # Convert wikilinks to bolded text
     text = re.sub(r"\[\[(.*?)\]\]", r"**\1**", text, flags=re.MULTILINE)

@@ -12,7 +12,7 @@ volatile memory dumps. It also describes high-level reporting and
 validation functionalities, both those as part of the framework itself
 and options available through external tools.
 
-\subsection{Overview}\label{overview}
+\section{Overview}\label{overview}
 
 Whether generating artifacts through physical or logical means, these
 artifacts must ultimately be exported and documented. In most cases,
@@ -40,17 +40,17 @@ The remainder of this chapter describes the mechanisms through which
 outputs are exported from the synthesizer and the mechanisms that allow
 for real-time logging and documentation.
 
-\subsection{Core outputs}\label{core-outputs}
+\section{Core outputs}\label{core-outputs}
 
-\subsubsection{Extracting datasets}\label{extracting-datasets}
+\subsection{Extracting datasets}\label{extracting-datasets}
 
-\subsubsection{Distribution and
+\subsection{Distribution and
 storage}\label{distribution-and-storage}
 
-\subsection{Metadata and ground
+\section{Metadata and ground
 truth}\label{metadata-and-ground-truth}
 
-\subsubsection{Overview}\label{overview-1}
+\subsection{Overview}\label{overview-1}
 
 There exists a gap in the ability of instructors and researchers to
 perform bulk searches for specific forensic artifacts in public
@@ -118,7 +118,7 @@ perhaps the most comprehensive and actively supported ontology available
 for digital forensics; contributors include NIST with support from the
 Linux Foundation.
 
-\subsubsection{CASE and Python
+\subsection{CASE and Python
 bindings}\label{case-and-python-bindings}
 
 CASE is a vendor-neutral format that aims to document both technical and
@@ -212,7 +212,7 @@ disallowed in Python. This greatly simplifies the process of maintaining
 Python bindings for UCO/CASE, as well as the overall design of the
 library for future needs.
 
-\subsubsection{CASE integration in
+\subsection{CASE integration in
 AKF}\label{case-integration-in-akf}
 
 With these Python bindings, we can integrate them throughout
@@ -222,8 +222,7 @@ artifact-generating libraries in AKF.
 things accept CASE bundles, and they can optionally attach extra data to
 the bundle as needed\ldots)
 
-\subsection{Human readable
-reporting}\label{human-readable-reporting}
+\section{Human readable reporting}\label{human-readable-reporting}
 
 as previously mentioned, it's easier to go from rigid and well-defined
 to human reports than it is to go the other way around.
