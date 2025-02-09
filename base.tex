@@ -33,7 +33,19 @@
 \usepackage{attachfile}
 
 % Below are ones I addded
-% Native table support
+
+% Warn on unused citations (and labels, too - this makes it very noisy). By default,
+% unused citations don't get added to the bibliography anyways.
+% 
+% There's also a \nocite{*} command at the end of the document that creates the funny
+% looking labels in the bibliography - if it's surrounded by question marks, then it wasn't
+% used anywhere in the diagram (and should be removed from the .bib file). Comment this line
+% out, as well as the \nocite command, when compiling for readers.
+% 
+% See https://tex.stackexchange.com/questions/43276/unused-bibliography-entries-how-to-check-which-entries-were-not-used
+\usepackage{refcheck}
+
+% Table support.
 \usepackage{booktabs}
 
 % Pandoc uses tightlist for bullet lists, you can just do nothing
@@ -240,6 +252,8 @@ from which some of this content is derived.
 %glossary & acronym lists
 \printglossary[type=\acronymtype]
 \printglossary
+
+\nocite{*}
 \bibliography{lloyd_gonzales_thesis}
 
 \appendix
