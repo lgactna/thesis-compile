@@ -1,7 +1,26 @@
 \subsection{Motivation}\label{motivation}
 
 As described previously in \ref{analysis-of-existing-synthesizers}, with the notable exception of
-\ref{agentless-artifact-generation}, require significant
+\textbf{ForTrace} and its related synthesizers, no synthesizer been an
+extension of another synthesizer. This raises the question -- why
+reinvent the wheel by developing yet another distinct architecture for
+this thesis? This subchapter briefly explores the deficiencies in
+existing synthesizers and explains why these are issues that warrant
+building a new architecture from scratch, rather than extending an
+existing synthesizer.
+
+The motivations for developing completely new codebases instead of
+extending existing synthesizers has varied considerably over the years.
+One reason is that several synthesizers are not open-source and
+therefore cannot easily be extended, as is the case with
+\textbf{Forensig2} and \textbf{TraceGen}. Another reason is that the
+focus of certain synthesizers resulted in a codebase that is simply
+incompatible with the goals of newer works. For example,
+\textbf{ForGe}'s architecture focuses largely on direct filesystem
+manipulation to generate forensic artifacts, and is therefore not
+suitable for a synthesizer that requires a virtualized operating system.
+Synthesizers such as \textbf{VMPOP}, which exclusively leverages
+agentless artifact generation as described in \ref{agentless-artifact-generation}, require significant
 architectural changes to support agent-based artifact generation.
 
 However, perhaps the largest motivation for constructing new

@@ -1,7 +1,27 @@
 This chapter addresses the modules responsible for automating artifact
 generation, depicted in the partial architectural diagram below.
 
-!\ref{analysis-of-existing-synthesizers} takes one of three approaches to artifact generation, as
+!\textbf{39.4 - Action automation 2025-02-07 17.15.30.excalidraw}
+
+These implement AKF's ability to generate individual artifacts as part
+of a larger scenario dataset. This chapter begins with an overview of
+the techniques used by prior synthesizers for generating artifacts. It
+then moves to a low-level analysis of the actual implementation used by
+AKF, while comparing these techniques to other synthesizers.
+
+In particular, this chapter addresses the role of the action automation
+library in generating artifacts by interacting with a live virtual
+machine and disk images stored on the host. It describes how logical
+artifacts are generated at a lower level, both directly through
+hypervisor APIs and through an OS-specific agent installed on the
+virtual machine. It concludes by describing the generation of physical
+artifacts through direct filesystem and disk image editing.
+
+\subsection{Overview}\label{overview}
+
+At the core of every synthesizer is the ability to place or otherwise
+generate forensic artifacts. Each of the synthesizers described in
+\ref{analysis-of-existing-synthesizers} takes one of three approaches to artifact generation, as
 partly described by Scanlon et al.
 \cite{scanlonEviPlantEfficientDigital2017}:
 
@@ -557,5 +577,5 @@ developer would need to ensure that the artifact is consistent with
 other artifacts on disk, since typical Windows application usage may
 generate relevant artifacts in prefetch files and jump lists.
 
-\subsubsection*{AKF implementation}\label{akf-implementation}
-\addcontentsline{toc}{subsubsection}{AKF implementation}
+\subsubsection*{4.4.2 - AKF implementation}\label{akf-implementation}
+\addcontentsline{toc}{subsubsection}{4.4.2 - AKF implementation}

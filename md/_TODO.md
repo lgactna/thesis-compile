@@ -1,5 +1,7 @@
 See **_Chapters_v2**
 
+The UNR filing guidelines (includes formatting and other fun stuff): https://www.unr.edu/grad/current-students/filing-guidelines
+
 Global notes
 
 - Does the inclusion of the architectural diagram at the start of every chapter work, or should it just be included? Is it good/does it make sense/does it fit on the page? Do I need to describe it in greater detail, if I'm going to bother introducing it at all?

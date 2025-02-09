@@ -115,17 +115,17 @@ def substitute_labels(tex_dir: Path) -> dict:
         for textbf in textbfs:
             if textbf in label_table:
                 textbf2 = textbf.replace(" ", "[ \\n]")
-                print(rf"Replacing \\textbf\{{.*?{textbf2}\}} with \\ref{{{label_table[textbf]}}}")
+                print(rf"Replacing \\textbf\{{[^\{{\}}]*?{textbf2}\}} with \\ref{{{label_table[textbf]}}}")
                 
                 # if it is, replace it with a ref. note that every space in the textbf
                 # might actually be a newline here, so we have to convert every space
                 # into a regex charset that could be either a space or a newline
                 
-                text = re.sub(rf"\\textbf\{{.*?{textbf2}\}}", rf"\\ref{{{label_table[textbf]}}}", text , flags=re.DOTALL | re.MULTILINE)
+                text = re.sub(rf"\\textbf\{{[^\{{\}}]*?{textbf2}\}}", rf"\\ref{{{label_table[textbf]}}}", text , flags=re.DOTALL | re.MULTILINE)
         
         # Final pass - remove anything that looks like "1.2.3 -" inside any
         # tags, because it's already handled by the engine.
-        text = re.sub(r"\{(?:\d\.)+\d - ", r"{", text, flags=re.DOTALL | re.MULTILINE)
+        text = re.sub(r"section\{(?:\d\.)+\d - ", r"section{", text, flags=re.DOTALL | re.MULTILINE)
         
         tex_file.write_text(text)
 
