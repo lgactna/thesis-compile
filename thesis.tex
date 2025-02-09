@@ -40,6 +40,37 @@
 % See https://tex.stackexchange.com/questions/257418/error-tightlist-converting-md-file-into-pdf-using-pandoc
 \def\tightlist{}
 
+% Listings and inline code
+
+% Pandoc generates a bunch of these for inline code, just do nothing with them
+\newcommand{\passthrough}[1]{#1}
+
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\linespread{0.8},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+}
+\lstset{style=mystyle}
+
 % == End packages
 
 \renewcommand*\ttdefault{pcr}
@@ -346,8 +377,6 @@ the focus of the reminder of this thesis.
 \section{Purpose of forensic
 datasets}\label{purpose-of-forensic-datasets}
 
-REPLACE CODEBLOCK HERE
-
 \subsection{In industry}\label{in-industry}
 
 Before considering the use of forensic datasets in research and
@@ -531,8 +560,6 @@ and researchers
 
 \subsection{In education}\label{in-education}
 
-REPLACE CODEBLOCK HERE
-
 Finally, we address the generation of forensic datasets as it applies to
 education. Datasets in an educational setting typically focus on
 covering a range of techniques and tools, allowing students to practice
@@ -597,8 +624,6 @@ forensic datasets as it relates to education and research, providing the
 necessary context for forensic synthesizers. However, a more exhaustive
 description of dataset construction and usage has been performed by
 Horsman and Lyle in \cite{horsmanDatasetConstructionChallenges2021}.
-
-REPLACE CODEBLOCK HERE
 
 \subsection{Real datasets}\label{real-datasets}
 
@@ -763,10 +788,6 @@ Funke blackmail case in Germany
 such as the NIST CFReDS data leakage case
 \cite{nationalinstituteofstandardsandtechnologyCFReDSDataLeakage}.
 
-REPLACE CODEBLOCK HERE
-
-REPLACE CODEBLOCK HERE
-
 \subsection{Motivation for synthetic
 datasets}\label{motivation-for-synthetic-datasets}
 
@@ -831,8 +852,6 @@ researchers. Some of these efforts have lead to publicly available
 datasets that encompass realistic scenarios, such as the datasets and
 scenario published by Woods et al.~as a direct response to the issues
 noted above \cite{woodsCreatingRealisticCorpora2011}.
-
-REPLACE CODEBLOCK HERE
 
 \subsection{Challenges in developing synthetic
 datasets}\label{challenges-in-developing-synthetic-datasets}
@@ -1148,8 +1167,6 @@ development of most synthesizers.
 \section{Analysis of existing
 synthesizers}\label{analysis-of-existing-synthesizers}
 
-REPLACE CODEBLOCK HERE
-
 Numerous frameworks have been built over the last two decades that aim
 to significantly reduce the effort involved in creating synthetic images
 from scratch by automating various application- and OS-specific actions
@@ -1355,15 +1372,16 @@ and transparency in the scenario development process
 
 First, AKF conforms to modern Python development practices. This
 includes the use of modern project management practices (such as the use
-of \emph{uv} and \texttt{pyproject.toml}, rather than the use of
-\texttt{setup.py} observed in older synthesizers), as well as static
-linters (\emph{flake8}) and style enforcers (\emph{black}, \emph{isort})
-to promote adherence to the PEP8 standard. Additionally, AKF's libraries
-make heavy use of Python 3.11+ features, such as type hinting and
-special type annotations, which allows for tools such as \emph{mypy} to
-perform static type checking. In addition to greatly improving the
-development experience, these practices also increase the likelihood of
-discovering errors earlier in the development process.
+of \emph{uv} and \passthrough{\lstinline!pyproject.toml!}, rather than
+the use of \passthrough{\lstinline!setup.py!} observed in older
+synthesizers), as well as static linters (\emph{flake8}) and style
+enforcers (\emph{black}, \emph{isort}) to promote adherence to the PEP8
+standard. Additionally, AKF's libraries make heavy use of Python 3.11+
+features, such as type hinting and special type annotations, which
+allows for tools such as \emph{mypy} to perform static type checking. In
+addition to greatly improving the development experience, these
+practices also increase the likelihood of discovering errors earlier in
+the development process.
 
 Second, AKF takes a modular, agent-based approach to implementing
 application-specific functionality. This allows AKF to use existing
@@ -1444,16 +1462,18 @@ concepts, each of which covers a distinct chapter.
 
 The first set of modules are responsible for artifact generation. This
 encompasses three major systems - a hypervisor and its associated SDK,
-an OS-specific agent, and \texttt{akflib}. \texttt{akflib} is a Python
-library containing the abstract interfaces and concrete implementations
-necessary to generate individual artifacts and complete datasets. This
-includes routines for directly interacting with hypervisors, issuing
-commands to virtual machines, and directly modifying virtual hard
-drives. This library is also the foundation for OS-specific agents,
-which carry out actions on the virtual machine on behalf of the host.
-This is described in greater detail in \autoref{chapter-four}, and corresponds to the \emph{action automation library},
-the \emph{OS-specific agent}, and the \emph{virtual machine} (as well as
-the \emph{user applications} running on the machine).
+an OS-specific agent, and \passthrough{\lstinline!akflib!}.
+\passthrough{\lstinline!akflib!} is a Python library containing the
+abstract interfaces and concrete implementations necessary to generate
+individual artifacts and complete datasets. This includes routines for
+directly interacting with hypervisors, issuing commands to virtual
+machines, and directly modifying virtual hard drives. This library is
+also the foundation for OS-specific agents, which carry out actions on
+the virtual machine on behalf of the host. This is described in greater
+detail in \autoref{chapter-four}, and corresponds to the
+\emph{action automation library}, the \emph{OS-specific agent}, and the
+\emph{virtual machine} (as well as the \emph{user applications} running
+on the machine).
 
 The second set of modules are responsible for logging and reporting.
 This encompasses both independent libraries for generating outputs and
@@ -1678,13 +1698,14 @@ utilities; it implements much of its functionality through a collection
 of PowerShell and batch scripts. For example, VMPOP allows users to
 focus a window by PID, process name, or window title. This is achieved
 by getting a PowerShell handle to the process using
-\texttt{Get-Process}, using \texttt{Add-Type} to add a local C\#
-function that is capable of sending keyboard events through
-\texttt{user32.dll}, and then holding the Alt key while using
-\texttt{AppActivate} to focus the window and bring it to the foreground.
-VMPOP leverages similar scripts for launching and terminating processes
-by name, uninstalling programs, creating a Windows restore point, and
-more.
+\passthrough{\lstinline!Get-Process!}, using
+\passthrough{\lstinline!Add-Type!} to add a local C\# function that is
+capable of sending keyboard events through
+\passthrough{\lstinline!user32.dll!}, and then holding the Alt key while
+using \passthrough{\lstinline!AppActivate!} to focus the window and
+bring it to the foreground. VMPOP leverages similar scripts for
+launching and terminating processes by name, uninstalling programs,
+creating a Windows restore point, and more.
 
 In Similarly, remote management utilities allow a remote device to
 invoke local management utilities, typically over an SSH server or
@@ -1706,13 +1727,13 @@ packages, managing local user accounts, running scripts, and more.
 It is worth noting that although this approach does not require
 installing new software on the machine, most operating systems perform
 some degree of logging when their management utilities are invoked. For
-example, the \texttt{sshd} daemon logs connections regardless of which
-network interface is used, which may make it difficult to separate or
-remove logs not related to SSH connections as part of the scenario
-itself. Similarly, the invocation of PowerShell scripts causes event
-logs to be generated, which can be particularly noisy if Script Block
-Logging (which logs the execution and content of all PowerShell scripts)
-is active.
+example, the \passthrough{\lstinline!sshd!} daemon logs connections
+regardless of which network interface is used, which may make it
+difficult to separate or remove logs not related to SSH connections as
+part of the scenario itself. Similarly, the invocation of PowerShell
+scripts causes event logs to be generated, which can be particularly
+noisy if Script Block Logging (which logs the execution and content of
+all PowerShell scripts) is active.
 
 \subsection{AKF agentless
 generation}\label{akf-agentless-generation}
@@ -1774,101 +1795,237 @@ entails issuing a simple string to the agent running on the VM. For
 example, invoking a command to add a new user to the VM may look like
 the following:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+
+# From Demo.py
+
+guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform="windows")
+
+# Wait for the VM to connect to the VMM
+
+guest.waitTillAgentIsConnected()
+
+# create userManagement object
+
+userManagement_obj = guest.application("userManagement", {})
+
+# Add different users
+
+logger.info("Adding user1")
+try:
+    userManagement_obj.addUser("user1", "password")
+    while userManagement_obj.is_busy is True:
+        time.sleep(1)
+except Exception as e:
+    print("An error occured: ")
+    print(e)
+time.sleep(5)
+\end{lstlisting}
 
 The agent's main loop, which receives and interprets these commands, is
 extremely simple:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+def main():
+    # create logger
+    logger = create_logger('guestAgent', logging.INFO)
 
-When the \texttt{Agent} is first instantiated, it forms a permanent TCP
-socket out to the configured port and IP address where it expects the
-server (the VMM) to be issuing commands.
-\texttt{Agent.receiveCommands()} receives every message available by
-reading the socket, parsing it, and then invoking
-\texttt{Agent.do\_command()}, which converts the command message into a
-specific Python function call with arguments.
+    logger.info("create Agent")
+    a = Agent(operating_system=platform.system().lower(), logger=logger)
+    logger.info("connect to fortrace controller: %s:%i" % (fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT))
+    a.connect(fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT)
 
-Each module under \texttt{fortrace.application} can be thought of as a
-coherent group of commands associated with a particular \emph{real}
-application (like Firefox or Thunderbird). Recall earlier how we found
-our \texttt{userManagement} application and invoked \texttt{addUser}:
+    # let all network interfaces come up
+    time.sleep(15)
 
-REPLACE CODEBLOCK HERE
+    # inform fortrace controller about network configuration
+    a.register()
 
-At a high level, the \texttt{application()} call attempts to import
-\texttt{fortrace.application.\{application\_name\}}. Although not
-enforced by a higher-level interface, each of these modules contains
-subclasses of the following four classes (defined in
-\texttt{fortrace.application.application}) at minimum, with possibly
-more helper classes for OS-specific functionality or other modularity as
-needed:
+    # wait for commands
+    while 1:
+        time.sleep(1)
+        a.receiveCommands()
+\end{lstlisting}
+
+When the \passthrough{\lstinline!Agent!} is first instantiated, it forms
+a permanent TCP socket out to the configured port and IP address where
+it expects the server (the VMM) to be issuing commands.
+\passthrough{\lstinline!Agent.receiveCommands()!} receives every message
+available by reading the socket, parsing it, and then invoking
+\passthrough{\lstinline!Agent.do\_command()!}, which converts the
+command message into a specific Python function call with arguments.
+
+Each module under \passthrough{\lstinline!fortrace.application!} can be
+thought of as a coherent group of commands associated with a particular
+\emph{real} application (like Firefox or Thunderbird). Recall earlier
+how we found our \passthrough{\lstinline!userManagement!} application
+and invoked \passthrough{\lstinline!addUser!}:
+
+\begin{lstlisting}[language=Python]
+userManagement_obj = guest.application("userManagement", {})
+userManagement_obj.addUser("user1", "password")
+\end{lstlisting}
+
+At a high level, the \passthrough{\lstinline!application()!} call
+attempts to import
+\passthrough{\lstinline!fortrace.application.\{application\_name\}!}.
+Although not enforced by a higher-level interface, each of these modules
+contains subclasses of the following four classes (defined in
+\passthrough{\lstinline!fortrace.application.application!}) at minimum,
+with possibly more helper classes for OS-specific functionality or other
+modularity as needed:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{ApplicationVmmSide}: Contains one function for each command
-  implemented in \texttt{ApplicationGuestSide}, building a message that
-  will be interpreted and acted upon by the corresponding
-  \texttt{ApplicationGuestSideCommands} class.
+  \passthrough{\lstinline!ApplicationVmmSide!}: Contains one function
+  for each command implemented in
+  \passthrough{\lstinline!ApplicationGuestSide!}, building a message
+  that will be interpreted and acted upon by the corresponding
+  \passthrough{\lstinline!ApplicationGuestSideCommands!} class.
 \item
-  \texttt{ApplicationVmmSideCommands}: Accepts and interprets
-  module-specific messages returned by the agent, which may be used to
-  update the remote state as tracked by the host.
+  \passthrough{\lstinline!ApplicationVmmSideCommands!}: Accepts and
+  interprets module-specific messages returned by the agent, which may
+  be used to update the remote state as tracked by the host.
 \item
-  \texttt{ApplicationGuestSide}: Implements the actual
+  \passthrough{\lstinline!ApplicationGuestSide!}: Implements the actual
   application-specific functionality for the agent, providing one
   function for each separated command by this module.
 \item
-  \texttt{ApplicationGuestSideCommands}: Interprets commands and
-  arguments, calling the respective function in the corresponding
-  \texttt{ApplicationGuestSide} subclass. This allows the actual
-  dispatch of commands to be delegated to this class, which is free to
-  choose how actions are performed (threading, multiprocessing, etc.) as
-  well as any module-wide state it may need to maintain.
+  \passthrough{\lstinline!ApplicationGuestSideCommands!}: Interprets
+  commands and arguments, calling the respective function in the
+  corresponding \passthrough{\lstinline!ApplicationGuestSide!} subclass.
+  This allows the actual dispatch of commands to be delegated to this
+  class, which is free to choose how actions are performed (threading,
+  multiprocessing, etc.) as well as any module-wide state it may need to
+  maintain.
 \end{itemize}
 
 This naming convention is intentional. As will be shown later, the word
-\texttt{Application} is replaced with the name of the module in
-camelcase. For example, \texttt{fortrace.application.userManagement}
-contains \texttt{UserManagementVmmSide},
-\texttt{UserManagementVmmSideCommands}, and so on. Discovering and
-getting handles to these classes is performed through string
-manipulation of the relevant application's module name, as shown in the
-example below:
+\passthrough{\lstinline!Application!} is replaced with the name of the
+module in camelcase. For example,
+\passthrough{\lstinline!fortrace.application.userManagement!} contains
+\passthrough{\lstinline!UserManagementVmmSide!},
+\passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
+Discovering and getting handles to these classes is performed through
+string manipulation of the relevant application's module name, as shown
+in the example below:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
 
-In the example above, \texttt{UserManagementGuestSide.addUser()}
-contains the literal code to execute on the guest when
-\texttt{addUser()} is called, such as adding the registry keys needed
-for a user to be created. On the other hand,
-\texttt{UserManagementVmmSide.addUser()} contains the code to send a
-message over TCP that the agent will understand, eventually leading to
-the execution of the agent's version of \texttt{addUser()}.
+# Agent.do_command()
 
-More precisely, the \texttt{ApplicationVmmSide} subclass effectively
-serves as the API for calling the associated functions in the
-\texttt{ApplicationGuestSide} class running on the virtual machine. This
-subclass, along with the complete agent-side code, is stored in a single
-file. For example, the API and code for opening a Firefox browser window
-is as follows:
+# load class moduleGuestSide and moduleGuestSideCommands
+name = "fortrace." + package + "." + module
+self.logger.debug("module to load: " + name)
+mod = __import__(name, fromlist=[''])
+self.logger.debug("module '" + module + "' will be loaded via __import__")
+class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+\end{lstlisting}
 
-REPLACE CODEBLOCK HERE
+In the example above,
+\passthrough{\lstinline!UserManagementGuestSide.addUser()!} contains the
+literal code to execute on the guest when
+\passthrough{\lstinline!addUser()!} is called, such as adding the
+registry keys needed for a user to be created. On the other hand,
+\passthrough{\lstinline!UserManagementVmmSide.addUser()!} contains the
+code to send a message over TCP that the agent will understand,
+eventually leading to the execution of the agent's version of
+\passthrough{\lstinline!addUser()!}.
 
-Calling the \texttt{open()} command from the host causes a message of
-the following form to be sent to the agent:
+More precisely, the \passthrough{\lstinline!ApplicationVmmSide!}
+subclass effectively serves as the API for calling the associated
+functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
+running on the virtual machine. This subclass, along with the complete
+agent-side code, is stored in a single file. For example, the API and
+code for opening a Firefox browser window is as follows:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
+    def open(self, url):
+        """Sends a command to open a webBrowserFirefox on the associated guest.
+
+        @param url: Website to open.
+        """
+        try:
+            self.logger.info("function: WebBrowserFirefoxVmmSide::open")
+            self.url = url
+            self.window_id = self.guest_obj.current_window_id
+            self.guest_obj.send(
+                "application " + "webBrowserFirefox " + str(self.window_id) + " open " + self.webBrowserFirefox + " " + self.url)
+
+            self.guest_obj.current_window_id += 1
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::open: " + str(e))
+
+# Example usage:
+
+browser = WebBrowserFirefoxVmmSide()
+browser.open("google.com")
+\end{lstlisting}
+
+Calling the \passthrough{\lstinline!open()!} command from the host
+causes a message of the following form to be sent to the agent:
+
+\begin{lstlisting}
+application webBrowserFirefox <window id
+\end{lstlisting}
 
 Upon receiving this message, the agent's main loop will search for the
-\texttt{webBrowserFirefox} module and import its corresponding
-\texttt{ApplicationGuestSideCommands} subclass. After any state
-management, the subclass will then search for a function called
-\texttt{open} in its corresponding \texttt{ApplicationGuestSide} class,
-as implemented below:
+\passthrough{\lstinline!webBrowserFirefox!} module and import its
+corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
+subclass. After any state management, the subclass will then search for
+a function called \passthrough{\lstinline!open!} in its corresponding
+\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
+below:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
+    def open(self, args):
+        """
+        Open a browser and save the webBrowserFirefox object with an id in a dictionary.
+        Set page load timeout to 30 seconds.
+
+        return:
+            Send to the host in the known to be good state:
+                'application webBrowserFirefox window_id open'.
+                'application webBrowserFirefox window_id ready'.
+            in the error state:
+                'application webBrowserFirefox window_id error'.
+            additionally the 'window_is_crushed' attribute is set; so the next
+            call will open a new window.
+        """
+        try:
+            arguments = args.split(" ")
+            web_browser = arguments[0]
+            url = arguments[1]
+
+            if len(arguments) 
+                self.timeout = arguments[2]
+            else:
+                self.timeout = 30
+
+            self.logger.info(self.module_name + "GuestSide::open")
+            self.last_driven_url = url
+            self.logger.debug("URL to call: " + url)
+
+            self.logger.info("open url: " + url)
+
+            self.helper.run_firefox()  # start ff session
+
+            retval = self.helper.navigate_to_url(url)  # browse to the specified url
+            if not retval:
+                self.logger.warning("could not open url")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " opened")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            self.window_is_crushed = False
+        except Exception as e:
+            # Some logging/teardown...
+            self.window_is_crushed = True
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+\end{lstlisting}
 
 There are two major implementation details that should be observed here.
 As mentioned previously, commands are sent through a simple string-based
@@ -1905,9 +2062,10 @@ In ``new-style'' RPyC, this is achieved by running a \emph{service} on
 the device where remote operations should be performed; this service
 simply listens on an ephemeral TCP port. Services expose a set of
 functions and attributes that may be accessed remotely by an RPyC
-client. This is analogous to the \texttt{ApplicationGuestSideCommands}
-and \texttt{ApplicationGuestSide} classes of individual ForTrace
-modules.
+client. This is analogous to the
+\passthrough{\lstinline!ApplicationGuestSideCommands!} and
+\passthrough{\lstinline!ApplicationGuestSide!} classes of individual
+ForTrace modules.
 
 Because the exposed functions (as well as their signatures) and
 attributes cannot be inferred from the raw RPyC connection alone,
@@ -1916,23 +2074,61 @@ autocompletion features to continue working in development environments.
 This simultaneously abstracts the raw RPyC call (and the existence of an
 RPyC connection) away from the user, while also providing the remote
 function signatures where there would otherwise be none. This is
-analogous to the \texttt{ApplicationVmmSide} and
-\texttt{ApplicationVmmSideCommands} classes of ForTrace modules.
+analogous to the \passthrough{\lstinline!ApplicationVmmSide!} and
+\passthrough{\lstinline!ApplicationVmmSideCommands!} classes of ForTrace
+modules.
 
 For example, a simple RPyC service and its corresponding API may be
 implemented as follows:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+
+# Server-side code
+
+class ChromiumService(AKFService):
+    def exposed_set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        # Various setup code...
+        self.browser = chromium.launch_persistent_context(
+            headless=False,
+            user_data_dir=profile_path,
+            channel=browser_type,
+            args=[f"--profile-directory={profile}"],
+        )
+
+        return self.browser
+
+# Client-side API
+
+class ChromiumServiceAPI(WindowsServiceAPI):
+    def __init__(self, host: str, port: int) -
+        """
+        Initialize the API with an RPyC connection to the service.
+        """
+        self.rpyc_conn = rpyc.connect(
+            host,
+            port,
+            config={"sync_request_timeout": None},
+        )
+
+    def set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        self.browser = self.rpyc_conn.root.set_browser(browser_type, profile)
+        return self.browser
+\end{lstlisting}
 
 This syntax provides three major improvements over the ForTrace
 protocol. First, the routing of functions is wholly delegated to RPyC.
 Instead of manually constructing a message with the function name and
 its associated parameters (as strings) over the network, implementing
 support for a particular service on the client-side API is as simple as
-calling an untyped function \texttt{rpyc\_conn.root.set\_browser()}. By
-wrapping it around a typed function,
-\texttt{ChromiumServiceAPI.set\_browser()}, users regain the ability to
-use code completion and static linting tools.
+calling an untyped function
+\passthrough{\lstinline!rpyc\_conn.root.set\_browser()!}. By wrapping it
+around a typed function,
+\passthrough{\lstinline!ChromiumServiceAPI.set\_browser()!}, users
+regain the ability to use code completion and static linting tools.
 
 Second, this allows us to pass and return arbitrarily complex objects
 for which we do not have to write the serialization and deserialization
@@ -2224,16 +2420,57 @@ allows for directed, labeled graphs to be expressed using RDF. The
 ontology of CASE objects is defined using the Terse RDF Triple Language,
 or Turtle, which allows these triples to be written in a simple text
 format. For example, the following set of triples describes an object
-called \texttt{ApplicationFacet} with two properties,
-\texttt{numberOfLaunches} and \texttt{applicationIdentifier}:
+called \passthrough{\lstinline!ApplicationFacet!} with two properties,
+\passthrough{\lstinline!numberOfLaunches!} and
+\passthrough{\lstinline!applicationIdentifier!}:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}
+observable:ApplicationFacet
+    a
+        owl:Class ,
+        sh:NodeShape
+        ;
+    rdfs:subClassOf core:Facet ;
+    rdfs:label "ApplicationFacet"@en ;
+    rdfs:comment "An application facet is a grouping of characteristics unique to a particular software program designed for end users."@en ;
+    sh:property
+        [
+            sh:datatype xsd:integer ;
+            sh:maxCount "1"^^xsd:integer ;
+            sh:nodeKind sh:Literal ;
+            sh:path observable:numberOfLaunches ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount "1"^^xsd:integer ;
+            sh:nodeKind sh:Literal ;
+            sh:path observable:applicationIdentifier ;
+        ] ,
+        ...
+        ;
+    sh:targetClass observable:ApplicationFacet ;
+    .
+\end{lstlisting}
 
-An instance of a \texttt{Application} object may thus be represented in
-the JSON-LD format using the \texttt{ApplicationFacet} as follows
-(including attributes omitted above):
+An instance of a \passthrough{\lstinline!Application!} object may thus
+be represented in the JSON-LD format using the
+\passthrough{\lstinline!ApplicationFacet!} as follows (including
+attributes omitted above):
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}
+{
+    "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
+    "@type": "uco-observable:Application",
+    "uco-core:hasFacet": [
+        {
+            "@id": "kb:68004de9-1139-405f-aea7-2c05f3a84709",
+            "@type": "uco-observable:ApplicationFacet",
+            "uco-observable:numberOfLaunches": 12,
+            "uco-observable:applicationIdentifier": "test"
+        },
+    ]
+}
+\end{lstlisting}
 
 Because the CASE format itself is language-agnostic, it is necessary to
 write a library for each language that leverages CASE. As of writing,
@@ -2247,7 +2484,21 @@ this makes it easier to serialize these objects to JSON-LD, it also
 makes it extremely difficult to work with objects after they have been
 instantiated:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
+
+# These attributes do not exist
+
+facet.application_identifier
+facet.number_of_launches
+
+# The number of launches must be accessed as a dictionary key, which does
+
+# not return a simple integer, but instead returns a dictionary
+app_facet['uco-observable:numberOfLaunches']
+
+# -
+\end{lstlisting}
 
 Additionally, it appears that each of the objects have been manually
 translated from the Turtle definitions to their corresponding Python
@@ -2267,22 +2518,48 @@ runtime type validation and automatic casting.
 
 For example, we can write the same object above as follows:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+from typing import Optional
+
+from uco import core
+
+class ApplicationFacet(core.Facet):
+    numberOfLaunches: Optional[int] = None
+    applicationIdentifier: Optional[str] = None
+\end{lstlisting}
 
 This declaration is only three lines, 40 lines shorter than the existing
-declaration of \texttt{ApplicationFacet} - a 93\% reduction in code
-written. This is because the conversion of instance variables to valid
-JSON-LD keys is deferred until serialization. This design choice allows
-us to centralize the serialization logic in a single parent class that
-all CASE objects inherit from. In exchange for slightly increasing the
-complexity of converting \texttt{numberOfLaunches} to a dictionary with
-the correct key name, we can massively simplify the logic for declaring
-CASE objects.
+declaration of \passthrough{\lstinline!ApplicationFacet!} - a 93\%
+reduction in code written. This is because the conversion of instance
+variables to valid JSON-LD keys is deferred until serialization. This
+design choice allows us to centralize the serialization logic in a
+single parent class that all CASE objects inherit from. In exchange for
+slightly increasing the complexity of converting
+\passthrough{\lstinline!numberOfLaunches!} to a dictionary with the
+correct key name, we can massively simplify the logic for declaring CASE
+objects.
 
 A simple CASE bundle, representing the complete contents of a forensic
 scenario, can be observed below:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+from caselib import case, uco
+
+bundle = uco.core.Bundle(
+    description="An Example Case File",
+    specVersion="UCO/CASE 2.0",
+    tag="Sample artifacts",
+)
+
+url_object = uco.observable.ObservableObject()
+url_facet = uco.observable.URLFacet(fullValue="www.docker.com/howto")
+url_object.hasFacet.append(url_facet)
+bundle.object.append(url_object)
+
+with open("example.jsonld", "wt+") as f:
+    data = bundle.model_dump(serialize_as_any=True)
+    f.write(json.dumps(data, indent=2))
+\end{lstlisting}
 
 A script is provided with the Pydantic-based CASE bindings to
 automatically parse the RDF files and convert them to valid Pydantic
@@ -2388,12 +2665,48 @@ example \emph{SFX} code taken from
 created on which a 64-bit version of Windows 7 is installed and a user
 called ``Gordon'' uses Firefox to browse to the internet:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=XML]
+<disk
+    <partition index="p1" hidden="0" size="48M" type="ntfs"
+        <base os="windows7x64"/
+        <user username = "Gordon"
+             <browserhistory browser="firefox"
+                 <url link="http://bbc.co.uk" time="13:14:00 1 Jan 2013"/
+             </browserhistory
+        </user
+    </partition
+</disk
+\end{lstlisting}
 
 The same might be partially expressed in \emph{ForTrace} as the
 following, excluding additional overhead for ground truth generation:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+import logging
+
+from fortrace.core.vmm import Vmm
+from fortrace.utility.logger_helper import create_logger
+from fortrace.core.vmm import GuestListener
+
+logger = logging.getLogger(__name__)
+
+if __name__ == "__main__":
+    logger = create_logger('fortraceManager', logging.DEBUG)
+    macsInUse = []
+    guests = []
+    
+    guestListener = GuestListener(guests, logger)
+    virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
+    # boottime expressed as "%Y-%m-%d %H:%M:%S"
+    guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime="2013-01-01 13:14:00")
+
+    browser_obj = guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
+    browser_obj.open(url="2013-01-01 13:14:00")
+    while browser_obj.is_busy:
+        time.sleep(2)
+    browser_obj.close()
+    
+\end{lstlisting}
 
 Note that \emph{hystck} - and by extension, \emph{ForTrace} - also
 allows users to express scenarios as YAML files, such that both a
@@ -2556,11 +2869,11 @@ advancements}\label{integration-of-recent-advancements}
     \end{itemize}
   \item
     Operator is not \emph{incompatible} with our architecture or overall
-    framework -- it could likely be built as yet another \texttt{akflib}
-    module or agent module, which would give users the option to choose
-    between a simple, non-deterministic option for generating browser
-    artifacts from human language, or a more complex, deterministic
-    option by manually declaring actions.
+    framework -- it could likely be built as yet another
+    \passthrough{\lstinline!akflib!} module or agent module, which would
+    give users the option to choose between a simple, non-deterministic
+    option for generating browser artifacts from human language, or a
+    more complex, deterministic option by manually declaring actions.
   \end{itemize}
 \end{itemize}
 

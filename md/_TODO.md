@@ -7,6 +7,12 @@ Global notes
 - Does the inclusion of the architectural diagram at the start of every chapter work, or should it just be included? Is it good/does it make sense/does it fit on the page? Do I need to describe it in greater detail, if I'm going to bother introducing it at all?
 - Does the introduction of each chapter work? Or is it too sudden?
 
+Mechanics:
+
+- Still need to figure out a good way to do tables, maybe we just have to do them manually
+- All the sections called "overview" conflict with each other and have the same label defined twice, which is Bad
+- Code blocks also need to be done manually, which is a little annoying
+
 Things that can be done Right Now:
 
 - 5.2 (core outputs)

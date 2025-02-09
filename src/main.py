@@ -19,8 +19,11 @@ def process_markdown_text(text: str) -> str:
     # Remove all blockquotes
     text = re.sub(r">.*", "", text)
     
+    # Remove everything inside dataview blocks entirely
+    text = re.sub(r"```dataview.*?```", "\n\n", text, flags=re.DOTALL) 
+    
     # Remove everything inside code blocks, or triple backticks
-    text = re.sub(r"```.*?```", "\n\nREPLACE CODEBLOCK HERE\n\n", text, flags=re.DOTALL) 
+    # text = re.sub(r"```.*?```", "\n\nREPLACE CODEBLOCK HERE\n\n", text, flags=re.DOTALL) 
     
     # Ensure that bulleted lists have two line breaks before
     text = re.sub(r"(.)\n{1,2}((- .*$\n)+)", r"\1\n\n\2", text, flags=re.MULTILINE)
@@ -31,8 +34,9 @@ def process_markdown_text(text: str) -> str:
     # Ensure that section headings have two line breaks before and after
     text = re.sub(r"(.)\n{1,2}(#+ .*$\n)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE)
     
-    # Reduce section headings by one level
-    text = re.sub(r"^\#", r"", text, flags=re.MULTILINE)
+    # Reduce section headings by one level. Require that the heading contains at
+    # least two hashes (which avoids Python comments).
+    text = re.sub(r"^\#\#", r"#", text, flags=re.MULTILINE)
     
     # Convert wikilinks to bolded text
     text = re.sub(r"\[\[(.*?)\]\]", r"**\1**", text, flags=re.MULTILINE)
@@ -68,7 +72,8 @@ def convert_with_pandoc(md_file, tex_file):
             "--number-sections",
             "--citeproc",
             "--verbose",
-            "--biblatex"
+            "--biblatex",
+            "--listings",
         ]
     )
     text = tex_file.read_text()

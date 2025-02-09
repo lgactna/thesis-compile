@@ -179,13 +179,14 @@ utilities; it implements much of its functionality through a collection
 of PowerShell and batch scripts. For example, VMPOP allows users to
 focus a window by PID, process name, or window title. This is achieved
 by getting a PowerShell handle to the process using
-\texttt{Get-Process}, using \texttt{Add-Type} to add a local C\#
-function that is capable of sending keyboard events through
-\texttt{user32.dll}, and then holding the Alt key while using
-\texttt{AppActivate} to focus the window and bring it to the foreground.
-VMPOP leverages similar scripts for launching and terminating processes
-by name, uninstalling programs, creating a Windows restore point, and
-more.
+\passthrough{\lstinline!Get-Process!}, using
+\passthrough{\lstinline!Add-Type!} to add a local C\# function that is
+capable of sending keyboard events through
+\passthrough{\lstinline!user32.dll!}, and then holding the Alt key while
+using \passthrough{\lstinline!AppActivate!} to focus the window and
+bring it to the foreground. VMPOP leverages similar scripts for
+launching and terminating processes by name, uninstalling programs,
+creating a Windows restore point, and more.
 
 In Similarly, remote management utilities allow a remote device to
 invoke local management utilities, typically over an SSH server or
@@ -207,13 +208,13 @@ packages, managing local user accounts, running scripts, and more.
 It is worth noting that although this approach does not require
 installing new software on the machine, most operating systems perform
 some degree of logging when their management utilities are invoked. For
-example, the \texttt{sshd} daemon logs connections regardless of which
-network interface is used, which may make it difficult to separate or
-remove logs not related to SSH connections as part of the scenario
-itself. Similarly, the invocation of PowerShell scripts causes event
-logs to be generated, which can be particularly noisy if Script Block
-Logging (which logs the execution and content of all PowerShell scripts)
-is active.
+example, the \passthrough{\lstinline!sshd!} daemon logs connections
+regardless of which network interface is used, which may make it
+difficult to separate or remove logs not related to SSH connections as
+part of the scenario itself. Similarly, the invocation of PowerShell
+scripts causes event logs to be generated, which can be particularly
+noisy if Script Block Logging (which logs the execution and content of
+all PowerShell scripts) is active.
 
 \subsection{AKF agentless
 generation}\label{akf-agentless-generation}
@@ -275,101 +276,237 @@ entails issuing a simple string to the agent running on the VM. For
 example, invoking a command to add a new user to the VM may look like
 the following:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+
+# From Demo.py
+
+guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform="windows")
+
+# Wait for the VM to connect to the VMM
+
+guest.waitTillAgentIsConnected()
+
+# create userManagement object
+
+userManagement_obj = guest.application("userManagement", {})
+
+# Add different users
+
+logger.info("Adding user1")
+try:
+    userManagement_obj.addUser("user1", "password")
+    while userManagement_obj.is_busy is True:
+        time.sleep(1)
+except Exception as e:
+    print("An error occured: ")
+    print(e)
+time.sleep(5)
+\end{lstlisting}
 
 The agent's main loop, which receives and interprets these commands, is
 extremely simple:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+def main():
+    # create logger
+    logger = create_logger('guestAgent', logging.INFO)
 
-When the \texttt{Agent} is first instantiated, it forms a permanent TCP
-socket out to the configured port and IP address where it expects the
-server (the VMM) to be issuing commands.
-\texttt{Agent.receiveCommands()} receives every message available by
-reading the socket, parsing it, and then invoking
-\texttt{Agent.do\_command()}, which converts the command message into a
-specific Python function call with arguments.
+    logger.info("create Agent")
+    a = Agent(operating_system=platform.system().lower(), logger=logger)
+    logger.info("connect to fortrace controller: %s:%i" % (fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT))
+    a.connect(fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT)
 
-Each module under \texttt{fortrace.application} can be thought of as a
-coherent group of commands associated with a particular \emph{real}
-application (like Firefox or Thunderbird). Recall earlier how we found
-our \texttt{userManagement} application and invoked \texttt{addUser}:
+    # let all network interfaces come up
+    time.sleep(15)
 
-REPLACE CODEBLOCK HERE
+    # inform fortrace controller about network configuration
+    a.register()
 
-At a high level, the \texttt{application()} call attempts to import
-\texttt{fortrace.application.\{application\_name\}}. Although not
-enforced by a higher-level interface, each of these modules contains
-subclasses of the following four classes (defined in
-\texttt{fortrace.application.application}) at minimum, with possibly
-more helper classes for OS-specific functionality or other modularity as
-needed:
+    # wait for commands
+    while 1:
+        time.sleep(1)
+        a.receiveCommands()
+\end{lstlisting}
+
+When the \passthrough{\lstinline!Agent!} is first instantiated, it forms
+a permanent TCP socket out to the configured port and IP address where
+it expects the server (the VMM) to be issuing commands.
+\passthrough{\lstinline!Agent.receiveCommands()!} receives every message
+available by reading the socket, parsing it, and then invoking
+\passthrough{\lstinline!Agent.do\_command()!}, which converts the
+command message into a specific Python function call with arguments.
+
+Each module under \passthrough{\lstinline!fortrace.application!} can be
+thought of as a coherent group of commands associated with a particular
+\emph{real} application (like Firefox or Thunderbird). Recall earlier
+how we found our \passthrough{\lstinline!userManagement!} application
+and invoked \passthrough{\lstinline!addUser!}:
+
+\begin{lstlisting}[language=Python]
+userManagement_obj = guest.application("userManagement", {})
+userManagement_obj.addUser("user1", "password")
+\end{lstlisting}
+
+At a high level, the \passthrough{\lstinline!application()!} call
+attempts to import
+\passthrough{\lstinline!fortrace.application.\{application\_name\}!}.
+Although not enforced by a higher-level interface, each of these modules
+contains subclasses of the following four classes (defined in
+\passthrough{\lstinline!fortrace.application.application!}) at minimum,
+with possibly more helper classes for OS-specific functionality or other
+modularity as needed:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{ApplicationVmmSide}: Contains one function for each command
-  implemented in \texttt{ApplicationGuestSide}, building a message that
-  will be interpreted and acted upon by the corresponding
-  \texttt{ApplicationGuestSideCommands} class.
+  \passthrough{\lstinline!ApplicationVmmSide!}: Contains one function
+  for each command implemented in
+  \passthrough{\lstinline!ApplicationGuestSide!}, building a message
+  that will be interpreted and acted upon by the corresponding
+  \passthrough{\lstinline!ApplicationGuestSideCommands!} class.
 \item
-  \texttt{ApplicationVmmSideCommands}: Accepts and interprets
-  module-specific messages returned by the agent, which may be used to
-  update the remote state as tracked by the host.
+  \passthrough{\lstinline!ApplicationVmmSideCommands!}: Accepts and
+  interprets module-specific messages returned by the agent, which may
+  be used to update the remote state as tracked by the host.
 \item
-  \texttt{ApplicationGuestSide}: Implements the actual
+  \passthrough{\lstinline!ApplicationGuestSide!}: Implements the actual
   application-specific functionality for the agent, providing one
   function for each separated command by this module.
 \item
-  \texttt{ApplicationGuestSideCommands}: Interprets commands and
-  arguments, calling the respective function in the corresponding
-  \texttt{ApplicationGuestSide} subclass. This allows the actual
-  dispatch of commands to be delegated to this class, which is free to
-  choose how actions are performed (threading, multiprocessing, etc.) as
-  well as any module-wide state it may need to maintain.
+  \passthrough{\lstinline!ApplicationGuestSideCommands!}: Interprets
+  commands and arguments, calling the respective function in the
+  corresponding \passthrough{\lstinline!ApplicationGuestSide!} subclass.
+  This allows the actual dispatch of commands to be delegated to this
+  class, which is free to choose how actions are performed (threading,
+  multiprocessing, etc.) as well as any module-wide state it may need to
+  maintain.
 \end{itemize}
 
 This naming convention is intentional. As will be shown later, the word
-\texttt{Application} is replaced with the name of the module in
-camelcase. For example, \texttt{fortrace.application.userManagement}
-contains \texttt{UserManagementVmmSide},
-\texttt{UserManagementVmmSideCommands}, and so on. Discovering and
-getting handles to these classes is performed through string
-manipulation of the relevant application's module name, as shown in the
-example below:
+\passthrough{\lstinline!Application!} is replaced with the name of the
+module in camelcase. For example,
+\passthrough{\lstinline!fortrace.application.userManagement!} contains
+\passthrough{\lstinline!UserManagementVmmSide!},
+\passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
+Discovering and getting handles to these classes is performed through
+string manipulation of the relevant application's module name, as shown
+in the example below:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
 
-In the example above, \texttt{UserManagementGuestSide.addUser()}
-contains the literal code to execute on the guest when
-\texttt{addUser()} is called, such as adding the registry keys needed
-for a user to be created. On the other hand,
-\texttt{UserManagementVmmSide.addUser()} contains the code to send a
-message over TCP that the agent will understand, eventually leading to
-the execution of the agent's version of \texttt{addUser()}.
+# Agent.do_command()
 
-More precisely, the \texttt{ApplicationVmmSide} subclass effectively
-serves as the API for calling the associated functions in the
-\texttt{ApplicationGuestSide} class running on the virtual machine. This
-subclass, along with the complete agent-side code, is stored in a single
-file. For example, the API and code for opening a Firefox browser window
-is as follows:
+# load class moduleGuestSide and moduleGuestSideCommands
+name = "fortrace." + package + "." + module
+self.logger.debug("module to load: " + name)
+mod = __import__(name, fromlist=[''])
+self.logger.debug("module '" + module + "' will be loaded via __import__")
+class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+\end{lstlisting}
 
-REPLACE CODEBLOCK HERE
+In the example above,
+\passthrough{\lstinline!UserManagementGuestSide.addUser()!} contains the
+literal code to execute on the guest when
+\passthrough{\lstinline!addUser()!} is called, such as adding the
+registry keys needed for a user to be created. On the other hand,
+\passthrough{\lstinline!UserManagementVmmSide.addUser()!} contains the
+code to send a message over TCP that the agent will understand,
+eventually leading to the execution of the agent's version of
+\passthrough{\lstinline!addUser()!}.
 
-Calling the \texttt{open()} command from the host causes a message of
-the following form to be sent to the agent:
+More precisely, the \passthrough{\lstinline!ApplicationVmmSide!}
+subclass effectively serves as the API for calling the associated
+functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
+running on the virtual machine. This subclass, along with the complete
+agent-side code, is stored in a single file. For example, the API and
+code for opening a Firefox browser window is as follows:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
+    def open(self, url):
+        """Sends a command to open a webBrowserFirefox on the associated guest.
+
+        @param url: Website to open.
+        """
+        try:
+            self.logger.info("function: WebBrowserFirefoxVmmSide::open")
+            self.url = url
+            self.window_id = self.guest_obj.current_window_id
+            self.guest_obj.send(
+                "application " + "webBrowserFirefox " + str(self.window_id) + " open " + self.webBrowserFirefox + " " + self.url)
+
+            self.guest_obj.current_window_id += 1
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::open: " + str(e))
+
+# Example usage:
+
+browser = WebBrowserFirefoxVmmSide()
+browser.open("google.com")
+\end{lstlisting}
+
+Calling the \passthrough{\lstinline!open()!} command from the host
+causes a message of the following form to be sent to the agent:
+
+\begin{lstlisting}
+application webBrowserFirefox <window id
+\end{lstlisting}
 
 Upon receiving this message, the agent's main loop will search for the
-\texttt{webBrowserFirefox} module and import its corresponding
-\texttt{ApplicationGuestSideCommands} subclass. After any state
-management, the subclass will then search for a function called
-\texttt{open} in its corresponding \texttt{ApplicationGuestSide} class,
-as implemented below:
+\passthrough{\lstinline!webBrowserFirefox!} module and import its
+corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
+subclass. After any state management, the subclass will then search for
+a function called \passthrough{\lstinline!open!} in its corresponding
+\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
+below:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
+    def open(self, args):
+        """
+        Open a browser and save the webBrowserFirefox object with an id in a dictionary.
+        Set page load timeout to 30 seconds.
+
+        return:
+            Send to the host in the known to be good state:
+                'application webBrowserFirefox window_id open'.
+                'application webBrowserFirefox window_id ready'.
+            in the error state:
+                'application webBrowserFirefox window_id error'.
+            additionally the 'window_is_crushed' attribute is set; so the next
+            call will open a new window.
+        """
+        try:
+            arguments = args.split(" ")
+            web_browser = arguments[0]
+            url = arguments[1]
+
+            if len(arguments) 
+                self.timeout = arguments[2]
+            else:
+                self.timeout = 30
+
+            self.logger.info(self.module_name + "GuestSide::open")
+            self.last_driven_url = url
+            self.logger.debug("URL to call: " + url)
+
+            self.logger.info("open url: " + url)
+
+            self.helper.run_firefox()  # start ff session
+
+            retval = self.helper.navigate_to_url(url)  # browse to the specified url
+            if not retval:
+                self.logger.warning("could not open url")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " opened")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            self.window_is_crushed = False
+        except Exception as e:
+            # Some logging/teardown...
+            self.window_is_crushed = True
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+\end{lstlisting}
 
 There are two major implementation details that should be observed here.
 As mentioned previously, commands are sent through a simple string-based
@@ -406,9 +543,10 @@ In ``new-style'' RPyC, this is achieved by running a \emph{service} on
 the device where remote operations should be performed; this service
 simply listens on an ephemeral TCP port. Services expose a set of
 functions and attributes that may be accessed remotely by an RPyC
-client. This is analogous to the \texttt{ApplicationGuestSideCommands}
-and \texttt{ApplicationGuestSide} classes of individual ForTrace
-modules.
+client. This is analogous to the
+\passthrough{\lstinline!ApplicationGuestSideCommands!} and
+\passthrough{\lstinline!ApplicationGuestSide!} classes of individual
+ForTrace modules.
 
 Because the exposed functions (as well as their signatures) and
 attributes cannot be inferred from the raw RPyC connection alone,
@@ -417,23 +555,61 @@ autocompletion features to continue working in development environments.
 This simultaneously abstracts the raw RPyC call (and the existence of an
 RPyC connection) away from the user, while also providing the remote
 function signatures where there would otherwise be none. This is
-analogous to the \texttt{ApplicationVmmSide} and
-\texttt{ApplicationVmmSideCommands} classes of ForTrace modules.
+analogous to the \passthrough{\lstinline!ApplicationVmmSide!} and
+\passthrough{\lstinline!ApplicationVmmSideCommands!} classes of ForTrace
+modules.
 
 For example, a simple RPyC service and its corresponding API may be
 implemented as follows:
 
-REPLACE CODEBLOCK HERE
+\begin{lstlisting}[language=Python]
+
+# Server-side code
+
+class ChromiumService(AKFService):
+    def exposed_set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        # Various setup code...
+        self.browser = chromium.launch_persistent_context(
+            headless=False,
+            user_data_dir=profile_path,
+            channel=browser_type,
+            args=[f"--profile-directory={profile}"],
+        )
+
+        return self.browser
+
+# Client-side API
+
+class ChromiumServiceAPI(WindowsServiceAPI):
+    def __init__(self, host: str, port: int) -
+        """
+        Initialize the API with an RPyC connection to the service.
+        """
+        self.rpyc_conn = rpyc.connect(
+            host,
+            port,
+            config={"sync_request_timeout": None},
+        )
+
+    def set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        self.browser = self.rpyc_conn.root.set_browser(browser_type, profile)
+        return self.browser
+\end{lstlisting}
 
 This syntax provides three major improvements over the ForTrace
 protocol. First, the routing of functions is wholly delegated to RPyC.
 Instead of manually constructing a message with the function name and
 its associated parameters (as strings) over the network, implementing
 support for a particular service on the client-side API is as simple as
-calling an untyped function \texttt{rpyc\_conn.root.set\_browser()}. By
-wrapping it around a typed function,
-\texttt{ChromiumServiceAPI.set\_browser()}, users regain the ability to
-use code completion and static linting tools.
+calling an untyped function
+\passthrough{\lstinline!rpyc\_conn.root.set\_browser()!}. By wrapping it
+around a typed function,
+\passthrough{\lstinline!ChromiumServiceAPI.set\_browser()!}, users
+regain the ability to use code completion and static linting tools.
 
 Second, this allows us to pass and return arbitrarily complex objects
 for which we do not have to write the serialization and deserialization

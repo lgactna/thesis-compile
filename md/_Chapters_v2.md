@@ -1,7 +1,5 @@
 The chapter list, 2e.
 
-REPLACE CODEBLOCK HERE
-
 Left to do:
 **39.2 - Literature review**
 

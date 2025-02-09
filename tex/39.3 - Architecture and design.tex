@@ -52,15 +52,16 @@ and transparency in the scenario development process
 
 First, AKF conforms to modern Python development practices. This
 includes the use of modern project management practices (such as the use
-of \emph{uv} and \texttt{pyproject.toml}, rather than the use of
-\texttt{setup.py} observed in older synthesizers), as well as static
-linters (\emph{flake8}) and style enforcers (\emph{black}, \emph{isort})
-to promote adherence to the PEP8 standard. Additionally, AKF's libraries
-make heavy use of Python 3.11+ features, such as type hinting and
-special type annotations, which allows for tools such as \emph{mypy} to
-perform static type checking. In addition to greatly improving the
-development experience, these practices also increase the likelihood of
-discovering errors earlier in the development process.
+of \emph{uv} and \passthrough{\lstinline!pyproject.toml!}, rather than
+the use of \passthrough{\lstinline!setup.py!} observed in older
+synthesizers), as well as static linters (\emph{flake8}) and style
+enforcers (\emph{black}, \emph{isort}) to promote adherence to the PEP8
+standard. Additionally, AKF's libraries make heavy use of Python 3.11+
+features, such as type hinting and special type annotations, which
+allows for tools such as \emph{mypy} to perform static type checking. In
+addition to greatly improving the development experience, these
+practices also increase the likelihood of discovering errors earlier in
+the development process.
 
 Second, AKF takes a modular, agent-based approach to implementing
 application-specific functionality. This allows AKF to use existing
@@ -141,16 +142,18 @@ concepts, each of which covers a distinct chapter.
 
 The first set of modules are responsible for artifact generation. This
 encompasses three major systems - a hypervisor and its associated SDK,
-an OS-specific agent, and \texttt{akflib}. \texttt{akflib} is a Python
-library containing the abstract interfaces and concrete implementations
-necessary to generate individual artifacts and complete datasets. This
-includes routines for directly interacting with hypervisors, issuing
-commands to virtual machines, and directly modifying virtual hard
-drives. This library is also the foundation for OS-specific agents,
-which carry out actions on the virtual machine on behalf of the host.
-This is described in greater detail in \autoref{chapter-four}, and corresponds to the \emph{action automation library},
-the \emph{OS-specific agent}, and the \emph{virtual machine} (as well as
-the \emph{user applications} running on the machine).
+an OS-specific agent, and \passthrough{\lstinline!akflib!}.
+\passthrough{\lstinline!akflib!} is a Python library containing the
+abstract interfaces and concrete implementations necessary to generate
+individual artifacts and complete datasets. This includes routines for
+directly interacting with hypervisors, issuing commands to virtual
+machines, and directly modifying virtual hard drives. This library is
+also the foundation for OS-specific agents, which carry out actions on
+the virtual machine on behalf of the host. This is described in greater
+detail in \autoref{chapter-four}, and corresponds to the
+\emph{action automation library}, the \emph{OS-specific agent}, and the
+\emph{virtual machine} (as well as the \emph{user applications} running
+on the machine).
 
 The second set of modules are responsible for logging and reporting.
 This encompasses both independent libraries for generating outputs and
