@@ -87,7 +87,20 @@ def substitute_labels(tex_dir: Path) -> dict:
     {"1.2.3 - Title": "title}).
     """
 
-    label_table = {}    
+    # Hardcoded labels that are not in the tex files
+    label_table = {
+        "39.1 - Introduction": "chapter-one",
+        "39.2 - Literature review": "chapter-two",
+        "39.3 - Architecture and design": "chapter-three",
+        "39.4 - Action automation": "chapter-four",
+        "39.5 - Output and validation": "chapter-five",
+        "39.6 - Building scenarios": "chapter-six",
+        "39.7 - Evaluation and observations": "chapter-seven",
+        "39.8 - Future work": "chapter-eight",
+        "39.9 - Conclusion": "chapter-nine",
+    }
+    
+        
     for tex_file in tex_dir.glob("*.tex"):
         text = tex_file.read_text()
         # Forbid the right brace from being part of anything - this is how we'll know
@@ -107,7 +120,8 @@ def substitute_labels(tex_dir: Path) -> dict:
         text = tex_file.read_text()
         # search for all textbfs. if there's a \# inside the textbf,
         # ignore everything before the \#
-        textbfs = re.findall(r"\\textbf\{(?:.*?\\#([^\{\}]*?))?\}", text, flags=re.DOTALL | re.MULTILINE)
+        textbfs = re.findall(r"\\textbf\{(.*?)\}", text, flags=re.DOTALL | re.MULTILINE)
+        textbfs = [textbf.split("#")[-1] for textbf in textbfs]
         textbfs = [textbf.replace("\n", " ") for textbf in textbfs]
         print(tex_file, textbfs)
         
@@ -115,19 +129,51 @@ def substitute_labels(tex_dir: Path) -> dict:
         for textbf in textbfs:
             if textbf in label_table:
                 textbf2 = textbf.replace(" ", "[ \\n]")
-                print(rf"Replacing \\textbf\{{[^\{{\}}]*?{textbf2}\}} with \\ref{{{label_table[textbf]}}}")
+                print(rf"Replacing \\textbf\{{[^\{{\}}]*?{textbf2}\}} with \\autoref{{{label_table[textbf]}}}")
                 
                 # if it is, replace it with a ref. note that every space in the textbf
                 # might actually be a newline here, so we have to convert every space
                 # into a regex charset that could be either a space or a newline
                 
-                text = re.sub(rf"\\textbf\{{[^\{{\}}]*?{textbf2}\}}", rf"\\ref{{{label_table[textbf]}}}", text , flags=re.DOTALL | re.MULTILINE)
+                text = re.sub(rf"\\textbf\{{[^\{{\}}]*?{textbf2}\}}", rf"\\autoref{{{label_table[textbf]}}}", text , flags=re.DOTALL | re.MULTILINE)
         
         # Final pass - remove anything that looks like "1.2.3 -" inside any
         # tags, because it's already handled by the engine.
         text = re.sub(r"section\{(?:\d\.)+\d - ", r"section{", text, flags=re.DOTALL | re.MULTILINE)
         
         tex_file.write_text(text)
+
+def join_tex_files(tex_dir: Path, output_file: Path, base_file: Path) -> None:
+    """
+    Join all the tex files in the given directory into a single file.
+    """
+    chapter_labels = {
+        "39.1 - Introduction": ("Introduction", "chapter-one"),
+        "39.2 - Literature review": ("Literature review", "chapter-two"),
+        "39.3 - Architecture and design": ("Architecture and design", "chapter-three"),
+        "39.4 - Action automation": ("Action automation", "chapter-four"),
+        "39.5 - Output and validation": ("Output and validation", "chapter-five"),
+        "39.6 - Building scenarios": ("Building scenarios", "chapter-six"),
+        "39.7 - Evaluation and observations": ("Evaluation and observations", "chapter-seven"),
+        "39.8 - Future work": ("Future work", "chapter-eight"),
+        "39.9 - Conclusion": ("Conclusion", "chapter-nine"),
+    }
+    
+    output = "% == Begin thesis content\n"
+    
+    for tex_file in tex_dir.glob("*.tex"):
+        if tex_file.stem in chapter_labels:
+            chapter_name, label = chapter_labels[tex_file.stem]
+            output += f"\\chapter{{{chapter_name}}}\\label{{{label}}}\n\n"
+            output += tex_file.read_text() + "\n"
+    
+    output += "% == End thesis content\n"
+    
+    text = base_file.read_text()
+    text = text.replace("{{thesis_sub_here}}", output)
+    
+    with output_file.open("w") as f:
+        f.write(text)
 
 if __name__ == "__main__":
     # Start by copying everything in SOURCE_MD_DIR to TARGET_MD_DIR
@@ -161,5 +207,5 @@ if __name__ == "__main__":
     # now substitute labels
     substitute_labels(TARGET_TEX_DIR)
     
-    
+    join_tex_files(TARGET_TEX_DIR, Path("./thesis.tex"), Path("./base.tex"))
         

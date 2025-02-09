@@ -1,0 +1,2594 @@
+\documentclass[letterpaper,12pt]{report}
+
+% == Packages ==========================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{latexsym}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage{accents}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{euscript}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc} 
+\usepackage{hyperref}
+\usepackage[left = 1.5in, right = 1in, top = 1in, bottom = 1.25in, head = 0.5in]{geometry}
+\usepackage{textcomp}
+\usepackage{cite}
+\usepackage{pdfpages}
+\usepackage[linesnumbered,lined,boxruled,commentsnumbered]{algorithm2e}
+\usepackage[acronym]{glossaries}
+\graphicspath{{Figures/}}
+\usepackage{attachfile}
+
+% Below are ones I addded
+% Native table support
+\usepackage{booktabs}
+
+% Pandoc uses tightlist for bullet lists, you can just do nothing
+% See https://tex.stackexchange.com/questions/257418/error-tightlist-converting-md-file-into-pdf-using-pandoc
+\def\tightlist{}
+
+% == End packages
+
+\renewcommand*\ttdefault{pcr}
+
+
+\makeglossaries
+\loadglsentries{lloyd_gonzales_thesis_glossary.tex}
+
+\bibliographystyle{IEEEtran}
+
+% == Customizations ====================================================
+\allowdisplaybreaks
+
+% == Page Style ========================================================
+\pagestyle{fancyplain}
+\renewcommand{\headrulewidth}{0.0pt}				% gets rid of lines on header
+\fancyhead{}								      	% clears all header and footer fields
+\fancyfoot{}
+\fancyhead[R]{\thepage}						      	% inserts page number in top right
+
+\begin{document}
+
+% == Use fake numbering until abstract =================================
+\pagenumbering{Alph}
+
+% == Title Page +=======================================================
+\newpage
+\thispagestyle{empty}
+\singlespacing
+
+\begin{center}
+
+\null
+
+\vspace{1.5in}
+
+University of Nevada, Reno \\
+
+\vspace{1.5in}
+
+\textbf{AKF: A modern synthesis framework for building digital forensic datasets}
+
+\vspace{1.5in}
+
+A thesis submitted in partial fulfillment of the\\
+requirements for the degree of Master of Science in\\
+Computer Science and Engineering\\
+
+\vspace{1in}
+
+by
+
+\vspace{0.25in}
+Lloyd Gonzales
+\vspace{0.5in}
+
+Nancy LaTourrette, Advisor \\
+May 2025\\
+
+\end{center}
+
+% == Committee Approval =================================================
+
+% == Set page numbering style ============================================
+\pagenumbering{roman}
+\setcounter{page}{0}
+
+% == Abstract ===========================================================
+\newpage
+\onehalfspace
+
+\begin{abstract}
+
+\thispagestyle{fancyplain}
+\doublespacing
+As our world becomes increasingly dependent on technology, the
+advancement of digital forensics has become a key focus in the fight
+against cybercrime. The field depends greatly on the availability of
+disk images, network captures, and other forensic datasets for
+education, tool validation, and research. However, real-world datasets
+often contain sensitive information that may be difficult to remove,
+making them difficult to distribute publicly. As a result, researchers
+and educators can encounter gaps in available datasets, often leading to
+the manual development of new, suitable datasets. While viable, this
+approach is time-consuming and rarely produces datasets that accurately
+reflect real-world scenarios suitable for comprehensive training and
+education. In turn, there is ongoing research into forensic
+synthesizers, which automate the process of creating unique synthetic
+datasets that can be publicly distributed without legal and logistical
+concerns.
+
+This thesis introduces the \emph{automated kinetic framework}, or AKF, a
+modular synthesizer for creating and interacting with virtualized
+environments to simulate user activity. AKF significantly improves upon
+the architectural designs of prior synthesizers while maintaining
+feature parity and usability. Additionally, AKF leverages the CASE
+standard to provide human- and machine-readable reporting, exposing
+low-level details in a searchable format. Finally, AKF provides options
+for leveraging generative AI to develop high-level scenarios as well as
+individual artifacts. These contributions are intended to not only
+improve the speed at which synthetic datasets can be created, but also
+ensure the long-term usefulness of AKF-generated datasets and the
+framework as a whole.
+\end{abstract}
+
+% == Set page number ====================================================
+\setcounter{page}{2}
+\doublespacing
+
+
+% == Dedication ==========================================================
+
+% \begin{center}
+
+\section*{Dedication}
+
+To those in the osu! tournament community, without whom I would have
+never embarked on this journey;
+
+To my numerous teachers and professors, especially Keith Lightfoot,
+Rodney Rogers, Marc Miller, and Gabbi Bachand, who I have limitless and
+appreciation and admiration for;
+
+To those part of the United States Cyber Team and the broader CTF
+community, for igniting my interest in digital forensics and supporting
+me even when I flailed like a fish out of water;
+
+And, of course, to my friends, family, and bed, who provided motivation
+when there was none.
+
+% \end{center}
+
+% == Acknowledgments ====================================================
+\newpage
+
+\section*{Acknowledgments}
+
+I want to express my immense gratitude to Nancy Latourrette for her
+support, guidance, and mentorship throughout the development of this
+thesis. This thesis would be nowhere without her ideas and experience,
+and I am truly grateful and honored to have been able to work with her
+throughout this experience.
+
+I would also like to thank Bill Doherty for his review of a prior paper,
+from which some of this content is derived.
+
+
+% == Table of contents ===================================================
+\newpage
+\renewcommand*\contentsname{Table of Contents}
+\tableofcontents
+
+\newpage
+\listoftables
+
+\newpage
+\listoffigures
+
+% == Set new page number style ===========================================
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\linespread{2}
+
+% == Begin thesis content
+\chapter{Introduction}\label{chapter-one}
+
+\section{History of digital
+forensics}\label{history-of-digital-forensics}
+
+Digital forensics is a relatively new field that rose out of the growing
+need to address computer crimes. Through the explosion of computing that
+has occurred over the last 30 years, computers have become critical in
+virtually every modern industry. In turn, they have become the target of
+many attacks. Much like conventional crimes, these cyberattacks leave
+behind traces of digital evidence that can be analyzed to determine the
+methodologies of the attackers, the scope and extent of the damage, and
+more. Today, digital forensics is also applicable to a variety of
+non-criminal contexts, including research and corporate investigations,
+further highlighting the need for quality educational material and
+hands-on training for new forensic analysts.
+
+The origins of digital forensics can be traced to the 1980s, during
+which computers began to be adopted by the general public. Prior to
+this, computers were largely restricted to industry, academia, and
+governments with dedicated infrastructure and staff
+\cite{pollittHistoryDigitalForensics2010}. However, with the
+introduction of PCs more accessible to the typical consumer, such as the
+Commodore 64 and the IBM PC, computer usage within the public grew. And
+in turn, so did crimes committed with computers; people discovered that
+they could hack telephone networks to illegally obtain software and
+``free'' telephone services \cite{jonesInsightDigitalForensics2022}.
+In 1983, Canada would be the first government to amend its criminal code
+to cover cybercrime; the United States, the United Kingdom, and
+Australia would follow suit in the following decade.
+
+During this time, investigations were relatively ad-hoc and very simple.
+Teams often built their own software to analyze devices, though a few
+hobbyists and software vendors began to develop dedicated forensic
+tools. However, computers had yet to truly enter the mainstream; the
+vast majority of individual computer owners were (relatively wealthy)
+computer hobbyists rather than the general public. In 1984, the U.S.
+Census Bureau determined that only about 8.2\% of U.S. households owned
+a computer \cite{robertkominskiComputerUseUnited1988}, nearly
+doubling to 15\% in 1989 \cite{robertkominskiComputerUseUnited1991}.
+
+As technology continued to advance throughout the 1990s, digital
+forensics -- and computing as a whole -- began to quickly grow in scope
+and importance. The rise of mobile devices and the internet drastically
+changed the role of computing in the eyes of the public. With it came
+the rise of cybercrime and the importance of computer investigations.
+Early investigations were often performed by investigators who happened
+to be experienced with computers, rather than those with formal digital
+forensics training \cite{hargreavesDigitalForensicsEducation2017}.
+
+By the turn of the century, digital forensics had grown beyond law
+enforcement and niche cases to a major focus of research and education.
+The first use of the phrase ``computer forensics'' in ACM literature
+appeared in 1999 \cite{cooperStandardsDigitalForensics2010}, with
+the first Digital Forensic Research Workshop (DFRWS) held in 2001 to
+identify priorities in the growing field of digital forensics
+\cite{palmerRoadMapDigital2001}. A particularly notable case was
+that of the September 11, 2001 attacks, in which computers were found to
+contain meaningful evidence related to the organization and planning of
+the attack. Intelligence communities and law enforcement agencies
+throughout the world began establishing digital forensics teams,
+shifting the agenda of digital forensics from individuals and small
+teams to governments and professional organizations.
+
+It was during this time that tools such as EnCase and Forensic Toolkit
+(better known as FTK) evolved to become dedicated products that remain a
+mainstay of the digital forensics field today
+\cite{pollittHistoryDigitalForensics2010}. At the same time,
+anti-forensics began to grow in popularity; numerous tools and resources
+were developed with the express goal to exploit and hinder the digital
+forensics process, generally with the stated motivation of guarding
+users' privacy and protecting users from punishment for undesirable
+computer activity
+\cite{geigerEvaluatingCommercialCounterForensic2005,harrisArrivingAntiforensicsConsensus2006}.
+
+By this time, it had become abundantly clear that there needed to be
+dedicated training to develop specialists in digital forensics.
+Undergraduate and graduate programs dedicated to the study of digital
+forensics were gradually developed
+\cite{andersonComparativeStudyTeaching2006}, along with numerous
+efforts to standardize and improve digital forensics curricula
+\cite{cooperStandardsDigitalForensics2010,nanceDigitalForensicsDefining2009,nanceDigitalForensicsDefining2010}.
+This became particularly important due to the growing importance of
+digital forensics from a legal perspective; analysts must follow a
+strict procedure that ensures the admissibility of digital evidence into
+court \cite{conklinComputerForensics2022}. Simultaneously, analysts
+must have the experience needed to provide an unbiased, accurate opinion
+of digital evidence in court as an expert witness.
+
+Digital forensics continues to be an important focus in industry -- and
+in turn, education and research. Broadly, the Bureau of Labor Statistics
+projects that information security employment will grow 32\% over the
+next decade from 2022 to 2032, adding over 50,000 new jobs
+\cite{bureauoflaborstatisticsu.s.departmentoflaborInformationSecurityAnalysts2023}.
+The diversity and depth of digital forensics continues to grow with the
+broad variety of devices and software involved in modern computing.
+
+With the growing importance and complexity of digital forensics, there
+is a clear need for high-quality, realistic data for researchers and
+instructors alike. Yet, there continues to be significant gaps in both
+the quantity and variety of material suitable for digital forensic
+training. The primary barrier to availability has been the privacy and
+legal concerns associated with releasing real-world data
+\cite{garfinkelForensicCorporaChallenge2007}. From a research
+perspective, the result is that many researchers develop their own
+datasets, often with a very narrow scope and a very low degree of
+reproducibility
+\cite{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
+From an education perspective, the result is that most training material
+is either manually created by instructors or reused from existing
+sources. That is, researchers and instructors alike often create their
+own datasets because publicly available corpora is insufficient;
+however, this is a time-consuming process that responds slowly to
+changes in technology and software.
+
+Various efforts have been made to automate or streamline the process of
+creating new forensic datasets from high-level descriptions and
+predefined forensic artifacts. These forensic synthesis frameworks (also
+referred to as ``synthesizers'' throughout this paper) include a variety
+of features that are geared towards research and education. This
+includes the rapid creation of datasets for a large classroom, the
+generation of metadata useful in tool validation, and the ability to
+export a variety of forensic artifacts from the synthesizer. In
+particular, these frameworks enable instructors to create images that
+allow students to learn about a specific forensic technique while
+emulating some of the real-world challenges that forensic analysts face
+in industry.
+
+However, there is still much work to be done towards increasing the
+accessibility and flexibility of these frameworks. Before exploring
+synthesizers in greater detail, it is necessary to first understand the
+purpose and characteristics of forensic datasets in a variety of
+contexts. Doing so will not only outline \emph{why} the development of
+synthesizers is necessary, but also \emph{what} features these
+synthesizers must provide. Once we have established this foundation, we
+can begin exploring \emph{how} a synthesizer should be architected --
+the focus of the reminder of this thesis.
+
+\section{Purpose of forensic
+datasets}\label{purpose-of-forensic-datasets}
+
+REPLACE CODEBLOCK HERE
+
+\subsection{In industry}\label{in-industry}
+
+Before considering the use of forensic datasets in research and
+education, we begin by exploring how these datasets are acquired and
+used in the ``real world'' -- that is, investigations made by
+professionals in industry.
+
+In practice, forensic datasets -- and digital forensics as a whole --
+are used for a variety of purposes. In particular, Conklin et
+al.~identify three primary cases in which digital forensics may be
+performed \cite{conklinComputerForensics2022}:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{To investigate computer systems related to a violation of law}:
+  This includes cases such as the distribution and storage of illegal
+  content, the use of a computer to launch denial of service attacks
+  against an individual or organization, and the proliferation of
+  harmful malware within an organization.
+\item
+  \emph{To investigate computer systems for compliance (or a violation
+  of) an organization's policies}: This primarily covers internal
+  investigations in which a user may act well within the laws of their
+  jurisdiction, but may have violated a company policy. For example,
+  many companies restrict access to computing systems based on the time
+  of day as a security measure. Although a user may normally have
+  authorization to access the organization's network, an unexpected
+  weekend access to the network may require investigation to determine
+  if the activity was done with malicious intent.
+\item
+  \emph{Responding to a legal (or internal) request for digital
+  evidence}: This process is known as e-discovery, in which an
+  organization preserves and produces digital information typically as
+  part of the discovery process in civil lawsuits. With court approval,
+  organizations can be compelled to turn over relevant information to a
+  particular lawsuit, including digital documents and digital artifacts
+  such as file metadata. (The \emph{Federal Rules of Civil Procedure}
+  were amended in December 2006 to include ``electronically stored
+  information'' as part of civil discovery
+  \cite{withersj.ElectronicallyStoredInformation2006}.)
+\end{itemize}
+
+Additionally, it is important to note that the acquisition of forensic
+images are only one specific part of the overall digital forensics
+process, in which analysts must consider the priority of obtaining
+evidence and local requirements for ensuring the admissibility of
+digital evidence into a court of law. Again, Conklin et al.~identify
+several steps throughout the lifespan of a digital forensic
+investigation that are summarized here
+\cite{conklinComputerForensics2022}:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Identification}: While outside of the scope of forensics itself,
+  it is important to determine the scope of the devices that need to be
+  analyzed as a result of some incident. Necessarily, it is impossible
+  to investigate an incident until an organization can ascertain that
+  one has occurred (which, in turn, requires implementing detection and
+  protection as described in the NIST Cybersecurity Framework
+  \cite{nistNISTCybersecurityFramework2023}). Similarly, if the
+  scope of an incident is poorly-defined, the subsequent forensic
+  investigation may fail to find significant related evidence, which has
+  a direct outcome on the success of the investigation (and often, the
+  response of the organization as a whole).
+\item
+  \emph{Preservation}: After identifying the relevant machines, analysts
+  must secure and preserve the physical device itself. With guidance
+  from the organization and an analyst's judgment, this often involves
+  prioritizing the devices that must be imaged first; for example, a
+  critical server may be more likely to cycle out important logs first,
+  or an employee's device may only hold important information in
+  volatile memory.
+\item
+  \emph{Collection:} At this point, an analyst must now duplicate the
+  digital evidence, in addition to any relevant physical evidence. This
+  must be done in a way that passes legal scrutiny; that is to say, it
+  must meet requirements for accuracy, reliability, and relevance
+  \cite{conklinComputerForensics2022,garfinkelBringingScienceDigital2009}
+  (in the United States). In the case of disk imaging, this is typically
+  done with a write blocker and cryptographic hashing algorithms to
+  ensure a faithful copy has been created of nonvolatile memory.
+\item
+  \emph{Analysis}: Here, an analyst uses tools and their own knowledge
+  to identify significant pieces of information within collected images,
+  reconstructing data fragments and drawing conclusions to form a
+  coherent timeline and scenario. In many cases, this is done using
+  tools such as Sleuth Kit, Autopsy, EnCase, and other domain-specific
+  software \cite{jonesInsightDigitalForensics2022}, which often
+  parse and automatically identify data of interest on a reconstructed
+  file system.
+\item
+  \emph{Reporting}: After an analyst (or a team of analysts) has
+  completed their analysis of the collected data, they must summarize
+  and provide a non-technical overview of the conclusions drawn from the
+  investigation.
+\end{itemize}
+
+Throughout this process, analysts must adhere to well-established norms
+for ensuring the admissibility of any digital evidence in court. One
+notable example is the use of a chain of custody, which details who has
+had access to the evidence. This applies to ``conventional'' and digital
+forensics alike, as this documentation asserts that the evidence has not
+been tampered with as it is transported between analysts and locations.
+Without proper documentation such as a chain of custody, critical
+evidence may not meet the legal requirements for admissibility, changing
+the outcome of a trial.
+
+Generally speaking, a forensic investigation is only part of a larger
+incident response effort; for example, if a data breach occurs, a
+digital forensic investigation may be used to determine the scope and
+methodology of the breach itself. However, other teams within the
+organization may be responsible for patching the devices responsible for
+the breach, determining legal consequences, and engaging in other
+recovery-related activities. Additionally, a forensic analyst may have
+other responsibilities outside of this ``chain''; for example, in
+addition to developing a written report, they may be called as an expert
+witness to testify and defend conclusions drawn from the investigation
+\cite{andersonComparativeStudyTeaching2006,conklinComputerForensics2022,cooperStandardsDigitalForensics2010}.
+
+In the context of research and education, most hands-on or practical
+training typically focuses on the analysis and reporting steps, rather
+than the rest of the investigation process. That is to say, although the
+theory provided in training covers this entire process in detail, it is
+relatively rare for students to secure data from an organization, use a
+write blocker and other hardware needed to image devices, and then
+present the conclusions as an expert witness
+\cite{cooperStandardsDigitalForensics2010}. While experience here is
+important, it is often impractical; not every university will have a
+large forensics lab or a courtroom regularly available. Additionally,
+the techniques of analysis and reporting are arguably the most
+important; while the other steps can be learned ``on the job''
+relatively quickly, all students must be familiar with modern software
+and tooling, as well as recent advancements in forensic and
+anti-forensic techniques. (As a more concrete example: deep technical
+knowledge of operating systems is not required to acquire disk images,
+but it is certainly required for effective analysis and reporting.)
+
+It is for this reason that the vast majority of education and research
+focuses primarily on the analysis step. Improvements to the distribution
+and creation of training material -- such as the use of online labs and
+synthesizers -- are largely driven by the fact that no physical lab is
+strictly necessary, focusing instead on the software and skillset needed
+to effectively analyze images and draw conclusions
+\cite{bruecknerAutomatedComputerForensics2008,lawrenceFrameworkDesignWebbased2009}.
+
+\subsection{In research}\label{in-research}
+
+In many cases, the focus of research in digital forensics is on
+improving specific processes in the analytic step of a forensic
+investigation. This includes the development of analysis techniques for
+niche platforms, direct improvements to existing techniques, or novel
+methodologies for performing forensic investigations for a particular
+platform. For example, recent publications from the Digital Forensic
+Research Conference detail a new hashing technique for detecting
+similarities in arbitrary files \cite{changFbHashNewSimilarity2019},
+an analysis of the NAND memory of the Nintendo 3DS
+\cite{pessolanoForensicAnalysisNintendo2019}, and the development of
+a new tool for the automated analysis of Android mobile devices
+\cite{linAutomatedForensicAnalysis2018}. Necessarily, each of these
+publications require forensic datasets; in most cases, these are
+obtained or developed manually by the authors, as opposed to using an
+existing public or private dataset.
+
+Besides novel contributions to the field, other research focuses on
+upholding the quality of the investigation process as new technologies
+and tools to analyze datasets are developed. For example, NIST maintains
+the \emph{Computer Forensics Tool Testing} (CFTT) program, which
+provides a common methodology and test corpora for evaluating specific
+tool capabilities
+\cite{nationalinstituteofstandardsandtechnologyComputerForensicsTool2017}.
+Specific capabilities tested include the ability of a tool to perform
+string searching, disk imaging, and the recovery of deleted files. The
+project also includes catalogs for forensic algorithms, software, and
+tools, as well as the \emph{Computer Forensic Reference Data Sets}
+(CFReDS) project, which is a repository of forensic datasets contributed
+by NIST and other organizations that is often used by both instructors
+and researchers
+\cite{nationalinstituteofstandardsandtechnologyCFReDSPortal}.
+
+\subsection{In education}\label{in-education}
+
+REPLACE CODEBLOCK HERE
+
+Finally, we address the generation of forensic datasets as it applies to
+education. Datasets in an educational setting typically focus on
+covering a range of techniques and tools, allowing students to practice
+applying theoretical concepts learned through lectures and recitations
+\cite{adelsteinAutomaticallyCreatingRealistic2005}. Often, this is
+done in the context of a specific scenario, such as a user stealing
+files from a protected company server, using steganography to hide
+information, or recovering a file from volatile memory. Besides the the
+specific technical skills covered by these scenarios, the overall goal
+of these images is to develop the analytical skills needed to adapt to
+new technologies. as tools and the technologies they analyze continue to
+evolve \cite{cooperStandardsDigitalForensics2010}. In other words,
+students should be familiar with common tools and patterns in digital
+forensics, providing a foundation on which more niche techniques can be
+learned \cite{lawrenceFrameworkDesignWebbased2009}.
+
+Although the focus of individual forensic images is often to improve the
+skills of students in the analysis phase, these images have a direct
+impact on the reporting phase as well. Indeed, students must be able to
+accurately summarize their conclusions, using their judgement to
+describe a scenario and identify topics of interest in a manner that is
+consistent with law. Although important, digital forensics is not just
+the effective use of tools and techniques; a student should also aim to
+be well-rounded in the legal, social, and professional aspects of
+digital forensics \cite{andersonComparativeStudyTeaching2006}.
+
+The challenge, however, is providing hands-on labs that comprehensively
+support the ideas learned in theoretical courses. Indeed, instructors
+face numerous challenges when providing realistic lab material,
+including limited access to the necessary software and hardware; the
+extensive time needed to develop, distribute and grade labs; and the
+high variability between different forensics programs
+\cite{adelsteinAutomaticallyCreatingRealistic2005,guptaDigitalForensicsLab2022,lawrenceFrameworkDesignWebbased2009}.
+Much of this difficulty in providing high-quality images can be traced
+to the issues associated with acquiring images for educational purposes,
+as described in the following section.
+
+\section{Real and synthetic
+datasets}\label{real-and-synthetic-datasets}
+
+Now that we have identified the purpose of forensic datasets and why
+they are needed, we now move to a discussion of how these datasets are
+acquired, as well as various issues encountered when using these
+datasets. This section focuses on the qualities of real and synthetic
+datasets, including some examples. A more detailed survey of existing
+datasets is presented in \autoref{existing-forensic-corpora}.
+
+Broadly speaking, there are two types of forensic datasets summarized by
+Park \cite{parkTREDEVMPOPCultivating2018}, based on the original
+taxonomy described by Garfinkel et al.
+\cite{garfinkelBringingScienceDigital2009}. The first is ``real''
+data, which is data that was organically created by human beings without
+the explicit intent of being used in a forensic investigation. The other
+is ``synthetic'' data, which is data generated for specific forensic
+purposes, including research and education. Synthetic datasets are
+considerably more common than real datasets in education for the reasons
+discussed in this section, though their manual creation still poses a
+significant problem.
+
+It should also be noted that this section provides a general overview of
+forensic datasets as it relates to education and research, providing the
+necessary context for forensic synthesizers. However, a more exhaustive
+description of dataset construction and usage has been performed by
+Horsman and Lyle in \cite{horsmanDatasetConstructionChallenges2021}.
+
+REPLACE CODEBLOCK HERE
+
+\subsection{Real datasets}\label{real-datasets}
+
+Real data is inherently the most ``realistic'' form of forensic data,
+containing extensive background noise as a result of typical computer
+usage in addition to a broad variety of software, operating system
+artifacts, and other files that might be of interest in a real forensic
+investigation. These are most reflective of the scenarios that industry
+professionals face, and allow students to train themselves in separating
+relevant content from irrelevant content while identifying and
+synthesizing details from both a system and a human perspective.
+
+In general, real data can be sourced from far more than just the hard
+drives of computers. Other potential and previously used data sources
+include:
+
+\begin{itemize}
+\tightlist
+\item
+  social media (which often contains a variety of artifacts with
+  revealing metadata and open source information)
+  \cite{baggiliDataSourcesAdvancing2015};
+\item
+  packet sniffers and dedicated forensic tools for IoT devices
+  \cite{meffertForensicStateAcquisition2017};
+\item
+  video game consoles
+  \cite{grajedaAvailabilityDatasetsDigital2017,pessolanoForensicAnalysisNintendo2019};
+\item
+  cloud web server logs \cite{rahmanNewWebForensic2020};
+\item
+  honeypots \cite{mochForensicImageGenerator2009};
+\item
+  and the Apache and Python mailing archives
+  \cite{grajedaAvailabilityDatasetsDigital2017}.
+\end{itemize}
+
+Many more public forensic repositories are described by Grajeda et al.,
+though just as many datasets used in research remain private
+\cite{grajedaAvailabilityDatasetsDigital2017}. Within reason, with
+the billions of internet-connected devices today, there should be no
+shortage of sources for real datasets. However, real datasets are the
+most challenging to work with in education for a variety of reasons,
+particularly the legal and privacy concerns surrounding the use and
+distribution of these datasets, as well as their broad scope and lack of
+prior analysis.
+
+Necessarily, real datasets were not created to educate students about a
+particular technique, and may not adequately supplement an instructor's
+material without significant effort. For example, Garfinkel identifies
+several requirements for forensic datasets to be suitable for a broad
+variety of uses in research and industry
+\cite{garfinkelForensicCorporaChallenge2007}. In particular,
+Garfinkel notes that in addition to the lack of variety in publicly
+available forensic corpora, many real datasets suffer from a lack of
+complexity, supplemental annotations, or ongoing maintenance - all of
+which are often needed in an educational context.
+
+With respect to availability, some of these datasets are inherently
+publicly available; in other cases, their access is restricted to within
+an organization. However, just because the underlying data is public
+does not necessarily mean that it exists in an aggregate form
+immediately suitable for research. Even when aggregated, questions arise
+from the use of public datasets for unintended purposes, such as the use
+of social media as a source of forensic data; these questions are
+already the focus of debate in generative AI, which use publicly
+available data to train models for both commercial and research use
+\cite{avrahamiOwnershipCreativityGenerative2021,eshraghianHumanOwnershipArtificial2020,rooseAIgeneratedPictureWon2022}.
+
+That said, the primary barriers to the use of real forensic datasets are
+privacy and legal issues. For example, between 1998 and 2006, Garfinkel
+acquired over 1,000 hard drives through secondary markets, allowing
+researchers to perform a range of studies on a large set of real-world
+data \cite{garfinkelForensicCorporaChallenge2007}. Although legal
+for use by private institutions, the same dataset was barred from use at
+the Naval Postgraduate School due to concerns with federal privacy
+legislation. Similarly, Grajeda et al.~noted that nearly half of all
+digital forensic literature reviewed using a novel dataset did not
+publish the dataset due to legal restrictions or NDAs. This was
+typically because the datasets were obtained from government agencies,
+corporations, and law enforcement agencies, and therefore could not be
+publicly released \cite{grajedaAvailabilityDatasetsDigital2017}.
+Another reason is that the dataset may contain objectionable or illicit
+material, such as licensed software or pornography, preventing its
+public distribution.
+
+Certain organizations and researchers have made efforts to make real
+datasets accessible to the public through various means. For example,
+the emails seized during the Federal Energy Regulatory Commission's
+investigation of Enron were purchased by the Massachusetts Institute of
+Technology, which anonymized emails and attachments before distributing
+the dataset to the public
+\cite{yannikosDataCorporaDigital2014,garfinkelForensicCorporaChallenge2007}.
+In other cases, institutions have aimed to ensure the data can be made
+publicly available ahead of time, such as by requesting that individuals
+sign an agreement before any data is collected.
+
+Indeed, some educational institutions do use real-world datasets for
+forensic labs. Besides the sources mentioned above, students may also
+opt to image their own devices or the device of a friend with
+permission; these approaches are mentioned in older works
+\cite{andersonComparativeStudyTeaching2006,mochForensicImageGenerator2009},
+prior to the advent of online platforms such as CFReDS that provided
+easier access to education-focused datasets. Naturally, this method of
+acquiring real-world images suffers from other issues as well; students
+know exactly what they will find on their own computer, and although
+individuals may consent to the use of their images for educational
+purposes, there remains the risk of highly personal data being leaked
+\cite{garfinkelBringingScienceDigital2009}. Simultaneously, they
+often lack the ground truth or annotations needed to assert that a
+student has found everything of interest.
+
+\subsection{Overview of synthetic
+datasets}\label{overview-of-synthetic-datasets}
+
+Because of the various issues associated with real-world data, many
+instructors opt to use synthetic data (or ``manually created data'')
+instead, in which the scenario and data are artificially generated based
+on some predetermined procedure. That is to say, the data exists with
+the explicit intent of being used in research or education.
+
+From an educational perspective, an ideal dataset should accurately
+reflect the problems and challenges faced by industry professionals
+while avoiding the problems of real-world datasets. In turn, synthetic
+datasets are often created with the express intent of allowing students
+to explore forensic techniques in realistic scenarios while avoiding the
+privacy and legal restrictions of genuine real-world scenarios. (The
+same largely holds true in research, as well.)
+
+Again, as described by Park and Garfinkel et al., synthetic data can be
+categorized into two distinct groups
+\cite{garfinkelBringingScienceDigital2009,parkTREDEVMPOPCultivating2018}:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Synthetic test data}, which refers to forensic corpora that have
+  been developed to test specific features in a group of tools. These
+  are well-annotated datasets with extensive reference information and
+  ground truth data, and are typically used to assert that a tool is
+  able to analyze and identify data of interest. One example discussed
+  so far is the Computer Forensics Tool Testing program administered by
+  NIST
+  \cite{nationalinstituteofstandardsandtechnologyComputerForensicsTool2017}.
+\item
+  \emph{Synthetic realistic data}, which is designed to mimic a
+  situation that a forensic examiner might encounter in a real-world
+  investigation. These are typically much more applicable to an
+  educational context than test data, though test data can be used as
+  educational material for learning new tools or very specific
+  techniques.
+\end{itemize}
+
+Synthetic realistic data varies greatly in scope. Simple realistic data
+might form a realistic emulation of how a user might use a particular
+piece of software or anti-forensic technique, which creates forensic
+artifacts directly associated with these actions. In contrast, realistic
+data could form a full simulation of a scenario, whether based on real
+events (such as the one developed by Moch and Freiling based on the Arno
+Funke blackmail case in Germany
+\cite{mochForensicImageGenerator2009}) or on common industry themes,
+such as the NIST CFReDS data leakage case
+\cite{nationalinstituteofstandardsandtechnologyCFReDSDataLeakage}.
+
+REPLACE CODEBLOCK HERE
+
+REPLACE CODEBLOCK HERE
+
+\subsection{Motivation for synthetic
+datasets}\label{motivation-for-synthetic-datasets}
+
+Besides the issues mentioned in \autoref{overview-of-synthetic-datasets}, one major motivation for the development of synthetic
+datasets is the need to fill various gaps in publicly available corpora.
+The survey done by Grajeda et al.~found that some researchers created
+new datasets not because of legal or privacy hurdles, but simply because
+there was no available dataset for their needs
+\cite{grajedaAvailabilityDatasetsDigital2017}. The researchers
+interviewed in the survey also recognized the value of publishing their
+datasets, but were hindered by a lack of available resources to maintain
+or distribute the datasets. Other researchers were prevented from doing
+so due to a non-disclosure agreement. The survey concluded that there
+was no preference for building new datasets from scratch in research,
+though there was clear agreement that private datasets made it more
+difficult for researchers to reproduce results; in general, publishing
+datasets contributed to the advancement of the field.
+
+Similar sentiment also exists in an educational context, though the
+motivation for creating new images from scratch differs from that of
+research. For example, the direct reuse of existing datasets is often
+undesirable, as it is often the case that answer keys and walkthroughs
+have already been published online
+\cite{woodsCreatingRealisticCorpora2011}; additionally, students in
+the same class can simply replicate the exact methodology of other
+classmates to come to the same conclusions without needing to perform
+meaningful analysis. Even in labs where students' actions can be
+monitored to provide insight into their methodology and possible
+mistakes, such as in the \emph{CYDEST} platform developed by ATC-NY
+\cite{bruecknerAutomatedComputerForensics2008}, it is still possible
+to exactly copy the methodology of another student if the labs
+themselves do not differ.
+
+Additionally, many datasets that may be reflective of real-world
+scenarios are often unsuitable for academic purposes. For example, the
+forensic challenges of the Honeynet Project, DFRWS, and DC3 are suitable
+training material for experienced forensic analysts, but are often too
+difficult for students to solve
+\cite{woodsCreatingRealisticCorpora2011}. As mentioned before, many
+real-world datasets lack ``ground truth'' or annotated information that
+is suitable for determining what the contents of an image are,
+preventing the development of an answer key and qualitative grading of
+students' work based on what they find and report. The same is true of
+certain synthetic datasets, which may have been developed without a
+focus on detailed documentation.
+
+Clearly, there is a need for images that allow students to explore the
+techniques and tools used by forensic analysts in industry in a
+realistic setting. Preferably, these images should be built in such a
+way that they challenge students to explore the same technique, but have
+distinguishable differences to dissuade cheating (for example, different
+files of interest may be placed, the specific disk sector written to may
+vary, or relevant metadata may be changed). Simultaneously, instructors
+need to know what the contents of the image are (including these
+variations), so that they can judge the accuracy of students' findings
+and determine which images are suitable hands-on material to complement
+lecture material.
+
+As a result, many instructors ultimately turn to manually developing
+realistic forensic scenarios that students can analyze, much like
+researchers. Some of these efforts have lead to publicly available
+datasets that encompass realistic scenarios, such as the datasets and
+scenario published by Woods et al.~as a direct response to the issues
+noted above \cite{woodsCreatingRealisticCorpora2011}.
+
+REPLACE CODEBLOCK HERE
+
+\subsection{Challenges in developing synthetic
+datasets}\label{challenges-in-developing-synthetic-datasets}
+
+However, fulfilling all of the ideal characteristics of a forensic
+dataset is difficult, especially if an instructor wants to create
+variations of the same forensic scenario, multiplied by the number of
+scenarios used throughout the course. There are three distinct issues
+associated with the manual development of forensic datasets: the
+significant amount of time involved in their creation, the inherent
+non-determinism of human creation, and the lack of realistic background
+usage.
+
+The primary issue associated with manual development is the extensive
+amount of work and time that must be put into not only planning and
+developing the scenario, but also executing it. Virtually all prior
+works recognize the time-consuming process involved in the manual
+development of disk images suitable for education
+\cite{adelsteinAutomaticallyCreatingRealistic2005,gobelForTraceHolisticForensic2022,guptaDigitalForensicsLab2022,mochForensicImageGenerator2009,russellForensicImageDescription2012,scanlonEviPlantEfficientDigital2017,woodsCreatingRealisticCorpora2011},
+motivating research into possible solutions to streamlining their
+development.
+
+Depending on the artifacts involved in the scenario, it can also be
+difficult to ``falsify'' metadata as a means of speeding development up.
+More precisely, it can be challenging to produce the artifacts
+associated with a scenario over a shorter period of time than is
+suggested by the metadata attached to the artifacts. For example, it is
+possible to directly change the time in virtualization software (the
+approach often used by synthesizers
+\cite{gobelForTraceHolisticForensic2022,mochForensicImageGenerator2009})
+to allow time to pass without leaving any artifacts that suggest that
+the system time has been tampered with. However, making this consistent
+with online services can be challenging, since artifacts such as emails
+or cached external websites would be based on ``real'' time; additional
+work would then be needed to synchronize online content outside of the
+control of the instructor. While there are workarounds that could be
+considered -- such as saving the contents of various external websites
+over a period of time and then ``replaying'' them at the time of
+scenario development -- these are not trivial.
+
+Finally, the long development period comes with the challenge of
+addressing mistakes. In the event a mistake is made relative to the
+desired scenario, instructors have several options. They may be able to
+simply log the deviation and move on, or correct it after the fact by
+directly editing the virtual hard drive after image creation. This was
+the approach taken by Woods et al.~in which at least one researcher
+logged into their personal email account while developing a fictional
+scenario; the images were later scanned for personal identifiers and
+stripped as needed \cite{woodsCreatingRealisticCorpora2011}.
+However, consider a scenario in which it is absolutely essential that
+certain files are deleted and written in a particular order, perhaps to
+ensure the operating system behaves in a specific manner. In this case -
+and possibly many others - the only option may be to start the process
+of developing the image from the beginning.
+
+The nondeterminism associated with human creation is a double-edged
+sword. Given the same general scenario, this allows multiple images to
+differ very slightly in nature (a desirable feature as described earlier
+in this section); as described by Woods et al., the researchers all
+acted out events in a pre-defined timeline, but did not do so at the
+exact same time or in the exact same way
+\cite{woodsCreatingRealisticCorpora2011}. This provides the
+variability needed to prevent students from directly copying answers,
+but allows students to explore the same techniques at a high level.
+
+Simultaneously, however, this also adds a degree of uncertainty within
+the images. Various artifacts or results on the images may be the result
+of some confounding factor in the procedure; for example, suppose that
+two researchers follow the same procedure to delete and overwrite a file
+with the goal of making an image that allows students to explore file
+carving in slack space. Due to variations in operating systems, drivers,
+and other related software, it may be the case that the recoverable
+contents in the slack space differ significantly between the two
+researchers. Similarly, consider a case in which two researchers follow
+the same procedure to develop volatile memory captures on a Linux
+machine. It might be the case that the paging daemon evicts relevant
+data for one image but not the other, causing significant differences.
+Without careful preparation in creating a consistent environment for
+development and testing, these differences might arise without a clear
+reason. Where possible, sources of uncertainty should be minimized or at
+least known to the scenario developer.
+
+Finally, an inherent limitation of the long development time needed to
+produce these images is the difficulty in populating realistic
+background noise, in which a user performs normal activities on the
+computer that are completely unrelated to the meaningful components of
+the scenario. This must be done in a way that is realistic to the
+scenario while avoiding any activity that could personally identify the
+researcher or instructor. Although some of this background noise can be
+automated - such as by scripting the process of browsing to websites or
+sending emails - the fact remains that many realistic ``background''
+activities, such as working in software such as Microsoft Office,
+MATLAB, and SolidWorks, are not easy to perform without a human.
+Furthermore, some of this background noise may comprise a significant
+portion of the day, such as if these activities comprise a user's day
+job in the scenario. Naturally, it is not the case that most instructors
+or researchers have the time available to spend several hours each day
+generating this information, much less over multiple variations of
+multiple scenarios.
+
+\section{Research objectives}\label{research-objectives}
+
+At this point, we have clearly established a need for a more streamlined
+method of developing scenarios for research and education, while still
+providing the variability and content needed for images to be
+interesting and adequately train students in forensic methodologies.
+Additionally, these scenarios need to provide ground truth data to
+determine the artifacts contained in each image, allowing instructors to
+identify what should be contained in students' reports of the scenario.
+Some research has been done into developing image synthesizers, which
+aim to automate part or all of this work, as described in \autoref{chapter-two}.
+
+This thesis aims to directly improve upon the foundations provided by
+prior synthesizers, with the explicit goal of achieving feature parity
+with all existing synthesizers. In particular, this thesis will describe
+the components and architecture necessary to build an effective forensic
+synthesizer for research and education with the following elements:
+
+\begin{itemize}
+\tightlist
+\item
+  The ability to create and export disk images, network captures, and
+  volatile memory captures through arbitrary means;
+\item
+  the ability to generate forensic artifacts in a modular manner, both
+  with and without operating system virtualization;
+\item
+  the ability to log every action in a standardized format, the
+  Cyber-investigation Analysis Standard Expression (CASE)
+  \cite{caseyAdvancingCoordinatedCyberinvestigations2017}, to
+  address existing standardization concerns
+  \cite{horsmanDatasetConstructionChallenges2021};
+\item
+  and the use of modern Python libraries, standards, and practices,
+  promoting future development by reducing the overall complexity of the
+  framework and abstracting specific concepts where possible.
+\end{itemize}
+
+Furthermore, this thesis aims to leverage recent advancements in
+generative AI to streamline the development of full forensic scenarios,
+as well as individual forensic artifacts to be added to a larger
+forensic dataset. Finally, this thesis will evaluate the viability of
+this framework in an actual classroom setting.
+
+\section{Contribution}\label{contribution}
+
+This thesis contributes the \emph{automated kinetic framework}, or AKF,
+a modernized synthesizer framework that aims to provide the foundation
+of a larger forensic dataset ecosystem. This framework can be used to
+not only vastly reduce the time spent developing new datasets for
+research and education, but also improve the discoverability of both
+AKF-generated and non-AKF-generated datasets. Additionally, by focusing
+on the long-term viability of AKF through its modular architecture, the
+hope is that educators and researchers will have greater variety in the
+datasets available to them, even as new developments and advancements in
+technology occur.
+
+\chapter{Literature review}\label{chapter-two}
+
+We begin with a literature review of two topics: the publicly available
+forensic datasets that currently exist and the contributions of prior
+synthesizers. In particular, we describe the datasets that currently
+exist for digital forensics in greater detail, as well as gaps
+identified in these datasets by various authors. This will provide
+context for both the need of synthesizers, as well as the specific gaps
+that these synthesizers have gradually filled.
+
+\section{Existing forensic
+corpora}\label{existing-forensic-corpora}
+
+Forensic datasets have been available for public use (or by request)
+since the early days of the digital forensics field, though their
+sourcing and qualities have changed greatly over time. This is explored
+in far greater detail by Grajeda et al., who performed a survey of over
+700 research articles to identify the various datasets used by the
+digital forensics field over time. However, it is still important to
+recognize certain datasets identified by prior literature as it is
+relevant to synthesizers.
+
+Early datasets were largely derived from real sources, whether made
+available to the public or otherwise. The earliest collections of real
+datasets include the used hard drives collected by Garfinkel from 1998
+to 2006 and the Enron email corpus obtained during the federal
+investigation of Enron \cite{garfinkelForensicCorporaChallenge2007}.
+Other early real datasets identified by Grajeda et al.~include the
+public Apache mailing archive, the Reuters news corpora, and various
+facial recognition collections such as the MORPH corpus, all of which
+were made in the early to mid-2000s
+\cite{yannikosDataCorporaDigital2014,grajedaAvailabilityDatasetsDigital2017}.
+
+There were also a variety of synthetic datasets constructed during this
+early period. This includes the network captures obtained from simulated
+attacks conducted by the MIT Lincoln Laboratory from 1998 to 2000
+\cite{garfinkelForensicCorporaChallenge2007}, as well as standalone
+datasets used for tool validation developed as part of the early CFTT
+program developed by NIST. Notably, some synthetic datasets during this
+period were generated as part of challenges, such as those produced for
+DFRWS conferences, which are noted as being difficult for students to
+solve \cite{woodsCreatingRealisticCorpora2011}.
+
+The variety of forensic datasets increased considerably towards the late
+2000s, which can be credited to both the overall growth of the field
+(including the broader field of incident response) and computing as a
+whole. Various notable sources described by Grajeda et al.~include
+malware samples discovered ``in the wild'', large natural language
+collections from multiple languages, and file-specific datasets such as
+collections of Microsoft Office files. It was also during this time that
+non-disk datasets began to be more prevalent, such as volatile memory
+dumps and network captures. Although not explored by this thesis in
+great detail, mobile datasets -- such as smartphone disk images, mobile
+malware and applications, and SIM card images -- grew in prevalence as
+well.
+
+Many of these datasets were not maintained as part of a larger
+collection of datasets with the explicit intent of providing them for
+digital forensics research. This began to change towards the late 2000s;
+Garfinkel's collection would eventually evolve into the Real Data
+Corpus, growing to 30 terabytes by 2013
+\cite{garfinkelBringingScienceDigital2009a,yannikosDataCorporaDigital2014}.
+The collection then included hard disk images, flash drive images, and a
+variety of optical discs sourced from real-world usage, requiring
+institutional review board approval to use. This collection would
+eventually be part of the Digital Corpora platform, which includes a set
+of purely synthetic datasets. Separately, NIST began developing the CFTT
+and CFReDS projects, both of which provide forensic datasets for a
+variety of purposes. Digital Corpora, CFTT, and CFReDS are actively
+maintained as of writing.
+
+There are other datasets that are rather unique in nature, and are
+maintained as part of a larger niche collection. Collections of malware
+samples have grown significantly in size, in part because of the modern
+threat intelligence ecosystem with platforms such as VirusTotal. There
+exists datasets focusing on the dark web, such as those operating on the
+Tor network, including ``black market'' sites on which illegal goods are
+bought and sold. Finally, there exist network captures from various
+novel sources, including various iterations of the Collegiate Cyber
+Defense Competition and various network captures from university IT
+departments \cite{grajedaAvailabilityDatasetsDigital2017}.
+
+These datasets span a wide range of technologies -- in particular,
+versions of the same technology -- that require different methodologies
+to effectively analyze. In particular, there is the challenge of making
+datasets available that reflect current advancements in technology, such
+as new operating system versions or new applications. For example,
+instant messaging applications have changed considerably over the
+history of the field, ranging from MSN Messenger in the early 2000s to
+Skype, Discord, Telegram, Signal, Slack, and more. Artifacts from each
+of these applications must be handled differently, even if the
+underlying service provided is largely the same. Similarly, the
+strategies for analyzing Windows artifacts have changed significantly
+from version to version, as new registry keys become relevant in
+analyzing applications while others become unused.
+
+It is this gradual ``aging'' of datasets, in which their relevance
+degrades over time, that contributes to the continuous need for new
+datasets. Furthermore, there have been a broad variety of datasets that
+have proved to be relevant in digital forensics research, even if not
+typical or immediately evident. Indeed, this is one of the reasons
+identified by Grajeda et al.~for the manual development of new datasets
+by research authors; it would often be the case that a modern dataset
+simply did not exist for their needs. The other motivation is that the
+dataset used was never made public, either due to the author not having
+the resources to distribute the dataset themselves, or because there
+were legal or privacy concerns.
+
+How are these datasets relevant to the development of synthesizers?
+Clearly, there has been a broad variety of datasets that have proved to
+be relevant in digital forensics research, even if not immediately
+evident. It should be the goal, then, that any effort to streamline the
+develop of forensic datasets be able to cover as many use cases as
+possible. To do so, a synthesizer should aim to achieve two separate
+goals:
+
+\begin{itemize}
+\tightlist
+\item
+  A synthesizer should be able to replicate the features of existing
+  datasets, provided that the underlying technologies are still
+  available; and
+\item
+  A synthesizer should be able to account for developments in operating
+  systems, applications, or other technologies, without requiring
+  significant changes to the underlying architecture.
+\end{itemize}
+
+Indeed, the synthesizers described in the following section have
+explicitly addressed these two concerns. For example, many of these
+synthesizers have focused on implementing features that reflect the
+qualities of real-world datasets. This includes the ability to execute
+malware samples in a virtualized environment, send emails to arbitrary
+email servers, and insert data on removable drives -- all of which
+generate forensic artifacts that have been used as key datasets in
+forensics-related research as shown here. Similarly, modern synthesizers
+are capable of larger generating disk images, network captures, and
+volatile memory dumps (in addition to extracting specific artifacts,
+such as application-specific files), which are also reflective of the
+focus of existing datasets. The gradual growth in the ability of
+synthesizers to generate various artifacts can be seen in the specific
+contributions made by each synthesizer in \autoref{analysis-of-existing-synthesizers}.
+
+Of note is the generation of similar datasets that typically involve
+significant human interaction, such as public email distribution lists,
+photographs of human faces, and other transcripts of conversations.
+While this has not been explored in significant detail by prior
+synthesizers, it is explored as part of the generative AI work done as
+part of AKF in \autoref{chapter-six}.
+
+The second issue, in which synthesizers must be extensible in such a way
+that they can support new applications, has been approached in several
+ways. This is described in greater detail in \autoref{chapter-three}, but has been a major design consideration in the
+development of most synthesizers.
+
+\section{Analysis of existing
+synthesizers}\label{analysis-of-existing-synthesizers}
+
+REPLACE CODEBLOCK HERE
+
+Numerous frameworks have been built over the last two decades that aim
+to significantly reduce the effort involved in creating synthetic images
+from scratch by automating various application- and OS-specific actions
+at specified locations and times. The functionality and availability of
+the frameworks described in literature have varied considerably over
+time, but the goal of these frameworks has remained largely consistent:
+they all aim to provide a rapid method for instructors to develop
+forensic labs for students. Note that low-level studies are described in
+later, more relevant sections throughout this thesis for clarity, rather
+than providing detailed analyses as part of this chapter. Before
+analyzing and adapting the low-level implementations of prior
+synthesizers, it is best to first contextualize their broader
+contributions.
+
+The first identified effort to streamline the creation of forensic labs
+through a high-level language was published by Adelstein et al.~in 2005
+through the development of \emph{FALCON, the Framework of Laboratory
+Exercises Conducted Over Networks}
+\cite{adelsteinAutomaticallyCreatingRealistic2005}. It proposed an
+architecture for not only the automatic creation of lab exercises, but
+also their deployment to a virtual lab and the evaluation of students'
+actions compared to the ground truth. Very few details of the
+implementation are provided, though some examples of its usage are
+provided. Although not primarily a synthesizer, a related work was in
+the development of \emph{CYDEST, the CYber DEfenSe Trainer}
+\cite{bruecknerAutomatedComputerForensics2008}, which similarly
+provided complex virtualized lab environments to students via the
+internet. Again, limited implementation details are provided, and it is
+unclear if either \emph{FALCON} or \emph{CYDEST} are publicly available
+or actively maintained.
+
+\emph{Forensig2}, described by Moch and Freiling in 2009 and revisited
+in 2012, appears to be the first detailed description of an image
+synthesizer
+\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
+Operators define scenarios through a Python 2 library provided by the
+authors that abstracts various virtual machine operations (such as the
+formatting of disks, the creation of partitions, and the copying of
+files from the host to the virtual machine). Actions are performed live
+through a Qemu-based VM, with the result being a ground truth report and
+(effectively) an image to be analyzed by students. The source code for
+\emph{Forensig2} is not currently maintained and appears to be
+unavailable.
+
+The \emph{Digital Forensic Evaluation Test (D-FET)} platform described
+by William et al.~in 2011 provides a custom scripting language for users
+to define system- and user-level actions
+\cite{williamCloudbasedDigitalForensics2011}. Similar to
+\emph{FALCON} and \emph{CYDEST}, it provided virtualized labs through
+VMware ESXi. Unlike most other frameworks, it was primarily built to
+provide a platform to efficiently evaluate digital forensic tools on a
+scalable infrastructure, rather than streamline the process of building
+and distributing labs for instructors (though it is mentioned that the
+infrastructure was also used to host student labs). It is unclear if a
+public implementation is available.
+
+Russell et al.~define an XML specification, the \emph{Summarized
+Forensic XML (SFX)} language, to describe scenarios as a sequence of
+various actions on various partitions of a disk
+\cite{russellForensicImageDescription2012}. This can be passed into
+an interpreter to produce an image that can be analyzed by students.
+Besides high-level operations such as disk partitioning and file
+copying, it also provides Windows- and Linux-specific routines for
+minimizing partition sizes with the goal of reducing the ``effective''
+size of irrelevant files associated with the OS. It also briefly
+describes approaches for updating web browsers and the Windows registry
+to reflect certain actions. Limited implementation details are provided,
+and it is unclear if a public implementation is available.
+
+Yannikos et al.~define a framework for describing scenarios as a series
+of Markov chains, allowing users to graphically define scenarios through
+a graph view in which nodes and relationships can be easily edited
+\cite{yannikosDataCorporaDigital2014}. Its design makes it
+well-suited for quickly developing variations of the same scenario from
+a large dataset of available artifacts to be placed on the image, though
+it is not clear what application- or OS-specific routines are provided.
+
+The remaining frameworks are all largely similar to each other in that
+they are all built in Python, providing users with a Python library to
+define and generate scenarios. Various functions in the library provide
+abstractions to complex actions, such as Facebook browser activity or
+sending emails on the Thunderbird application. Additionally, each of
+these produce some form of detailed output that can be used as answer
+keys or ground truth in an instructional setting. A brief summary of the
+notable aspects of each of these frameworks relative to each other is
+provided below:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023} introduced the
+  use of the VirtualBox SDK to automate various operations, forming the
+  basis for much of the work done as part of VMPOP.
+\item
+  \emph{ForGe} \cite{vistiAutomaticCreationComputer2015} is
+  specifically designed to generate NTFS and FAT32 images with a
+  particular focus on placing data by maintaining and serializing custom
+  data structures for supported filesystems.
+\item
+  \emph{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}
+  encompasses a novel method for the distribution of generated images in
+  an educational context, whereby ``evidence packages'' are distributed
+  to students to apply to a base image file. Then, an OS-native
+  injection tool plants relevant artifacts according to the evidence
+  package. Since the base image must only be downloaded once, each
+  scenario is significantly smaller than if distributed as standalone
+  images.
+\item
+  \emph{VMPOP} \cite{parkTREDEVMPOPCultivating2018} provides an
+  architecture and routines for relatively elaborate VirtualBox control
+  (such as attaching USB devices and starting video captures) in
+  addition to a variety of OS-specific commands. Provided Windows
+  routines include the ability to create restore points, install
+  programs, map network drives, set registry values, and more. Although
+  the architecture as a whole is platform-independent, the provided
+  implementations operate with VirtualBox and Windows.
+\item
+  \emph{hystck} \cite{gobelNovelApproachGenerating2020} provides
+  routines for automating OS- and application-specific commands through
+  YAML configuration files (passed through a generator) and/or Python
+  scripts (for low-level control). Similar to \emph{EviPlant}, it uses
+  ``differential'' images to allow lightweight scenarios to be
+  distributed relative to ``template'' images, and produces both network
+  and disk captures.
+\item
+  \emph{ForTrace} \cite{gobelForTraceHolisticForensic2022} is the
+  most recently developed synthesizer, which directly builds upon
+  \emph{hystck} by providing volatile memory captures (alongside disk
+  and network captures) in addition to various other new features (such
+  as the ability to execute PowerShell scripts to create Windows
+  artifacts), with a focus on a modular architecture. A variant focusing
+  on Android artifact generation was developed in 2024
+  \cite{demmelDataSynthesisGoing2024}.
+\end{itemize}
+
+Clearly, a considerable amount of work has been done in exploring ways
+to streamline the process of developing images, although the
+availability and functionality of each framework varies greatly.
+Notably, with the exception of \emph{ForTrace}, none of these works are
+direct extensions of past works, implying that at a fundamental level,
+it was necessary for frameworks to be developed from scratch to support
+the framework authors' needs. This is not directly stated in any of
+these works with the exception of \emph{hystck}
+\cite{gobelNovelApproachGenerating2020}, though it can be reasonably
+concluded that the lack of maturity, availability, and maintenance of
+prior works was a contributing factor to the independent development of
+the other frameworks. This will be addressed in more detail in
+\autoref{chapter-three}.
+
+\chapter{Architecture and design}\label{chapter-three}
+
+\section{Motivation}\label{motivation}
+
+As described previously in \autoref{analysis-of-existing-synthesizers}, with the notable exception of
+\textbf{ForTrace} and its related synthesizers, no synthesizer been an
+extension of another synthesizer. This raises the question -- why
+reinvent the wheel by developing yet another distinct architecture for
+this thesis? This subchapter briefly explores the deficiencies in
+existing synthesizers and explains why these are issues that warrant
+building a new architecture from scratch, rather than extending an
+existing synthesizer.
+
+The motivations for developing completely new codebases instead of
+extending existing synthesizers has varied considerably over the years.
+One reason is that several synthesizers are not open-source and
+therefore cannot easily be extended, as is the case with
+\textbf{Forensig2} and \textbf{TraceGen}. Another reason is that the
+focus of certain synthesizers resulted in a codebase that is simply
+incompatible with the goals of newer works. For example,
+\textbf{ForGe}'s architecture focuses largely on direct filesystem
+manipulation to generate forensic artifacts, and is therefore not
+suitable for a synthesizer that requires a virtualized operating system.
+Synthesizers such as \textbf{VMPOP}, which exclusively leverages
+agentless artifact generation as described in \autoref{agentless-artifact-generation}, require significant
+architectural changes to support agent-based artifact generation.
+
+However, perhaps the largest motivation for constructing new
+synthesizers is simply the lack of ongoing support for virtually all
+synthesizers. It appears that no synthesizer has gained significant
+traction within the broader forensic community, possibly with the
+exception of \textbf{ForTrace}; for the synthesizers that \emph{are}
+open source, none of them are under active development and maintanance.
+Additionally, the forensic datasets generated by these synthesizers have
+not seen significant adoption in either education or research; many
+instructors continue to use the human-generated datasets available on
+public platforms.
+
+The inflexibility of prior synthesizers, combined with the overall lack
+of support and success of synthesizer-based datasets, contributes to the
+disparate codebases that are now observed today. However, this is not to
+say that the individual contributions of each prior synthesizer cannot
+be merged into a single project that resolves many of the architectural
+barriers that have reduced the adoption and extension of existing
+synthesizers.
+
+In turn, AKF is built on the following four pillars to help promote its
+long-term usage. In particular, it allows it to generate datasets that
+address several of the considerations raised by Horsman and Lyle in the
+construction of various datasets, such as the need for comprehensive
+documentation, an awareness of the ``realism'' of the resulting dataset,
+and transparency in the scenario development process
+\cite{horsmanDatasetConstructionChallenges2021}.
+
+First, AKF conforms to modern Python development practices. This
+includes the use of modern project management practices (such as the use
+of \emph{uv} and \texttt{pyproject.toml}, rather than the use of
+\texttt{setup.py} observed in older synthesizers), as well as static
+linters (\emph{flake8}) and style enforcers (\emph{black}, \emph{isort})
+to promote adherence to the PEP8 standard. Additionally, AKF's libraries
+make heavy use of Python 3.11+ features, such as type hinting and
+special type annotations, which allows for tools such as \emph{mypy} to
+perform static type checking. In addition to greatly improving the
+development experience, these practices also increase the likelihood of
+discovering errors earlier in the development process.
+
+Second, AKF takes a modular, agent-based approach to implementing
+application-specific functionality. This allows AKF to use existing
+automation frameworks for web browsers and other applications, greatly
+simplifying the codebase when compared to the same features implemented
+in other synthesizers. This focus on flexibility makes it significantly
+easier to install the agent, implement new application-specific
+features, and more - a particularly important design focus given AKF's
+dependence on agents for the majority of its application-specific
+functionality.
+
+Third, AKF is architected to maintain feature parity with all prior
+synthesizers. That is, although AKF deviates considerably from the
+implementation details of prior synthesizers, this does not come at the
+loss of prior advancements in the field. In particular, AKF supports all
+three artifact generation techniques described in \autoref{chapter-four} using hypervisor-agnostic interfaces, reducing the tight
+coupling that made certain features difficult to implement in prior
+synthesizers. This reduces the likelihood that a new feature or
+technique will require a significant architectural change to support it.
+
+Finally, AKF is designed with the explicit intent of developing an
+ecosystem of AKF-generated datasets, promoting long-term usage. This is
+reflected in the design of AKF's logging and reporting mechanisms as
+described in \autoref{chapter-five}; the use of an
+RDF-based standard, CASE, allows for arbitrarily complex queries to be
+made against AKF datasets. These queries can be made in bulk,
+significantly improving the ability of researchers to find and use
+datasets that may be relevant to them.
+
+These four pillars reflect throughout the design of AKF's architecture,
+which is described in the following section and the next three chapters
+of this thesis.
+
+\section{Overview}\label{overview}
+
+At a minimum, every synthesizer must fulfill these high-level
+requirements through some means, largely derived from the criteria
+developed by Horsman and Lyle
+\cite{horsmanDatasetConstructionChallenges2021}:
+
+\begin{itemize}
+\tightlist
+\item
+  The synthesizer must accept commands on how it should operate. These
+  commands should serve as a form of self-documentation, in which it is
+  clear to another person \emph{what} the expected contents of the image
+  are, as well as the intent behind these commands.
+\item
+  The synthesizer must be able to accept external inputs, such as files
+  and other binary data, to be included in any final outputs.
+\item
+  The synthesizer must implement the mechanisms and technologies
+  necessary to carry out the commands it has been provided -- that is,
+  it must be able to generate artifacts. Such mechanisms should be
+  independently verifiable, and preferably leave as little extraneous
+  information as possible.
+\item
+  The synthesizer must be able to generate a final output (such as a
+  disk image), along with ground truth and reporting that describes the
+  expected contents of that image. This should include a well-structured
+  description of the dataset, a unique identifier for the dataset, and
+  an explicit identification of any data of ``evidential value'' where
+  possible.
+\end{itemize}
+
+These four requirements are fulfilled by various mechanisms throughout
+AKF. A complete architecture diagram is shown in the figure below.
+
+!\textbf{Architecture 2025-02-07 17.07.24.excalidraw}
+
+This can be simplified to the following high-level diagram, which
+broadly groups AKF into a set of seven modules:
+
+!\textbf{Architecture 2025-02-08 16.35.46.excalidraw}
+
+At a high level, this architecture can be broken up into three distinct
+concepts, each of which covers a distinct chapter.
+
+The first set of modules are responsible for artifact generation. This
+encompasses three major systems - a hypervisor and its associated SDK,
+an OS-specific agent, and \texttt{akflib}. \texttt{akflib} is a Python
+library containing the abstract interfaces and concrete implementations
+necessary to generate individual artifacts and complete datasets. This
+includes routines for directly interacting with hypervisors, issuing
+commands to virtual machines, and directly modifying virtual hard
+drives. This library is also the foundation for OS-specific agents,
+which carry out actions on the virtual machine on behalf of the host.
+This is described in greater detail in \autoref{chapter-four}, and corresponds to the \emph{action automation library},
+the \emph{OS-specific agent}, and the \emph{virtual machine} (as well as
+the \emph{user applications} running on the machine).
+
+The second set of modules are responsible for logging and reporting.
+This encompasses both independent libraries for generating outputs and
+ground truth, as well as the various logging-related mechanisms that are
+contained throughout the artifact generation libraries. These modules
+are responsible for exporting and documenting artifacts generated by
+AKF; in particular, it makes heavy use of CASE, a standardized ontology
+for documenting the contents of forensic datasets
+\cite{caseyAdvancingCoordinatedCyberinvestigations2017}. This is
+covered in \autoref{chapter-five}, and corresponds to the
+\emph{output and validation library} and any associated components
+within the \emph{action automation library}.
+
+The final set of modules are responsible for invoking AKF itself and
+supporting scenario development. AKF is an \emph{imperative}
+synthesizer, which means that commands are written and executed using an
+imperative language (here, Python 3) that dictates exactly \emph{how}
+scenarios should be constructed. However, AKF also supports a
+\emph{declarative} syntax, which allows users specifies \emph{what}
+forensic artifacts and datasets are generated without the need to learn
+the AKF libraries and write Python code. Additionally, AKF contains
+generative AI tools for constructing scenarios in the declarative syntax
+as well as individual artifacts. This is described in \autoref{chapter-six}, and covers the \emph{scenario construction library}
+and the \emph{translation unit}, as well as any scripts that leverage
+AKF libraries.
+
+The following three chapters will focus on these module groups. In
+simpler terms, this thesis addresses the following questions in order:
+
+\begin{itemize}
+\tightlist
+\item
+  How do we automate or streamline the generation of artifacts?
+\item
+  How do we document and report on the artifacts and datasets that are
+  generated?
+\item
+  Given the solutions that address these two challenges, how do we
+  actually use them to build scenarios?
+\end{itemize}
+
+\chapter{Action automation}\label{chapter-four}
+
+This chapter addresses the modules responsible for automating artifact
+generation, depicted in the partial architectural diagram below.
+
+!\textbf{39.4 - Action automation 2025-02-07 17.15.30.excalidraw}
+
+These implement AKF's ability to generate individual artifacts as part
+of a larger scenario dataset. This chapter begins with an overview of
+the techniques used by prior synthesizers for generating artifacts. It
+then moves to a low-level analysis of the actual implementation used by
+AKF, while comparing these techniques to other synthesizers.
+
+In particular, this chapter addresses the role of the action automation
+library in generating artifacts by interacting with a live virtual
+machine and disk images stored on the host. It describes how logical
+artifacts are generated at a lower level, both directly through
+hypervisor APIs and through an OS-specific agent installed on the
+virtual machine. It concludes by describing the generation of physical
+artifacts through direct filesystem and disk image editing.
+
+\section{Overview}\label{overview}
+
+At the core of every synthesizer is the ability to place or otherwise
+generate forensic artifacts. Each of the synthesizers described in
+\autoref{analysis-of-existing-synthesizers} takes one of three approaches to artifact generation, as
+partly described by Scanlon et al.
+\cite{scanlonEviPlantEfficientDigital2017}:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Physical}: No virtualization of software or hardware ever
+  occurs; data is written directly to the target medium, such as a disk
+  image or virtual hard drive.\\
+\item
+  \textbf{Agentless logical}: The synthesizer interacts with a live VM
+  to generate artifacts. Interaction is achieved without the need for
+  custom software to be installed on the VM, and is typically achieved
+  through the hypervisor itself or a remote management tool native to
+  the virtualized operating system.\\
+\item
+  \textbf{Agent-based logical:} The synthesizer interacts with a
+  dedicated client (agent) on a live VM to carry out actions. The VM
+  must have the agent installed before any interaction can occur.
+\end{itemize}
+
+These three approaches are not mutually exclusive within a single
+synthesizer, though it is the case that most prior synthesizers have
+used exactly one approach to generate artifacts. The table below denotes
+the approaches used by each of the synthesizers previously discussed.
+Where source code is not available, a best effort is made to identify
+the approach used by a particular synthesizer based on its published
+paper, if one exists; otherwise, the entire row contains question marks.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1799}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4604}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1942}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1655}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Synthesizer
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Physical
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agentless
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agent-based
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{FALCON}, 2005 & ? & ? & ? \\
+\textbf{CYDEST}, 2008 & ? & ? & ? \\
+\textbf{Forensig2}, 2009 & Yes (mounting filesystem, writing directly to
+disk using offset) & Yes (over SSH only) & No \\
+\textbf{D-FET}, 2011 & Yes (mounting filesystem, writing directly to
+disk using offset) & No & No \\
+\textbf{SFX}, 2012 & Yes (mounting filesystem) & No & No \\
+\textbf{Yannikos et al.}, 2014 & ? & ? & ? \\
+\textbf{ForGeOSI}, 2014 & No & Yes (hypervisor interfaces) & No \\
+\textbf{ForGe}, 2015 & Yes (emulates complete filesystem in memory as
+Python objects) & No & No \\
+\textbf{ForGen}, 2016 & No & No & No \\
+\textbf{EviPlant}, 2017 & Yes (write directly to image file using
+offset) & No & Yes (unknown mechanism) \\
+\textbf{VMPOP}, 2018 & No & Yes (hypervisor interfaces) & No \\
+\textbf{hystck}, 2020 & No & No & Yes (Python agent) \\
+\textbf{TraceGen}, 2021 & No & No & Yes (unknown mechanism) \\
+\textbf{ForTrace}, 2022 & No & No & Yes (Python agent) \\
+\end{longtable}
+
+There are advantages and disadvantages to each approach, in addition to
+requiring distinct implementation techniques for each. The remainder of
+this chapter analyzes these each of these three approaches in greater
+detail, describing the implementation details of prior synthesizers and
+comparing them to those of AKF's.
+
+\section{Agentless artifact
+generation}\label{agentless-artifact-generation}
+
+\subsection{Hypervisor interfaces}\label{hypervisor-interfaces}
+
+\textbf{Agentless artifact creation} describes one of two general
+techniques. The first is emulating ``normal'' human interaction by
+leveraging hypervisor interfaces -- such as the monitor, keyboard, and
+mouse -- to manipulate a GUI-based operating system directly. This is
+the approach taken by \textbf{VMPOP} and \textbf{ForGeOSI}; for example,
+VMPOP leverages the VirtualBox API to interact with supported
+applications. More precisely, it typically uses a sequence of keyboard
+strokes to focus and interact with UI elements, such as clearing User
+Account Control dialogs on Windows or starting applications with Win+R.
+
+Strictly speaking, this approach most accurately reflects how a real
+human would interact with a machine. In many cases, this greatly reduces
+the \textbf{Synthesis pollution} that occurs. However, this tends to
+lead to verbose scripts that are only capable of performing very
+specific actions. The keyboard and mouse actions required to fulfill a
+particular action can change significantly between versions of the same
+application, versions of the same operating system, and varying screen
+sizes.
+
+For example, VMPOP handles UAC prompts on machines prior to Windows 7 by
+sending an Alt+Tab keystroke to the machine, clicking the mouse at the
+center of the screen to focus the UAC prompt, and then sending Alt+C to
+accept the prompt. On machines running Windows 7 or later, this is
+instead achieved by focusing the UAC prompt with the mouse and then
+sending Alt+Y to accept the prompt.
+
+Similarly, VMPOP interacts with browsers exclusively through the use of
+keyboard shortcuts. VMPOP supports simple interactions with a small
+number of websites, such as logging into Microsoft or Google, but is
+dependent on the form elements remaining the same over time. That is,
+VMPOP does not inspect the contents of the current webpage to perform
+actions, and cannot react to design changes. If there are new focusable
+elements on the page, the same keystroke sequence may no longer achieve
+the desired effect. This lack of runtime logic, which amounts to
+operating the machine with the monitor off, leads to brittle scripts
+that can be tedious to fix.
+
+It is worth noting that throughout this thesis, the use of
+hypervisor-specific guest software, such as VirtualBox Guest Additions
+and VMWare Tools, is treated as an agentless approach throughout this
+thesis. Although this inherently requires the installation of
+``unusual'' software on the virtual machine, it is sufficiently distinct
+from typical user software that it is unlikely to generate artifacts
+that complicate a scenario. In most cases, artifacts generated by
+hypervisor guest software can be noted, isolated, and ignored.
+
+\textbf{TraceGen} notes that the ideal future is to use some combination
+of computer vision and AI to generalize user actions. Currently,
+completing the action of ``performing a Google Search in Microsoft
+Edge'' would likely be achieved through a sequence of predefined
+keystrokes. While this is explored in greater detail in \autoref{chapter-eight}, recent advancements in LLMs may make it possible to allow
+a machine to perform arbitrarily complex tasks on a GUI-based operating
+system using natural language - an approach that can be integrated into
+AKF.
+
+\subsection{Management utilities}\label{management-utilities}
+
+The alternative is to use existing management utilities, typically a
+shell, which are native to the virtualized operating system and are
+capable of carrying out commands. This can be further broken down into
+two categories: local management utilities, such as Bash and PowerShell,
+and remote management utilities, such as SSH and WinRM.
+
+Local management utilities typically refer to scripting languages that
+are available as part of the operating system, and can be used to manage
+most or all operating system resources. For example, PowerShell allows
+users to modify registry keys, invoke applications, create users, and
+more. Similarly, any standard Linux terminal program, such as Bash or
+Zsh, can be used to install packages and run a variety of command-line
+applications. This is typically invoked by either opening and focusing a
+terminal window (such as the Win+R shortcut on Windows), or by directly
+executing scripts through the hypervisor guest additions.
+
+In particular, \textbf{VMPOP} makes heavy use of local management
+utilities; it implements much of its functionality through a collection
+of PowerShell and batch scripts. For example, VMPOP allows users to
+focus a window by PID, process name, or window title. This is achieved
+by getting a PowerShell handle to the process using
+\texttt{Get-Process}, using \texttt{Add-Type} to add a local C\#
+function that is capable of sending keyboard events through
+\texttt{user32.dll}, and then holding the Alt key while using
+\texttt{AppActivate} to focus the window and bring it to the foreground.
+VMPOP leverages similar scripts for launching and terminating processes
+by name, uninstalling programs, creating a Windows restore point, and
+more.
+
+In Similarly, remote management utilities allow a remote device to
+invoke local management utilities, typically over an SSH server or
+WinRM. In most architectures, the use of remote management utilities
+requires that the host and guest machines can communicate with each
+other, which is typically achieved through a NAT or host-only interface
+managed by the hypervisor. This approach is taken by \textbf{Forensig2},
+which exclusively connects to a running SSH server to carry out user
+actions.
+
+The use of remote management utilities to automate actions typically
+undertaken by users is not uncommon, especially among general
+infrastructure as code solutions. For example, the open-source Ansible
+framework simplifies the configuration of Windows and Linux devices to
+simple, YAML-based files called ``playbooks''. These playbooks typically
+contain a sequence of high-level tasks to perform, such as installing
+packages, managing local user accounts, running scripts, and more.
+
+It is worth noting that although this approach does not require
+installing new software on the machine, most operating systems perform
+some degree of logging when their management utilities are invoked. For
+example, the \texttt{sshd} daemon logs connections regardless of which
+network interface is used, which may make it difficult to separate or
+remove logs not related to SSH connections as part of the scenario
+itself. Similarly, the invocation of PowerShell scripts causes event
+logs to be generated, which can be particularly noisy if Script Block
+Logging (which logs the execution and content of all PowerShell scripts)
+is active.
+
+\subsection{AKF agentless
+generation}\label{akf-agentless-generation}
+
+AKF allows users to perform agentless artifact creation through a
+dedicated hypervisor-agnostic interface (`akflib.\textless something
+
+(What functionality is available through the hypervisor interface, as
+well as the VirtualBox API in particular?)
+
+(What agentless functionality in \textbf{VMPOP} do we instead delegate
+to the agent, such as interacting with browsers? why is this a good
+thing, and what do we lose as a result?)
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  \#todo explain the hypervisorbase
+\end{itemize}
+
+\section{Agent-based artifact
+generation}\label{agent-based-artifact-generation}
+
+\textbf{Agent-based artifact creation} involves the use of a dedicated
+program on the VM that serves as an interface between the host machine
+and the guest machine. This program runs commands natively on the
+virtual machine on behalf of the host machine, typically accepting
+commands over a dedicated network interface. This allows for greater
+flexibility and more complex actions to be taken. In particular, it
+allows for existing automation frameworks such as Playwright and
+PyAutoGUI to be used in implementing application-specific functionality.
+However, this approach often leads to \textbf{Synthesis
+pollution\textbar synthesis pollution}; besides the presence of software
+that would never exist on a typical user's machine, agents often do not
+interact with applications the same way that a human would. In this
+case, the synthesizer should document known pollution that can be
+ignored for educational and testing purposes.
+
+\subsection{Analysis of the ForTrace
+agent}\label{analysis-of-the-fortrace-agent}
+
+Agent-based artifact creation is the approach taken by
+\textbf{hystck}/\textbf{ForTrace}, which refers to its agent as an
+``interaction manager''. Because ForTrace provides the largest set of
+functionality for its agents, and is by far the most mature synthesizer,
+AKF's agents borrow heavily from ForTrace's approach. As a result, a
+detailed analysis of ForTrace's design is provided here.
+
+ForTrace agents are simply an entire copy of the ForTrace codebase
+copied over to the virtual machine -- that is, the ``agent'' and
+``server'' share the same codebase, but have different entry-points and
+call different functions. Application-specific functionality for agents
+is organized into individual modules (files), where each file separates
+a set of commands or actions for a single application.
+
+The server, or ``virtual machine monitor'' (VMM), issues commands over
+TCP to a running instance of the agent on the VM. Invoking commands
+entails issuing a simple string to the agent running on the VM. For
+example, invoking a command to add a new user to the VM may look like
+the following:
+
+REPLACE CODEBLOCK HERE
+
+The agent's main loop, which receives and interprets these commands, is
+extremely simple:
+
+REPLACE CODEBLOCK HERE
+
+When the \texttt{Agent} is first instantiated, it forms a permanent TCP
+socket out to the configured port and IP address where it expects the
+server (the VMM) to be issuing commands.
+\texttt{Agent.receiveCommands()} receives every message available by
+reading the socket, parsing it, and then invoking
+\texttt{Agent.do\_command()}, which converts the command message into a
+specific Python function call with arguments.
+
+Each module under \texttt{fortrace.application} can be thought of as a
+coherent group of commands associated with a particular \emph{real}
+application (like Firefox or Thunderbird). Recall earlier how we found
+our \texttt{userManagement} application and invoked \texttt{addUser}:
+
+REPLACE CODEBLOCK HERE
+
+At a high level, the \texttt{application()} call attempts to import
+\texttt{fortrace.application.\{application\_name\}}. Although not
+enforced by a higher-level interface, each of these modules contains
+subclasses of the following four classes (defined in
+\texttt{fortrace.application.application}) at minimum, with possibly
+more helper classes for OS-specific functionality or other modularity as
+needed:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{ApplicationVmmSide}: Contains one function for each command
+  implemented in \texttt{ApplicationGuestSide}, building a message that
+  will be interpreted and acted upon by the corresponding
+  \texttt{ApplicationGuestSideCommands} class.
+\item
+  \texttt{ApplicationVmmSideCommands}: Accepts and interprets
+  module-specific messages returned by the agent, which may be used to
+  update the remote state as tracked by the host.
+\item
+  \texttt{ApplicationGuestSide}: Implements the actual
+  application-specific functionality for the agent, providing one
+  function for each separated command by this module.
+\item
+  \texttt{ApplicationGuestSideCommands}: Interprets commands and
+  arguments, calling the respective function in the corresponding
+  \texttt{ApplicationGuestSide} subclass. This allows the actual
+  dispatch of commands to be delegated to this class, which is free to
+  choose how actions are performed (threading, multiprocessing, etc.) as
+  well as any module-wide state it may need to maintain.
+\end{itemize}
+
+This naming convention is intentional. As will be shown later, the word
+\texttt{Application} is replaced with the name of the module in
+camelcase. For example, \texttt{fortrace.application.userManagement}
+contains \texttt{UserManagementVmmSide},
+\texttt{UserManagementVmmSideCommands}, and so on. Discovering and
+getting handles to these classes is performed through string
+manipulation of the relevant application's module name, as shown in the
+example below:
+
+REPLACE CODEBLOCK HERE
+
+In the example above, \texttt{UserManagementGuestSide.addUser()}
+contains the literal code to execute on the guest when
+\texttt{addUser()} is called, such as adding the registry keys needed
+for a user to be created. On the other hand,
+\texttt{UserManagementVmmSide.addUser()} contains the code to send a
+message over TCP that the agent will understand, eventually leading to
+the execution of the agent's version of \texttt{addUser()}.
+
+More precisely, the \texttt{ApplicationVmmSide} subclass effectively
+serves as the API for calling the associated functions in the
+\texttt{ApplicationGuestSide} class running on the virtual machine. This
+subclass, along with the complete agent-side code, is stored in a single
+file. For example, the API and code for opening a Firefox browser window
+is as follows:
+
+REPLACE CODEBLOCK HERE
+
+Calling the \texttt{open()} command from the host causes a message of
+the following form to be sent to the agent:
+
+REPLACE CODEBLOCK HERE
+
+Upon receiving this message, the agent's main loop will search for the
+\texttt{webBrowserFirefox} module and import its corresponding
+\texttt{ApplicationGuestSideCommands} subclass. After any state
+management, the subclass will then search for a function called
+\texttt{open} in its corresponding \texttt{ApplicationGuestSide} class,
+as implemented below:
+
+REPLACE CODEBLOCK HERE
+
+There are two major implementation details that should be observed here.
+As mentioned previously, commands are sent through a simple string-based
+protocol. This simplicity makes it easy to debug issues as a result of
+the protocol, but is relatively inflexible. In particular, it is
+difficult to send complex objects that cannot easily be serialized to a
+string without loss of information, such as Playwright browser objects
+with state that is difficult to reconstruct using strings alone.
+
+The second implementation detail involves the discovery and execution of
+commands indicated by the protocol. As shown previously, ForTrace makes
+heavy use of Python's runtime introspection to discover the correct
+modules and functions to call based on the contents of a command string.
+While this is a valid approach, it is significantly more complex than
+the approach taken by AKF.
+
+\subsection{The AKF agent}\label{the-akf-agent}
+
+AKF borrows heavily from the Python agent-based approach of
+\textbf{ForTrace}, but improves on its architecture in several respects.
+
+Perhaps the most significant change is the use of RPyC for
+communication, a library for symmetric remote procedure calls
+\cite{TomerfilibaorgRpyc2025}. Although the RPyC protocol is
+symmetric, it is often used in client-server architectures to allow
+clients to manipulate remote Python objects as if they were local
+objects, as well as invoke remote functions using local parameters. By
+delegating the serialization and deserialization of complex objects to
+RPyC, this allows us to perform complex operations that would have been
+difficult to implement with the simple string-based protocol of
+ForTrace.
+
+In ``new-style'' RPyC, this is achieved by running a \emph{service} on
+the device where remote operations should be performed; this service
+simply listens on an ephemeral TCP port. Services expose a set of
+functions and attributes that may be accessed remotely by an RPyC
+client. This is analogous to the \texttt{ApplicationGuestSideCommands}
+and \texttt{ApplicationGuestSide} classes of individual ForTrace
+modules.
+
+Because the exposed functions (as well as their signatures) and
+attributes cannot be inferred from the raw RPyC connection alone,
+clients can implement a typed, concrete API that allows type-hints and
+autocompletion features to continue working in development environments.
+This simultaneously abstracts the raw RPyC call (and the existence of an
+RPyC connection) away from the user, while also providing the remote
+function signatures where there would otherwise be none. This is
+analogous to the \texttt{ApplicationVmmSide} and
+\texttt{ApplicationVmmSideCommands} classes of ForTrace modules.
+
+For example, a simple RPyC service and its corresponding API may be
+implemented as follows:
+
+REPLACE CODEBLOCK HERE
+
+This syntax provides three major improvements over the ForTrace
+protocol. First, the routing of functions is wholly delegated to RPyC.
+Instead of manually constructing a message with the function name and
+its associated parameters (as strings) over the network, implementing
+support for a particular service on the client-side API is as simple as
+calling an untyped function \texttt{rpyc\_conn.root.set\_browser()}. By
+wrapping it around a typed function,
+\texttt{ChromiumServiceAPI.set\_browser()}, users regain the ability to
+use code completion and static linting tools.
+
+Second, this allows us to pass and return arbitrarily complex objects
+for which we do not have to write the serialization and deserialization
+logic for. When passing complex objects from the agent to the server or
+vice versa, a reference to the object is sent over the network and
+wrapped by a \emph{proxy object}, which behaves like the original object
+\cite{TheoryOperationRPyC}. Importantly, it is not necessary to
+distinguish between local and remote/proxy objects of the same type when
+writing code, which elements the extra complexity of using proxies.
+
+Finally, the ability to interact with complex remote objects allows us
+to significantly reduce the actual code that is written as part of the
+API exposed to the host. For example, there is no need to implement a
+wrapper for every method available as part of a Playwright page object;
+instead, a reference to the Playwright object \emph{running on the
+virtual machine} can be given to the host machine. Instead of writing
+individual methods for opening pages, navigating to specific elements,
+and so on, we can simply use the methods that already exist in the
+Playwright object -- any local calls on the host's proxy object will
+lead to remote outcomes on the host, as desired.
+
+Application specific-functionality is broken up into individual RPyC
+``subservices'', which are created on demand. The agent's main loop is
+itself a ``root'' RPyC service that is responsible for creating and
+destroying these subservices upon request; all subservices are known to
+the root service at program start, eliminating the need to perform
+runtime introspection to find application-specific modules.
+
+Additionally, because the service and the API to an RPyC service are
+separable, this allows us to break the API (which is used in scripts)
+and the agent logic itself into two separate libraries. This has two
+advantages -- it may slightly reduce the size of the agent when
+installed onto the virtual machine, and it also makes it significantly
+easier to build and generate standalone executables using tools like
+PyInstaller. Unlike ForTrace, whose agent installation process requires
+a batch script installing various libraries and Python through the
+Chocolatey package manager, AKF's agent requires only that a single
+executable is copied over and configured to run on startup (in addition
+to setting relevant firewall rules).
+
+The list of applications supported by AKF's agent, as well as
+implementation-specific details, is described in the table below.
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  \#todo shoot for feature parity with ForTrace; see page 11 of its
+  paper for what it supports
+\end{itemize}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0376}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2019}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7606}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Module
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dependencies
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Details
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Chromium & Playwright \cite{MicrosoftPlaywrightpython2025} & Allows
+arbitrary webpages to be visited on Chrome and Edge, as well as perform
+complex actions such as completing forms and clicking links based on
+HTML selectors \\
+\end{longtable}
+
+\section{Physical artifact
+generation}\label{physical-artifact-generation}
+
+\subsection{Overview}\label{overview-1}
+
+\textbf{Physical artifact creation} encompasses any technique in which
+virtualization of an operating system is not required to generate
+artifacts. This gives the synthesizer the ability to bypass operating
+system or driver behavior, which may lead to non-deterministic behavior
+for certain actions. For example, a scenario developer may want to
+guarantee that a particular deleted file is partially overwritten by
+another file, allowing that the deleted file is recoverable from the
+slack space of the newly placed file.
+
+However, there is no known method for reliably reusing the same logical
+block from userspace. Operating systems do not expose low-level
+filesystem functionality to applications; furthermore, they are still
+subject to hardware drivers that regularly rearrange physical space,
+such as those that engage in wear leveling. While it may be possible to
+predict the outcome of these wear leveling techniques as demonstrated by
+Neyaz et al., this is far from the determinism that may be necessary of
+research and tool validation \cite{neyazForensicAnalysisWear2018}.
+Additionally, background programs and services may perform file
+operations that are difficult to predict.
+
+In turn, it is sometimes necessary to bypass the operating system
+entirely to reliably place data on a disk. There are two primary
+techniques used to achieve this -- mounting the filesystem and
+performing direct read/write operations, and bypassing the filesystem
+entirely and performing direct writes to the underlying disk image.
+
+Filesystem mounting is leveraged by several synthesizers, including
+\textbf{Forensig2} and \textbf{SFX}. For both of these synthesizers,
+physical artifact creation is achieved by simply allowing the user to
+specify a file to copy from the host machine to a specific filepath on
+the disk image. Other synthesizers, such as \textbf{ForGe} and
+\textbf{EviPlant}, instead write to the disk image directly.
+\textbf{ForGe} maintains its own representation of supported
+filesystems, using its own data structures to represent a FAT32/NTFS
+filesystem. This allows it to quickly identify and place data in
+unallocated or slack space. In contrast, synthesizers such as
+\textbf{EviPlant} simply allow the user to provide an offset into the
+disk image where arbitrary data will be written to.
+
+It is important to note that the majority of the artifacts generated by
+physical techniques can still be created non-deterministically through
+logical means. Users can create files of interest, delete them, and then
+write new files to disk through a virtual machine; this \emph{may}
+result in the desired outcome, but there is no strict guarantee that
+particular files have overwritten data in now-unallocated space. In some
+cases, this may be acceptable, such as a scenario in which an instructor
+simply wants to demonstrate that file recovery from slack is possible.
+
+It is also worth noting that artifact creation does not lend itself well
+to generating network captures and volatile memory, since no operating
+system is virtualized and therefore no applications (that would normally
+perform requests over the internet) are executed. However, it is
+theoretically possible to build forensic datasets through simulation
+alone; if a user knows exactly what artifacts are generated through the
+execution of an application and \emph{how} these artifacts are
+generated, it may be possible to artificially generate these artifacts
+as if the application had actually been run.
+
+An example may be editing the history database of a particular browser
+contained on a filesystem by mounting it, parsing it, and then adding
+new entries; this would make it appear as if the machine was used to
+browse to these websites without requiring virtualization. However, this
+technique is difficult to implement in practice. For example, a scenario
+developer would need to ensure that the artifact is consistent with
+other artifacts on disk, since typical Windows application usage may
+generate relevant artifacts in prefetch files and jump lists.
+
+\subsection*{4.4.2 - AKF implementation}\label{akf-implementation}
+\addcontentsline{toc}{subsection}{4.4.2 - AKF implementation}
+
+\chapter{Output and validation}\label{chapter-five}
+
+This chapter addresses the mechanisms through which AKF generates and
+documents its outputs, depicted in the partial architectural diagram
+below.
+
+!\textbf{39.5 - Output and validation 2025-02-08 17.13.11.excalidraw}
+
+This chapter addresses the role of the output and validation library in
+providing several services to AKF, including a centralized logging
+system, the use of CASE objects, and invoking various commands to
+generate and export outputs such as disk images, network captures, and
+volatile memory dumps. It also describes high-level reporting and
+validation functionalities, both those as part of the framework itself
+and options available through external tools.
+
+\section{Overview}\label{overview}
+
+Whether generating artifacts through physical or logical means, these
+artifacts must ultimately be exported and documented. In most cases,
+this involves generating disk images, volatile memory captures, or
+network captures; additionally, specific artifacts, such as browser
+artifacts, may be selectively copied from a filesystem.
+
+In either case, the contents and details of these artifacts, as well as
+the means through which they were generated, should be documented in
+some format. The term ``ground truth'' describes the contents of a
+single specific dataset in full. That is, it ideally provides a
+reference for every artifact that can be discovered within a dataset, as
+well as every action taken to plant those artifacts.
+
+From an educational perspective, the ground truth represents an ``answer
+key'' to the dataset; it details every artifact of interest that an
+analyst could be expected to discover. For research, it allows for
+well-labeled datasets that can be used for tool development, validation,
+and testing. Importantly, this should be generated in a manner
+independent of the input script used to construct the scenario, allowing
+\emph{all} artifacts to be documented, including those not explicitly
+declared or deemed important by the scenario creator.
+
+The remainder of this chapter describes the mechanisms through which
+outputs are exported from the synthesizer and the mechanisms that allow
+for real-time logging and documentation.
+
+\section{Core outputs}\label{core-outputs}
+
+\subsection{Extracting datasets}\label{extracting-datasets}
+
+\subsection{Distribution and
+storage}\label{distribution-and-storage}
+
+\section{Metadata and ground
+truth}\label{metadata-and-ground-truth}
+
+\subsection{Overview}\label{overview-1}
+
+There exists a gap in the ability of instructors and researchers to
+perform bulk searches for specific forensic artifacts in public
+datasets. For example, the NIST CFReDS repository
+\cite{nationalinstituteofstandardsandtechnologyCFReDSPortal}, one of
+the largest listings of forensic datasets, does not have a unified
+standard for describing uploaded images. While it is possible for users
+to search by keywords and human-applied tags, these are not presented in
+a standardized format.
+
+For most datasets, an analyst must read through a PDF answer key (if one
+exists) or analyze the image themselves to determine if a particular
+artifact is present. Such formats are not immediately machine-readable,
+and are therefore difficult to use in bulk searches. Additionally, the
+content of human-made reports may be limited to what the author believes
+is significant, even if other artifacts of interest are present in the
+image. In turn, it may be difficult to quickly determine if a dataset is
+useful in demonstrating a particular technique to students, or in
+validating a specific feature of a newly-developed tool.
+
+A rigid, well-defined format for ground truth is invaluable to
+researchers engaging in tool validation and development. It is easy to
+write an automated converter for well-structured data into natural
+language; it is likely more difficult to perform the reverse operation.
+Perhaps the lack of labeled forensic datasets on major repositories may
+be attributable to the lack of a need for one; Grajeda et
+al.~demonstrated that few scenarios are shared between researchers to
+begin with, so there is rarely a need to label them for general-purpose
+usage. AKF has the opportunity to solve this issue by allowing for the
+mass production of labeled datasets, adopting a single major standard.
+
+Many forensic analysis tools support exporting case data in both
+proprietary and language-agnostic formats. For example, Cellebrite's
+UFED supports exporting to UFDR and XML files, Magnet Axiom supports
+exporting to XML, and Autopsy supports a variety of formats including
+Excel, STIX, and HTML. Each of these vary in structure and format, and
+do not necessarily contain equivalent information for the same analyzed
+disk image using default settings. This is the primary challenge with
+using an existing format, especially a proprietary format that is
+subject to vendor changes; certain details may be missing, and may
+change at an arbitrary point in time.
+
+There has been extensive work in other fields towards developing a
+structured ontology that describes relationships and low-level details.
+This includes the EVIDENCE project for criminal justice and the
+Structured Threat Information Expression (STIX) format for conveying
+cyber threat intelligence
+\cite{caseyLeveragingCybOXStandardize2015}. For example, STIX
+provides a standard set of objects that allows organizations to describe
+observed attacker techniques and associate them with specific pieces of
+malware, attack campaigns, or threat actors.
+
+However, there is limited work that aims to document the contents of a
+forensic scenario (disk images and related metadata) in a vendor-neutral
+manner. Besides their lack of adoption, Casey et al.~found that existing
+formats lacked features such as parent-child relationships, user
+actions, and non-technical case information such as a chain of custody.
+In response, the same authors introduced the Digital Forensic Analysis
+eXpression, or DFAX, a language extending CybOX (the predecessor to
+STIX) for use in the digital forensics community. DFAX eventually
+evolved to become the Cyber-investigation Analysis Standard Expression
+(CASE) \cite{caseyAdvancingCoordinatedCyberinvestigations2017},
+which we leverage as \emph{fastlabel}'s standard output format. CASE is
+perhaps the most comprehensive and actively supported ontology available
+for digital forensics; contributors include NIST with support from the
+Linux Foundation.
+
+\subsection{CASE and Python
+bindings}\label{case-and-python-bindings}
+
+CASE is a vendor-neutral format that aims to document both technical and
+non-technical information about a digital forensics case
+\cite{caseyAdvancingCoordinatedCyberinvestigations2017}. It aims to
+cover as many OS-specific and application-specific artifacts as
+possible, while still providing the flexibility to describe artifacts
+from uncommon applications. In theory, data exported from any major
+vendor, such as Cellebrite, Magnet, or FTK, can be converted into a
+valid CASE file. CASE is an extension of the Unified Cyber Ontology, or
+UCO, which simply provides basic objects that are not specific to
+digital forensics (such as applications or users). Consistent with
+existing documentation, CASE and CASE/UCO refer to the same format.
+
+CASE is built on the Resource Description Framework (RDF), a model for
+describing information using relationships. Two objects are linked using
+relationships, each of which is described as a ``triple''. This pattern
+allows for directed, labeled graphs to be expressed using RDF. The
+ontology of CASE objects is defined using the Terse RDF Triple Language,
+or Turtle, which allows these triples to be written in a simple text
+format. For example, the following set of triples describes an object
+called \texttt{ApplicationFacet} with two properties,
+\texttt{numberOfLaunches} and \texttt{applicationIdentifier}:
+
+REPLACE CODEBLOCK HERE
+
+An instance of a \texttt{Application} object may thus be represented in
+the JSON-LD format using the \texttt{ApplicationFacet} as follows
+(including attributes omitted above):
+
+REPLACE CODEBLOCK HERE
+
+Because the CASE format itself is language-agnostic, it is necessary to
+write a library for each language that leverages CASE. As of writing,
+the CASE project provides Python bindings for UCO/CASE 1.4
+\cite{CaseworkCASEMappingPython}, in which each unique object is
+represented as a Python class, which can be instantiated to produce
+individual objects. However, this library has several limitations due to
+its design. For example, CASE objects are internally represented as
+dictionary of strings, rather than a set of instance variables. While
+this makes it easier to serialize these objects to JSON-LD, it also
+makes it extremely difficult to work with objects after they have been
+instantiated:
+
+REPLACE CODEBLOCK HERE
+
+Additionally, it appears that each of the objects have been manually
+translated from the Turtle definitions to their corresponding Python
+class. This is slow and time-consuming, especially given the context
+that a significant overhaul of UCO/CASE to version 2.0 is underway, with
+new object definitions; there appears to be no active effort to update
+the 1.3 bindings to 2.0.
+
+AKF leverages (and contributes, as part of a project independent of this
+thesis) Pydantic-based bindings for CASE. The foundation for this system
+will be the Pydantic library for Python, which allows developers to
+quickly define classes (referred to as ``Pydantic models'', or simply
+``models'') with built-in schema validation and serialization based on
+Python type hints \cite{colvinPydantic2024}. More broadly, it allows
+us to simplify the declaration of individual objects while providing
+runtime type validation and automatic casting.
+
+For example, we can write the same object above as follows:
+
+REPLACE CODEBLOCK HERE
+
+This declaration is only three lines, 40 lines shorter than the existing
+declaration of \texttt{ApplicationFacet} - a 93\% reduction in code
+written. This is because the conversion of instance variables to valid
+JSON-LD keys is deferred until serialization. This design choice allows
+us to centralize the serialization logic in a single parent class that
+all CASE objects inherit from. In exchange for slightly increasing the
+complexity of converting \texttt{numberOfLaunches} to a dictionary with
+the correct key name, we can massively simplify the logic for declaring
+CASE objects.
+
+A simple CASE bundle, representing the complete contents of a forensic
+scenario, can be observed below:
+
+REPLACE CODEBLOCK HERE
+
+A script is provided with the Pydantic-based CASE bindings to
+automatically parse the RDF files and convert them to valid Pydantic
+models. It automatically converts XSD datatypes to their native Python
+types (or a custom wrapper type if a native type does not exist),
+correctly inherits classes, and automatically generates docstrings and
+Pydantic fields as applicable. Additionally, the script also
+topologically sorts dependencies in the same file; the parent class of
+an RDF object may be declared \emph{after} its child class, which is
+disallowed in Python. This greatly simplifies the process of maintaining
+Python bindings for UCO/CASE, as well as the overall design of the
+library for future needs.
+
+\subsection{CASE integration in
+AKF}\label{case-integration-in-akf}
+
+With these Python bindings, we can integrate them throughout
+artifact-generating libraries in AKF.
+
+(How does one actually generate CASE entries? the answer is that various
+things accept CASE bundles, and they can optionally attach extra data to
+the bundle as needed\ldots)
+
+\section{Human readable reporting}\label{human-readable-reporting}
+
+as previously mentioned, it's easier to go from rigid and well-defined
+to human reports than it is to go the other way around.
+
+\chapter{Building scenarios}\label{chapter-six}
+
+This chapter addresses the modules responsible for allowing users to
+invoke the framework, both through a standard Python script and through
+a high-level YAML file. It also addresses the generative AI modules that
+can assist a user in building a scenario, as depicted in the partial
+architectural diagram below.
+
+!\textbf{39.6 - Building scenarios 2025-02-08 17.23.40.excalidraw}
+
+At this point, we have provided the implementations for automating
+artifact generation in a near-deterministic manner with comprehensive
+logging and reporting. However, there is still the challenge of exposing
+this functionality in a user-friendly manner. Furthermore, even if the
+\emph{process} of placing artifacts or performing actions can be
+simplified, the challenge of deciding what actions to perform still
+remains.
+
+It is important to note that it is still largely the responsibility of
+instructors to provide the actual background noise to populate the
+images with. Although the high-level languages provided by many of these
+frameworks make it easy to place files at desired locations or visit
+websites that are part of a scenario, these must all be defined and
+created ahead of time.
+
+This chapter addresses the challenges of creating background noise and
+providing simple APIs for complex GUI-driven applications. More
+precisely, we address two questions -- how do we invoke AKF's automation
+systems, and how does AKF assist a user in building a scenario? Here, we
+explore AKF's imperative and declarative APIs, as well as the viability
+of using large language models (LLMs) to assist in building individual
+files and complete scenario descriptions.
+
+\section{Background}\label{background}
+
+We begin by analyzing how synthesizers accept user input to decide how
+to operate, as well as what specific forms of data are accepted by these
+synthesizers. In particular, we address the following questions:
+
+\begin{itemize}
+\tightlist
+\item
+  How do users define the high-level ``scenario'', or sequence of
+  operations that the synthesizer should take to form the image?
+\item
+  How do users pass data, such as images to be placed or emails to be
+  sent, into the synthesizer?
+\end{itemize}
+
+For many of the frameworks created in the last decade, users typically
+define scenarios by using a Python library to interact with the
+framework, setting up the virtualized environment and perform high-level
+actions on the environment. This abstracts the underlying calls to the
+virtualized environment away from the user. This code-based approach
+represents an \emph{imperative} strategy to scenario creation, where the
+user describes how the image should be created by describing the exact
+order and methodology by which actions should be taken.
+
+It is worth noting that, like many automation frameworks such as
+Playwright \cite{MicrosoftPlaywrightpython2025}, the language used
+to interact with the synthesizer's API does not need to match the
+language used to implement the synthesizer itself (although this is
+often the case). For example, Playwright itself is implemented in
+TypeScript, and therefore began with a Node.JS API. Today, Playwright
+provides APIs in Python, Java, and C\#.
+
+In contrast, custom scenario formats provided by \emph{D-FET}
+\cite{williamCloudbasedDigitalForensics2011}, \emph{SFX}
+\cite{russellForensicImageDescription2012}, and Yannikos
+\cite{yannikosDataCorporaDigital2014} follow a \emph{declarative}
+strategy. Here, a custom high-level language describes what the final
+state of the image should be. For example, consider the following
+example \emph{SFX} code taken from
+\cite{russellForensicImageDescription2012}, in which a partition is
+created on which a 64-bit version of Windows 7 is installed and a user
+called ``Gordon'' uses Firefox to browse to the internet:
+
+REPLACE CODEBLOCK HERE
+
+The same might be partially expressed in \emph{ForTrace} as the
+following, excluding additional overhead for ground truth generation:
+
+REPLACE CODEBLOCK HERE
+
+Note that \emph{hystck} - and by extension, \emph{ForTrace} - also
+allows users to express scenarios as YAML files, such that both a
+declarative and an imperative approach to defining scenarios is
+available. This reduces the technical difficulty of using the framework,
+while still allowing users experienced with both Python and the
+framework to perform lower-level customization as needed. This
+highlights the fact that both declarative and imperative approaches can
+be used simultaneously; in particular, it demonstrates that
+declarative-to-imperative translators can be written to support
+arbitrary declarative languages, such as those of both SFX and ForTrace.
+While not explored in this thesis, it is also worth noting the GUI-based
+interfaces provided by \textbf{Yannikos et al.} and \textbf{ForGe} for
+building scenarios.
+
+\section{Setup and imperative
+usage}\label{setup-and-imperative-usage}
+
+Like many of its predecessors, AKF implements its functionality and
+exposes its API in the same language -- Python 3. There are numerous
+advantages to a Python-based API; besides the low difficulty of setting
+up and using Python, its rich ecosystem allows scenarios to be extended
+through the use of other libraries from the Python ecosystem. For
+example, if a user wanted to conditionally execute certain parts of a
+scenario by testing if a particular service is currently online, a user
+could use the \emph{Requests} library \cite{Requests31Documentation}
+to issue an HTTP request out-of-band before doing the same using
+synthesizer-provided routines in the virtualized environment.
+
+\section{Declarative usage}\label{declarative-usage}
+
+\subsection{Overview}\label{overview}
+
+\subsection{The AKF declarative
+syntax}\label{the-akf-declarative-syntax}
+
+\section{Using generative AI for individual
+artifacts}\label{using-generative-ai-for-individual-artifacts}
+
+As it currently stands, users of synthesizers must still perform a
+significant amount of work towards generating the artifacts to be
+planted. While the process of generating an image based on some
+predefined scenario has been streamlined through existing synthesizers,
+users still need to define all of the data that they want to plant. For
+example:
+
+\begin{itemize}
+\tightlist
+\item
+  If a user wants to place 100 photos on the drive to simulate real
+  usage, the user needs to pass in 100 realistic images;
+\item
+  If a user wants to simulate an email or other online conversation, the
+  user needs to pass in the entirety of the conversation to simulate;
+\item
+  If a user wants to generate ``proprietary'' documents to emulate some
+  form of corporate sabotage, the user would need to generate a variety
+  of Microsoft Office, PDF, or other files in these formats ahead of
+  time.
+\end{itemize}
+
+The net result is that although creating images for the purposes of tool
+validation and research can be accomplished with existing frameworks,
+creating realistic images that are more reflective of real-world
+scenarios that a forensic analyst might encounter still requires
+extensive work. While true that images should often be small enough in a
+classroom setting to allow the student to explore a single specific
+technique, real-world scenarios encountered by analysts are typically
+not limited by time or size. An analyst might have to deal with a drive
+used over the course of a decade to store many photographs and send many
+messages. Such scenarios are valuable training material for courses that
+encapsulate a long period of forensic study, allowing a student to apply
+many different techniques in reconstructing a large-scale scenario.
+
+With recent advancements in generative AI, popularized by services such
+as Midjourney and ChatGPT, it is now significantly easier to generate
+realistic images and text content from short, high-level descriptions.
+Additionally, various services exist for creating realistic audio and
+video files that emulate a particular person's voice or facial
+movements; these can be used to generate additional scenario content of
+interest, especially if the scenario is based on a real-world event.
+
+It holds that generative AI can be used to quickly populate forensic
+datasets with realistic conversations and images consistent with an
+arbitrary scenario. For example, a corporate espionage case could be
+built by providing a large language model such as ChatGPT with prompts
+to describe complex machinery in both a technical writing and a
+conversational style. Simultaneously, similar prompts can be passed into
+an image synthesizer such as Midjourney to produce related images. The
+images and text produced can then be used to create documents describing
+an unreleased product of high value, providing a pipeline through which
+significant artifacts can be planted onto a forensic image.
+
+This idea can be extended further by training models on specific
+datasets; for example, if an instructor wished to create a fictional
+scenario in which a user frequently interacts with users of a particular
+online community, a large language model could be trained on available
+conversations to provide a degree of realism to the scenario. However,
+as mentioned before, this faces the challenges of ownership, privacy,
+and legality behind works derived from publicly available information
+that was (likely) not published with the expectation of its usage in an
+AI model.
+
+It is important to note that the inclusion of generative AI into
+synthesizers does not necessarily require deep integration with the
+framework itself. Many existing frameworks could be extended to use
+documents, images, or other data sourced from generative AI instead of
+user-defined files without the need to change the architecture of the
+framework. However, as advancements in AI continue, it may make sense to
+directly integrate AI-driven actions into synthesizers. For example,
+there may come a time in which synthesizers can be provided natural
+language prompts (such as ``Open Firefox and browse to news-related
+websites'') that directly lead to the generation of relevant artifacts,
+without the need to explicitly program the process of browsing to a
+website in advance.
+
+\chapter{Evaluation and observations}\label{chapter-seven}
+
+\section{Context and scenario}\label{context-and-scenario}
+
+\section{Student analysis}\label{student-analysis}
+
+\chapter{Future work}\label{chapter-eight}
+
+\section{Integration of recent
+advancements}\label{integration-of-recent-advancements}
+
+\begin{itemize}
+\tightlist
+\item
+  So OpenAI has their
+  \href{https://openai.com/index/introducing-operator/}{Operator} thing,
+  it's important to take note that it exists and could likely be
+  generalized to automate user actions more broadly -- however, there's
+  three things to keep in mind:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    it likely can't substitute (right now) all of the features provided
+    by AKF, such as the ability to manipulate low-level bytes or change
+    the BIOS time, even if it had full knowledge of how to interact with
+    the operating system
+  \item
+    Present models are
+    \href{https://152334h.github.io/blog/non-determinism-in-gpt-4/}{known
+    to be non-deterministic}, which is acceptable for educational
+    purposes (so long as you have a framework that can log all of the
+    actions it takes, or identify ground truth after the fact), but a
+    little less so when building images that \emph{need} to be done
+    deterministically, such as when developing images for research or
+    tool validation
+
+    \begin{itemize}
+    \tightlist
+    \item
+      not to mention that it apparently
+      \href{https://www.reddit.com/r/ChatGPTPro/comments/1i8jln3/i_am_among_the_first_people_to_gain_access_to/}{sucks
+      at doing its job right now}
+    \end{itemize}
+  \item
+    Operator is not \emph{incompatible} with our architecture or overall
+    framework -- it could likely be built as yet another \texttt{akflib}
+    module or agent module, which would give users the option to choose
+    between a simple, non-deterministic option for generating browser
+    artifacts from human language, or a more complex, deterministic
+    option by manually declaring actions.
+  \end{itemize}
+\end{itemize}
+
+\section{Framework limitations and
+extensions}\label{framework-limitations-and-extensions}
+
+AKF was built with the expectation that it would be easy to maintain,
+develop, and extend. Indeed, there are several use-cases that AKF does
+not fulfill as of writing. This includes: - support for generating
+mobile device datasets, although
+
+\chapter{Conclusion}\label{chapter-nine}
+
+
+
+% == End thesis content
+
+
+%glossary & acronym lists
+\printglossary[type=\acronymtype]
+\printglossary
+\bibliography{lloyd_gonzales_thesis}
+
+\appendix
+
+\chapter{Results Data} \label{appendix-B}
+Temporary...
+
+
+
+\end{document}
