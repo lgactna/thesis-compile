@@ -31,6 +31,9 @@ def process_markdown_text(text: str) -> str:
     # Ensure that section headings have two line breaks before and after
     text = re.sub(r"(.)\n{1,2}(#+ .*$\n)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE)
     
+    # Reduce section headings by one level
+    text = re.sub(r"^#", r"", text)
+    
     # Convert wikilinks to bolded text
     text = re.sub(r"\[\[(.*?)\]\]", r"**\1**", text, flags=re.MULTILINE)
     
@@ -120,7 +123,10 @@ def substitute_labels(tex_dir: Path) -> dict:
                 
                 text = re.sub(rf"\\textbf\{{.*?{textbf2}\}}", rf"\\ref{{{label_table[textbf]}}}", text , flags=re.DOTALL | re.MULTILINE)
         
-        # print(text)
+        # Final pass - remove anything that looks like "1.2.3 -" inside any
+        # tags, because it's already handled by the engine.
+        text = re.sub(r"\{(?:\d\.)+\d - ", r"{", text, flags=re.DOTALL | re.MULTILINE)
+        
         tex_file.write_text(text)
 
 if __name__ == "__main__":

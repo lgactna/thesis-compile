@@ -79,10 +79,10 @@ this chapter analyzes these each of these three approaches in greater
 detail, describing the implementation details of prior synthesizers and
 comparing them to those of AKF's.
 
-\subsection{4.2 - Agentless artifact
+\subsection{Agentless artifact
 generation}\label{agentless-artifact-generation}
 
-\subsubsection{4.2.1 - Hypervisor
+\subsubsection{Hypervisor
 interfaces}\label{hypervisor-interfaces}
 
 \textbf{Agentless artifact creation} describes one of two general
@@ -141,7 +141,7 @@ a machine to perform arbitrarily complex tasks on a GUI-based operating
 system using natural language - an approach that can be integrated into
 AKF.
 
-\subsubsection{4.2.2 - Management utilities}\label{management-utilities}
+\subsubsection{Management utilities}\label{management-utilities}
 
 The alternative is to use existing management utilities, typically a
 shell, which are native to the virtualized operating system and are
@@ -200,7 +200,7 @@ logs to be generated, which can be particularly noisy if Script Block
 Logging (which logs the execution and content of all PowerShell scripts)
 is active.
 
-\subsubsection{4.2.3 - AKF agentless
+\subsubsection{AKF agentless
 generation}\label{akf-agentless-generation}
 
 AKF allows users to perform agentless artifact creation through a
@@ -220,7 +220,7 @@ thing, and what do we lose as a result?)
   \#todo explain the hypervisorbase
 \end{itemize}
 
-\section{4.3 - Agent-based artifact
+\section{Agent-based artifact
 generation}\label{agent-based-artifact-generation}
 
 \textbf{Agent-based artifact creation} involves the use of a dedicated
@@ -238,7 +238,7 @@ interact with applications the same way that a human would. In this
 case, the synthesizer should document known pollution that can be
 ignored for educational and testing purposes.
 
-\subsubsection{4.3.1 - Analysis of the ForTrace
+\subsubsection{Analysis of the ForTrace
 agent}\label{analysis-of-the-fortrace-agent}
 
 Agent-based artifact creation is the approach taken by
@@ -377,7 +377,7 @@ modules and functions to call based on the contents of a command string.
 While this is a valid approach, it is significantly more complex than
 the approach taken by AKF.
 
-\subsubsection{4.3.2 - The AKF agent}\label{the-akf-agent}
+\subsubsection{The AKF agent}\label{the-akf-agent}
 
 AKF borrows heavily from the Python agent-based approach of
 \textbf{ForTrace}, but improves on its architecture in several respects.
@@ -485,10 +485,10 @@ implementation-specific details, is described in the table below.
   selectors \textbar{}
 \end{itemize}
 
-\subsection{4.4 - Physical artifact
+\subsection{Physical artifact
 generation}\label{physical-artifact-generation}
 
-\subsubsection{4.4.1 - Overview}\label{overview-1}
+\subsubsection{Overview}\label{overview-1}
 
 \textbf{Physical artifact creation} encompasses any technique in which
 virtualization of an operating system is not required to generate
@@ -557,5 +557,5 @@ developer would need to ensure that the artifact is consistent with
 other artifacts on disk, since typical Windows application usage may
 generate relevant artifacts in prefetch files and jump lists.
 
-\subsubsection*{4.4.2 - AKF implementation}\label{akf-implementation}
-\addcontentsline{toc}{subsubsection}{4.4.2 - AKF implementation}
+\subsubsection*{AKF implementation}\label{akf-implementation}
+\addcontentsline{toc}{subsubsection}{AKF implementation}
