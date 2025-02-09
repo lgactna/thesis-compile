@@ -26,6 +26,7 @@ partly described by Scanlon et al.
 \cite{scanlonEviPlantEfficientDigital2017}:
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{Physical}: No virtualization of software or hardware ever
   occurs; data is written directly to the target medium, such as a disk
@@ -40,19 +41,15 @@ partly described by Scanlon et al.
   \textbf{Agent-based logical:} The synthesizer interacts with a
   dedicated client (agent) on a live VM to carry out actions. The VM
   must have the agent installed before any interaction can occur.
-\item
-  \textbf{Agent-based logical:} The synthesizer interacts with a
-  dedicated client (agent) on a live VM to carry out actions. The VM
-  must have the agent installed before any interaction can occur.\\
-  hese three approaches are not mutually exclusive within a single
-  synthesizer, though it is the case that most prior synthesizers have
-  used exactly one approach to generate artifacts. The table below
-  denotes the approaches used by each of the synthesizers previously
-  discussed. Where source code is not available, a best effort is made
-  to identify the approach used by a particular synthesizer based on its
-  published paper, if one exists; otherwise, the entire row contains
-  question marks.
 \end{itemize}
+
+These three approaches are not mutually exclusive within a single
+synthesizer, though it is the case that most prior synthesizers have
+used exactly one approach to generate artifacts. The table below denotes
+the approaches used by each of the synthesizers previously discussed.
+Where source code is not available, a best effort is made to identify
+the approach used by a particular synthesizer based on its published
+paper, if one exists; otherwise, the entire row contains question marks.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1799}}
@@ -233,13 +230,13 @@ to the agent, such as interacting with browsers? why is this a good
 thing, and what do we lose as a result?)
 
 \begin{itemize}
-\item[$\square$]
-  \#todo explain the hypervisorbase
+\tightlist
 \item[$\square$]
   \#todo explain the hypervisorbase
 \end{itemize}
 
-4.3 - Agent-based artifact generation
+\section{Agent-based artifact
+generation}\label{agent-based-artifact-generation}
 
 \textbf{Agent-based artifact creation} involves the use of a dedicated
 program on the VM that serves as an interface between the host machine
@@ -310,6 +307,7 @@ more helper classes for OS-specific functionality or other modularity as
 needed:
 
 \begin{itemize}
+\tightlist
 \item
   \texttt{ApplicationVmmSide}: Contains one function for each command
   implemented in \texttt{ApplicationGuestSide}, building a message that
@@ -330,22 +328,16 @@ needed:
   dispatch of commands to be delegated to this class, which is free to
   choose how actions are performed (threading, multiprocessing, etc.) as
   well as any module-wide state it may need to maintain.
-\item
-  \texttt{ApplicationGuestSideCommands}: Interprets commands and
-  arguments, calling the respective function in the corresponding
-  \texttt{ApplicationGuestSide} subclass. This allows the actual
-  dispatch of commands to be delegated to this class, which is free to
-  choose how actions are performed (threading, multiprocessing, etc.) as
-  well as any module-wide state it may need to maintain. his naming
-  convention is intentional. As will be shown later, the word
-  \texttt{Application} is replaced with the name of the module in
-  camelcase. For example, \texttt{fortrace.application.userManagement}
-  contains \texttt{UserManagementVmmSide},
-  \texttt{UserManagementVmmSideCommands}, and so on. Discovering and
-  getting handles to these classes is performed through string
-  manipulation of the relevant application's module name, as shown in
-  the example below:
 \end{itemize}
+
+This naming convention is intentional. As will be shown later, the word
+\texttt{Application} is replaced with the name of the module in
+camelcase. For example, \texttt{fortrace.application.userManagement}
+contains \texttt{UserManagementVmmSide},
+\texttt{UserManagementVmmSideCommands}, and so on. Discovering and
+getting handles to these classes is performed through string
+manipulation of the relevant application's module name, as shown in the
+example below:
 
 REPLACE CODEBLOCK HERE
 
@@ -487,21 +479,33 @@ The list of applications supported by AKF's agent, as well as
 implementation-specific details, is described in the table below.
 
 \begin{itemize}
+\tightlist
 \item[$\square$]
   \#todo shoot for feature parity with ForTrace; see page 11 of its
   paper for what it supports
-\item[$\square$]
-  \#todo shoot for feature parity with ForTrace; see page 11 of its
-  paper for what it supports Module \textbar{} Dependencies \textbar{}
-  Details \textbar{} \textbar{} -------- \textbar{}
-  ------------------------------------------- \textbar{}
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  \textbar{} \textbar{} Chromium \textbar{} Playwright
-  \cite{MicrosoftPlaywrightpython2025} \textbar{} Allows arbitrary
-  webpages to be visited on Chrome and Edge, as well as perform complex
-  actions such as completing forms and clicking links based on HTML
-  selectors \textbar{}
 \end{itemize}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0376}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2019}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7606}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Module
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dependencies
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Details
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Chromium & Playwright \cite{MicrosoftPlaywrightpython2025} & Allows
+arbitrary webpages to be visited on Chrome and Edge, as well as perform
+complex actions such as completing forms and clicking links based on
+HTML selectors \\
+\end{longtable}
 
 \section{Physical artifact
 generation}\label{physical-artifact-generation}

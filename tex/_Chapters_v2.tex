@@ -7,9 +7,9 @@ Left to do: \textbf{39.2 - Literature review}
 \begin{itemize}
 \tightlist
 \item
-\item
-  --
 \end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 This outline assumes that \emph{every} stretch goal is achieved,
 including those that I have doubts about being able to implement.
@@ -17,14 +17,19 @@ including those that I have doubts about being able to implement.
 \textbf{39.0 - Abstract}
 
 \begin{itemize}
+\tightlist
 \item
   (Dedication)
 \item
   (Acknowledgments)
 \item
   (Abstract)
-\item
-  (Abstract) {[}39.1 - Introduction{]}{]}
+\end{itemize}
+
+\textbf{39.1 - Introduction}
+
+\begin{itemize}
+\tightlist
 \item
   \textbf{(1.1) History of digital forensics}: How did we get to the
   present state of the field? What are forensic images in the broader
@@ -44,18 +49,16 @@ including those that I have doubts about being able to implement.
 \item
   \textbf{(1.4) Research objectives}: What are the final goals of this
   thesis?
-\item
-  \textbf{(1.4) Research objectives}: What are the final goals of this
-  thesis?
-\item
-  Goals are same as described in the abstract: describe and implement a
-  modern architecture for building new forensic datasets, provide a
-  mechanism for reporting on and searching through the contents of
-  forensic images, and greatly streamline the overall process of
-  constructing a scenario around which a forensic dataset can be built.
 
   \begin{itemize}
   \tightlist
+  \item
+    Goals are same as described in the abstract: describe and implement
+    a modern architecture for building new forensic datasets, provide a
+    mechanism for reporting on and searching through the contents of
+    forensic images, and greatly streamline the overall process of
+    constructing a scenario around which a forensic dataset can be
+    built.
   \item
     ``by the conclusion of this thesis, readers will understand the
     value of synthetic images in forensic research and education, as
@@ -66,52 +69,49 @@ including those that I have doubts about being able to implement.
 \item
   \textbf{(1.5) Contribution}: Who benefits from this? What are the
   specific contributions to the field that AKF makes?
-\item
-  \textbf{(1.5) Contribution}: Who benefits from this? What are the
-  specific contributions to the field that AKF makes?
-\item
-  Will be pretty similar to the abstract - in short, it gives a
-  modernized framework that is designed to enable a larger ecosystem in
-  which AKF-generated images. This thesis contributes a framework that
-  can be used to not only vastly reduce the time spent developing new
-  datasets for research and education, but also improve the
-  discoverability of existing datasets and promote the long-term
-  development of the framework based on new advances in technology. In
-  turn, educators and researchers alike will have a greater variety in
-  the scenarios available to them\ldots{}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Will be pretty similar to the abstract - in short, it gives a
+    modernized framework that is designed to enable a larger ecosystem
+    in which AKF-generated images. This thesis contributes a framework
+    that can be used to not only vastly reduce the time spent developing
+    new datasets for research and education, but also improve the
+    discoverability of existing datasets and promote the long-term
+    development of the framework based on new advances in technology. In
+    turn, educators and researchers alike will have a greater variety in
+    the scenarios available to them\ldots{}
+  \end{itemize}
 \end{itemize}
 
 \textbf{39.2 - Literature review}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{(2.1?) Existing datasets}: What datasets (or collections of
   datasets) for digital forensics currently exist? Where do they come
   from, and what are their drawbacks?
-\item
-  \textbf{(2.1?) Existing datasets}: What datasets (or collections of
-  datasets) for digital forensics currently exist? Where do they come
-  from, and what are their drawbacks?
-\item
-  what's in here that isn't already part of 1.3? is this really
-  necessary? should 2.2 just be the entire chapter, and have it further
-  broken down?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    what's in here that isn't already part of 1.3? is this really
+    necessary? should 2.2 just be the entire chapter, and have it
+    further broken down?
+  \end{itemize}
 \item
   \textbf{(2.2) Prior synthesizers}: At a high level, what are the major
   synthesizers that have been developed in the past, and how did they
   work? Why are synthesizers used at all, and what challenges do/did
   they solve? What were their specific contributions?
-\item
-  \textbf{(2.2) Prior synthesizers}: At a high level, what are the major
-  synthesizers that have been developed in the past, and how did they
-  work? Why are synthesizers used at all, and what challenges do/did
-  they solve? What were their specific contributions?\\
-\item
-  do NOT go into low-level technical/implementation details here, that's
-  for the future chapters
 
   \begin{itemize}
   \tightlist
+  \item
+    do NOT go into low-level technical/implementation details here,
+    that's for the future chapters
   \item
     should contain similar content to the \textbf{CS 650 paper}
 
@@ -129,6 +129,7 @@ including those that I have doubts about being able to implement.
 \textbf{39.3 - Architecture and design}
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{(3.1) Motivation:} Why reinvent the wheel (again)? (The answer
   is that none of the existing synthesizers make use of modern Python
@@ -136,21 +137,15 @@ including those that I have doubts about being able to implement.
   support a community-driven approach to maintaining the synthesizer. on
   top of that, they don't use CASE and use non-standardized output
   formats\ldots)
-\item
-  \textbf{(3.1) Motivation:} Why reinvent the wheel (again)? (The answer
-  is that none of the existing synthesizers make use of modern Python
-  features or best practices, and lack the interfaces necessary to
-  support a community-driven approach to maintaining the synthesizer. on
-  top of that, they don't use CASE and use non-standardized output
-  formats\ldots)
-\item
-  in other words, what qualities did we observe from existing
-  synthesizers that made it difficult to simply adapt or modify them,
-  and completely build a new one from scratch instead? why did these
-  qualities make it difficult to achieve the goals outlined in 1.4/1.5?
 
   \begin{itemize}
   \tightlist
+  \item
+    in other words, what qualities did we observe from existing
+    synthesizers that made it difficult to simply adapt or modify them,
+    and completely build a new one from scratch instead? why did these
+    qualities make it difficult to achieve the goals outlined in
+    1.4/1.5?
   \item
     can be merged with the literature review if necessary\ldots{}
   \item
@@ -168,15 +163,13 @@ including those that I have doubts about being able to implement.
   designed to do? What technologies, such as hypervisors, do we depend
   on? What is each of these modules' roles, and how do they feed into
   other roles?
-\item
-  \textbf{(3.2) Overview} : At a high level, what modules (or group of
-  modules) do we need to implement for a synthesizer to do what it is
-  designed to do? What technologies, such as hypervisors, do we depend
-  on? What is each of these modules' roles, and how do they feed into
-  other roles?
-\item
-  in other words, explain the role of \texttt{akflib}, the output and
-  validation modules, etc
+
+  \begin{itemize}
+  \tightlist
+  \item
+    in other words, explain the role of \texttt{akflib}, the output and
+    validation modules, etc
+  \end{itemize}
 \end{itemize}
 
 All following sections, except for \textbf{39.8 - Future work} and
@@ -188,6 +181,7 @@ the big colored boxes in the \textbf{Architecture} diagram.
 hypervisors, and the agent system)
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{(4.1) Overview}: What options exist for generating artifacts
   as part of a scenario dataset? How do each of them work, at a
@@ -197,16 +191,12 @@ hypervisors, and the agent system)
   \textbf{(4.2) Agentless artifact generation}: What's the role of a
   hypervisor in AKF, and what features can it provide to help facilitate
   artifact generation when we don't want to use an agent?
-\item
-  \textbf{(4.2) Agentless artifact generation}: What's the role of a
-  hypervisor in AKF, and what features can it provide to help facilitate
-  artifact generation when we don't want to use an agent?
-\item
-  important to note here that the current implementation will only use
-  VirtualBox, even if Qemu has been used elsewhere before
 
   \begin{itemize}
   \tightlist
+  \item
+    important to note here that the current implementation will only use
+    VirtualBox, even if Qemu has been used elsewhere before
   \item
     \textbf{Do hypervisors belong elsewhere?} seems like an odd place to
     introduce them, since we almost certainly will need to explain them
@@ -223,33 +213,34 @@ hypervisors, and the agent system)
   \textbf{(4.4) Physical artifact generation}: How do we
   deterministically stick things in the slack space of a file in a
   filesystem? More broadly, how do we ``poof'' data onto a disk?
-\item
-  \textbf{(4.4) Physical artifact generation}: How do we
-  deterministically stick things in the slack space of a file in a
-  filesystem? More broadly, how do we ``poof'' data onto a disk? {[}39.5
-  - Output and validation{]}{]}
-\item
-  \textbf{(5.1) Overview:} Great, so we've figured out how to generate
-  artifacts. What are the actual file outputs that need to be generated
-  by the framework (both core outputs and metadata)? Why are these
-  important, and what are their actual uses in industry?
+\end{itemize}
+
+\textbf{39.5 - Output and validation}
+
+\begin{itemize}
+\tightlist
 \item
   \textbf{(5.1) Overview:} Great, so we've figured out how to generate
   artifacts. What are the actual file outputs that need to be generated
   by the framework (both core outputs and metadata)? Why are these
   important, and what are their actual uses in industry?
-\item
-  for metadata, the usefulness is in developing a comprehensive
-  ecosystem and making AKF-generated images machine searchable, so
-  researchers know what things of interest are in their disk -- even if
-  the original creator didn't think that stuff was significant, and
-  therefore didn't include it in any human-generated data - this
-  statement probably belongs in 5.3. this is briefly alluded to in the
-  \textbf{60 - Classes/61 - Old/CS 704/Final Project/Final
-  paper\textbar CS 704 Final paper}
 
   \begin{itemize}
   \tightlist
+  \item
+    for metadata, the usefulness is in developing a comprehensive
+    ecosystem and making AKF-generated images machine searchable, so
+    researchers know what things of interest are in their disk -- even
+    if the original creator didn't think that stuff was significant, and
+    therefore didn't include it in any human-generated data
+
+    \begin{itemize}
+    \tightlist
+    \item
+      this statement probably belongs in 5.3. this is briefly alluded to
+      in the \textbf{60 - Classes/61 - Old/CS 704/Final Project/Final
+      paper\textbar CS 704 Final paper}
+    \end{itemize}
   \item
     in incident response, you're not getting the whole picture if you're
     just looking at disk images or just network captures! so you
@@ -272,17 +263,16 @@ hypervisors, and the agent system)
   similar to the ones in CFReDS? should the work regarding \textbf{60 -
   Classes/61 - Old/CS 704/Final Project/Final paper\textbar fastlabel}
   be here?
-\item
-  \textbf{(5.4?) Human-readable reporting}: idk if this will be its own
-  section, or it might just end up being a mention in 5.3 or
-  \textbf{39.8 - Future work}; what about human-readable answer keys,
-  similar to the ones in CFReDS? should the work regarding \textbf{60 -
-  Classes/61 - Old/CS 704/Final Project/Final paper\textbar fastlabel}
-  be here? {[}39.6 - Building scenarios{]}{]} (ok, so now you have all
-  of these systems to manipulate a virtual machine into automating a
-  bunch of user actions in a deterministic manner with comprehensive
-  logging. but how do you actually invoke these systems? and how do you
-  generate the artifacts themselves, to be placed onto the device?)
+\end{itemize}
+
+\textbf{39.6 - Building scenarios} (ok, so now you have all of these
+systems to manipulate a virtual machine into automating a bunch of user
+actions in a deterministic manner with comprehensive logging. but how do
+you actually invoke these systems? and how do you generate the artifacts
+themselves, to be placed onto the device?)
+
+\begin{itemize}
+\tightlist
 \item
   \textbf{(6.1) Overview/imperative usage}: What does basic (imperative)
   usage of AKF look like? How do you set up the Python library,
@@ -306,17 +296,15 @@ hypervisors, and the agent system)
   things like images, email conversations, and other things that may be
   easy to automate, but difficult to make by hand (but we still want
   these in the image). How can generative AI help solve this issue?
-\item
-  \textbf{(6.4) Using generative AI for individual artifacts:} Even if
-  we can automate everything, this still doesn't solve the issue of
-  things like images, email conversations, and other things that may be
-  easy to automate, but difficult to make by hand (but we still want
-  these in the image). How can generative AI help solve this issue?
-\item
-  for example: the Data Leakage case has \emph{very} brief email
-  conversations, and not a lot of noise to go along with it. there
-  should be more noise, possibly involving conversations with other
-  people.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    for example: the Data Leakage case has \emph{very} brief email
+    conversations, and not a lot of noise to go along with it. there
+    should be more noise, possibly involving conversations with other
+    people.
+  \end{itemize}
 \end{itemize}
 
 \textbf{39.7 - Evaluation and observations} (if we end up with datasets
@@ -325,6 +313,7 @@ to describe observations. should follow
 \cite{mochEvaluatingForensicImage2012} somewhat closely)
 
 \begin{itemize}
+\tightlist
 \item
   \textbf{(7.1) Scenario}: What class was this used in, and elements of
   the class are worth mentioning? What was the scenario we gave
@@ -336,18 +325,13 @@ to describe observations. should follow
   analyze the scenario? If there were specific items that we expected
   students to find, how many of these items were identified in the
   reports that students created?
-\item
-  \textbf{(7.2) Student analysis:} How well were students able to
-  analyze the scenario? If there were specific items that we expected
-  students to find, how many of these items were identified in the
-  reports that students created?
-\item
-  \emph{Extreme} stretch goal - this only covers the student side of
-  things. What about the instructor side of things? Do they think AKF
-  covers their use cases, and is it as easy to use as I claim it is?
 
   \begin{itemize}
   \tightlist
+  \item
+    \emph{Extreme} stretch goal - this only covers the student side of
+    things. What about the instructor side of things? Do they think AKF
+    covers their use cases, and is it as easy to use as I claim it is?
   \item
     Wouldn't it be great to have a full ransomware incident response
     scenario, where all of network, memory, and disk images are
@@ -361,13 +345,12 @@ to describe observations. should follow
   AKF being left behind? Did students like the alternative scenario
   compared to an existing, human-crafted scenario? What did students
   like or dislike?
-\item
-  \textbf{(7.3) Findings/observations}: Were there other things of note,
-  like the students noticing traces (\textbf{Synthesis pollution}) of
-  AKF being left behind? Did students like the alternative scenario
-  compared to an existing, human-crafted scenario? What did students
-  like or dislike? {[}39.8 - Future work{]}{]} (structure depends a lot
-  on what i simply don't get done)
+\end{itemize}
+
+\textbf{39.8 - Future work} (structure depends a lot on what i simply
+don't get done)
+
+\begin{itemize}
 \item
   \textbf{(8.1) Integration of recent advancements}: stuff like Operator
   that has significant, material value and does something I don't, but
@@ -378,18 +361,15 @@ to describe observations. should follow
   \textbf{(8.2) Framework limitations}: the ``smaller'' things described
   below
 \item
-  \textbf{(8.2) Framework limitations}: the ``smaller'' things described
-  below OpenAI's Operator is a thing now
+  OpenAI's Operator is a thing now
 \item
   The smaller things that don't deserve extensive focus
-\item
-  The smaller things that don't deserve extensive focus
-\item
-  Mobile device support (though \cite{demmelDataSynthesisGoing2024}
-  does some work towards this)
 
   \begin{itemize}
   \tightlist
+  \item
+    Mobile device support (though
+    \cite{demmelDataSynthesisGoing2024} does some work towards this)
   \item
     Handling other operating systems (simply because there's no time,
     not because it's not possible with the current architecture and
@@ -408,9 +388,12 @@ to describe observations. should follow
   Any discussions with the folks over at CFReDS/Josh Brunty/Coach Morgan
 \item
   The ``creator'' side of things - does AKF suck to use? (see 7.2)
-\item
-  The ``creator'' side of things - does AKF suck to use? (see 7.2)
-  {[}39.9 - Conclusion{]}{]}
+\end{itemize}
+
+\textbf{39.9 - Conclusion}
+
+\begin{itemize}
+\tightlist
 \item
   I conclude that this took a lot of time, and it is valuable, and i
   hope it will be useful to the greater forensic community because x, y,

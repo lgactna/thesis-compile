@@ -113,6 +113,7 @@ possible. To do so, a synthesizer should aim to achieve two separate
 goals:
 
 \begin{itemize}
+\tightlist
 \item
   A synthesizer should be able to replicate the features of existing
   datasets, provided that the underlying technologies are still
@@ -121,26 +122,22 @@ goals:
   A synthesizer should be able to account for developments in operating
   systems, applications, or other technologies, without requiring
   significant changes to the underlying architecture.
-\item
-  A synthesizer should be able to account for developments in operating
-  systems, applications, or other technologies, without requiring
-  significant changes to the underlying architecture. ndeed, the
-  synthesizers described in the following section have explicitly
-  addressed these two concerns. For example, many of these synthesizers
-  have focused on implementing features that reflect the qualities of
-  real-world datasets. This includes the ability to execute malware
-  samples in a virtualized environment, send emails to arbitrary email
-  servers, and insert data on removable drives -- all of which generate
-  forensic artifacts that have been used as key datasets in
-  forensics-related research as shown here. Similarly, modern
-  synthesizers are capable of larger generating disk images, network
-  captures, and volatile memory dumps (in addition to extracting
-  specific artifacts, such as application-specific files), which are
-  also reflective of the focus of existing datasets. The gradual growth
-  in the ability of synthesizers to generate various artifacts can be
-  seen in the specific contributions made by each synthesizer in
-  \ref{analysis-of-existing-synthesizers}.
 \end{itemize}
+
+Indeed, the synthesizers described in the following section have
+explicitly addressed these two concerns. For example, many of these
+synthesizers have focused on implementing features that reflect the
+qualities of real-world datasets. This includes the ability to execute
+malware samples in a virtualized environment, send emails to arbitrary
+email servers, and insert data on removable drives -- all of which
+generate forensic artifacts that have been used as key datasets in
+forensics-related research as shown here. Similarly, modern synthesizers
+are capable of larger generating disk images, network captures, and
+volatile memory dumps (in addition to extracting specific artifacts,
+such as application-specific files), which are also reflective of the
+focus of existing datasets. The gradual growth in the ability of
+synthesizers to generate various artifacts can be seen in the specific
+contributions made by each synthesizer in \ref{analysis-of-existing-synthesizers}.
 
 Of note is the generation of similar datasets that typically involve
 significant human interaction, such as public email distribution lists,
@@ -245,6 +242,7 @@ notable aspects of each of these frameworks relative to each other is
 provided below:
 
 \begin{itemize}
+\tightlist
 \item
   \emph{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023} introduced the
   use of the VirtualBox SDK to automate various operations, forming the
@@ -289,26 +287,18 @@ provided below:
   artifacts), with a focus on a modular architecture. A variant focusing
   on Android artifact generation was developed in 2024
   \cite{demmelDataSynthesisGoing2024}.
-\item
-  \emph{ForTrace} \cite{gobelForTraceHolisticForensic2022} is the
-  most recently developed synthesizer, which directly builds upon
-  \emph{hystck} by providing volatile memory captures (alongside disk
-  and network captures) in addition to various other new features (such
-  as the ability to execute PowerShell scripts to create Windows
-  artifacts), with a focus on a modular architecture. A variant focusing
-  on Android artifact generation was developed in 2024
-  \cite{demmelDataSynthesisGoing2024}. learly, a considerable amount
-  of work has been done in exploring ways to streamline the process of
-  developing images, although the availability and functionality of each
-  framework varies greatly. Notably, with the exception of
-  \emph{ForTrace}, none of these works are direct extensions of past
-  works, implying that at a fundamental level, it was necessary for
-  frameworks to be developed from scratch to support the framework
-  authors' needs. This is not directly stated in any of these works with
-  the exception of \emph{hystck}
-  \cite{gobelNovelApproachGenerating2020}, though it can be
-  reasonably concluded that the lack of maturity, availability, and
-  maintenance of prior works was a contributing factor to the
-  independent development of the other frameworks. This will be
-  addressed in more detail in \textbf{39.3 - Architecture and design}.
 \end{itemize}
+
+Clearly, a considerable amount of work has been done in exploring ways
+to streamline the process of developing images, although the
+availability and functionality of each framework varies greatly.
+Notably, with the exception of \emph{ForTrace}, none of these works are
+direct extensions of past works, implying that at a fundamental level,
+it was necessary for frameworks to be developed from scratch to support
+the framework authors' needs. This is not directly stated in any of
+these works with the exception of \emph{hystck}
+\cite{gobelNovelApproachGenerating2020}, though it can be reasonably
+concluded that the lack of maturity, availability, and maintenance of
+prior works was a contributing factor to the independent development of
+the other frameworks. This will be addressed in more detail in
+\textbf{39.3 - Architecture and design}.

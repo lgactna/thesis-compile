@@ -36,24 +36,23 @@ to operate, as well as what specific forms of data are accepted by these
 synthesizers. In particular, we address the following questions:
 
 \begin{itemize}
+\tightlist
 \item
   How do users define the high-level ``scenario'', or sequence of
   operations that the synthesizer should take to form the image?
 \item
   How do users pass data, such as images to be placed or emails to be
   sent, into the synthesizer?
-\item
-  How do users pass data, such as images to be placed or emails to be
-  sent, into the synthesizer? or many of the frameworks created in the
-  last decade, users typically define scenarios by using a Python
-  library to interact with the framework, setting up the virtualized
-  environment and perform high-level actions on the environment. This
-  abstracts the underlying calls to the virtualized environment away
-  from the user. This code-based approach represents an
-  \emph{imperative} strategy to scenario creation, where the user
-  describes how the image should be created by describing the exact
-  order and methodology by which actions should be taken.
 \end{itemize}
+
+For many of the frameworks created in the last decade, users typically
+define scenarios by using a Python library to interact with the
+framework, setting up the virtualized environment and perform high-level
+actions on the environment. This abstracts the underlying calls to the
+virtualized environment away from the user. This code-based approach
+represents an \emph{imperative} strategy to scenario creation, where the
+user describes how the image should be created by describing the exact
+order and methodology by which actions should be taken.
 
 It is worth noting that, like many automation frameworks such as
 Playwright \cite{MicrosoftPlaywrightpython2025}, the language used
@@ -127,6 +126,7 @@ users still need to define all of the data that they want to plant. For
 example:
 
 \begin{itemize}
+\tightlist
 \item
   If a user wants to place 100 photos on the drive to simulate real
   usage, the user needs to pass in 100 realistic images;
@@ -138,24 +138,20 @@ example:
   form of corporate sabotage, the user would need to generate a variety
   of Microsoft Office, PDF, or other files in these formats ahead of
   time.
-\item
-  If a user wants to generate ``proprietary'' documents to emulate some
-  form of corporate sabotage, the user would need to generate a variety
-  of Microsoft Office, PDF, or other files in these formats ahead of
-  time. he net result is that although creating images for the purposes
-  of tool validation and research can be accomplished with existing
-  frameworks, creating realistic images that are more reflective of
-  real-world scenarios that a forensic analyst might encounter still
-  requires extensive work. While true that images should often be small
-  enough in a classroom setting to allow the student to explore a single
-  specific technique, real-world scenarios encountered by analysts are
-  typically not limited by time or size. An analyst might have to deal
-  with a drive used over the course of a decade to store many
-  photographs and send many messages. Such scenarios are valuable
-  training material for courses that encapsulate a long period of
-  forensic study, allowing a student to apply many different techniques
-  in reconstructing a large-scale scenario.
 \end{itemize}
+
+The net result is that although creating images for the purposes of tool
+validation and research can be accomplished with existing frameworks,
+creating realistic images that are more reflective of real-world
+scenarios that a forensic analyst might encounter still requires
+extensive work. While true that images should often be small enough in a
+classroom setting to allow the student to explore a single specific
+technique, real-world scenarios encountered by analysts are typically
+not limited by time or size. An analyst might have to deal with a drive
+used over the course of a decade to store many photographs and send many
+messages. Such scenarios are valuable training material for courses that
+encapsulate a long period of forensic study, allowing a student to apply
+many different techniques in reconstructing a large-scale scenario.
 
 With recent advancements in generative AI, popularized by services such
 as Midjourney and ChatGPT, it is now significantly easier to generate
