@@ -20,7 +20,7 @@ def process_markdown_text(text: str) -> str:
     text = re.sub(r">.*", "", text)
     
     # Remove everything inside code blocks, or triple backticks
-    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL) 
+    text = re.sub(r"```.*?```", "\n\nREPLACE CODEBLOCK HERE\n\n", text, flags=re.DOTALL) 
     
     # Ensure that bulleted lists have two line breaks before and after
     text = re.sub(r"(.)\n{1,2}((- .*$\n)+)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE)

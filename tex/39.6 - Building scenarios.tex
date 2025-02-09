@@ -1,0 +1,205 @@
+This chapter addresses the modules responsible for allowing users to
+invoke the framework, both through a standard Python script and through
+a high-level YAML file. It also addresses the generative AI modules that
+can assist a user in building a scenario, as depicted in the partial
+architectural diagram below.
+
+!\textbf{39.6 - Building scenarios 2025-02-08 17.23.40.excalidraw}
+
+At this point, we have provided the implementations for automating
+artifact generation in a near-deterministic manner with comprehensive
+logging and reporting. However, there is still the challenge of exposing
+this functionality in a user-friendly manner. Furthermore, even if the
+\emph{process} of placing artifacts or performing actions can be
+simplified, the challenge of deciding what actions to perform still
+remains.
+
+It is important to note that it is still largely the responsibility of
+instructors to provide the actual background noise to populate the
+images with. Although the high-level languages provided by many of these
+frameworks make it easy to place files at desired locations or visit
+websites that are part of a scenario, these must all be defined and
+created ahead of time.
+
+This chapter addresses the challenges of creating background noise and
+providing simple APIs for complex GUI-driven applications. More
+precisely, we address two questions -- how do we invoke AKF's automation
+systems, and how does AKF assist a user in building a scenario? Here, we
+explore AKF's imperative and declarative APIs, as well as the viability
+of using large language models (LLMs) to assist in building individual
+files and complete scenario descriptions.
+
+\subsection{6.1 - Background}\label{background}
+
+We begin by analyzing how synthesizers accept user input to decide how
+to operate, as well as what specific forms of data are accepted by these
+synthesizers. In particular, we address the following questions:
+
+\begin{itemize}
+\item
+  How do users define the high-level ``scenario'', or sequence of
+  operations that the synthesizer should take to form the image?
+\item
+  How do users pass data, such as images to be placed or emails to be
+  sent, into the synthesizer?
+\item
+  How do users pass data, such as images to be placed or emails to be
+  sent, into the synthesizer? or many of the frameworks created in the
+  last decade, users typically define scenarios by using a Python
+  library to interact with the framework, setting up the virtualized
+  environment and perform high-level actions on the environment. This
+  abstracts the underlying calls to the virtualized environment away
+  from the user. This code-based approach represents an
+  \emph{imperative} strategy to scenario creation, where the user
+  describes how the image should be created by describing the exact
+  order and methodology by which actions should be taken.
+\end{itemize}
+
+It is worth noting that, like many automation frameworks such as
+Playwright \cite{MicrosoftPlaywrightpython2025}, the language used
+to interact with the synthesizer's API does not need to match the
+language used to implement the synthesizer itself (although this is
+often the case). For example, Playwright itself is implemented in
+TypeScript, and therefore began with a Node.JS API. Today, Playwright
+provides APIs in Python, Java, and C\#.
+
+In contrast, custom scenario formats provided by \emph{D-FET}
+\cite{williamCloudbasedDigitalForensics2011}, \emph{SFX}
+\cite{russellForensicImageDescription2012}, and Yannikos
+\cite{yannikosDataCorporaDigital2014} follow a \emph{declarative}
+strategy. Here, a custom high-level language describes what the final
+state of the image should be. For example, consider the following
+example \emph{SFX} code taken from
+\cite{russellForensicImageDescription2012}, in which a partition is
+created on which a 64-bit version of Windows 7 is installed and a user
+called ``Gordon'' uses Firefox to browse to the internet:
+
+REPLACE CODEBLOCK HERE
+
+The same might be partially expressed in \emph{ForTrace} as the
+following, excluding additional overhead for ground truth generation:
+
+REPLACE CODEBLOCK HERE
+
+Note that \emph{hystck} - and by extension, \emph{ForTrace} - also
+allows users to express scenarios as YAML files, such that both a
+declarative and an imperative approach to defining scenarios is
+available. This reduces the technical difficulty of using the framework,
+while still allowing users experienced with both Python and the
+framework to perform lower-level customization as needed. This
+highlights the fact that both declarative and imperative approaches can
+be used simultaneously; in particular, it demonstrates that
+declarative-to-imperative translators can be written to support
+arbitrary declarative languages, such as those of both SFX and ForTrace.
+While not explored in this thesis, it is also worth noting the GUI-based
+interfaces provided by \textbf{Yannikos et al.} and \textbf{ForGe} for
+building scenarios.
+
+\subsection{6.2 - Setup and imperative
+usage}\label{setup-and-imperative-usage}
+
+Like many of its predecessors, AKF implements its functionality and
+exposes its API in the same language -- Python 3. There are numerous
+advantages to a Python-based API; besides the low difficulty of setting
+up and using Python, its rich ecosystem allows scenarios to be extended
+through the use of other libraries from the Python ecosystem. For
+example, if a user wanted to conditionally execute certain parts of a
+scenario by testing if a particular service is currently online, a user
+could use the \emph{Requests} library \cite{Requests31Documentation}
+to issue an HTTP request out-of-band before doing the same using
+synthesizer-provided routines in the virtualized environment.
+
+\subsection{6.3 - Declarative usage}\label{declarative-usage}
+
+\subsubsection{6.3.1 - Overview}\label{overview}
+
+\subsubsection{6.3.2 - The AKF declarative
+syntax}\label{the-akf-declarative-syntax}
+
+\subsection{6.4 - Using generative AI for individual
+artifacts}\label{using-generative-ai-for-individual-artifacts}
+
+As it currently stands, users of synthesizers must still perform a
+significant amount of work towards generating the artifacts to be
+planted. While the process of generating an image based on some
+predefined scenario has been streamlined through existing synthesizers,
+users still need to define all of the data that they want to plant. For
+example:
+
+\begin{itemize}
+\item
+  If a user wants to place 100 photos on the drive to simulate real
+  usage, the user needs to pass in 100 realistic images;
+\item
+  If a user wants to simulate an email or other online conversation, the
+  user needs to pass in the entirety of the conversation to simulate;
+\item
+  If a user wants to generate ``proprietary'' documents to emulate some
+  form of corporate sabotage, the user would need to generate a variety
+  of Microsoft Office, PDF, or other files in these formats ahead of
+  time.
+\item
+  If a user wants to generate ``proprietary'' documents to emulate some
+  form of corporate sabotage, the user would need to generate a variety
+  of Microsoft Office, PDF, or other files in these formats ahead of
+  time. he net result is that although creating images for the purposes
+  of tool validation and research can be accomplished with existing
+  frameworks, creating realistic images that are more reflective of
+  real-world scenarios that a forensic analyst might encounter still
+  requires extensive work. While true that images should often be small
+  enough in a classroom setting to allow the student to explore a single
+  specific technique, real-world scenarios encountered by analysts are
+  typically not limited by time or size. An analyst might have to deal
+  with a drive used over the course of a decade to store many
+  photographs and send many messages. Such scenarios are valuable
+  training material for courses that encapsulate a long period of
+  forensic study, allowing a student to apply many different techniques
+  in reconstructing a large-scale scenario.
+\end{itemize}
+
+With recent advancements in generative AI, popularized by services such
+as Midjourney and ChatGPT, it is now significantly easier to generate
+realistic images and text content from short, high-level descriptions.
+Additionally, various services exist for creating realistic audio and
+video files that emulate a particular person's voice or facial
+movements; these can be used to generate additional scenario content of
+interest, especially if the scenario is based on a real-world event.
+
+It holds that generative AI can be used to quickly populate forensic
+datasets with realistic conversations and images consistent with an
+arbitrary scenario. For example, a corporate espionage case could be
+built by providing a large language model such as ChatGPT with prompts
+to describe complex machinery in both a technical writing and a
+conversational style. Simultaneously, similar prompts can be passed into
+an image synthesizer such as Midjourney to produce related images. The
+images and text produced can then be used to create documents describing
+an unreleased product of high value, providing a pipeline through which
+significant artifacts can be planted onto a forensic image.
+
+This idea can be extended further by training models on specific
+datasets; for example, if an instructor wished to create a fictional
+scenario in which a user frequently interacts with users of a particular
+online community, a large language model could be trained on available
+conversations to provide a degree of realism to the scenario. However,
+as mentioned before, this faces the challenges of ownership, privacy,
+and legality behind works derived from publicly available information
+that was (likely) not published with the expectation of its usage in an
+AI model.
+
+It is important to note that the inclusion of generative AI into
+synthesizers does not necessarily require deep integration with the
+framework itself. Many existing frameworks could be extended to use
+documents, images, or other data sourced from generative AI instead of
+user-defined files without the need to change the architecture of the
+framework. However, as advancements in AI continue, it may make sense to
+directly integrate AI-driven actions into synthesizers. For example,
+there may come a time in which synthesizers can be provided natural
+language prompts (such as ``Open Firefox and browse to news-related
+websites'') that directly lead to the generation of relevant artifacts,
+without the need to explicitly program the process of browsing to a
+website in advance.
+
+\subsection*{6.5 - Using LLMs for high-level
+scenarios}\label{using-llms-for-high-level-scenarios}
+\addcontentsline{toc}{subsection}{6.5 - Using LLMs for high-level
+scenarios}

@@ -1,0 +1,305 @@
+We begin with a literature review of two topics: the publicly available
+forensic datasets that currently exist and the contributions of prior
+synthesizers. In particular, we describe the datasets that currently
+exist for digital forensics in greater detail, as well as gaps
+identified in these datasets by various authors. This will provide
+context for both the need of synthesizers, as well as the specific gaps
+that these synthesizers have gradually filled.
+
+\subsection{2.1 - Existing forensic
+corpora}\label{existing-forensic-corpora}
+
+Forensic datasets have been available for public use (or by request)
+since the early days of the digital forensics field, though their
+sourcing and qualities have changed greatly over time. This is explored
+in far greater detail by Grajeda et al., who performed a survey of over
+700 research articles to identify the various datasets used by the
+digital forensics field over time. However, it is still important to
+recognize certain datasets identified by prior literature as it is
+relevant to synthesizers.
+
+Early datasets were largely derived from real sources, whether made
+available to the public or otherwise. The earliest collections of real
+datasets include the used hard drives collected by Garfinkel from 1998
+to 2006 and the Enron email corpus obtained during the federal
+investigation of Enron \cite{garfinkelForensicCorporaChallenge2007}.
+Other early real datasets identified by Grajeda et al.~include the
+public Apache mailing archive, the Reuters news corpora, and various
+facial recognition collections such as the MORPH corpus, all of which
+were made in the early to mid-2000s
+\cite{yannikosDataCorporaDigital2014,grajedaAvailabilityDatasetsDigital2017}.
+
+There were also a variety of synthetic datasets constructed during this
+early period. This includes the network captures obtained from simulated
+attacks conducted by the MIT Lincoln Laboratory from 1998 to 2000
+\cite{garfinkelForensicCorporaChallenge2007}, as well as standalone
+datasets used for tool validation developed as part of the early CFTT
+program developed by NIST. Notably, some synthetic datasets during this
+period were generated as part of challenges, such as those produced for
+DFRWS conferences, which are noted as being difficult for students to
+solve \cite{woodsCreatingRealisticCorpora2011}.
+
+The variety of forensic datasets increased considerably towards the late
+2000s, which can be credited to both the overall growth of the field
+(including the broader field of incident response) and computing as a
+whole. Various notable sources described by Grajeda et al.~include
+malware samples discovered ``in the wild'', large natural language
+collections from multiple languages, and file-specific datasets such as
+collections of Microsoft Office files. It was also during this time that
+non-disk datasets began to be more prevalent, such as volatile memory
+dumps and network captures. Although not explored by this thesis in
+great detail, mobile datasets -- such as smartphone disk images, mobile
+malware and applications, and SIM card images -- grew in prevalence as
+well.
+
+Many of these datasets were not maintained as part of a larger
+collection of datasets with the explicit intent of providing them for
+digital forensics research. This began to change towards the late 2000s;
+Garfinkel's collection would eventually evolve into the Real Data
+Corpus, growing to 30 terabytes by 2013
+\cite{garfinkelBringingScienceDigital2009a,yannikosDataCorporaDigital2014}.
+The collection then included hard disk images, flash drive images, and a
+variety of optical discs sourced from real-world usage, requiring
+institutional review board approval to use. This collection would
+eventually be part of the Digital Corpora platform, which includes a set
+of purely synthetic datasets. Separately, NIST began developing the CFTT
+and CFReDS projects, both of which provide forensic datasets for a
+variety of purposes. Digital Corpora, CFTT, and CFReDS are actively
+maintained as of writing.
+
+There are other datasets that are rather unique in nature, and are
+maintained as part of a larger niche collection. Collections of malware
+samples have grown significantly in size, in part because of the modern
+threat intelligence ecosystem with platforms such as VirusTotal. There
+exists datasets focusing on the dark web, such as those operating on the
+Tor network, including ``black market'' sites on which illegal goods are
+bought and sold. Finally, there exist network captures from various
+novel sources, including various iterations of the Collegiate Cyber
+Defense Competition and various network captures from university IT
+departments \cite{grajedaAvailabilityDatasetsDigital2017}.
+
+These datasets span a wide range of technologies -- in particular,
+versions of the same technology -- that require different methodologies
+to effectively analyze. In particular, there is the challenge of making
+datasets available that reflect current advancements in technology, such
+as new operating system versions or new applications. For example,
+instant messaging applications have changed considerably over the
+history of the field, ranging from MSN Messenger in the early 2000s to
+Skype, Discord, Telegram, Signal, Slack, and more. Artifacts from each
+of these applications must be handled differently, even if the
+underlying service provided is largely the same. Similarly, the
+strategies for analyzing Windows artifacts have changed significantly
+from version to version, as new registry keys become relevant in
+analyzing applications while others become unused.
+
+It is this gradual ``aging'' of datasets, in which their relevance
+degrades over time, that contributes to the continuous need for new
+datasets. Furthermore, there have been a broad variety of datasets that
+have proved to be relevant in digital forensics research, even if not
+typical or immediately evident. Indeed, this is one of the reasons
+identified by Grajeda et al.~for the manual development of new datasets
+by research authors; it would often be the case that a modern dataset
+simply did not exist for their needs. The other motivation is that the
+dataset used was never made public, either due to the author not having
+the resources to distribute the dataset themselves, or because there
+were legal or privacy concerns.
+
+How are these datasets relevant to the development of synthesizers?
+Clearly, there has been a broad variety of datasets that have proved to
+be relevant in digital forensics research, even if not immediately
+evident. It should be the goal, then, that any effort to streamline the
+develop of forensic datasets be able to cover as many use cases as
+possible. To do so, a synthesizer should aim to achieve two separate
+goals:
+
+\begin{itemize}
+\item
+  A synthesizer should be able to replicate the features of existing
+  datasets, provided that the underlying technologies are still
+  available; and
+\item
+  A synthesizer should be able to account for developments in operating
+  systems, applications, or other technologies, without requiring
+  significant changes to the underlying architecture.
+\item
+  A synthesizer should be able to account for developments in operating
+  systems, applications, or other technologies, without requiring
+  significant changes to the underlying architecture. ndeed, the
+  synthesizers described in the following section have explicitly
+  addressed these two concerns. For example, many of these synthesizers
+  have focused on implementing features that reflect the qualities of
+  real-world datasets. This includes the ability to execute malware
+  samples in a virtualized environment, send emails to arbitrary email
+  servers, and insert data on removable drives -- all of which generate
+  forensic artifacts that have been used as key datasets in
+  forensics-related research as shown here. Similarly, modern
+  synthesizers are capable of larger generating disk images, network
+  captures, and volatile memory dumps (in addition to extracting
+  specific artifacts, such as application-specific files), which are
+  also reflective of the focus of existing datasets. The gradual growth
+  in the ability of synthesizers to generate various artifacts can be
+  seen in the specific contributions made by each synthesizer in
+  \ref{analysis-of-existing-synthesizers}.
+\end{itemize}
+
+Of note is the generation of similar datasets that typically involve
+significant human interaction, such as public email distribution lists,
+photographs of human faces, and other transcripts of conversations.
+While this has not been explored in significant detail by prior
+synthesizers, it is explored as part of the generative AI work done as
+part of AKF in \ref{analysis-of-existing-synthesizers}\label{analysis-of-existing-synthesizers}
+
+REPLACE CODEBLOCK HERE
+
+Numerous frameworks have been built over the last two decades that aim
+to significantly reduce the effort involved in creating synthetic images
+from scratch by automating various application- and OS-specific actions
+at specified locations and times. The functionality and availability of
+the frameworks described in literature have varied considerably over
+time, but the goal of these frameworks has remained largely consistent:
+they all aim to provide a rapid method for instructors to develop
+forensic labs for students. Before analyzing and adapting the low-level
+implementation of synthesizers, it is best to first contextualize their
+broader contributions.
+
+The first identified effort to streamline the creation of forensic labs
+through a high-level language was published by Adelstein et al.~in 2005
+through the development of \emph{FALCON, the Framework of Laboratory
+Exercises Conducted Over Networks}
+\cite{adelsteinAutomaticallyCreatingRealistic2005}. It proposed an
+architecture for not only the automatic creation of lab exercises, but
+also their deployment to a virtual lab and the evaluation of students'
+actions compared to the ground truth. Very few details of the
+implementation are provided, though some examples of its usage are
+provided. Although not primarily a synthesizer, a related work was in
+the development of \emph{CYDEST, the CYber DEfenSe Trainer}
+\cite{bruecknerAutomatedComputerForensics2008}, which similarly
+provided complex virtualized lab environments to students via the
+internet. Again, limited implementation details are provided, and it is
+unclear if either \emph{FALCON} or \emph{CYDEST} are publicly available
+or actively maintained.
+
+\emph{Forensig2}, described by Moch and Freiling in 2009 and revisited
+in 2012, appears to be the first detailed description of an image
+synthesizer
+\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
+Operators define scenarios through a Python 2 library provided by the
+authors that abstracts various virtual machine operations (such as the
+formatting of disks, the creation of partitions, and the copying of
+files from the host to the virtual machine). Actions are performed live
+through a Qemu-based VM, with the result being a ground truth report and
+(effectively) an image to be analyzed by students. The source code for
+\emph{Forensig2} is not currently maintained and appears to be
+unavailable.
+
+The \emph{Digital Forensic Evaluation Test (D-FET)} platform described
+by William et al.~in 2011 provides a custom scripting language for users
+to define system- and user-level actions
+\cite{williamCloudbasedDigitalForensics2011}. Similar to
+\emph{FALCON} and \emph{CYDEST}, it provided virtualized labs through
+VMware ESXi. Unlike most other frameworks, it was primarily built to
+provide a platform to efficiently evaluate digital forensic tools on a
+scalable infrastructure, rather than streamline the process of building
+and distributing labs for instructors (though it is mentioned that the
+infrastructure was also used to host student labs). It is unclear if a
+public implementation is available.
+
+Russell et al.~define an XML specification, the \emph{Summarized
+Forensic XML (SFX)} language, to describe scenarios as a sequence of
+various actions on various partitions of a disk
+\cite{russellForensicImageDescription2012}. This can be passed into
+an interpreter to produce an image that can be analyzed by students.
+Besides high-level operations such as disk partitioning and file
+copying, it also provides Windows- and Linux-specific routines for
+minimizing partition sizes with the goal of reducing the ``effective''
+size of irrelevant files associated with the OS. It also briefly
+describes approaches for updating web browsers and the Windows registry
+to reflect certain actions. Limited implementation details are provided,
+and it is unclear if a public implementation is available.
+
+Yannikos et al.~define a framework for describing scenarios as a series
+of Markov chains, allowing users to graphically define scenarios through
+a graph view in which nodes and relationships can be easily edited
+\cite{yannikosDataCorporaDigital2014}. Its design makes it
+well-suited for quickly developing variations of the same scenario from
+a large dataset of available artifacts to be placed on the image, though
+it is not clear what application- or OS-specific routines are provided.
+
+The remaining frameworks are all largely similar to each other in that
+they are all built in Python, providing users with a Python library to
+define and generate scenarios. Various functions in the library provide
+abstractions to complex actions, such as Facebook browser activity or
+sending emails on the Thunderbird application. Additionally, each of
+these produce some form of detailed output that can be used as answer
+keys or ground truth in an instructional setting. A brief summary of the
+notable aspects of each of these frameworks relative to each other is
+provided below:
+
+\begin{itemize}
+\item
+  \emph{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023} introduced the
+  use of the VirtualBox SDK to automate various operations, forming the
+  basis for much of the work done as part of VMPOP.
+\item
+  \emph{ForGe} \cite{vistiAutomaticCreationComputer2015} is
+  specifically designed to generate NTFS and FAT32 images with a
+  particular focus on placing data by maintaining and serializing custom
+  data structures for supported filesystems.
+\item
+  \emph{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}
+  encompasses a novel method for the distribution of generated images in
+  an educational context, whereby ``evidence packages'' are distributed
+  to students to apply to a base image file. Then, an OS-native
+  injection tool plants relevant artifacts according to the evidence
+  package. Since the base image must only be downloaded once, each
+  scenario is significantly smaller than if distributed as standalone
+  images.
+\item
+  \emph{VMPOP} \cite{parkTREDEVMPOPCultivating2018} provides an
+  architecture and routines for relatively elaborate VirtualBox control
+  (such as attaching USB devices and starting video captures) in
+  addition to a variety of OS-specific commands. Provided Windows
+  routines include the ability to create restore points, install
+  programs, map network drives, set registry values, and more. Although
+  the architecture as a whole is platform-independent, the provided
+  implementations operate with VirtualBox and Windows.
+\item
+  \emph{hystck} \cite{gobelNovelApproachGenerating2020} provides
+  routines for automating OS- and application-specific commands through
+  YAML configuration files (passed through a generator) and/or Python
+  scripts (for low-level control). Similar to \emph{EviPlant}, it uses
+  ``differential'' images to allow lightweight scenarios to be
+  distributed relative to ``template'' images, and produces both network
+  and disk captures.
+\item
+  \emph{ForTrace} \cite{gobelForTraceHolisticForensic2022} is the
+  most recently developed synthesizer, which directly builds upon
+  \emph{hystck} by providing volatile memory captures (alongside disk
+  and network captures) in addition to various other new features (such
+  as the ability to execute PowerShell scripts to create Windows
+  artifacts), with a focus on a modular architecture. A variant focusing
+  on Android artifact generation was developed in 2024
+  \cite{demmelDataSynthesisGoing2024}.
+\item
+  \emph{ForTrace} \cite{gobelForTraceHolisticForensic2022} is the
+  most recently developed synthesizer, which directly builds upon
+  \emph{hystck} by providing volatile memory captures (alongside disk
+  and network captures) in addition to various other new features (such
+  as the ability to execute PowerShell scripts to create Windows
+  artifacts), with a focus on a modular architecture. A variant focusing
+  on Android artifact generation was developed in 2024
+  \cite{demmelDataSynthesisGoing2024}. learly, a considerable amount
+  of work has been done in exploring ways to streamline the process of
+  developing images, although the availability and functionality of each
+  framework varies greatly. Notably, with the exception of
+  \emph{ForTrace}, none of these works are direct extensions of past
+  works, implying that at a fundamental level, it was necessary for
+  frameworks to be developed from scratch to support the framework
+  authors' needs. This is not directly stated in any of these works with
+  the exception of \emph{hystck}
+  \cite{gobelNovelApproachGenerating2020}, though it can be
+  reasonably concluded that the lack of maturity, availability, and
+  maintenance of prior works was a contributing factor to the
+  independent development of the other frameworks. This will be
+  addressed in more detail in \textbf{39.3 - Architecture and design}.
+\end{itemize}

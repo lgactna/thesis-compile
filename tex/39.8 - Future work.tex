@@ -1,0 +1,53 @@
+\subsection{8.1 - Integration of recent
+advancements}\label{integration-of-recent-advancements}
+
+\begin{itemize}
+\tightlist
+\item
+  So OpenAI has their
+  \href{https://openai.com/index/introducing-operator/}{Operator} thing,
+  it's important to take note that it exists and could likely be
+  generalized to automate user actions more broadly -- however, there's
+  three things to keep in mind:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    it likely can't substitute (right now) all of the features provided
+    by AKF, such as the ability to manipulate low-level bytes or change
+    the BIOS time, even if it had full knowledge of how to interact with
+    the operating system
+  \item
+    Present models are
+    \href{https://152334h.github.io/blog/non-determinism-in-gpt-4/}{known
+    to be non-deterministic}, which is acceptable for educational
+    purposes (so long as you have a framework that can log all of the
+    actions it takes, or identify ground truth after the fact), but a
+    little less so when building images that \emph{need} to be done
+    deterministically, such as when developing images for research or
+    tool validation
+
+    \begin{itemize}
+    \tightlist
+    \item
+      not to mention that it apparently
+      \href{https://www.reddit.com/r/ChatGPTPro/comments/1i8jln3/i_am_among_the_first_people_to_gain_access_to/}{sucks
+      at doing its job right now}
+    \end{itemize}
+  \item
+    Operator is not \emph{incompatible} with our architecture or overall
+    framework -- it could likely be built as yet another \texttt{akflib}
+    module or agent module, which would give users the option to choose
+    between a simple, non-deterministic option for generating browser
+    artifacts from human language, or a more complex, deterministic
+    option by manually declaring actions.
+  \end{itemize}
+\end{itemize}
+
+\subsection{8.2 - Framework limitations and
+extensions}\label{framework-limitations-and-extensions}
+
+AKF was built with the expectation that it would be easy to maintain,
+develop, and extend. Indeed, there are several use-cases that AKF does
+not fulfill as of writing. This includes: - support for generating
+mobile device datasets, although
