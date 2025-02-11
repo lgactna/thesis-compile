@@ -1,7 +1,6 @@
 See **\_Chapters\_v2**
 
-The UNR filing guidelines (includes formatting and other fun stuff):
-https://www.unr.edu/grad/current-students/filing-guidelines
+\section{Things to address}\label{things-to-address}
 
 Things to address
 
@@ -13,7 +12,8 @@ Things to address
   sense/does it fit on the page? Do I need to describe it in greater
   detail, if I'm going to bother introducing it at all?
 \item
-  Does the introduction of each chapter work? Or is it too sudden?
+  Does the introduction of each chapter work? Or is it too sudden if
+  it's just like ``here's a diagram'', blah blah blah?
 \end{itemize}
 
 Mechanical things to address:
@@ -23,6 +23,8 @@ Mechanical things to address:
 \item
   Still need to figure out a good way to do tables, maybe we just have
   to do them manually
+\item
+  Also images, that's probably going to be kind of annoying
 \item
   All the sections called ``overview'' conflict with each other and have
   the same label defined twice, which is Bad
@@ -35,8 +37,28 @@ Mechanical things to address:
   \item
     no longer is this the case, but the spacing and sizing is kinda
     annoying
+  \item
+    ==Do code blocks also have to adhere to the double spacing
+    requirement? Do code blocks need a figure/listing number and a
+    caption? Do they even belong in the thesis body?==
+  \end{itemize}
+\item
+  Gotta standardize use of existing synthesizers - sometimes I wikilink
+  them, sometimes I just italicize them, and that's inconsistent. Do I
+  make a citation to the associated paper or repo every single time I
+  mention it?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ==``Script and italic typefaces are not acceptable except where
+    absolutely necessary i.e.~in Latin designations of species, etc.''==
+    - so no italicization for emphasis or to designate names of tools?
+    what's the convention for that?
   \end{itemize}
 \end{itemize}
+
+\section{Things to do}\label{things-to-do}
 
 Things that can be done Right Now:
 
@@ -45,15 +67,60 @@ Things that can be done Right Now:
 \item
   5.2 (core outputs)
 \item
-  8.2 (future work), things that are out of scope that we
+  \st{8.2 (future work), things that are out of scope that we
   \emph{definitely} know won't happen and therefore don't have to wait
   until we're done with implementation to figure out what didn't get
-  done
+  done}
 \item
-  9 (conclusion), it's just like one paragraph lmao
+  \st{9 (conclusion), it's just like one paragraph lmao}
+\item
+  \st{put a link to the AKF repos\ldots{} somewhere lol}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    currently it's in \autoref{contribution},
+    surely there is a better place to do it\ldots{}
+  \end{itemize}
+\item
+  apparently i just Forgot that \textbf{TraceGen} exists, so that has to
+  be included where relevant
+\item
+  have all references used that are currently in the Forensic Image
+  Synthesis library/bibliography
+\item
+  apparently i need like a glossary. and acronyms. and stuff. gotta make
+  those Soon:tm:
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+Actual things that still have to be done:
+
+\begin{itemize}
+\tightlist
+\item
+  Analysis and review of ForTrace's declarative system
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \ldots{} and implementation of a declarative-to-imperative system
+  \end{itemize}
+\item
+  Integration of the CASE libraries EVERYWHERE (ideally)
+\item
+  Physical artifact generation (can \passthrough{\lstinline!pytsk!}
+  really solve the issue of parsing and reading disk images?)
+\item
+  Finish up the VirtualBox concrete hypervisor API
+\item
+  Freshen up the Windows VM, develop a dedicated process for setting up
+  a Windows VM and installing the agent on it for use
+\item
+  All the funny AI stuff
+\end{itemize}
+
+\section{How to do the things (for the
+paper)}\label{how-to-do-the-things-for-the-paper}
 
 Compilation notes:
 
@@ -64,16 +131,50 @@ Compilation notes:
   ``chapter'' and ``section'' into the actual reference. Don't do
   hyperlinks like ``refer to chapter \textbf{39.0 - Abstract}'', just
   use ``refer to \textbf{39.0 - Abstract}''
+\item
+  I'm pretty sure figures will have to be done manually, look for
+  anything in the form \passthrough{\lstinline"!\\textbf\{...\}"}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    This also includes the rendering of figures (e.g.~excalidraw to png)
+    and uploading them into Overleaf, as an example
+  \end{itemize}
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+Order of operations:
 
-\textbf{39.0 - Abstract} Done (may require some light editing if we
-don't fulfill all the promises made in the abstract)
+\begin{itemize}
+\tightlist
+\item
+  Write the whole thing (code and paper), get the overall structure
+  approved (so answer the questions above)
+\item
+  Make sure that the bibliography file contains only used references,
+  rewrite so that this is the case
+\item
+  Do grammar checking by copying \emph{from Obsidian} to Grammarly, and
+  apply edits in Obsidian
+\item
+  Use the thesis compiler to generate
+  \passthrough{\lstinline!thesis.tex!}, copy it directly into Overleaf
+\item
+  Add/fix figures, code blocks, and other things as needed (this is the
+  most time-consuming step, and hopefully only needs to be done once -
+  use \passthrough{\lstinline!git diff!} on the base output if needed)
+\item
+  tada\ldots{}
+\end{itemize}
 
-\autoref{chapter-one} Done
+\section{Actual chapter to-dos}\label{actual-chapter-to-dos}
 
-\autoref{chapter-two} Done
+\textbf{39.0 - Abstract} (100\%) Done (may require some light editing if
+we don't fulfill all the promises made in the abstract)
+
+\autoref{chapter-one} (100\%) Done
+
+\autoref{chapter-two} (100\%) Done
 
 \begin{itemize}
 \tightlist
@@ -83,9 +184,9 @@ don't fulfill all the promises made in the abstract)
   2025-02-08
 \end{itemize}
 
-\autoref{chapter-three} Done (unless the architecture
-diagram needs to be reworked, either to fit in better with the text or
-to actually move stuff around in the diagram itself)
+\autoref{chapter-three} (100\%) Done (unless the
+architecture diagram needs to be reworked, either to fit in better with
+the text or to actually move stuff around in the diagram itself)
 
 \begin{itemize}
 \tightlist
@@ -111,7 +212,7 @@ to actually move stuff around in the diagram itself)
   \end{itemize}
 \end{itemize}
 
-\autoref{chapter-four}
+\autoref{chapter-four} (\textasciitilde75\%)
 
 \begin{itemize}
 \tightlist
@@ -137,7 +238,7 @@ to actually move stuff around in the diagram itself)
   discussed in greater detail in the context of AKF 📅 2025-02-10
 \end{itemize}
 
-\autoref{chapter-five}
+\autoref{chapter-five} (\textasciitilde30\%)
 
 \begin{itemize}
 \tightlist
@@ -155,7 +256,7 @@ to actually move stuff around in the diagram itself)
   requires implementation
 \end{itemize}
 
-\autoref{chapter-six}
+\autoref{chapter-six} (\textasciitilde20\%)
 
 \begin{itemize}
 \tightlist
@@ -171,31 +272,20 @@ to actually move stuff around in the diagram itself)
   6.5 - Describing using generative AI for scenarios
 \end{itemize}
 
-\autoref{chapter-seven}
+\autoref{chapter-seven} (0\%)
 
 \begin{itemize}
 \tightlist
 \item
-  The whole thing -- can't be worked on unless we make enough progress
+  The whole thing -- can't be worked on \emph{at all} unless we make
+  enough progress
 \end{itemize}
 
-\autoref{chapter-eight}
+\autoref{chapter-eight} (100\%) Done, except for some sentences that
+may be dependent on things getting done or not
 
-\begin{itemize}
-\tightlist
-\item
-  The whole thing -- can't be worked on until we're close to running out
-  of time and know what isn't happening
-\end{itemize}
-
-\autoref{chapter-nine}
-
-\begin{itemize}
-\tightlist
-\item
-  Should be like one paragraph or whatever, difficult to talk about
-  until we're actually there
-\end{itemize}
+\autoref{chapter-nine} (100\%) Done, except for some sentences that
+may be dependent on things getting done or not
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

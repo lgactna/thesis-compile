@@ -1,53 +1,249 @@
-\section{Integration of recent
-advancements}\label{integration-of-recent-advancements}
-
-\begin{itemize}
-\tightlist
-\item
-  So OpenAI has their
-  \href{https://openai.com/index/introducing-operator/}{Operator} thing,
-  it's important to take note that it exists and could likely be
-  generalized to automate user actions more broadly -- however, there's
-  three things to keep in mind:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    it likely can't substitute (right now) all of the features provided
-    by AKF, such as the ability to manipulate low-level bytes or change
-    the BIOS time, even if it had full knowledge of how to interact with
-    the operating system
-  \item
-    Present models are
-    \href{https://152334h.github.io/blog/non-determinism-in-gpt-4/}{known
-    to be non-deterministic}, which is acceptable for educational
-    purposes (so long as you have a framework that can log all of the
-    actions it takes, or identify ground truth after the fact), but a
-    little less so when building images that \emph{need} to be done
-    deterministically, such as when developing images for research or
-    tool validation
-
-    \begin{itemize}
-    \tightlist
-    \item
-      not to mention that it apparently
-      \href{https://www.reddit.com/r/ChatGPTPro/comments/1i8jln3/i_am_among_the_first_people_to_gain_access_to/}{sucks
-      at doing its job right now}
-    \end{itemize}
-  \item
-    Operator is not \emph{incompatible} with our architecture or overall
-    framework -- it could likely be built as yet another
-    \passthrough{\lstinline!akflib!} module or agent module, which would
-    give users the option to choose between a simple, non-deterministic
-    option for generating browser artifacts from human language, or a
-    more complex, deterministic option by manually declaring actions.
-  \end{itemize}
-\end{itemize}
-
-\section{Framework limitations and
-extensions}\label{framework-limitations-and-extensions}
-
 AKF was built with the expectation that it would be easy to maintain,
 develop, and extend. Indeed, there are several use-cases that AKF does
-not fulfill as of writing. This includes: - support for generating
-mobile device datasets, although
+not fulfill as of writing, primarily due to time constraints. Future
+work related to AKF can be divided into two groups -- tasks that
+integrate cutting-edge advancements to implement new features, and tasks
+that extend or improve existing functionality. \autoref{open-ended-automation-with-ai} describes the application of recent AI
+developments towards addressing tasks relevant to forensic dataset
+development; the remaining sections focus on extending existing concepts
+in AKF.
+
+\section{Open-ended automation with
+AI}\label{open-ended-automation-with-ai}
+
+During the development of AKF, OpenAI announced the release of Operator,
+an ``agent'' capable of automating tasks on webpages using natural
+language prompts \cite{openaiIntroducingOperator2025}. Rather than
+using a browser automation framework like Playwright or Selenium, it
+leverages its own browser to interact with webpages. This allows users
+to provide Operator with a high-level goal, which it can then convert to
+concrete webpage actions to achieve that goal.
+
+The example provided by OpenAI involves Operator searching Allrecipes
+for a clam linguine recipe, then ordering the ingredients for the
+linguine through Instacart. Various sensitive actions, such as inputting
+payment information or logging into a service, are delegated to the user
+to complete. Operator is also capable of identifying ambiguity in a task
+and prompting the user, such as asking the user which store to use for
+ordering Instacart items. This demonstrates multiple notable features
+that are relevant to forensic synthesizers; in particular, it
+demonstrates the ability to both \emph{interpret} and \emph{interact}
+with arbitrary GUIs, as well as the ability to convert human prompts
+into a sequence of automated actions that may change as the agent
+discovers new information or encounters unexpected issues.
+
+It is powered by what OpenAI calls its ``Computer-Using Agent'', or CUA,
+which is trained to interact with a virtual machine by accepting natural
+language and a screenshot of a virtual monitor
+\cite{openaiComputerUsingAgent2025}. It leverages OpenAI's GPT-4o
+model, following a three-step process in which it analyzes screenshots
+of the virtual desktop, conducts reasoning to determine the necessary
+steps to achieve a task (using its own prior context), and executes
+actions on the virtual machine. OpenAI notes that CUA can reliably
+perform simple tasks that a human would normally take, such as
+navigating to specific categories of websites or repeating UI
+interactions. However, it struggles with UIs that it has not encountered
+before and tends to be inefficient or hallucinate on more complex
+tasking.
+
+The challenge of automating open-ended tasks through AI is not new.
+Multiple benchmarks (mentioned in OpenAI's articles), including
+WebVoyager, WebArena, and OSWorld, were developed in early 2024 to
+provide examples of typical webpage and OS interaction tasks done by
+humans
+\cite{zhouWebArenaRealisticWeb2024,heWebVoyagerBuildingEndtoEnd2024,xieOSWorldBenchmarkingMultimodal2024}.
+CUA is stated to achieve state-of-the-art results in these benchmarks,
+and therefore represents the current ability of AI to address open-ended
+tasking. Although CUA has clear limitations and falls well behind human
+performance on these benchmarks, Operator demonstrates significant
+progress in the ability of AI models to replicate actions that are often
+performed by real users. Even in its current state, CUA is likely able
+to automate the ``simple'' tasking that is characteristic of generating
+background noise for forensic datasets, such as browsing news sites,
+interacting with social media platforms, and more.
+
+In the near future, it is likely that works similar to CUA or Operator
+will be capable of fully automating human actions as part of a larger
+scenario with a high degree of reliability and accuracy. Not only does
+this accelerate the process of building forensic datasets, it also
+improves the variety of applications that can be used as part of a
+scenario due to the flexibility of these models. For educators whose
+focus is to build scenarios with investigative and analytic value to
+students, this may be exactly what is needed to streamline scenario
+development. What does this mean for synthesizers?
+
+First, the verbosity of writing a script and passing it to a synthesizer
+is still valuable, especially in contexts where the non-determinism and
+opacity of an AI model may not be acceptable. Non-determinism is often
+acceptable in educational contexts, so long as the actions taken by the
+model are logged and can be verified after the fact. However, the
+development of datasets for research and tool validation may require
+that actions are taken in a specific manner every time the dataset is
+generated. Several works have described the non-deterministic nature of
+LLMs in multiple distinct tasks
+\cite{astekinExploratoryStudyHow2024,songGoodBadGreedy2024,ouyangEmpiricalStudyNonDeterminism2025},
+which negatively impacts the reproducibility of results -- an important
+quality of forensic datasets as described by Grajeda et al.
+\cite{grajedaAvailabilityDatasetsDigital2017}.
+
+Second, these developments are not \emph{incompatible} with
+synthesizers, and should instead be seen as an option to complement
+them. The capabilities provided by Operator could likely be built into
+AKF as part of its internal library or an OS-specific agent, providing
+users with access to both verbose imperative/declarative scripts as well
+as simpler natural language prompts when automating actions and building
+scenarios. Additionally, these agents cannot (currently) act as a
+substitute for physical artifact generation, in which the underlying
+filesystem or disk image must be edited to fulfill a certain task.
+
+\section{Alternative platform
+support}\label{alternative-platform-support}
+
+Perhaps the most impactful example is implementing support for other
+desktop environments, such as Mac and Linux. At a high level, this
+requires implementing all three artifact generation methods described in
+\autoref{chapter-four}.
+
+Consistent with AKF's focus on using existing automation frameworks
+through agents to implement application-specific functionality, much of
+the effort for supporting other platforms requires writing and deploying
+a new OS-specific agent. It is likely that much of the same code and
+overall design can be shared between the Windows agent and other
+platforms. This is largely possible through the portability of Python
+and the lack of OS-specific assumptions made by RPyC. Certain automation
+frameworks may have significant cross-platform support (such as
+Playwright and \passthrough{\lstinline!pywinauto!}, which supports
+Windows, Mac, and Linux), though implementing functionality for other
+applications may require more effort.
+
+In general, implementing logical agentless generation through VirtualBox
+is likely straightforward, in large part because Oracle supports
+VirtualBox Guest Additions on MacOS and a large variety of Linux
+distributions. Similarly, the physical artifact generation implemented
+in AKF for FAT32 and NTFS (the most common filesystems for Windows) may
+be extensible to other disks, such as ext4 (the default for modern Linux
+distributions).
+
+The challenge here lies in accounting for artifacts or mechanisms unique
+to other operating systems. Some features, such as the use of
+PowerShell/WinRM to carry out actions on Windows, are analogous to
+Bash/SSH on Unix-based systems and can be adapted accordingly. However,
+some concepts are truly unique to an operating system, such as
+performing modifications to the operating system through registry keys,
+and may require more effort to adapt the same outcomes to other
+platforms.
+
+\section{Additional interface
+implementations}\label{additional-interface-implementations}
+
+Another example is extending the various concrete implementations of AKF
+interfaces to other technologies that may have better support for
+specific host and guest platforms. AKF currently provides a
+VirtualBox-based implementation of the hypervisor-agnostic interface
+provided as part of \passthrough{\lstinline!akflib!}, largely depending
+on the VirtualBox Guest Additions software to function. Indeed, this is
+the approach taken by virtually all prior synthesizers that require
+virtualization -- existing works in implementing synthesizer
+functionality in VirtualBox have contributed significantly to its
+adoption in these synthesizers, as well as AKF.
+
+However, prior synthesizers have also considered KVM/Qemu and VMWare as
+hypervisors; in particular, Forensig2 leveraged Qemu as its
+virtualization platform \cite{mochForensicImageGenerator2009}. There
+are several motivations for using other synthesizers, including support
+on different host platforms, performance, and available functionality.
+For example, Hwang et al.~compared the performance and low-level
+features of multiple hypervisors, including Hyper-V, KVM/Qemu, and
+VSphere, finding significant variability between hypervisors when
+running workloads and applications
+\cite{hwangComponentbasedPerformanceComparison2013}. It may be the
+case that certain scenarios or host machines are better suited for other
+hypervisors, or even a multi-hypervisor environment. It is worth noting
+that VMWare has similar guest-specific software to VirtualBox, with
+multiple Python libraries for interacting with guests on VSphere such as
+\passthrough{\lstinline!pyvmomi!} \cite{VmwarePyvmomi2025}.
+
+Similarly, rather than create new implementations of existing
+interfaces, it may also be worth building new interfaces entirely. One
+particular example is the implementation of agents in languages other
+than Python. This may cover needs for specific tasks (such as actions
+that can be automated using a library for which no Python equivalent
+exists) or specific deployment restrictions (such as avoiding specific
+forms of synthesis pollution). In general, the implementation for an
+agent can be written in any language, so long as a Python API exists;
+the burden would be on the author to handle any communication or
+discrepancies across disparate languages, such as writing a TCP-based
+protocol for issuing commands.
+
+\section{Distribution}\label{distribution}
+
+Depends a lot on what we do implement, but this would be stuff like
+Packer/Vagrant and any image ``squeezing'' that's done as part of
+\autoref{chapter-five}
+
+\section{Mobile synthesis}\label{mobile-synthesis}
+
+Finally, while outside the scope of this thesis, there is also the
+challenge of building a synthesizer for non-desktop platforms,
+particularly mobile devices. For many people, mobile devices are the
+primary means through which we interact with the digital world, causing
+them to play a unique role in investigations
+\cite{chernyshevMobileForensicsAdvances2017}. They can contain data
+from many facets of our lives, including text messages, location
+history, images, application logs, and other information that can
+provide insight into an individual's actions during a period of interest
+\cite{sutiknoCapabilitiesCellebriteUniversal2024}. This information
+can be combined with other investigative methods, such as desktop and
+conventional forensics, to form a better understanding of a larger
+scenario.
+
+Naturally, this means that there is a need for datasets in digital
+forensics, as well. Grajeda et al.~identify a small number of existing
+mobile dataset collections, including those containing Android malware,
+Android application files, and smartphone disk images
+\cite{grajedaAvailabilityDatasetsDigital2017}. However, these
+datasets are far less common than their desktop counterparts. When
+compared to the hundreds of desktop disk images hosted on Digital
+Corpora and CFReDS, there are only around 25 mobile disk images on the
+same platforms. A mobile-specific survey conducted by Gonçalves et
+al.~in 2022 found not only a low availability of mobile images, but also
+lack the recency and variety of data that would be present in a modern
+investigation \cite{goncalvesRevisitingDatasetGap2022}.
+
+There has been limited work in developing forensic synthesizers for
+mobile platforms. Two notable examples are FADE
+\cite{ceballosdelgadoFADEForensicImage2022}, developed by Delgado et
+al.~in 2022, and an unnamed framework developed by Demmel et al.~in 2024
+\cite{demmelDataSynthesisGoing2024}. FADE operates largely through
+physical artifact generation, which it achieves by extracting and
+mounting partitions from an emulated, rooted Android device using the
+Android Debug Bridge. It then modifies application-specific database
+files to create artifacts such as phone call entries and text messages.
+
+In contrast, Demmel et al.~generate data using a logical agentless
+approach, using a tool called AndroidViewClient (AVC) to send keypresses
+and touch gestures. Unlike VMPOP, which uses hardcoded mouse movements
+to click on GUI-based elements, this framework leverages AVC to dump all
+interactable UI elements and directly ``touch'' these elements once the
+desired element has been found. This allows it to implement more
+application-specific functionality, such as using WhatsApp and opening
+Google Chrome. There has also been broader work in automating actions as
+part of testing pipelines for Android applications
+\cite{janickiObstaclesOpportunitiesDeploying2012,nagowahNovelApproachAutomation2012,linares-vasquezHowDevelopersTest2017},
+though these largely address actions at the application scope, rather
+than automating actions across the entire device. Of note is the lack of
+iOS-relevant synthesizer functionality, perhaps due to the greater
+difficulty of working on a closed-source operating system with fewer
+options for exposing internal functionality.
+
+It is possible that \emph{some} of AKF's architecture could be adapted
+to support mobile dataset generation, primarily by interacting with
+Android emulators and existing developer tools. However, the isolation
+around individual Android applications suggests that it may be difficult
+to use a logical agent-based approach to automating application
+activity; this simultaneously implies that it may be easier to use
+physical approaches to generating information, because the locations of
+generated artifacts are likely to be smaller in scope. More research is
+needed to determine available avenues through which Android datasets can
+be constructed. This is especially true for iOS, for which there are far
+fewer resources.
