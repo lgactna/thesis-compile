@@ -58,18 +58,43 @@
 \newcommand{\passthrough}[1]{#1}
 
 \usepackage{listings}
+\usepackage{inconsolata} % Use the Inconsolata font
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+% \lstdefinestyle{mystyle}{
+%     backgroundcolor=\color{backcolour},   
+%     commentstyle=\color{codegreen},
+%     keywordstyle=\color{magenta},
+%     numberstyle=\tiny\color{codegray},
+%     stringstyle=\color{codepurple},
+%     basicstyle=\ttfamily\footnotesize\linespread{0.8},
+%     breakatwhitespace=false,         
+%     breaklines=true,                 
+%     captionpos=b,                    
+%     keepspaces=true,                 
+%     numbers=left,                    
+%     numbersep=5pt,                  
+%     showspaces=false,                
+%     showstringspaces=false,
+%     showtabs=false,                  
+%     tabsize=2,
+% }
+% \lstset{
+%     style=mystyle,
+% }
+
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
+    numberstyle=\ttfamily\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize\linespread{0.8},
+    % Adjust line spacing with \setstretch
+    % Font set to Inconsolata
+    basicstyle=\ttfamily\footnotesize\setstretch{1}\fontfamily{zi4}\selectfont, 
     breakatwhitespace=false,         
     breaklines=true,                 
     captionpos=b,                    
@@ -80,8 +105,12 @@
     showstringspaces=false,
     showtabs=false,                  
     tabsize=2,
+    aboveskip=5pt, % Adjust spacing above listings
+    belowskip=0pt, % Adjust spacing below listings
 }
-\lstset{style=mystyle}
+\lstset{
+    style=mystyle,
+}
 
 % == End packages
 
@@ -258,9 +287,6 @@ from which some of this content is derived.
 
 \appendix
 
-\chapter{Results Data} \label{appendix-B}
-Temporary...
-
-
+{{thesis_appendix_here}}
 
 \end{document}

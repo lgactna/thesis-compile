@@ -18,14 +18,19 @@ Whether generating artifacts through physical or logical means, these
 artifacts must ultimately be exported and documented. In most cases,
 this involves generating disk images, volatile memory captures, or
 network captures; additionally, specific artifacts, such as browser
-artifacts, may be selectively copied from a filesystem.
+artifacts, may be selectively copied from a filesystem. Disk, memory,
+and network captures will be referred to as ``core outputs'' for
+brevity, as well as to distinguish them from ``standalone'' artifacts;
+both of these are simply ``outputs''.
 
 In either case, the contents and details of these artifacts, as well as
 the means through which they were generated, should be documented in
 some format. The term ``ground truth'' describes the contents of a
 single specific dataset in full. That is, it ideally provides a
 reference for every artifact that can be discovered within a dataset, as
-well as every action taken to plant those artifacts.
+well as every action taken to plant those artifacts. This metadata, in
+addition to core outputs and standalone artifacts, comprises a forensic
+dataset.
 
 From an educational perspective, the ground truth represents an ``answer
 key'' to the dataset; it details every artifact of interest that an
@@ -40,9 +45,74 @@ The remainder of this chapter describes the mechanisms through which
 outputs are exported from the synthesizer and the mechanisms that allow
 for real-time logging and documentation.
 
-\section{Core outputs}\label{core-outputs}
+\section{Compiling datasets}\label{compiling-datasets}
 
-\subsection{Extracting datasets}\label{extracting-datasets}
+\subsection{Generating outputs}\label{generating-outputs}
+
+In the same way that artifacts can be generated through logical and
+physical means, outputs can also be generated through logical and
+physical means. Some of these are analogous to techniques used by
+real-world investigators to extract forensically sound evidence that is
+valid in a court of law, while others are less suitable in a court
+setting but still have valid use cases.
+
+Logical output generation refers to any technique in which software is
+used inside a running virtual machine to generate these outputs. This
+includes using software such as FTK Imager, booted from a removable
+drive, to capture the volatile memory of a device or construct a
+\emph{logical} disk image. Similarly, network captures can be done by
+simply running Wireshark on the target device and network interface, and
+individual artifacts can be copied off of the device by hand and sent to
+a network or removable drive.
+
+Physical output generation refers to techniques in which the operating
+system is unaware of the technique being used, and therefore leave few
+or no traces in the resulting outputs. In practice, this involves using
+tools such as hardware write blockers to extract complete disk images
+(which also contain standalone artifacts), as well as using network taps
+and sniffers (or another traffic mirroring solution) to capture traffic
+over a particular interface. Although difficult, it is also possible to
+perform a physical extraction of RAM by performing a ``cold boot
+attack'', in which the RAM sticks are cooled to low temperatures before
+removing them from a running machine, slowing the process of memory
+decay as a result of the DRAM cells being unpowered
+\cite{yitbarekColdBootAttacks2017}.
+
+AKF directly supports physical output generation for all three core
+outputs, and indirectly supports logical output generation for core
+outputs and standalone artifacts. Physical output generation for virtual
+machines is generally achieved through direct interaction with the
+hypervisor itself.
+
+\begin{itemize}
+\tightlist
+\item
+  For disk images, the output can simply be the virtual hard drive used
+  by the hypervisor on the host machine (such as VDIs for VirtualBox).
+  If an ``actual'' disk image is desired, the command-line tool
+  VBoxManage supports converting various virtual drive formats to raw
+  disk images using the \passthrough{\lstinline!vboxmanage clonemedium!}
+  command, which also expands the compressed virtual drive to the
+  ``declared'' size of the drive as seen by the operating system.\\
+\item
+  For network captures, VirtualBox allows the user to enable network
+  tracing over multiple interfaces, dumping network traffic as a .pcap
+  file on the host machine. This can be enabled or disabled at any time
+  without affecting network connectivity or the state of the virtual
+  machine.\\
+\item
+  For volatile memory dumps, VBoxManage provides the command `vboxmanage
+  debugvm \textless machine\_name
+\end{itemize}
+
+In most cases, these physical output options are sufficient to generate
+suitable datasets. If only specific files are desired, the existing file
+transfer utilities provided by AKF can be used to extract standalone
+artifacts. Users can also manually perform the logical techniques
+described above (such as running Wireshark or installing FTK Imager)
+through a variety of means, such as pausing an AKF script until
+instructed by the user to continue; during this time, a user can
+manually run FTK imager to extract the contents of RAM, as an example.
 
 \subsection{Distribution and
 storage}\label{distribution-and-storage}
@@ -130,8 +200,8 @@ from uncommon applications. In theory, data exported from any major
 vendor, such as Cellebrite, Magnet, or FTK, can be converted into a
 valid CASE file. CASE is an extension of the Unified Cyber Ontology, or
 UCO, which simply provides basic objects that are not specific to
-digital forensics (such as applications or users). Consistent with
-existing documentation, CASE and CASE/UCO refer to the same format.
+digital forensics (such as applications or users). Consistent with the
+CASE project's documentation, CASE and CASE/UCO are one and the same.
 
 CASE is built on the Resource Description Framework (RDF), a model for
 describing information using relationships. Two objects are linked using
@@ -139,95 +209,28 @@ relationships, each of which is described as a ``triple''. This pattern
 allows for directed, labeled graphs to be expressed using RDF. The
 ontology of CASE objects is defined using the Terse RDF Triple Language,
 or Turtle, which allows these triples to be written in a simple text
-format. For example, the following set of triples describes an object
-called \passthrough{\lstinline!ApplicationFacet!} with two properties,
-\passthrough{\lstinline!numberOfLaunches!} and
-\passthrough{\lstinline!applicationIdentifier!}:
-
-\begin{lstlisting}
-observable:ApplicationFacet
-    a
-        owl:Class ,
-        sh:NodeShape
-        ;
-    rdfs:subClassOf core:Facet ;
-    rdfs:label "ApplicationFacet"@en ;
-    rdfs:comment "An application facet is a grouping of characteristics unique to a particular software program designed for end users."@en ;
-    sh:property
-        [
-            sh:datatype xsd:integer ;
-            sh:maxCount "1"^^xsd:integer ;
-            sh:nodeKind sh:Literal ;
-            sh:path observable:numberOfLaunches ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount "1"^^xsd:integer ;
-            sh:nodeKind sh:Literal ;
-            sh:path observable:applicationIdentifier ;
-        ] ,
-        ...
-        ;
-    sh:targetClass observable:ApplicationFacet ;
-    .
-\end{lstlisting}
-
-An instance of a \passthrough{\lstinline!Application!} object may thus
-be represented in the JSON-LD format using the
-\passthrough{\lstinline!ApplicationFacet!} as follows (including
-attributes omitted above):
-
-\begin{lstlisting}
-{
-    "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
-    "@type": "uco-observable:Application",
-    "uco-core:hasFacet": [
-        {
-            "@id": "kb:68004de9-1139-405f-aea7-2c05f3a84709",
-            "@type": "uco-observable:ApplicationFacet",
-            "uco-observable:numberOfLaunches": 12,
-            "uco-observable:applicationIdentifier": "test"
-        },
-    ]
-}
-\end{lstlisting}
+format.
 
 Because the CASE format itself is language-agnostic, it is necessary to
-write a library for each language that leverages CASE. As of writing,
-the CASE project provides Python bindings for UCO/CASE 1.4
-\cite{CaseworkCASEMappingPython}, in which each unique object is
-represented as a Python class, which can be instantiated to produce
-individual objects. However, this library has several limitations due to
-its design. For example, CASE objects are internally represented as
-dictionary of strings, rather than a set of instance variables. While
-this makes it easier to serialize these objects to JSON-LD, it also
-makes it extremely difficult to work with objects after they have been
-instantiated:
+write language-specific libraries that allow for instantiating CASE
+objects. As of writing, the CASE project provides Python bindings for
+UCO/CASE version 1.4 \cite{CaseworkCASEMappingPython}, in which each
+unique object is represented as a Python class, which can be
+instantiated to produce individual objects. However, this library has
+several limitations due to its design. For example, CASE objects are
+internally represented as dictionary of strings, rather than a set of
+instance variables. While this makes it easier to serialize these
+objects to JSON-LD dictionaries, it also makes it extremely difficult to
+work with these objects after they have been instantiated.
 
-\begin{lstlisting}[language=Python]
-facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
+It is also worth noting that each of the objects in the CASE ontology
+appear to have been manually translated to their corresponding Python
+class definitions. This is slow and time-consuming, especially given the
+context that a significant overhaul of UCO/CASE to version 2.0 is
+underway, with new object definitions; there appears to be no active
+effort to update the 1.4 bindings to 2.0.
 
-# These attributes do not exist
-
-facet.application_identifier
-facet.number_of_launches
-
-# The number of launches must be accessed as a dictionary key, which does
-
-# not return a simple integer, but instead returns a dictionary
-app_facet['uco-observable:numberOfLaunches']
-
-# -
-\end{lstlisting}
-
-Additionally, it appears that each of the objects have been manually
-translated from the Turtle definitions to their corresponding Python
-class. This is slow and time-consuming, especially given the context
-that a significant overhaul of UCO/CASE to version 2.0 is underway, with
-new object definitions; there appears to be no active effort to update
-the 1.3 bindings to 2.0.
-
-AKF leverages (and contributes, as part of a project independent of this
+AKF leverages (and contributes, though not the direct result of this
 thesis) Pydantic-based bindings for CASE. The foundation for this system
 will be the Pydantic library for Python, which allows developers to
 quickly define classes (referred to as ``Pydantic models'', or simply
@@ -236,62 +239,31 @@ Python type hints \cite{colvinPydantic2024}. More broadly, it allows
 us to simplify the declaration of individual objects while providing
 runtime type validation and automatic casting.
 
-For example, we can write the same object above as follows:
+Examples of CASE-related definitions, as well as a detailed comparison
+of AKF's bindings compared to the existing CASE bindings, can be found
+in \autoref{case-python-bindings}. One notable
+example from this section is the simplification of a CASE object
+declaration from 43 lines in the existing CASE bindings to only three
+lines in AKF. These simple declarations are largely possible because the
+conversion of instance variables to valid JSON-LD keys is deferred until
+serialization, rather than converting them to dictionaries immediately
+upon instantiation. This design choice allows us to centralize the
+serialization logic in a single parent class, which all CASE objects
+inherit from. In exchange for slightly increasing the complexity of
+converting \passthrough{\lstinline!numberOfLaunches!} to a dictionary
+with the correct key name, we can massively simplify the logic for
+declaring CASE objects.
 
-\begin{lstlisting}[language=Python]
-from typing import Optional
-
-from uco import core
-
-class ApplicationFacet(core.Facet):
-    numberOfLaunches: Optional[int] = None
-    applicationIdentifier: Optional[str] = None
-\end{lstlisting}
-
-This declaration is only three lines, 40 lines shorter than the existing
-declaration of \passthrough{\lstinline!ApplicationFacet!} - a 93\%
-reduction in code written. This is because the conversion of instance
-variables to valid JSON-LD keys is deferred until serialization. This
-design choice allows us to centralize the serialization logic in a
-single parent class that all CASE objects inherit from. In exchange for
-slightly increasing the complexity of converting
-\passthrough{\lstinline!numberOfLaunches!} to a dictionary with the
-correct key name, we can massively simplify the logic for declaring CASE
-objects.
-
-A simple CASE bundle, representing the complete contents of a forensic
-scenario, can be observed below:
-
-\begin{lstlisting}[language=Python]
-from caselib import case, uco
-
-bundle = uco.core.Bundle(
-    description="An Example Case File",
-    specVersion="UCO/CASE 2.0",
-    tag="Sample artifacts",
-)
-
-url_object = uco.observable.ObservableObject()
-url_facet = uco.observable.URLFacet(fullValue="www.docker.com/howto")
-url_object.hasFacet.append(url_facet)
-bundle.object.append(url_object)
-
-with open("example.jsonld", "wt+") as f:
-    data = bundle.model_dump(serialize_as_any=True)
-    f.write(json.dumps(data, indent=2))
-\end{lstlisting}
-
-A script is provided with the Pydantic-based CASE bindings to
-automatically parse the RDF files and convert them to valid Pydantic
-models. It automatically converts XSD datatypes to their native Python
-types (or a custom wrapper type if a native type does not exist),
-correctly inherits classes, and automatically generates docstrings and
-Pydantic fields as applicable. Additionally, the script also
-topologically sorts dependencies in the same file; the parent class of
-an RDF object may be declared \emph{after} its child class, which is
-disallowed in Python. This greatly simplifies the process of maintaining
-Python bindings for UCO/CASE, as well as the overall design of the
-library for future needs.
+A script is provided with AKF's CASE bindings to automatically parse the
+RDF files and convert them to valid Pydantic models. It automatically
+converts XSD datatypes to their native Python types (or a custom wrapper
+type if a native type does not exist), correctly inherits classes, and
+automatically generates docstrings and Pydantic fields as applicable.
+Additionally, the script also topologically sorts dependencies in the
+same file; the parent class of an RDF object may be declared
+\emph{after} its child class, which is disallowed in Python. This
+greatly simplifies the process of maintaining Python bindings for
+UCO/CASE, as well as the overall design of the library for future needs.
 
 \subsection{CASE integration in
 AKF}\label{case-integration-in-akf}

@@ -58,18 +58,43 @@
 \newcommand{\passthrough}[1]{#1}
 
 \usepackage{listings}
+\usepackage{inconsolata} % Use the Inconsolata font
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+% \lstdefinestyle{mystyle}{
+%     backgroundcolor=\color{backcolour},   
+%     commentstyle=\color{codegreen},
+%     keywordstyle=\color{magenta},
+%     numberstyle=\tiny\color{codegray},
+%     stringstyle=\color{codepurple},
+%     basicstyle=\ttfamily\footnotesize\linespread{0.8},
+%     breakatwhitespace=false,         
+%     breaklines=true,                 
+%     captionpos=b,                    
+%     keepspaces=true,                 
+%     numbers=left,                    
+%     numbersep=5pt,                  
+%     showspaces=false,                
+%     showstringspaces=false,
+%     showtabs=false,                  
+%     tabsize=2,
+% }
+% \lstset{
+%     style=mystyle,
+% }
+
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
+    numberstyle=\ttfamily\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize\linespread{0.8},
+    % Adjust line spacing with \setstretch
+    % Font set to Inconsolata
+    basicstyle=\ttfamily\footnotesize\setstretch{1}\fontfamily{zi4}\selectfont, 
     breakatwhitespace=false,         
     breaklines=true,                 
     captionpos=b,                    
@@ -80,8 +105,12 @@
     showstringspaces=false,
     showtabs=false,                  
     tabsize=2,
+    aboveskip=5pt, % Adjust spacing above listings
+    belowskip=0pt, % Adjust spacing below listings
 }
-\lstset{style=mystyle}
+\lstset{
+    style=mystyle,
+}
 
 % == End packages
 
@@ -1021,21 +1050,6 @@ hope is that educators and researchers will have greater variety in the
 datasets available to them, even as new developments and advancements in
 technology occur.
 
-The complete implementation of AKF is available on GitHub at the
-following locations:
-
-\begin{itemize}
-\tightlist
-\item
-  Core libraries (\passthrough{\lstinline!akflib!}):
-  https://github.com/lgactna/akflib
-\item
-  AKF agent for WIndows: https://github.com/lgactna/akf-windows
-\end{itemize}
-
-Additionally, a standalone library for CASE/UCO 2.0 is provided at
-https://github.com/lgactna/CASE-pydantic, which is used throughout AKF.
-
 \chapter{Literature review}\label{chapter-two}
 
 We begin with a literature review of two topics: the publicly available
@@ -1479,6 +1493,13 @@ AKF. A complete architecture diagram is shown in the figure below.
 
 !\textbf{Architecture 2025-02-07 17.07.24.excalidraw}
 
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  \#task move this to the appendix and break it up into individual
+  colored boxes . . . simply can't be placed here
+\end{itemize}
+
 This can be simplified to the following high-level diagram, which
 broadly groups AKF into a set of seven modules:
 
@@ -1548,6 +1569,45 @@ This chapter addresses the modules responsible for automating artifact
 generation, depicted in the partial architectural diagram below.
 
 !\textbf{39.4 - Action automation 2025-02-07 17.15.30.excalidraw}
+
+\begin{itemize}
+\tightlist
+\item[$\square$]
+  \#task include semi-shaded versions of the simpler diagrams here
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For each subsection, provide a ``complex'' diagram focusing
+    exclusively on the rectangles implemented for that current section.
+    For any interfaces that are nut relevant to the current section,
+    have them go to the equivalent labeled ``colored'' section, but
+    don't put any details for that section -- just the fact it's the
+    ``action automation library'' or the ``virtual machine'' is fine.
+  \item
+    For each chapter, describe what it interfaces with to begin with.
+    Individual sections, which are naturally going to have actual
+    implementation details, can go into lower details. Keep the detailed
+    diagrams close to the things they're describing -- that's only
+    possible if you break the detailed diagram down further by
+    subsection.
+
+    \begin{itemize}
+    \tightlist
+    \item
+      regularly use language and figures that reminds the reader of
+      where they are in the broader scope of things
+    \end{itemize}
+  \item
+    Consider looking into an ``interaction''-based diagram, that focuses
+    more on what the components are \emph{doing} rather than the
+    components themselves; I never explain the intentional fact that
+    components on a horizontal line all work together to achieve one
+    \emph{specific} thing. Can call it out explicitly by coloring lines
+    or changing the lines of boxes, or by also just including it in the
+    text; more viable in subsections
+  \end{itemize}
+\end{itemize}
 
 These implement AKF's ability to generate individual artifacts as part
 of a larger scenario dataset. This chapter begins with an overview of
@@ -1666,12 +1726,12 @@ particular action can change significantly between versions of the same
 application, versions of the same operating system, and varying screen
 sizes.
 
-For example, VMPOP handles UAC prompts on machines prior to Windows 7 by
-sending an Alt+Tab keystroke to the machine, clicking the mouse at the
-center of the screen to focus the UAC prompt, and then sending Alt+C to
-accept the prompt. On machines running Windows 7 or later, this is
-instead achieved by focusing the UAC prompt with the mouse and then
-sending Alt+Y to accept the prompt.
+For example, VMPOP handles User Account Control (UAC) prompts on
+machines prior to Windows 7 by sending an Alt+Tab keystroke to the
+machine, clicking the mouse at the center of the screen to focus the UAC
+prompt, and then sending Alt+C to accept the prompt. On machines running
+Windows 7 or later, this is instead achieved by focusing the UAC prompt
+with the mouse and then sending Alt+Y to accept the prompt.
 
 Similarly, VMPOP interacts with browsers exclusively through the use of
 keyboard shortcuts. VMPOP supports simple interactions with a small
@@ -1723,8 +1783,8 @@ executing scripts through the hypervisor guest additions.
 In particular, \textbf{VMPOP} makes heavy use of local management
 utilities; it implements much of its functionality through a collection
 of PowerShell and batch scripts. For example, VMPOP allows users to
-focus a window by PID, process name, or window title. This is achieved
-by getting a PowerShell handle to the process using
+focus a window by process ID, process name, or window title. This is
+achieved by getting a PowerShell handle to the process using
 \passthrough{\lstinline!Get-Process!}, using
 \passthrough{\lstinline!Add-Type!} to add a local C\# function that is
 capable of sending keyboard events through
@@ -1778,7 +1838,7 @@ thing, and what do we lose as a result?)
 \begin{itemize}
 \tightlist
 \item[$\square$]
-  \#todo explain the hypervisorbase
+  \#task explain the hypervisorbase
 \end{itemize}
 
 \section{Agent-based artifact
@@ -1806,365 +1866,119 @@ Agent-based artifact creation is the approach taken by
 \textbf{hystck}/\textbf{ForTrace}, which refers to its agent as an
 ``interaction manager''. Because ForTrace provides the largest set of
 functionality for its agents, and is by far the most mature synthesizer,
-AKF's agents borrow heavily from ForTrace's approach. As a result, a
-detailed analysis of ForTrace's design is provided here.
+AKF's agents borrow heavily from ForTrace's approach. We briefly
+describe ForTrace's implementation of agents here, with a more detailed
+analysis in \autoref{comparison-of-fortrace-and-akf-agents}.
 
 ForTrace agents are simply an entire copy of the ForTrace codebase
 copied over to the virtual machine -- that is, the ``agent'' and
-``server'' share the same codebase, but have different entry-points and
-call different functions. Application-specific functionality for agents
-is organized into individual modules (files), where each file separates
-a set of commands or actions for a single application.
+``server'' share the same codebase, but have different entrypoints and
+use different parts of the ForTrace library. Communication between the
+agent and the server occurs over a dedicated TCP socket using a simple
+ASCII-based protocol; to execute commands, the server sends a
+space-delimited string containing the application, function, and
+arguments to run. Results are similarly passed back by the agent as
+structured ASCII messages. These messages are typically sent over a
+dedicated ``management'' network interface to exclude them from network
+captures for other relevant activities.
 
-The server, or ``virtual machine monitor'' (VMM), issues commands over
-TCP to a running instance of the agent on the VM. Invoking commands
-entails issuing a simple string to the agent running on the VM. For
-example, invoking a command to add a new user to the VM may look like
-the following:
-
-\begin{lstlisting}[language=Python]
-
-# From Demo.py
-
-guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform="windows")
-
-# Wait for the VM to connect to the VMM
-
-guest.waitTillAgentIsConnected()
-
-# create userManagement object
-
-userManagement_obj = guest.application("userManagement", {})
-
-# Add different users
-
-logger.info("Adding user1")
-try:
-    userManagement_obj.addUser("user1", "password")
-    while userManagement_obj.is_busy is True:
-        time.sleep(1)
-except Exception as e:
-    print("An error occured: ")
-    print(e)
-time.sleep(5)
-\end{lstlisting}
-
-The agent's main loop, which receives and interprets these commands, is
-extremely simple:
-
-\begin{lstlisting}[language=Python]
-def main():
-    # create logger
-    logger = create_logger('guestAgent', logging.INFO)
-
-    logger.info("create Agent")
-    a = Agent(operating_system=platform.system().lower(), logger=logger)
-    logger.info("connect to fortrace controller: %s:%i" % (fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT))
-    a.connect(fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT)
-
-    # let all network interfaces come up
-    time.sleep(15)
-
-    # inform fortrace controller about network configuration
-    a.register()
-
-    # wait for commands
-    while 1:
-        time.sleep(1)
-        a.receiveCommands()
-\end{lstlisting}
-
-When the \passthrough{\lstinline!Agent!} is first instantiated, it forms
-a permanent TCP socket out to the configured port and IP address where
-it expects the server (the VMM) to be issuing commands.
-\passthrough{\lstinline!Agent.receiveCommands()!} receives every message
-available by reading the socket, parsing it, and then invoking
-\passthrough{\lstinline!Agent.do\_command()!}, which converts the
-command message into a specific Python function call with arguments.
-
-Each module under \passthrough{\lstinline!fortrace.application!} can be
-thought of as a coherent group of commands associated with a particular
-\emph{real} application (like Firefox or Thunderbird). Recall earlier
-how we found our \passthrough{\lstinline!userManagement!} application
-and invoked \passthrough{\lstinline!addUser!}:
-
-\begin{lstlisting}[language=Python]
-userManagement_obj = guest.application("userManagement", {})
-userManagement_obj.addUser("user1", "password")
-\end{lstlisting}
-
-At a high level, the \passthrough{\lstinline!application()!} call
-attempts to import
-\passthrough{\lstinline!fortrace.application.\{application\_name\}!}.
-Although not enforced by a higher-level interface, each of these modules
-contains subclasses of the following four classes (defined in
-\passthrough{\lstinline!fortrace.application.application!}) at minimum,
-with possibly more helper classes for OS-specific functionality or other
-modularity as needed:
-
-\begin{itemize}
-\tightlist
-\item
-  \passthrough{\lstinline!ApplicationVmmSide!}: Contains one function
-  for each command implemented in
-  \passthrough{\lstinline!ApplicationGuestSide!}, building a message
-  that will be interpreted and acted upon by the corresponding
-  \passthrough{\lstinline!ApplicationGuestSideCommands!} class.
-\item
-  \passthrough{\lstinline!ApplicationVmmSideCommands!}: Accepts and
-  interprets module-specific messages returned by the agent, which may
-  be used to update the remote state as tracked by the host.
-\item
-  \passthrough{\lstinline!ApplicationGuestSide!}: Implements the actual
-  application-specific functionality for the agent, providing one
-  function for each separated command by this module.
-\item
-  \passthrough{\lstinline!ApplicationGuestSideCommands!}: Interprets
-  commands and arguments, calling the respective function in the
-  corresponding \passthrough{\lstinline!ApplicationGuestSide!} subclass.
-  This allows the actual dispatch of commands to be delegated to this
-  class, which is free to choose how actions are performed (threading,
-  multiprocessing, etc.) as well as any module-wide state it may need to
-  maintain.
-\end{itemize}
-
-This naming convention is intentional. As will be shown later, the word
-\passthrough{\lstinline!Application!} is replaced with the name of the
-module in camelcase. For example,
-\passthrough{\lstinline!fortrace.application.userManagement!} contains
-\passthrough{\lstinline!UserManagementVmmSide!},
-\passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
-Discovering and getting handles to these classes is performed through
-string manipulation of the relevant application's module name, as shown
-in the example below:
-
-\begin{lstlisting}[language=Python]
-
-# Agent.do_command()
-
-# load class moduleGuestSide and moduleGuestSideCommands
-name = "fortrace." + package + "." + module
-self.logger.debug("module to load: " + name)
-mod = __import__(name, fromlist=[''])
-self.logger.debug("module '" + module + "' will be loaded via __import__")
-class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
-\end{lstlisting}
-
-In the example above,
-\passthrough{\lstinline!UserManagementGuestSide.addUser()!} contains the
-literal code to execute on the guest when
-\passthrough{\lstinline!addUser()!} is called, such as adding the
-registry keys needed for a user to be created. On the other hand,
-\passthrough{\lstinline!UserManagementVmmSide.addUser()!} contains the
-code to send a message over TCP that the agent will understand,
-eventually leading to the execution of the agent's version of
-\passthrough{\lstinline!addUser()!}.
-
-More precisely, the \passthrough{\lstinline!ApplicationVmmSide!}
-subclass effectively serves as the API for calling the associated
-functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
-running on the virtual machine. This subclass, along with the complete
-agent-side code, is stored in a single file. For example, the API and
-code for opening a Firefox browser window is as follows:
-
-\begin{lstlisting}[language=Python]
-class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
-    def open(self, url):
-        """Sends a command to open a webBrowserFirefox on the associated guest.
-
-        @param url: Website to open.
-        """
-        try:
-            self.logger.info("function: WebBrowserFirefoxVmmSide::open")
-            self.url = url
-            self.window_id = self.guest_obj.current_window_id
-            self.guest_obj.send(
-                "application " + "webBrowserFirefox " + str(self.window_id) + " open " + self.webBrowserFirefox + " " + self.url)
-
-            self.guest_obj.current_window_id += 1
-        except Exception as e:
-            raise Exception("error WebBrowserFirefoxVmmSide::open: " + str(e))
-
-# Example usage:
-
-browser = WebBrowserFirefoxVmmSide()
-browser.open("google.com")
-\end{lstlisting}
-
-Calling the \passthrough{\lstinline!open()!} command from the host
-causes a message of the following form to be sent to the agent:
-
-\begin{lstlisting}
-application webBrowserFirefox <window id
-\end{lstlisting}
-
-Upon receiving this message, the agent's main loop will search for the
-\passthrough{\lstinline!webBrowserFirefox!} module and import its
-corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
-subclass. After any state management, the subclass will then search for
-a function called \passthrough{\lstinline!open!} in its corresponding
-\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
-below:
-
-\begin{lstlisting}[language=Python]
-class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
-    def open(self, args):
-        """
-        Open a browser and save the webBrowserFirefox object with an id in a dictionary.
-        Set page load timeout to 30 seconds.
-
-        return:
-            Send to the host in the known to be good state:
-                'application webBrowserFirefox window_id open'.
-                'application webBrowserFirefox window_id ready'.
-            in the error state:
-                'application webBrowserFirefox window_id error'.
-            additionally the 'window_is_crushed' attribute is set; so the next
-            call will open a new window.
-        """
-        try:
-            arguments = args.split(" ")
-            web_browser = arguments[0]
-            url = arguments[1]
-
-            if len(arguments) 
-                self.timeout = arguments[2]
-            else:
-                self.timeout = 30
-
-            self.logger.info(self.module_name + "GuestSide::open")
-            self.last_driven_url = url
-            self.logger.debug("URL to call: " + url)
-
-            self.logger.info("open url: " + url)
-
-            self.helper.run_firefox()  # start ff session
-
-            retval = self.helper.navigate_to_url(url)  # browse to the specified url
-            if not retval:
-                self.logger.warning("could not open url")
-
-            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " opened")
-
-            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
-            self.window_is_crushed = False
-        except Exception as e:
-            # Some logging/teardown...
-            self.window_is_crushed = True
-            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
-\end{lstlisting}
+Application-specific functionality for agents is organized into
+individual modules (files), where each file includes a set of commands
+or actions for a single application. These files contain both
+server-side code (the logic for \emph{constructing} the ASCII message)
+and agent-side code (the logic for \emph{interpreting} the message and
+\emph{executing} the command) as a set of classes with a common prefix,
+such as `\textless module\_name
 
 There are two major implementation details that should be observed here.
-As mentioned previously, commands are sent through a simple string-based
-protocol. This simplicity makes it easy to debug issues as a result of
-the protocol, but is relatively inflexible. In particular, it is
-difficult to send complex objects that cannot easily be serialized to a
-string without loss of information, such as Playwright browser objects
-with state that is difficult to reconstruct using strings alone.
+First is that commands are sent through a simple string-based protocol.
+This simplicity makes it easy to debug issues that arise as a result of
+the protocol itself, but is relatively inflexible. In particular, it is
+difficult to send complex Python objects as arguments, since they often
+cannot easily be serialized to a string without loss of information. An
+example relevant to AKF is passing Playwright browser objects with state
+that is difficult to reconstruct using strings alone.
 
 The second implementation detail involves the discovery and execution of
 commands indicated by the protocol. As shown previously, ForTrace makes
 heavy use of Python's runtime introspection to discover the correct
 modules and functions to call based on the contents of a command string.
-While this is a valid approach, it is significantly more complex than
-the approach taken by AKF.
+While this is a valid approach, it is more complex (and difficult to
+follow) than the approach taken by AKF.
 
 \subsection{The AKF agent}\label{the-akf-agent}
 
 AKF borrows heavily from the Python agent-based approach of
 \textbf{ForTrace}, but improves on its architecture in several respects.
+Improvements to can are described in more detail in \autoref{comparison-of-fortrace-and-akf-agents}
 
 Perhaps the most significant change is the use of RPyC for
 communication, a library for symmetric remote procedure calls
 \cite{TomerfilibaorgRpyc2025}. Although the RPyC protocol is
-symmetric, it is often used in client-server architectures to allow
-clients to manipulate remote Python objects as if they were local
-objects, as well as invoke remote functions using local parameters. By
-delegating the serialization and deserialization of complex objects to
-RPyC, this allows us to perform complex operations that would have been
-difficult to implement with the simple string-based protocol of
-ForTrace.
+symmetric, it is often used in typical client-server architectures to
+allow clients to manipulate remote Python objects as if they were local
+objects, as well as invoke remote (server) functions using local
+(client) parameters. By delegating the serialization and deserialization
+of complex objects to RPyC, this allows us to perform complex operations
+that would have been difficult to implement with the simple string-based
+protocol of ForTrace.
 
 In ``new-style'' RPyC, this is achieved by running a \emph{service} on
 the device where remote operations should be performed; this service
 simply listens on an ephemeral TCP port. Services expose a set of
 functions and attributes that may be accessed remotely by an RPyC
-client. This is analogous to the
-\passthrough{\lstinline!ApplicationGuestSideCommands!} and
-\passthrough{\lstinline!ApplicationGuestSide!} classes of individual
-ForTrace modules.
+client. Application specific-functionality is broken up into individual
+RPyC ``subservices'', which are created on demand. The agent's main loop
+is itself a ``root'' RPyC service that is responsible for creating and
+destroying these subservices upon request; all subservices are known to
+the root service at program start, eliminating the need to perform
+runtime introspection to find application-specific modules. This is
+analogous to the agent-side code of individual ForTrace modules,
+interpreting arguments and executing commands on behalf of the host
+machine.
 
-Because the exposed functions (as well as their signatures) and
-attributes cannot be inferred from the raw RPyC connection alone,
-clients can implement a typed, concrete API that allows type-hints and
-autocompletion features to continue working in development environments.
-This simultaneously abstracts the raw RPyC call (and the existence of an
-RPyC connection) away from the user, while also providing the remote
-function signatures where there would otherwise be none. This is
-analogous to the \passthrough{\lstinline!ApplicationVmmSide!} and
-\passthrough{\lstinline!ApplicationVmmSideCommands!} classes of ForTrace
-modules.
+Clients are largely decoupled from the server's implementation of
+individual services; they do not call or import RPyC service functions
+directly. Because the exposed functions (as well as their signatures)
+and attributes cannot be inferred from the raw RPyC connection alone,
+clients can implement a typed, concrete API to construct RPyC calls.
+This allows type checking and autocompletion tools to continue
+functioning in development environments. This simultaneously abstracts
+the raw RPyC call (and the existence of an RPyC connection) away from
+the user, while also providing the signatures of remote functions where
+there would otherwise be none. This is analogous to the client-side code
+of individual ForTrace modules, constructing messages to the agent to
+execute commands.
 
-For example, a simple RPyC service and its corresponding API may be
-implemented as follows:
+Additionally, because the service and the API to an RPyC service are
+separable, this allows us to break the API (which is used in scenario
+scripts) and the agent logic itself into two separate libraries. This
+has two advantages -- it may slightly reduce the size of the agent when
+installed onto the virtual machine, and it also makes it significantly
+easier to build and generate standalone executables using tools like
+PyInstaller \cite{PyinstallerPyinstaller2025}. Unlike ForTrace,
+whose agent installation process requires a batch script installing
+various libraries and Python through the Chocolatey package manager,
+AKF's agent requires only that a single executable is copied over and
+configured to run on startup (in addition to setting relevant firewall
+rules).
 
-\begin{lstlisting}[language=Python]
-
-# Server-side code
-
-class ChromiumService(AKFService):
-    def exposed_set_browser(
-        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
-    ) -
-        # Various setup code...
-        self.browser = chromium.launch_persistent_context(
-            headless=False,
-            user_data_dir=profile_path,
-            channel=browser_type,
-            args=[f"--profile-directory={profile}"],
-        )
-
-        return self.browser
-
-# Client-side API
-
-class ChromiumServiceAPI(WindowsServiceAPI):
-    def __init__(self, host: str, port: int) -
-        """
-        Initialize the API with an RPyC connection to the service.
-        """
-        self.rpyc_conn = rpyc.connect(
-            host,
-            port,
-            config={"sync_request_timeout": None},
-        )
-
-    def set_browser(
-        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
-    ) -
-        self.browser = self.rpyc_conn.root.set_browser(browser_type, profile)
-        return self.browser
-\end{lstlisting}
-
-This syntax provides three major improvements over the ForTrace
-protocol. First, the routing of functions is wholly delegated to RPyC.
-Instead of manually constructing a message with the function name and
-its associated parameters (as strings) over the network, implementing
-support for a particular service on the client-side API is as simple as
-calling an untyped function
-\passthrough{\lstinline!rpyc\_conn.root.set\_browser()!}. By wrapping it
-around a typed function,
-\passthrough{\lstinline!ChromiumServiceAPI.set\_browser()!}, users
-regain the ability to use code completion and static linting tools.
+From an implementation and usability perspective, this design provides
+three major improvements over the ForTrace protocol. First, the routing
+of functions is wholly delegated to RPyC. Instead of manually
+constructing a message with the function name and its associated
+parameters (as strings) over the network, the process of serializing
+parameters and routing these parameters to the correct underlying
+function call is abstracted away by RPyC.
 
 Second, this allows us to pass and return arbitrarily complex objects
-for which we do not have to write the serialization and deserialization
-logic for. When passing complex objects from the agent to the server or
+(for which we do not have to write the serialization and deserialization
+logic). When passing complex objects from the agent to the server or
 vice versa, a reference to the object is sent over the network and
 wrapped by a \emph{proxy object}, which behaves like the original object
 \cite{TheoryOperationRPyC}. Importantly, it is not necessary to
 distinguish between local and remote/proxy objects of the same type when
-writing code, which elements the extra complexity of using proxies.
+writing code, which eliminates the extra complexity of using proxies.
 
 Finally, the ability to interact with complex remote objects allows us
 to significantly reduce the actual code that is written as part of the
@@ -2175,26 +1989,9 @@ virtual machine} can be given to the host machine. Instead of writing
 individual methods for opening pages, navigating to specific elements,
 and so on, we can simply use the methods that already exist in the
 Playwright object -- any local calls on the host's proxy object will
-lead to remote outcomes on the host, as desired.
-
-Application specific-functionality is broken up into individual RPyC
-``subservices'', which are created on demand. The agent's main loop is
-itself a ``root'' RPyC service that is responsible for creating and
-destroying these subservices upon request; all subservices are known to
-the root service at program start, eliminating the need to perform
-runtime introspection to find application-specific modules.
-
-Additionally, because the service and the API to an RPyC service are
-separable, this allows us to break the API (which is used in scripts)
-and the agent logic itself into two separate libraries. This has two
-advantages -- it may slightly reduce the size of the agent when
-installed onto the virtual machine, and it also makes it significantly
-easier to build and generate standalone executables using tools like
-PyInstaller. Unlike ForTrace, whose agent installation process requires
-a batch script installing various libraries and Python through the
-Chocolatey package manager, AKF's agent requires only that a single
-executable is copied over and configured to run on startup (in addition
-to setting relevant firewall rules).
+lead to remote outcomes on the host, as desired. This, of course, does
+not preclude the ability to write convenience methods for complex
+actions using that Playwright object.
 
 The list of applications supported by AKF's agent, as well as
 implementation-specific details, is described in the table below.
@@ -2202,7 +1999,7 @@ implementation-specific details, is described in the table below.
 \begin{itemize}
 \tightlist
 \item[$\square$]
-  \#todo shoot for feature parity with ForTrace; see page 11 of its
+  \#task shoot for feature parity with ForTrace; see page 11 of its
   paper for what it supports
 \end{itemize}
 
@@ -2234,74 +2031,134 @@ generation}\label{physical-artifact-generation}
 \subsection{Overview}\label{overview-1}
 
 \textbf{Physical artifact creation} encompasses any technique in which
-virtualization of an operating system is not required to generate
-artifacts. This gives the synthesizer the ability to bypass operating
-system or driver behavior, which may lead to non-deterministic behavior
-for certain actions. For example, a scenario developer may want to
-guarantee that a particular deleted file is partially overwritten by
-another file, allowing that the deleted file is recoverable from the
-slack space of the newly placed file.
+virtualization of an operating system is not used to generate artifacts.
+This gives the synthesizer the ability to bypass operating system or
+driver behavior, which may lead to undesired non-deterministic behavior
+for certain actions. This is also referred to as \emph{simulation}, in
+contrast with \emph{virtualization}.
 
-However, there is no known method for reliably reusing the same logical
-block from userspace. Operating systems do not expose low-level
-filesystem functionality to applications; furthermore, they are still
-subject to hardware drivers that regularly rearrange physical space,
-such as those that engage in wear leveling. While it may be possible to
-predict the outcome of these wear leveling techniques as demonstrated by
-Neyaz et al., this is far from the determinism that may be necessary of
-research and tool validation \cite{neyazForensicAnalysisWear2018}.
-Additionally, background programs and services may perform file
-operations that are difficult to predict.
+For example, a scenario developer may want to guarantee that a
+particular deleted file is partially overwritten by another file,
+ensuring that the deleted file is recoverable from the slack space of
+the newly placed file. However, it is extremely difficult to force the
+reuse of the same physical regions from a userspace application.
+Operating systems do not expose low-level filesystem functionality to
+applications; furthermore, they are still subject to hardware drivers
+that regularly rearrange physical space, such as those that engage in
+wear leveling.
 
-In turn, it is sometimes necessary to bypass the operating system
-entirely to reliably place data on a disk. There are two primary
-techniques used to achieve this -- mounting the filesystem and
-performing direct read/write operations, and bypassing the filesystem
-entirely and performing direct writes to the underlying disk image.
+While it may be possible to predict the outcome of these wear leveling
+techniques as demonstrated by Neyaz et al., this is far from the
+determinism that may be necessary of research and tool validation
+\cite{neyazForensicAnalysisWear2018}. Additionally, background
+programs and services may perform file operations that are difficult to
+predict. Furthermore, there is also hardware-related non-determinism,
+such that caused by faulty hardware or cosmic rays. (It should be noted
+that there exists ongoing work in building deterministic platforms, such
+as the deterministic hypervisor developed by Antithesis
+\cite{pshenichkinYouThinkYou2024}, though outside the scope of this
+thesis.) In turn, it is sometimes necessary to bypass the operating
+system to reliably place data on a disk.
 
-Filesystem mounting is leveraged by several synthesizers, including
-\textbf{Forensig2} and \textbf{SFX}. For both of these synthesizers,
-physical artifact creation is achieved by simply allowing the user to
-specify a file to copy from the host machine to a specific filepath on
-the disk image. Other synthesizers, such as \textbf{ForGe} and
-\textbf{EviPlant}, instead write to the disk image directly.
-\textbf{ForGe} maintains its own representation of supported
-filesystems, using its own data structures to represent a FAT32/NTFS
-filesystem. This allows it to quickly identify and place data in
-unallocated or slack space. In contrast, synthesizers such as
-\textbf{EviPlant} simply allow the user to provide an offset into the
-disk image where arbitrary data will be written to.
+There are two primary strategies used to achieve physical artifact
+creation -- mounting the filesystem and performing direct read/write
+operations, and bypassing the filesystem entirely and performing direct
+writes to the underlying disk image. Filesystem mounting is leveraged by
+several synthesizers, including \textbf{Forensig2} and \textbf{SFX}. For
+both of these synthesizers, physical artifact creation is achieved by
+simply allowing the user to specify a file to copy from the host machine
+to a specific filepath on the disk image.
+
+Other synthesizers, such as \textbf{ForGe} and \textbf{EviPlant},
+instead write to the disk image directly. \textbf{ForGe} maintains its
+own virtual representation of supported filesystems, using its own data
+structures to represent a FAT32/NTFS filesystem. This allows it to
+quickly identify and place data in unallocated or slack space. In
+contrast, synthesizers such as \textbf{EviPlant} simply allow the user
+to provide an offset into the disk image where arbitrary data will be
+written to. Both of these techniques involve ``direct writes'', with the
+only distinction being filesystem awareness.
+
+It is theoretically possible to construct full forensic datasets through
+simulation alone. If a user knows exactly what artifacts are generated
+through the execution of an application and \emph{how} these artifacts
+are generated, it may be possible to artificially generate these
+artifacts as if the application had actually been running. An example
+may be editing the history database of a particular browser contained on
+a filesystem by mounting it, parsing it, and then adding new entries;
+this would make it appear as if the machine was used to browse to these
+websites without requiring virtualization.
+
+However, this technique is difficult to implement in practice. For
+example, a scenario developer would need to ensure that the artifact is
+consistent with other artifacts on disk, since typical Windows
+application usage may generate relevant artifacts in prefetch files and
+jump lists. Additionally, physical artifact creation does not lend
+itself well to generating network captures and volatile memory. Because
+no operating system is virtualized, it is naturally the case that there
+are no applications making network requests or using volatile memory as
+part of execution. Building a network capture or volatile memory dump
+from scratch is difficult, at best.
 
 It is important to note that the majority of the artifacts generated by
 physical techniques can still be created non-deterministically through
-logical means. Users can create files of interest, delete them, and then
-write new files to disk through a virtual machine; this \emph{may}
-result in the desired outcome, but there is no strict guarantee that
-particular files have overwritten data in now-unallocated space. In some
-cases, this may be acceptable, such as a scenario in which an instructor
-simply wants to demonstrate that file recovery from slack is possible.
+logical means. For example, a user could create files of interest,
+delete them, and then write new files to disk through a virtual machine,
+possibly leading to the same outcome as simply writing the files
+directly to the filesystem without virtualization. However, there is no
+strict guarantee in a virtual machine that particular files have
+overwritten the space deallocated as a result of deleting the files from
+the filesystem. In some cases, this may be acceptable, such as a
+scenario in which an instructor simply wants to demonstrate examples of
+what might occur when deleting a file.
 
-It is also worth noting that artifact creation does not lend itself well
-to generating network captures and volatile memory, since no operating
-system is virtualized and therefore no applications (that would normally
-perform requests over the internet) are executed. However, it is
-theoretically possible to build forensic datasets through simulation
-alone; if a user knows exactly what artifacts are generated through the
-execution of an application and \emph{how} these artifacts are
-generated, it may be possible to artificially generate these artifacts
-as if the application had actually been run.
+\subsection{AKF implementation}\label{akf-implementation}
 
-An example may be editing the history database of a particular browser
-contained on a filesystem by mounting it, parsing it, and then adding
-new entries; this would make it appear as if the machine was used to
-browse to these websites without requiring virtualization. However, this
-technique is difficult to implement in practice. For example, a scenario
-developer would need to ensure that the artifact is consistent with
-other artifacts on disk, since typical Windows application usage may
-generate relevant artifacts in prefetch files and jump lists.
+As described in the prior section, there are three techniques for
+physical artifact planting implemented by prior synthesizers. These are:
 
-\subsection*{4.4.2 - AKF implementation}\label{akf-implementation}
-\addcontentsline{toc}{subsection}{4.4.2 - AKF implementation}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Filesystem mounting}, as done by \textbf{Forensig2} and
+  \textbf{SFX}, in which the filesystem is simply mounted to the host
+  and edited directly;
+\item
+  \textbf{Filesystem-independent direct editing}, as done by
+  \textbf{EviPlant}, in which edits to specific physical addresses on
+  the disk image are made without any parsing or knowledge of the
+  underlying filesystem; and
+\item
+  \textbf{Filesystem-aware direct editing}, as done by \textbf{ForGe}
+  and \textbf{EviPlant}, in which filesystem data structures are parsed
+  to determine the physical address(es) of the disk image to write to.
+\end{itemize}
+
+AKF supports all three to varying degrees, with significant improvements
+over prior synthesizers specifically in filesystem-aware editing.
+
+With respect to filesystem mounting, AKF allows users to construct new
+ISO files from an existing host directory using the
+\passthrough{\lstinline!pycdlib!} library
+\cite{lalancetteClalancettePycdlib2025}. These ISOs can be used as
+standalone artifacts (for example, presenting it to students as a disk
+image of a removable drive), in addition to mounting them as removable
+storage on a running virtual machine. Mounting these ISOs, as well as
+setting up a shared network folder between the host and guest machines,
+are the simplest means through which scenario developers can transfer
+files onto a running virtual machine. AKF does not currently support
+writing to arbitrary filesystems or disk image formats at rest, since
+these require write capabilities not supported by any well-known
+library.
+
+AKF also trivially ``supports'' filesystem-independent direct editing.
+
+supports limited filesystem-independent direct editing
+
+filesystem-independent direct editing: just opening the file and using
+seek/write
+
+Filesystem-aware direct Editing: pytsk3/dfvfs
 
 \chapter{Output and validation}\label{chapter-five}
 
@@ -2325,14 +2182,19 @@ Whether generating artifacts through physical or logical means, these
 artifacts must ultimately be exported and documented. In most cases,
 this involves generating disk images, volatile memory captures, or
 network captures; additionally, specific artifacts, such as browser
-artifacts, may be selectively copied from a filesystem.
+artifacts, may be selectively copied from a filesystem. Disk, memory,
+and network captures will be referred to as ``core outputs'' for
+brevity, as well as to distinguish them from ``standalone'' artifacts;
+both of these are simply ``outputs''.
 
 In either case, the contents and details of these artifacts, as well as
 the means through which they were generated, should be documented in
 some format. The term ``ground truth'' describes the contents of a
 single specific dataset in full. That is, it ideally provides a
 reference for every artifact that can be discovered within a dataset, as
-well as every action taken to plant those artifacts.
+well as every action taken to plant those artifacts. This metadata, in
+addition to core outputs and standalone artifacts, comprises a forensic
+dataset.
 
 From an educational perspective, the ground truth represents an ``answer
 key'' to the dataset; it details every artifact of interest that an
@@ -2347,9 +2209,74 @@ The remainder of this chapter describes the mechanisms through which
 outputs are exported from the synthesizer and the mechanisms that allow
 for real-time logging and documentation.
 
-\section{Core outputs}\label{core-outputs}
+\section{Compiling datasets}\label{compiling-datasets}
 
-\subsection{Extracting datasets}\label{extracting-datasets}
+\subsection{Generating outputs}\label{generating-outputs}
+
+In the same way that artifacts can be generated through logical and
+physical means, outputs can also be generated through logical and
+physical means. Some of these are analogous to techniques used by
+real-world investigators to extract forensically sound evidence that is
+valid in a court of law, while others are less suitable in a court
+setting but still have valid use cases.
+
+Logical output generation refers to any technique in which software is
+used inside a running virtual machine to generate these outputs. This
+includes using software such as FTK Imager, booted from a removable
+drive, to capture the volatile memory of a device or construct a
+\emph{logical} disk image. Similarly, network captures can be done by
+simply running Wireshark on the target device and network interface, and
+individual artifacts can be copied off of the device by hand and sent to
+a network or removable drive.
+
+Physical output generation refers to techniques in which the operating
+system is unaware of the technique being used, and therefore leave few
+or no traces in the resulting outputs. In practice, this involves using
+tools such as hardware write blockers to extract complete disk images
+(which also contain standalone artifacts), as well as using network taps
+and sniffers (or another traffic mirroring solution) to capture traffic
+over a particular interface. Although difficult, it is also possible to
+perform a physical extraction of RAM by performing a ``cold boot
+attack'', in which the RAM sticks are cooled to low temperatures before
+removing them from a running machine, slowing the process of memory
+decay as a result of the DRAM cells being unpowered
+\cite{yitbarekColdBootAttacks2017}.
+
+AKF directly supports physical output generation for all three core
+outputs, and indirectly supports logical output generation for core
+outputs and standalone artifacts. Physical output generation for virtual
+machines is generally achieved through direct interaction with the
+hypervisor itself.
+
+\begin{itemize}
+\tightlist
+\item
+  For disk images, the output can simply be the virtual hard drive used
+  by the hypervisor on the host machine (such as VDIs for VirtualBox).
+  If an ``actual'' disk image is desired, the command-line tool
+  VBoxManage supports converting various virtual drive formats to raw
+  disk images using the \passthrough{\lstinline!vboxmanage clonemedium!}
+  command, which also expands the compressed virtual drive to the
+  ``declared'' size of the drive as seen by the operating system.\\
+\item
+  For network captures, VirtualBox allows the user to enable network
+  tracing over multiple interfaces, dumping network traffic as a .pcap
+  file on the host machine. This can be enabled or disabled at any time
+  without affecting network connectivity or the state of the virtual
+  machine.\\
+\item
+  For volatile memory dumps, VBoxManage provides the command `vboxmanage
+  debugvm \textless machine\_name
+\end{itemize}
+
+In most cases, these physical output options are sufficient to generate
+suitable datasets. If only specific files are desired, the existing file
+transfer utilities provided by AKF can be used to extract standalone
+artifacts. Users can also manually perform the logical techniques
+described above (such as running Wireshark or installing FTK Imager)
+through a variety of means, such as pausing an AKF script until
+instructed by the user to continue; during this time, a user can
+manually run FTK imager to extract the contents of RAM, as an example.
 
 \subsection{Distribution and
 storage}\label{distribution-and-storage}
@@ -2437,8 +2364,8 @@ from uncommon applications. In theory, data exported from any major
 vendor, such as Cellebrite, Magnet, or FTK, can be converted into a
 valid CASE file. CASE is an extension of the Unified Cyber Ontology, or
 UCO, which simply provides basic objects that are not specific to
-digital forensics (such as applications or users). Consistent with
-existing documentation, CASE and CASE/UCO refer to the same format.
+digital forensics (such as applications or users). Consistent with the
+CASE project's documentation, CASE and CASE/UCO are one and the same.
 
 CASE is built on the Resource Description Framework (RDF), a model for
 describing information using relationships. Two objects are linked using
@@ -2446,95 +2373,28 @@ relationships, each of which is described as a ``triple''. This pattern
 allows for directed, labeled graphs to be expressed using RDF. The
 ontology of CASE objects is defined using the Terse RDF Triple Language,
 or Turtle, which allows these triples to be written in a simple text
-format. For example, the following set of triples describes an object
-called \passthrough{\lstinline!ApplicationFacet!} with two properties,
-\passthrough{\lstinline!numberOfLaunches!} and
-\passthrough{\lstinline!applicationIdentifier!}:
-
-\begin{lstlisting}
-observable:ApplicationFacet
-    a
-        owl:Class ,
-        sh:NodeShape
-        ;
-    rdfs:subClassOf core:Facet ;
-    rdfs:label "ApplicationFacet"@en ;
-    rdfs:comment "An application facet is a grouping of characteristics unique to a particular software program designed for end users."@en ;
-    sh:property
-        [
-            sh:datatype xsd:integer ;
-            sh:maxCount "1"^^xsd:integer ;
-            sh:nodeKind sh:Literal ;
-            sh:path observable:numberOfLaunches ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount "1"^^xsd:integer ;
-            sh:nodeKind sh:Literal ;
-            sh:path observable:applicationIdentifier ;
-        ] ,
-        ...
-        ;
-    sh:targetClass observable:ApplicationFacet ;
-    .
-\end{lstlisting}
-
-An instance of a \passthrough{\lstinline!Application!} object may thus
-be represented in the JSON-LD format using the
-\passthrough{\lstinline!ApplicationFacet!} as follows (including
-attributes omitted above):
-
-\begin{lstlisting}
-{
-    "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
-    "@type": "uco-observable:Application",
-    "uco-core:hasFacet": [
-        {
-            "@id": "kb:68004de9-1139-405f-aea7-2c05f3a84709",
-            "@type": "uco-observable:ApplicationFacet",
-            "uco-observable:numberOfLaunches": 12,
-            "uco-observable:applicationIdentifier": "test"
-        },
-    ]
-}
-\end{lstlisting}
+format.
 
 Because the CASE format itself is language-agnostic, it is necessary to
-write a library for each language that leverages CASE. As of writing,
-the CASE project provides Python bindings for UCO/CASE 1.4
-\cite{CaseworkCASEMappingPython}, in which each unique object is
-represented as a Python class, which can be instantiated to produce
-individual objects. However, this library has several limitations due to
-its design. For example, CASE objects are internally represented as
-dictionary of strings, rather than a set of instance variables. While
-this makes it easier to serialize these objects to JSON-LD, it also
-makes it extremely difficult to work with objects after they have been
-instantiated:
+write language-specific libraries that allow for instantiating CASE
+objects. As of writing, the CASE project provides Python bindings for
+UCO/CASE version 1.4 \cite{CaseworkCASEMappingPython}, in which each
+unique object is represented as a Python class, which can be
+instantiated to produce individual objects. However, this library has
+several limitations due to its design. For example, CASE objects are
+internally represented as dictionary of strings, rather than a set of
+instance variables. While this makes it easier to serialize these
+objects to JSON-LD dictionaries, it also makes it extremely difficult to
+work with these objects after they have been instantiated.
 
-\begin{lstlisting}[language=Python]
-facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
+It is also worth noting that each of the objects in the CASE ontology
+appear to have been manually translated to their corresponding Python
+class definitions. This is slow and time-consuming, especially given the
+context that a significant overhaul of UCO/CASE to version 2.0 is
+underway, with new object definitions; there appears to be no active
+effort to update the 1.4 bindings to 2.0.
 
-# These attributes do not exist
-
-facet.application_identifier
-facet.number_of_launches
-
-# The number of launches must be accessed as a dictionary key, which does
-
-# not return a simple integer, but instead returns a dictionary
-app_facet['uco-observable:numberOfLaunches']
-
-# -
-\end{lstlisting}
-
-Additionally, it appears that each of the objects have been manually
-translated from the Turtle definitions to their corresponding Python
-class. This is slow and time-consuming, especially given the context
-that a significant overhaul of UCO/CASE to version 2.0 is underway, with
-new object definitions; there appears to be no active effort to update
-the 1.3 bindings to 2.0.
-
-AKF leverages (and contributes, as part of a project independent of this
+AKF leverages (and contributes, though not the direct result of this
 thesis) Pydantic-based bindings for CASE. The foundation for this system
 will be the Pydantic library for Python, which allows developers to
 quickly define classes (referred to as ``Pydantic models'', or simply
@@ -2543,62 +2403,31 @@ Python type hints \cite{colvinPydantic2024}. More broadly, it allows
 us to simplify the declaration of individual objects while providing
 runtime type validation and automatic casting.
 
-For example, we can write the same object above as follows:
+Examples of CASE-related definitions, as well as a detailed comparison
+of AKF's bindings compared to the existing CASE bindings, can be found
+in \autoref{case-python-bindings}. One notable
+example from this section is the simplification of a CASE object
+declaration from 43 lines in the existing CASE bindings to only three
+lines in AKF. These simple declarations are largely possible because the
+conversion of instance variables to valid JSON-LD keys is deferred until
+serialization, rather than converting them to dictionaries immediately
+upon instantiation. This design choice allows us to centralize the
+serialization logic in a single parent class, which all CASE objects
+inherit from. In exchange for slightly increasing the complexity of
+converting \passthrough{\lstinline!numberOfLaunches!} to a dictionary
+with the correct key name, we can massively simplify the logic for
+declaring CASE objects.
 
-\begin{lstlisting}[language=Python]
-from typing import Optional
-
-from uco import core
-
-class ApplicationFacet(core.Facet):
-    numberOfLaunches: Optional[int] = None
-    applicationIdentifier: Optional[str] = None
-\end{lstlisting}
-
-This declaration is only three lines, 40 lines shorter than the existing
-declaration of \passthrough{\lstinline!ApplicationFacet!} - a 93\%
-reduction in code written. This is because the conversion of instance
-variables to valid JSON-LD keys is deferred until serialization. This
-design choice allows us to centralize the serialization logic in a
-single parent class that all CASE objects inherit from. In exchange for
-slightly increasing the complexity of converting
-\passthrough{\lstinline!numberOfLaunches!} to a dictionary with the
-correct key name, we can massively simplify the logic for declaring CASE
-objects.
-
-A simple CASE bundle, representing the complete contents of a forensic
-scenario, can be observed below:
-
-\begin{lstlisting}[language=Python]
-from caselib import case, uco
-
-bundle = uco.core.Bundle(
-    description="An Example Case File",
-    specVersion="UCO/CASE 2.0",
-    tag="Sample artifacts",
-)
-
-url_object = uco.observable.ObservableObject()
-url_facet = uco.observable.URLFacet(fullValue="www.docker.com/howto")
-url_object.hasFacet.append(url_facet)
-bundle.object.append(url_object)
-
-with open("example.jsonld", "wt+") as f:
-    data = bundle.model_dump(serialize_as_any=True)
-    f.write(json.dumps(data, indent=2))
-\end{lstlisting}
-
-A script is provided with the Pydantic-based CASE bindings to
-automatically parse the RDF files and convert them to valid Pydantic
-models. It automatically converts XSD datatypes to their native Python
-types (or a custom wrapper type if a native type does not exist),
-correctly inherits classes, and automatically generates docstrings and
-Pydantic fields as applicable. Additionally, the script also
-topologically sorts dependencies in the same file; the parent class of
-an RDF object may be declared \emph{after} its child class, which is
-disallowed in Python. This greatly simplifies the process of maintaining
-Python bindings for UCO/CASE, as well as the overall design of the
-library for future needs.
+A script is provided with AKF's CASE bindings to automatically parse the
+RDF files and convert them to valid Pydantic models. It automatically
+converts XSD datatypes to their native Python types (or a custom wrapper
+type if a native type does not exist), correctly inherits classes, and
+automatically generates docstrings and Pydantic fields as applicable.
+Additionally, the script also topologically sorts dependencies in the
+same file; the parent class of an RDF object may be declared
+\emph{after} its child class, which is disallowed in Python. This
+greatly simplifies the process of maintaining Python bindings for
+UCO/CASE, as well as the overall design of the library for future needs.
 
 \subsection{CASE integration in
 AKF}\label{case-integration-in-akf}
@@ -2628,50 +2457,54 @@ architectural diagram below.
 At this point, we have provided the implementations for automating
 artifact generation in a near-deterministic manner with comprehensive
 logging and reporting. However, there is still the challenge of exposing
-this functionality in a user-friendly manner. Furthermore, even if the
-\emph{process} of placing artifacts or performing actions can be
-simplified, the challenge of deciding what actions to perform still
-remains.
+this functionality in a user-friendly manner. At a high level, there are
+currently two ways to define an input to a synthesizer:
 
-It is important to note that it is still largely the responsibility of
-instructors to provide the actual background noise to populate the
-images with. Although the high-level languages provided by many of these
-frameworks make it easy to place files at desired locations or visit
-websites that are part of a scenario, these must all be defined and
-created ahead of time.
+\begin{itemize}
+\tightlist
+\item
+  An \textbf{imperative} format, in which the synthesizer is provided
+  instructions in an imperative language and the developer must provide
+  the exact instructions for the synthesizer to take through some
+  exposed API.
+\item
+  A \textbf{declarative} format, in which the synthesizer is provided a
+  file that describes the desired elements of the result, and it is up
+  to the synthesizer to execute the instructions necessary to achieve
+  the result.
+\end{itemize}
+
+Even if the \emph{process} of placing artifacts or performing actions
+can be simplified through imperative and declarative inputs, the
+challenge of deciding what actions to perform still remains. It is still
+largely the responsibility of instructors to provide the actual
+background noise to populate the images with. Although the high-level
+languages provided by many of these frameworks make it easy to place
+files at desired locations or visit websites that are part of a
+scenario, these must all be defined and created ahead of time.
 
 This chapter addresses the challenges of creating background noise and
 providing simple APIs for complex GUI-driven applications. More
 precisely, we address two questions -- how do we invoke AKF's automation
 systems, and how does AKF assist a user in building a scenario? Here, we
-explore AKF's imperative and declarative APIs, as well as the viability
-of using large language models (LLMs) to assist in building individual
-files and complete scenario descriptions.
+explore AKF's imperative and declarative syntaxes, as well as the
+viability of using large language models (LLMs) to assist in building
+individual files and complete scenario descriptions.
 
-\section{Background}\label{background}
+\section{Scripting background}\label{scripting-background}
 
-We begin by analyzing how synthesizers accept user input to decide how
-to operate, as well as what specific forms of data are accepted by these
-synthesizers. In particular, we address the following questions:
+We begin by analyzing how synthesizers accept instructions for execution
+-- more precisely, how do users define the sequence of operations that
+the synthesizer should take to form the image?
 
-\begin{itemize}
-\tightlist
-\item
-  How do users define the high-level ``scenario'', or sequence of
-  operations that the synthesizer should take to form the image?
-\item
-  How do users pass data, such as images to be placed or emails to be
-  sent, into the synthesizer?
-\end{itemize}
-
-For many of the frameworks created in the last decade, users typically
-define scenarios by using a Python library to interact with the
-framework, setting up the virtualized environment and perform high-level
-actions on the environment. This abstracts the underlying calls to the
-virtualized environment away from the user. This code-based approach
-represents an \emph{imperative} strategy to scenario creation, where the
-user describes how the image should be created by describing the exact
-order and methodology by which actions should be taken.
+For many of the frameworks created in the last decade, users define
+scenarios by using a Python library to interact with the framework,
+setting up the virtualized environment and performing high-level actions
+on the environment. This abstracts away the underlying calls to the
+virtualized environment from the scenario developer. This code-based
+approach represents an \emph{imperative} strategy to scenario creation,
+where the user describes how the image should be created by describing
+the exact order and methodology by which actions should be taken.
 
 It is worth noting that, like many automation frameworks such as
 Playwright \cite{MicrosoftPlaywrightpython2025}, the language used
@@ -2686,11 +2519,17 @@ In contrast, custom scenario formats provided by \emph{D-FET}
 \cite{russellForensicImageDescription2012}, and Yannikos
 \cite{yannikosDataCorporaDigital2014} follow a \emph{declarative}
 strategy. Here, a custom high-level language describes what the final
-state of the image should be. For example, consider the following
-example \emph{SFX} code taken from
-\cite{russellForensicImageDescription2012}, in which a partition is
-created on which a 64-bit version of Windows 7 is installed and a user
-called ``Gordon'' uses Firefox to browse to the internet:
+state of the image should be, representing a \emph{declarative} strategy
+to scenario creation. Instead of importing libraries and writing code,
+users state the desired elements of the forensic dataset, allowing the
+synthesizer to decide \emph{how} to achieve the desired state. The
+specifics of state management and execution are delegated to the
+synthesizer.
+
+Consider the following declarative \emph{SFX} code taken from
+\cite{russellForensicImageDescription2012}. Here, a Windows 7
+partition is created, after which a user called ``Gordon'' uses Firefox
+to browse the internet:
 
 \begin{lstlisting}[language=XML]
 <disk
@@ -2698,7 +2537,7 @@ called ``Gordon'' uses Firefox to browse to the internet:
         <base os="windows7x64"/
         <user username = "Gordon"
              <browserhistory browser="firefox"
-                 <url link="http://bbc.co.uk" time="13:14:00 1 Jan 2013"/
+                 <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013"/
              </browserhistory
         </user
     </partition
@@ -2728,47 +2567,464 @@ if __name__ == "__main__":
     guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime="2013-01-01 13:14:00")
 
     browser_obj = guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
-    browser_obj.open(url="2013-01-01 13:14:00")
+    browser_obj.open(url="[http://bbc.co.uk")](http://bbc.co.uk"))
     while browser_obj.is_busy:
         time.sleep(2)
     browser_obj.close()
     
 \end{lstlisting}
 
-Note that \emph{hystck} - and by extension, \emph{ForTrace} - also
-allows users to express scenarios as YAML files, such that both a
-declarative and an imperative approach to defining scenarios is
-available. This reduces the technical difficulty of using the framework,
-while still allowing users experienced with both Python and the
-framework to perform lower-level customization as needed. This
+Observe that although these two code blocks have the same expressive
+power (i.e., they achieve the same overall outcomes), there is a clear
+difference in the complexity and length between the two. It is
+significantly easier to read and write the declarative XML in the first
+code block, as it abstracts away the need to instantiate various
+synthesizer objects and call specific methods. By extension, this also
+allows for a common declarative syntax to be used across multiple
+synthesizers, since low-level details do not need to be exposed as part
+of the declarative syntax.
+
+The primary benefit of an imperative approach to generation is its
+flexibility; on a Python-based synthesizer, one can simply import
+another library to extend the functionality of the base scenario
+definition. This flexibility naturally comes at the expense of a greater
+learning curve; while true that many digital forensic specialists are
+likely to have programming experience, it is far easier to learn a
+restricted declarative specification (like XML) than an entire
+programming language, which may entail additional setup (such as an IDE,
+dependencies, and so on).
+
+When accessibility is preferred over functionality, declarative syntaxes
+are often more powerful than imperative syntaxes. Certain scenario
+developers, such as classroom instructors, may not need the low-level
+control provided by an imperative syntax or a full programming language
+such as Python. It also takes time to learn about the functionality
+exposed by the synthesizer's library, not to mention learning the
+programming language itself. These are the primary motivators behind
+supporting well-defined declarative syntaxes.
+
+Of course, low-level control is still important, especially when
+external libraries must be used to implement functionality not
+inherently exposed by a synthesizer. For this reason, some synthesizers
+support both declarative and imperative scripts to generate scenarios;
+for example, the Python-based \emph{hystck} and \emph{ForTrace}
+frameworks allow users to write YAML scripts to execute actions. This
 highlights the fact that both declarative and imperative approaches can
 be used simultaneously; in particular, it demonstrates that
 declarative-to-imperative translators can be written to support
 arbitrary declarative languages, such as those of both SFX and ForTrace.
-While not explored in this thesis, it is also worth noting the GUI-based
-interfaces provided by \textbf{Yannikos et al.} and \textbf{ForGe} for
-building scenarios.
+(While not explored in this thesis, it is also worth noting the
+GUI-based interfaces provided by \textbf{Yannikos et al.} and
+\textbf{ForGe} for building scenarios.)
 
-\section{Setup and imperative
-usage}\label{setup-and-imperative-usage}
+AKF supports both an imperative syntax (through its Python API) as well
+as a declarative syntax. Unlike prior synthesizers, AKF's declarative
+syntax supports both execution and declarative-to-imperative
+translation, allowing users to quickly create and modify imperative
+scripts from high-level declarative descriptions.
+
+\section{Setup and basic usage}\label{setup-and-basic-usage}
 
 Like many of its predecessors, AKF implements its functionality and
-exposes its API in the same language -- Python 3. There are numerous
-advantages to a Python-based API; besides the low difficulty of setting
-up and using Python, its rich ecosystem allows scenarios to be extended
-through the use of other libraries from the Python ecosystem. For
-example, if a user wanted to conditionally execute certain parts of a
-scenario by testing if a particular service is currently online, a user
-could use the \emph{Requests} library \cite{Requests31Documentation}
-to issue an HTTP request out-of-band before doing the same using
-synthesizer-provided routines in the virtualized environment.
+exposes its API in the same language, Python 3. There are numerous
+advantages to a Python-based API; besides the relatively low difficulty
+of setting up and using Python, its rich ecosystem allows scenarios to
+be extended through the use of other libraries from the Python
+ecosystem. For example, if a user wanted to conditionally execute
+certain parts of a scenario by testing if a particular remote service is
+currently online, a user could use the \emph{Requests} library
+\cite{Requests31Documentation} to issue an HTTP request out-of-band
+before performing the same action in a virtualized environment.
+
+Users must have two foundational technologies for AKF to operate -- an
+installation of Python 3.11 or later and a supported hypervisor. AKF
+currently only supports VirtualBox, though QEMU/libvirt has also been
+used in prior synthesizers. AKF uses
+\passthrough{\lstinline!pyproject.toml!} to define Python library
+dependencies, which can be installed into a virtual environment using a
+package manager such as \emph{pip} or \emph{uv}.
+
+At this point, a virtual machine must be prepared for use with AKF. As
+with prior synthesizers, it is possible to manually configure a machine
+by downloading a supported operating system and creating a new virtual
+machine from scratch. The manual process, which is similar to that of
+other synthesizers, is as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  Download an ISO or pre-prepared virtual machine from a distributor
+  with the desired operating system.
+\item
+  If necessary, create a new VM with that operating system image and
+  install it.
+\item
+  Configure the virtual machine with the desired host resources,
+  including two network interfaces - one connected to the NAT adapter
+  for general internet usage, and one connected to the host-only adapter
+  for agent communications.
+\item
+  Create an administrative user with known credentials. Configure the
+  operating system as desired to reduce friction with the synthesizer
+  (disabling UAC prompts, enabling auto-logon, etc.)
+\item
+  Build and copy the OS-specific AKF agent to the virtual machine,
+  configuring it as a startup application. Add firewall rules to ensure
+  that the host and agent are able to communicate.
+\end{itemize}
+
+After following this process, the virtual machine can now be cloned and
+used as needed in AKF scripts. Although relatively straightforward, this
+process is still time-consuming, especially when adapting this process
+for new operating systems. While a prepared AKF virtual machine can
+theoretically be distributed (in a virtual appliance format such as
+OVF), this may run into legal issues if software on the underlying
+operating system is copyrighted.
+
+As a result, AKF makes use of modern infrastructure-as-code solutions to
+vastly simplify the setup of new virtual machines. Vagrant, developed by
+HashiCorp, is a tool for rapidly building development environments
+\cite{HashicorpVagrant2025}. It allows users to define and build
+virtual machines on a variety of virtualization platforms, such as
+VirtualBox and VMWare. Virtual machines are built using a ``box'' as a
+base image, which is then configured according to a Vagrantfile
+describing hypervisor-specific configuration options as well as
+instructions to provision the machine with applications. (A similar
+approach of distributing the ``differences'' of base images is used to
+reduce the size of distributed forensic datasets by \textbf{EviPlant},
+as described in \autoref{distribution}.)
+
+The AKF Windows agent includes a Vagrantfile for creating a new Windows
+11 virtual machine with the agent installed and configured, which can
+easily be adapted for other platforms and hypervisors. A robust
+ecosystem of Vagrant boxes for varying Linux distributions and Windows
+versions exists, many of which can be pulled from the Vagrant public
+registry \cite{hashicorpHashiCorpCloudPlatform}. When combined with
+the flexibility of Vagrant over multiple virtualization platforms, this
+can significantly improve the reproducibility and usability of AKF
+across many platforms. It should also be noted that Vagrant can be used
+to configure and build larger environments with multiple machines. For
+organizations that are able to express corporate environments as
+Vagrantfiles, this could allow AKF to perform artifact generation at
+scale, allowing for incident response scenarios reflecting real-world
+networks.
+
+Following setup, developers can build scenarios by using the AKF core
+libraries (\passthrough{\lstinline!akflib!}) and the API of the
+platform-specific agent installed onto the virtual machine. This
+reflects typical imperative usage, in which environment setup, artifact
+generation, and output generation is handled explicitly through a script
+executed through the Python interpreter.
+
+A simple AKF script achieving the same outcomes as the ForTrace and SFX
+scripts above follows:
 
 \section{Declarative usage}\label{declarative-usage}
 
-\subsection{Overview}\label{overview}
+\subsection{Existing declarative
+syntaxes}\label{existing-declarative-syntaxes}
+
+As described previously, declarative inputs are well-structured files
+with a fixed set of available actions -- effectively forming an API --
+where each entry in the file specifies an artifact (or set of artifacts)
+to be placed in the dataset, along with any configurable options that
+are available for that artifact.
+
+Declarative formats can be used in one of two ways. The first is
+\emph{execution}, in which the elements of the declarative script are
+directly interpreted to generate imperative API calls. This is
+characteristic of synthesizers that only support declarative script
+inputs, exposing no low-level APIs. This takes advantage of the
+high-level nature of declarative scripts; a declarative script can
+remain the same even if the libraries that execute it change, so long as
+the \emph{interpreter} is updated accordingly. The second is
+\emph{translation}, in which the declarative script is used to generate
+an equivalent imperative script adhering to a particular synthesizer's
+API. This allows the declarative script to be used as a ``base'', after
+which an experienced scenario developer can make additional
+modifications to the generated imperative script as needed. Such scripts
+are subject to changing dependencies and deprecated functions, but can
+be regenerated so long as the \emph{translator} is updated accordingly.
+
+It is important to note that a declarative syntax, which may be more
+``rigid'' in structure, does not preclude the use of randomness. One
+notable example of this is the discrete-time Markov chains used by
+Yannikos et al.~to express scenarios in a probabilistic manner, with
+each state of the Markov chain representing a particular action (sending
+an email, deleting a file, etc.) taken by the synthesizer
+\cite{yannikosDataCorporaDigital2014}. These chains are evaluated at
+runtime to generate multiple unique datasets from a single description.
+
+The challenges of defining a suitable declarative syntax for a
+particular synthesizer is not unlike the challenges faced in general
+programming language design. There are several key factors to the
+success of imperative programming languages that extend to declarative
+syntaxes, some of which are derived from \cite{finkel1996advanced}
+and described as follows:
+
+\begin{itemize}
+\tightlist
+\item
+  The language should be \textbf{simple}, using as few basic concepts as
+  possible. This makes code easier to read and write, an important
+  aspect for users with limited programming experience.\\
+\item
+  The language should be \textbf{modular}, such that the role and
+  interfaces of individual program units is clear.
+\item
+  The language should be \textbf{predictable}, such that users can apply
+  their existing knowledge of a synthesizer to easily implement or add
+  new features to a scenario.\\
+\item
+  The language should \textbf{abstract} as much as possible away from
+  the user, such that the minimum information needed to fulfill artifact
+  generation is exposed to the user.
+\end{itemize}
+
+Perhaps the most important factor, however, is an awareness of the
+\textbf{purpose} of the declarative syntax. The purpose of a synthesizer
+is to make it easier to generate forensic artifacts and datasets. The
+declarative language should reflect this, focusing on making actions and
+artifacts as easy to declare and customize as possible.
+
+In designing the AKF declarative syntax, the declarative syntaxes of
+both prior syntaxes and unrelated technologies were evaluated. An
+analysis of some of these syntaxes, with examples, is described briefly
+in \autoref{historical-declarative-syntaxes}.
+However, two syntaxes in particular contributed the most to the AKF
+declarative syntax: those of ForTrace and Ansible.
+
+ForTrace uses YAML to express scenarios in a declarative manner.
+ForTrace influenced both AKF declarative syntax and the libraries
+leveraging the syntax significantly, in large part because it was the
+sole synthesizer identified with both imperative and declarative support
+that was open source.
+
+Below is a simple example of a ForTrace declarative scenario:
+
+\begin{lstlisting}
+name: haystack-example
+description: A example action suite to generate a haystack (traffic)
+author: MPSE Group
+seed: 1234
+collections:
+  c-http-0:
+    type: http
+    urls: ./generator/friendly_urls.txt
+settings:
+  host_nfs_path:
+  guest_nfs_path:
+applications:
+hay:
+  h-http-0:
+    application: http
+    amount: 3
+    collection: c-http-0
+needles:
+  n-http-0:
+    application: http
+    file: [https://dasec.h-da.de/](https://dasec.h-da.de/)
+    amount: 1
+dumps:
+  d-dump-0:
+    dump-type: mem
+    dump-path: /home/fortrace/gendump.file
+\end{lstlisting}
+
+At a high level, ForTrace scenarios contain five distinct elements:
+
+\begin{itemize}
+\tightlist
+\item
+  Metadata about the scenario, such as the name, description, and author
+  of the scenario.
+\item
+  ``Collections'' of data that can be reused throughout the scenario in
+  supported application types, such as a newline-separated list of URLs.
+\item
+  Configuration options, which may be applied to individual applications
+  or the entire scenario.
+\item
+  The actual artifacts to create as part of the
+  \passthrough{\lstinline!hay!} and \passthrough{\lstinline!needles!}
+  sections, where \passthrough{\lstinline!hay!} includes artifacts that
+  should be considered background noise, and
+  \passthrough{\lstinline!needles!} includes artifacts that should be
+  considered significant. Each artifact contains a unique ID, an
+  application type (the \passthrough{\lstinline!application!} key), and
+  arguments that are specific to the application responsible for
+  generating the artifact, such as a the URLs for web browsing.\\
+\item
+  Any core outputs that should be created as part of the scenario.
+\end{itemize}
+
+This file is passed into a ``generator'', which parses the contents of
+the YAML file to prepare various internal data structures, initialize
+the virtual machine, and then execute the actions specified in the
+\passthrough{\lstinline!hay!} and \passthrough{\lstinline!needles!}
+sections in a random order according to the
+\passthrough{\lstinline!seed!} key. Depending on the value of the
+\passthrough{\lstinline!application!} key, the data for that action is
+passed to an application-specific handler that interacts with the
+running virtual machine using existing ForTrace libraries. Once all the
+actions have been executed, the generator creates any requested outputs
+(such as volatile memory dumps) and shuts down the virtual machine.
+
+This analysis provided insight into the design decisions and
+functionality required to execute actions from the high-level
+descriptions of a scenario. In particular, it demonstrates the need for
+actions or artifacts to be defined in a consistent, flexible manner such
+that program state and other data can be passed to application-specific
+libraries as needed. It also demonstrates the need for various levels of
+configuration, including scenario-wide configuration,
+application-specific configuration, and action/artifact-specific
+configuration. ForTrace implements this in a somewhat inflexible manner;
+in fact, nearly all declarative language support is contained in a
+single file, with a hardcoded ``router'' handling each unique
+\passthrough{\lstinline!application!} type. This makes it difficult to
+add support for new applications without significant effort,
+particularly because the generator must be aware of every possible
+action/artifact type ahead of time.
+
+With these priorities and issues from ForTrace identified, are there
+ideas from other technologies that can be used to address them? That is,
+are there other technologies designed to execute a large set of complex
+actions, using a simple but flexible and configurable syntax, and how
+does it work? Ansible, the second major inspiration for the AKF
+declarative syntax, precisely fills this need.
+
+Ansible is an open-source automation framework that is often used to
+remotely configure Windows and Linux machines at scale, allowing
+organizations to interact with many machines at once without the need to
+install orchestration software on these machines in advance. To achieve
+this, users write \emph{playbooks}, which are simple YAML files that
+contain one or more \emph{plays}. Each play is simply a set of
+\emph{tasks} that is run on multiple machines at once, and each task
+depends on a \emph{module} that is designed to achieve a single,
+specific outcome.
+
+The following is a simple Ansible playbook with a single play, derived
+from the official Ansible documentation for playbooks:
+
+\begin{lstlisting}
+
+- name: Update web servers
+  hosts: webservers
+  remote_user: root
+  tasks:
+  - name: Ensure apache is at the latest version
+    ansible.builtin.yum:
+      name: httpd
+      state: latest
+  - name: Write the apache config file
+    ansible.builtin.template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
+\end{lstlisting}
+
+This play uses the \passthrough{\lstinline!yum!} package manager to
+install Apache, and then copies a local file to the remote host.
+\passthrough{\lstinline!ansible.builtin.yum!} and
+\passthrough{\lstinline!ansible.builtin.template!} are both modules in
+the \passthrough{\lstinline!ansible.builtin!} collection included with
+all default Ansible installations, which accept parameters passed as a
+YAML dictionary.
+
+Although Ansible contains many features that contribute to its
+flexibility, the two important concepts of Ansible that are relevant to
+AKF are \emph{roles} and \emph{modules}. Roles are a collection of
+Ansible resources that typically achieve some ``larger'' reproducible
+goal, typically by running multiple tasks and leveraging variables,
+configuration options, and files included as part of the role. Roles can
+include \emph{modules}, which are standalone imperative scripts
+(typically in Python) that accept arguments, execute code based on those
+arguments, and return data using well-structured interfaces. These
+modules, as shown above, can be called and executed from playbooks or
+executed independently on the command line.
+
+These concepts are extremely relevant to synthesizers, as they must
+support individual application-specific actions and group these actions
+together in a flexible, well-defined manner. As described in
+\autoref{chapter-four}, each of the RPyC subservices of AKF
+agents expose a group of application-specific automation methods. The
+functionality of each of these groups must be re-exposed in a
+declarative manner, which can be achieved by adapting the concept of
+Ansible roles and modules to AKF.
+
+Together, the ForTrace and Ansible syntaxes provide three concepts that
+are reflected in the AKF syntax, described further in the following
+section:
+
+\begin{itemize}
+\tightlist
+\item
+  The overall structure and information of the data contained in the
+  YAML file
+\item
+  An action syntax that allows us to declare individual actions,
+  referring to those actions by name, and pass arguments directly to
+  that action for translation \emph{or} execution
+\item
+  A modular architecture that allows us to define the supported
+  arguments of each action and expose them to the declarative
+  interpreter, while also being as decoupled from the standard
+  imperative library as much as possible
+\end{itemize}
 
 \subsection{The AKF declarative
 syntax}\label{the-akf-declarative-syntax}
+
+The AKF declarative syntax is very similar to the Ansible playbook
+syntax. Declarative scripts are comprised of metadata, global
+configuration, libraries to import, and individual tasks to execute as
+part of the scenario. Each task refers to a single \emph{module} by name
+using a qualified Python import path, accepting a dictionary of
+arguments in addition to global configuration overrides.
+
+These modules are implemented as subclasses of
+\passthrough{\lstinline!AKFModule!}, an abstract base class that accepts
+Pydantic models. These Pydantic models dictate and validate the
+arguments accepted by the module, which must act accordingly.
+\passthrough{\lstinline!AKFModule!}s are responsible for two separate
+tasks:
+
+\begin{itemize}
+\tightlist
+\item
+  When instructed to perform actions directly from the argument model,
+  the \passthrough{\lstinline!AKFModule!} should import AKF core
+  libraries and agent APIs to carry out the required actions.
+\item
+  When instructed to generate imperative code from the argument model,
+  the \passthrough{\lstinline!AKFModule!} should generate the equivalent
+  code that \emph{would} execute the actions if run and report on the
+  library dependencies necessary to run the code.
+\end{itemize}
+
+In both cases, modules can read and modify a global state dictionary
+that allows otherwise independent modules to cooperate with each other.
+For example, if an action should be executed in a context manager,
+causing the indentation level of the code to increase, successive
+modules generating code within the context manager can increase the
+indentation level of generated code, as well. Additionally, this allows
+for ``outputs'', such as CASE bundles, to be passed and gradually
+constructed across modules. This design allows for context-aware code
+generation and action execution. More importantly, it allows for the
+declarative syntax to be implemented wholly independently of the core
+libraries, allowing for flexibility in the implementation of other AKF
+features.
+
+An example of a declarative AKF scenario, carrying out the same actions
+as \ldots{}
+
+(a brief explanation of the actual elements of the declarative file,
+like the keys and stuff)
+
+how the interpreter actually works (based on this example) -- how it
+instantiates stuff based on the declared libraries, and how it actually
+looks up the modules and passes information to them
+
+something to tie it into the next two sections.
 
 \section{Using generative AI for individual
 artifacts}\label{using-generative-ai-for-individual-artifacts}
@@ -3037,13 +3293,109 @@ protocol for issuing commands.
 
 \section{Distribution}\label{distribution}
 
-Depends a lot on what we do implement, but this would be stuff like
-Packer/Vagrant and any image ``squeezing'' that's done as part of
-\autoref{chapter-five}
+One notable aspect of prior synthesizers not implemented as part of AKF
+are various improvements to the distribution of forensic datasets,
+particularly in environments with limited bandwidth or limited storage
+space. AKF largely addresses challenges in the \emph{creation} of
+forensic datasets, not their \emph{distribution}. This section largely
+focuses on prior efforts to reduce the size of forensic datasets, as
+well as how they could be integrated into AKF in the future.
+
+The size of forensic datasets can be trivially reduced in various ways.
+For example, a full forensic dataset (with various core outputs) can be
+compressed using a standard algorithm such as LZMA. Specific core
+outputs, such as disk images, can be stored in a dynamically expandable
+image format such as VDI or VHD. Such formats only use as much space as
+is currently used on the disk image itself, even if the size reported to
+the operating system is much larger. Such reductions are ``lossless'',
+in the sense that they largely reflect what a forensic analyst would
+encounter using real hardware.
+
+However, there are more aggressive improvements that can be made with
+respect to the distribution process. These typically come at one of two
+expenses -- either irrelevant data is outright removed, or additional
+effort must be taken by the end user to finish ``constructing'' the
+forensic scenario for use after downloading relevant files (which are
+significantly smaller than the finished forensic dataset itself). The
+first is a tradeoff between realism and image size; the second is a
+tradeoff between immediate usability and additional processing time.
+
+The first method describes the process of simply removing data that is
+not deemed to be relevant for educational or research purposes. For
+example, if an instructor is simply interested in demonstrating the
+recovery and analysis of SQLite databases in Chrome's AppData directory,
+there is no need to include files from most other directories on the
+filesystem. One option for achieving this is by using a logical disk
+image format, such as the .AD1 format, which are collections of files
+(much like a ZIP archive) as opposed to a collection of physical disk
+units.
+
+A more notable approach to removing irrelevant information is described
+by Russell et al.~as part of their work developing \textbf{SFX}
+\cite{russellForensicImageDescription2012}. Their approach,
+described as ``partition squeezing'', is based on the idea that the
+contents of files irrelevant to an educational scenario can be truncated
+to the size of a single filesystem cluster or block. This preserves the
+file and directory structure of the overall filesystem (thus preserving
+realism), while also removing data that is unlikely to be useful to
+students performing analysis. Thus, the educational value of the image
+remains the same, even if some data is missing. Russell et al.~note that
+additional space can be saved by replacing irrelevant files,
+particularly those deep within the filesystem that are highly unlikely
+to be analyzed in detail by students, with hard links to other files.
+This eliminates the original contents of the file entirely while
+preserving most of its attributes.
+
+The use of logical images and partition squeezing, of course, is not
+suitable in all cases. In particular, logical images generally do not
+include slack or unallocated space. The partition squeezing approach
+destroys data that may be required for certain forensic analysis tools
+to function, as well as data that might be of interest to users of the
+dataset in other research or educational contexts.
+
+AKF does not provide any functionality for directly generating logical
+images or performing partition squeezing. However, generating logical
+images is relatively straightforward using a publicly available tool
+such as FTK Imager, so long as the scenario developer is aware of
+relevant directories that should be included -- a process that might
+occur with AKF's reporting features in mind. Partition squeezing might
+be achieved by leveraging the filesystem-aware functionality of
+libraries such as \passthrough{\lstinline!libtsk!} and
+\passthrough{\lstinline!dfvfs!}, which is used as part of AFK's physical
+planting techniques described in \autoref{akf-implementation}. Such functionality could be implemented either in
+AKF or as part of a wholly independent tool.
+
+The second method describes a variety of techniques in which end users
+must take additional actions after downloading relevant materials before
+a forensic dataset is ready for use. One example described by Scanlon et
+al.~is the use of ``evidence packages'', in which users are provided
+with a base image of a single operating system that can be reused to
+build multiple forensic datasets through \textbf{EviPlant}
+\cite{scanlonEviPlantEfficientDigital2017}. After a scenario
+developer has finished creating artifacts (whether manually or through a
+synthesizer), they can use EviPlant's ``diffing'' tool to determine and
+extract differences between the base image and the developer's current
+disk state. These differences can be distributed to users, who can then
+use EviPlant's ``injection'' tool on the previously-distributed base
+image to recreate the final disk image.
+
+This is described more broadly as ``differential imaging'', in which
+only differences from some initial file are transmitted to users. These
+differences are often significantly smaller than the disk images they
+are designed to build, and therefore are much easier to distribute than
+complete disk images. In exchange, each user must spend additional
+processing time before the image can be used for analysis. EviPlant's
+injection tool operates through a combination of logical and physical
+planting, which requires time software, and resources that are not
+required when distributing complete disk images. This is an acceptable
+cost particularly when conducting remote classes, where not all students
+may have high-speed internet. Again, although AKF does not implement
+differential imaging, this functionality can likely be implemented as
+part of an independent tool.
 
 \section{Mobile synthesis}\label{mobile-synthesis}
 
-Finally, while outside the scope of this thesis, there is also the
+Finally, while well outside the scope of this thesis, there is also the
 challenge of building a synthesizer for non-desktop platforms,
 particularly mobile devices. For many people, mobile devices are the
 primary means through which we interact with the digital world, causing
@@ -3101,12 +3453,14 @@ to support mobile dataset generation, primarily by interacting with
 Android emulators and existing developer tools. However, the isolation
 around individual Android applications suggests that it may be difficult
 to use a logical agent-based approach to automating application
-activity; this simultaneously implies that it may be easier to use
-physical approaches to generating information, because the locations of
-generated artifacts are likely to be smaller in scope. More research is
-needed to determine available avenues through which Android datasets can
-be constructed. This is especially true for iOS, for which there are far
-fewer resources.
+activity; a Python agent running as an application is unlikely to have
+full filesystem access on a non-rooted device. However, application
+isolation also suggests that it may be easier to build and use physical
+approaches to generating mobile artifacts, since these artifacts will
+largely be constrained to the application's allocated directory. More
+research is needed to determine viable options through which Android
+datasets can be constructed. This is especially true for iOS, for which
+there are significantly fewer resources.
 
 \chapter{Conclusion}\label{chapter-nine}
 
@@ -3156,8 +3510,548 @@ datasets.
 
 \appendix
 
-\chapter{Results Data} \label{appendix-B}
-Temporary...
+\chapter{Architectural diagrams}\label{appendix-a}
+
+
+
+\chapter{Code samples}\label{appendix-b}
+
+\section{Code repositories}\label{code-repositories}
+
+The complete implementation of AKF is available on GitHub at the
+following locations:
+
+\begin{itemize}
+\tightlist
+\item
+  Core libraries (\passthrough{\lstinline!akflib!}):
+  \url{https://github.com/lgactna/akflib}
+\item
+  The AKF agent for Windows:
+  \url{https://github.com/lgactna/akf-windows}
+\end{itemize}
+
+Additionally, a standalone library for CASE/UCO 2.0 is provided at
+\url{https://github.com/lgactna/CASE-pydantic,} which is used throughout
+AKF.
+
+\section{Comparison of ForTrace and AKF
+agents}\label{comparison-of-fortrace-and-akf-agents}
+
+Invoking commands in ForTrace entails issuing a simple string to the
+agent running on the VM. For example, invoking a command to add a new
+user to the VM may look like the following:
+
+\begin{lstlisting}[language=Python]
+
+# From Demo.py
+
+guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform="windows")
+
+# Wait for the VM to connect to the VMM
+
+guest.waitTillAgentIsConnected()
+
+# create userManagement object
+
+userManagement_obj = guest.application("userManagement", {})
+
+# Add different users
+
+logger.info("Adding user1")
+try:
+    userManagement_obj.addUser("user1", "password")
+    while userManagement_obj.is_busy is True:
+        time.sleep(1)
+except Exception as e:
+    print("An error occured: ")
+    print(e)
+time.sleep(5)
+\end{lstlisting}
+
+The agent's main loop, which receives and interprets these commands, is
+extremely simple:
+
+\begin{lstlisting}[language=Python]
+def main():
+    # create logger
+    logger = create_logger('guestAgent', logging.INFO)
+
+    logger.info("create Agent")
+    a = Agent(operating_system=platform.system().lower(), logger=logger)
+    logger.info("connect to fortrace controller: %s:%i" % (fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT))
+    a.connect(fortrace_CONTROLLER_IP, fortrace_CONTROLLER_PORT)
+
+    # let all network interfaces come up
+    time.sleep(15)
+
+    # inform fortrace controller about network configuration
+    a.register()
+
+    # wait for commands
+    while 1:
+        time.sleep(1)
+        a.receiveCommands()
+\end{lstlisting}
+
+When the \passthrough{\lstinline!Agent!} is first instantiated, it forms
+a permanent TCP socket out to the configured port and IP address where
+it expects the server (the VMM) to be issuing commands.
+\passthrough{\lstinline!Agent.receiveCommands()!} receives every message
+available by reading the socket, parsing it, and then invoking
+\passthrough{\lstinline!Agent.do\_command()!}, which converts the
+command message into a specific Python function call with arguments.
+
+The server, or ``virtual machine monitor'' (VMM), issues commands over
+TCP to a running instance of the agent on the VM. Each module under
+\passthrough{\lstinline!fortrace.application!} can be thought of as a
+coherent group of commands associated with a particular \emph{real}
+application (like Firefox or Thunderbird). Recall earlier how we found
+our \passthrough{\lstinline!userManagement!} application and invoked
+\passthrough{\lstinline!addUser!}:
+
+\begin{lstlisting}[language=Python]
+userManagement_obj = guest.application("userManagement", {})
+userManagement_obj.addUser("user1", "password")
+\end{lstlisting}
+
+At a high level, the \passthrough{\lstinline!application()!} call
+attempts to import
+\passthrough{\lstinline!fortrace.application.\{application\_name\}!}.
+Although not enforced by a higher-level interface, each of these modules
+contains subclasses of the following four classes (defined in
+\passthrough{\lstinline!fortrace.application.application!}) at minimum,
+with possibly more helper classes for OS-specific functionality or other
+modularity as needed:
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!ApplicationVmmSide!}: Contains one function
+  for each command implemented in
+  \passthrough{\lstinline!ApplicationGuestSide!}, building a message
+  that will be interpreted and acted upon by the corresponding
+  \passthrough{\lstinline!ApplicationGuestSideCommands!} class.
+\item
+  \passthrough{\lstinline!ApplicationVmmSideCommands!}: Accepts and
+  interprets module-specific messages returned by the agent, which may
+  be used to update the remote state as tracked by the host.
+\item
+  \passthrough{\lstinline!ApplicationGuestSide!}: Implements the actual
+  application-specific functionality for the agent, providing one
+  function for each separated command by this module.
+\item
+  \passthrough{\lstinline!ApplicationGuestSideCommands!}: Interprets
+  commands and arguments, calling the respective function in the
+  corresponding \passthrough{\lstinline!ApplicationGuestSide!} subclass.
+  This allows the actual dispatch of commands to be delegated to this
+  class, which is free to choose how actions are performed (threading,
+  multiprocessing, etc.) as well as any module-wide state it may need to
+  maintain.
+\end{itemize}
+
+This naming convention is intentional, as individual modules dictate the
+name of the module in camelcase. For example,
+\passthrough{\lstinline!fortrace.application.userManagement!} contains
+\passthrough{\lstinline!UserManagementVmmSide!},
+\passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
+Discovering and getting handles to these classes is performed through
+string manipulation of the relevant application's module name, as shown
+in the example below:
+
+\begin{lstlisting}[language=Python]
+
+# Agent.do_command()
+
+# load class moduleGuestSide and moduleGuestSideCommands
+name = "fortrace." + package + "." + module
+self.logger.debug("module to load: " + name)
+mod = __import__(name, fromlist=[''])
+self.logger.debug("module '" + module + "' will be loaded via __import__")
+class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+\end{lstlisting}
+
+In the example above,
+\passthrough{\lstinline!UserManagementGuestSide.addUser()!} contains the
+literal code to execute on the guest when
+\passthrough{\lstinline!addUser()!} is called, such as adding the
+registry keys needed for a user to be created. On the other hand,
+\passthrough{\lstinline!UserManagementVmmSide.addUser()!} contains the
+code to send a message over TCP that the agent will understand,
+eventually leading to the execution of the agent's version of
+\passthrough{\lstinline!addUser()!}.
+
+More precisely, the \passthrough{\lstinline!ApplicationVmmSide!}
+subclass effectively serves as the API for calling the associated
+functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
+running on the virtual machine. This subclass, along with the complete
+agent-side code, is stored in a single file. For example, the API and
+code for opening a Firefox browser window is as follows:
+
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
+    def open(self, url):
+        """Sends a command to open a webBrowserFirefox on the associated guest.
+
+        @param url: Website to open.
+        """
+        try:
+            self.logger.info("function: WebBrowserFirefoxVmmSide::open")
+            self.url = url
+            self.window_id = self.guest_obj.current_window_id
+            self.guest_obj.send(
+                "application " + "webBrowserFirefox " + str(self.window_id) + " open " + self.webBrowserFirefox + " " + self.url)
+
+            self.guest_obj.current_window_id += 1
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::open: " + str(e))
+
+# Example usage:
+
+browser = WebBrowserFirefoxVmmSide()
+browser.open("google.com")
+\end{lstlisting}
+
+Calling the \passthrough{\lstinline!open()!} command from the host
+causes a message of the following form to be sent to the agent:
+
+\begin{lstlisting}
+application webBrowserFirefox <window id
+\end{lstlisting}
+
+Upon receiving this message, the agent's main loop will search for the
+\passthrough{\lstinline!webBrowserFirefox!} module and import its
+corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
+subclass. After any state management, the subclass will then search for
+a function called \passthrough{\lstinline!open!} in its corresponding
+\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
+below:
+
+\begin{lstlisting}[language=Python]
+class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
+    def open(self, args):
+        # docstring omitted
+        try:
+            arguments = args.split(" ")
+            web_browser = arguments[0]
+            url = arguments[1]
+
+            if len(arguments) 
+                self.timeout = arguments[2]
+            else:
+                self.timeout = 30
+
+            self.logger.info(self.module_name + "GuestSide::open")
+            self.last_driven_url = url
+            self.logger.debug("URL to call: " + url)
+
+            self.logger.info("open url: " + url)
+
+            self.helper.run_firefox()  # start ff session
+
+            retval = self.helper.navigate_to_url(url)  # browse to the specified url
+            if not retval:
+                self.logger.warning("could not open url")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " opened")
+
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            self.window_is_crushed = False
+        except Exception as e:
+            # Some logging/teardown...
+            self.window_is_crushed = True
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+\end{lstlisting}
+
+As described in \autoref{the-akf-agent}, this is achieved in AKF using RPyC services, which are analogous
+to the \passthrough{\lstinline!ApplicationGuestSideCommands!} and
+\passthrough{\lstinline!ApplicationGuestSide!} classes of individual
+ForTrace modules. In addition to providing the RPyC services themselves,
+agents also implement an API to call these services using typed
+functions.
+
+For example, suppose that we wanted to implement functionality similar
+to the ForTrace code above, which allows users to navigate to a webpage.
+An equivalent RPyC service and its corresponding API may be implemented
+as follows:
+
+\begin{lstlisting}[language=Python]
+
+# Server-side code
+
+class ChromiumService(AKFService):
+    def exposed_set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        # Various setup code...
+        self.browser = chromium.launch_persistent_context(
+            headless=False,
+            user_data_dir=profile_path,
+            channel=browser_type,
+            args=[f"--profile-directory={profile}"],
+        )
+
+        return self.browser
+
+# Client-side API
+
+class ChromiumServiceAPI(WindowsServiceAPI):
+    def __init__(self, host: str, port: int) -
+        """
+        Initialize the API with an RPyC connection to the service.
+        """
+        self.rpyc_conn = rpyc.connect(
+            host,
+            port,
+            config={"sync_request_timeout": None},
+        )
+
+    def set_browser(
+        self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
+    ) -
+        self.browser = self.rpyc_conn.root.set_browser(browser_type, profile)
+        return self.browser
+\end{lstlisting}
+
+Observe that implementing support for a particular service on the
+client-side API is as simple as calling an untyped function
+\passthrough{\lstinline!rpyc\_conn.root.set\_browser()!}. By wrapping it
+around a typed function,
+\passthrough{\lstinline!ChromiumServiceAPI.set\_browser()!}, users
+regain the ability to use code completion and static linting tools.
+
+\section{CASE Python bindings}\label{case-python-bindings}
+
+As described in \autoref{case-and-python-bindings}, CASE is defined using Turtle, allowing objects to be
+written in a human-readable text format. For example, the following set
+of triples describes an object called
+\passthrough{\lstinline!ApplicationFacet!} with two properties,
+\passthrough{\lstinline!numberOfLaunches!} and
+\passthrough{\lstinline!applicationIdentifier!}:
+
+\begin{lstlisting}
+observable:ApplicationFacet
+    a
+        owl:Class ,
+        sh:NodeShape
+        ;
+    rdfs:subClassOf core:Facet ;
+    rdfs:label "ApplicationFacet"@en ;
+    rdfs:comment "An application facet is a grouping of characteristics unique to a particular software program designed for end users."@en ;
+    sh:property
+        [
+            sh:datatype xsd:integer ;
+            sh:maxCount "1"^^xsd:integer ;
+            sh:nodeKind sh:Literal ;
+            sh:path observable:numberOfLaunches ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount "1"^^xsd:integer ;
+            sh:nodeKind sh:Literal ;
+            sh:path observable:applicationIdentifier ;
+        ] ,
+        ...
+        ;
+    sh:targetClass observable:ApplicationFacet ;
+    .
+\end{lstlisting}
+
+An instance of a \passthrough{\lstinline!Application!} object may thus
+be represented in the JSON-LD format using the
+\passthrough{\lstinline!ApplicationFacet!} as follows (including
+attributes omitted above):
+
+\begin{lstlisting}
+{
+    "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
+    "@type": "uco-observable:Application",
+    "uco-core:hasFacet": [
+        {
+            "@id": "kb:68004de9-1139-405f-aea7-2c05f3a84709",
+            "@type": "uco-observable:ApplicationFacet",
+            "uco-observable:numberOfLaunches": 12,
+            "uco-observable:applicationIdentifier": "test"
+        },
+    ]
+}
+\end{lstlisting}
+
+The CASE project provides Python bindings, though it stores all object
+attributes as dictionaries after instantiation. This can be seen in the
+example of an \passthrough{\lstinline!ApplicationFacet!} below.
+Intuitive usage suggests that the
+\passthrough{\lstinline!application\_identifier!} attribute is
+accessible through the \passthrough{\lstinline!facet!} object, but it
+must instead be accessed as a dictionary key with a non-intuitive name.
+
+\begin{lstlisting}[language=Python]
+facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
+
+# These attributes do not exist
+
+facet.application_identifier
+facet.number_of_launches
+
+# The number of launches must be accessed as a dictionary key, which does
+
+# not return a simple integer, but instead returns a dictionary
+app_facet['uco-observable:numberOfLaunches']
+
+# -
+\end{lstlisting}
+
+AKF's Pydantic-based bindings greatly simplify the declaration of
+individual CASE objects while allowing for normal attribute-based
+access. For example, AKF's declaration of
+\passthrough{\lstinline!ApplicationFacet!} can be seen below:
+
+\begin{lstlisting}[language=Python]
+from typing import Optional
+
+from uco import core
+
+class ApplicationFacet(core.Facet):
+    numberOfLaunches: Optional[int] = None
+    applicationIdentifier: Optional[str] = None
+\end{lstlisting}
+
+This definition is only three lines, which is 40 lines shorter than the
+declaration of \passthrough{\lstinline!ApplicationFacet!} provided by
+the CASE project's existing Python bindings.
+
+A simple CASE bundle, representing the complete contents of a forensic
+scenario, can be constructed and exported to JSON-LD as shown below:
+
+\begin{lstlisting}[language=Python]
+from caselib import case, uco
+
+bundle = uco.core.Bundle(
+    description="An Example Case File",
+    specVersion="UCO/CASE 2.0",
+    tag="Sample artifacts",
+)
+
+url_object = uco.observable.ObservableObject()
+url_facet = uco.observable.URLFacet(fullValue="www.docker.com/howto")
+url_object.hasFacet.append(url_facet)
+bundle.object.append(url_object)
+
+with open("example.jsonld", "wt+") as f:
+    data = bundle.model_dump(serialize_as_any=True)
+    f.write(json.dumps(data, indent=2))
+\end{lstlisting}
+
+\section{Historical declarative
+syntaxes}\label{historical-declarative-syntaxes}
+
+While designing the declarative syntax for AKF, the syntaxes of D-FET,
+SFX, and the work of Yannikos et al.~were reviewed. For completeness,
+brief examples of scenarios in each of these synthesizers are included
+here. Notably, none of these works provide details into how the parser
+of their declarative languages are implemented, nor the architecture of
+the code used to carry out the actions described in the examples below.
+This may be attributed to the fact that the scenario creation enabled by
+these declarative syntaxes, rather than the syntaxes themselves, was the
+primary contribution of these works.
+
+D-FET uses a custom language that does not depend on any existing
+text-based languages \cite{williamCloudbasedDigitalForensics2011}:
+
+\begin{lstlisting}
+INSTANCE LOAD [Image=WINDOWS2003] 
+MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
+ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
+    INTO [Folder=USER FOLDER] 
+    AT [Period=1 MINUTE] [Interval=INTERVAL] 
+    FOR [User=Fred]
+\end{lstlisting}
+
+The scenario above will create an instance based on WINDOWS2003 from the
+Host Forensics Image library (which contains predefined instances and
+are created from OS installation discs). It will then load 12 .jpg
+images from the ``DRUGS'' class of images, using the ``STANDARDDISK''
+disk image. This creates a host with \emph{predefined}, but not
+\emph{timed} activity -- the machine simply begins in this state, rather
+than simulating a user doing this over some period of time.
+
+To make activity that can be placed on a timeline, \emph{events} can be
+added, such as logging in as a user, deleting files, and then logging
+out.
+
+\begin{lstlisting}
+INSTANCE LOAD [Image=WINDOWS2003] 
+MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
+ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
+    INTO [Folder=USER FOLDER] 
+    AT [Period=1 MINUTE] [Interval=INTERVAL] 
+    FOR [User=Fred]
+ACTIVITY EVENT [Event=LOGIN; User=Fred] 
+ACTIVITY EVENT [Event=DELETEFILE; User=Fred; File=JPEF IMAGES] 
+ACTIVITY EVENT [Event=LOGOUT; User=Fred ]
+\end{lstlisting}
+
+SFX uses an XML-based language with tags and attributes that are easily
+readable \cite{russellForensicImageDescription2012}:
+
+\begin{lstlisting}[language=XML]
+<disk size="512M" alignment="cylinder" diskid="0x12345678"
+    <partition index="p1" hidden="0" size="48M" type="vfat"
+        <expand archive="part1.zip" /
+        <copy from="fake.dat" to="/fake01.dat" /
+        <copy from="fake.dat" to="/fake02.dat" /
+        <delete from="/Thomas.jpg" /
+    </partition
+    <partition index="p2" hidden="0" size="48M" type="ntfs"
+        <base os="windows7x64" /
+        <copy from="fake.dat" to="/fake03.dat" /
+        <copy from="fake.dat" to="/fake04.dat" /
+        <user username="Gordon"
+            <browserhistory browser="firefox"
+                <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013" /
+            </browserhistory
+        </user
+    </partition
+    <partition index="p3" hidden="1" size="64M" type="ntfs"
+        <expand archive="part3.zip" /
+        <copy from="fake.dat" to="/fake11.dat" /
+        <copy from="fake.dat" to="/fake12.dat" /
+        <delete from="/docs/image.exe" /
+        <slackspace offset="20" file="/tomas.gif" message="This is a secret message" /
+    </partition
+    <partition index="s1" hidden="0" size="144M" type="ext3"
+        <base os="fedora15x64" /
+        <expand archive="part2.tar" /
+        <copy from="fake.dat" to="/tmp/fake01.dat" /
+        <copy from="fake.dat" to="/tmp/fake02.dat" /
+    </partition
+</disk
+\end{lstlisting}
+
+Here, a user is able to define multiple partitions on a single disk,
+each with a distinct filesystem that may or may not contain an
+underlying filesystem. SFX allows users to generate artifacts in
+multiple ways, with each unique application- or OS-specific feature
+using a distinct XML element name. Artifact generation features include
+copying files to the guest machine in bulk, inserting files in the slack
+space of an existing file, and using browser artifacts.
+
+Finally, the work of Yannikos et al.~is particularly notable because it
+appears to be fully GUI-based, expecting users to visually construct
+Markov chains to define scenarios
+\cite{yannikosDataCorporaDigital2014}. An example scenario from
+their publication can be seen below:
+
+!\textbf{Pasted image 20250207182912.png}
+
+Although details are relatively limited, each node appears to be a
+distinct action that can be automated. Individual nodes accept
+parameters that can be used to configure how their associated artifacts
+are created. Each ``box'' encompasses a complete Markov chain, with
+transitions from one box to another occurring after an unknown condition
+is fulfilled. Finally, the diamonds outside the boxes, known as
+extensions, are additional libraries that provide additional
+functionality during the execution of the overall scenario.
 
 
 

@@ -1,5 +1,77 @@
 See **\_Chapters\_v2**
 
+\section{The shortest term}\label{the-shortest-term}
+
+Paper-related:
+
+\begin{itemize}
+\tightlist
+\item
+  Rework all architectural diagram-related stuff. Make appendix A, which
+  has individual architectural diagrams.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    At the start of each (sub)section, there should be a focus on just a
+    specific part of the complex diagram, with non-related elements
+    simplified.
+  \item
+    Each chapter will have the complete simple diagram at the top, with
+    irrelevant components reduced in opacity.
+  \item
+    Make a label-less version of the complex diagram (which will allow
+    it to fit, rotated, on a single page). This can go into the
+    appendix, and will help orient the user to where things are. It
+    should be followed by a series of complex diagram insets, describing
+    each part.
+  \end{itemize}
+\item
+  Rework text containing code blocks to only describe why things matter.
+  Make appendix B, which has longer code blocks describing why specific
+  structural changes are better. The appendix should (ideally?) have
+  sections that can be referenced by the main text body.
+\item
+  As the below are finished, write their relevant sections.
+\item
+  Review text so that ``feature parity'' actually means ``feature parity
+  with most synthesizers'' or something that doesn't mean ``full feature
+  parity'', just ``good enough and it is possible to reimplement all
+  existing features if there was more time''
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Implementation:
+
+\begin{itemize}
+\tightlist
+\item
+  Implement the remaining hypervisor API stuff. More likely than not,
+  we're going to fold on implementing direct disk writes.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    There is still \emph{one} option, and that's seeing if pytsk can
+    tell us the exact offset (and size) of a block with slack space so
+    that we can just write directly to that space.
+  \end{itemize}
+\item
+  Implement declarative wrappers for the hypervisor API stuff, as well
+  as simple Chrome-related actions (like ``visit three websites, at some
+  random interval, from this larger list of URLs'')
+\item
+  Add CASE integrations
+\item
+  Single AI artifact generation
+\item
+  AI full scenario generation
+\item
+  Bonus for the agent: individual applications, pyautogui, mouse,
+  keyboard
+\end{itemize}
+
 \section{Things to address}\label{things-to-address}
 
 Things to address
@@ -41,6 +113,12 @@ Mechanical things to address:
     ==Do code blocks also have to adhere to the double spacing
     requirement? Do code blocks need a figure/listing number and a
     caption? Do they even belong in the thesis body?==
+  \item
+    Guidance: \textbf{Limit inline code blocks, and make them as short
+    as possible. Make your point with a code block \emph{once} - it's
+    not supposed to be technical documentation. For longer code blocks,
+    or those that require additional explanation, these belong in the
+    appendix.}
   \end{itemize}
 \item
   Gotta standardize use of existing synthesizers - sometimes I wikilink
@@ -55,7 +133,12 @@ Mechanical things to address:
     absolutely necessary i.e.~in Latin designations of species, etc.''==
     - so no italicization for emphasis or to designate names of tools?
     what's the convention for that?
+  \item
+    Should my tools also go in the Glossary?
   \end{itemize}
+\item
+  Citing code repositories - do I need to go find the name of the person
+  who made it? Or is what Zotero spits out fine?
 \end{itemize}
 
 \section{Things to do}\label{things-to-do}
@@ -87,37 +170,155 @@ Things that can be done Right Now:
   be included where relevant
 \item
   have all references used that are currently in the Forensic Image
-  Synthesis library/bibliography
+  Synthesis library/bibliography, or delete them
 \item
   apparently i need like a glossary. and acronyms. and stuff. gotta make
-  those Soon:tm:
+  those soon, since i'll probably end up wikilinking them\ldots{}
+\item
+  Fix the architectural diagrams as per Nancy's suggestions
+\item
+  Double-check and clean up anything that has a code block near it; does
+  it solve the purpose that it's supposed to be solving?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    I think we should move most/all of the code blocks, along with any
+    significant explanations, to a dedicated appendix section for code
+    snippets. This would also allow us to introduce that section with
+    the links to the relevant repositories.
+  \end{itemize}
+\item
+  Roll back the ``feature parity'' language to something like ``almost
+  full feature parity'', since physical generation seems Extra annoying
+
+  \begin{itemize}
+  \tightlist
+  \item
+    but we can say somewhere that this is reflective of over 15 years of
+    development in this field!
+  \end{itemize}
 \end{itemize}
 
 Actual things that still have to be done:
 
 \begin{itemize}
 \tightlist
-\item
+\item[$\boxtimes$]
   Analysis and review of ForTrace's declarative system
+\item[$\boxtimes$]
+  \ldots{} and implementation of a declarative-to-imperative system,
+  with the bare minimum working
+\item[$\square$]
+  Integration of the CASE libraries EVERYWHERE (ideally)
 
   \begin{itemize}
   \tightlist
   \item
-    \ldots{} and implementation of a declarative-to-imperative system
+    Start with adding CASE bundle options to the agent and hypervisor
+    APIs, and let's go from there
+  \item
+    Also includes managing CASE bundles as part of the declarative
+    translator; presumably, this means that the bundle would be part of
+    global state, and also that the metadata for CASE bundles would also
+    have to be included in scenario definitions
   \end{itemize}
-\item
-  Integration of the CASE libraries EVERYWHERE (ideally)
-\item
+\item[$\square$]
   Physical artifact generation (can \passthrough{\lstinline!pytsk!}
-  really solve the issue of parsing and reading disk images?)
-\item
-  Finish up the VirtualBox concrete hypervisor API
-\item
+  really solve the issue of parsing and reading disk images? what else?)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    implication: pytsk is not suitable for this task because it's
+    largely read-only; you can \emph{analyze} arbitrary filesystems
+    through a very well-abstracted API, but it seems you can't write to
+    anything. it'd probably have to be a manual implementation from one
+    of the prior synthesizers but that seems like a lot of WORK (and may
+    require some linux-specific tooling, which in turn requires docker)
+  \end{itemize}
+\item[$\square$]
+  Logical agentless generation (finish up the VirtualBox concrete
+  hypervisor API, includes all the dumps, human inputs, and flash drive
+  ``from a folder'' logic)
+\item[$\square$]
+  AI stuff: single artifacts
+\item[$\square$]
+  AI stuff: a whole ass declarative scenario
+\item[$\boxtimes$]
   Freshen up the Windows VM, develop a dedicated process for setting up
   a Windows VM and installing the agent on it for use
-\item
-  All the funny AI stuff
+
+  \begin{itemize}
+  \tightlist
+  \item
+    see \textbf{Setting up the VM}. seems to yield a stable VM
+  \end{itemize}
+\item[$\square$]
+  Implement more application-specific stuff (this is the whole ``feature
+  parity'' promise) - whatever is necessary to implement what's
+  described below
+\item[$\square$]
+  Re-implement individual modules in the declarative-to-imperative
+  system to implement whatever's necessary below
+
+  \begin{itemize}
+  \tightlist
+  \item
+    this also includes implementing new modules that serve as a wrapper
+    around multiple features, like ``go visit a bunch of these websites
+    at random''
+  \end{itemize}
 \end{itemize}
+
+The ultimate goal: Develop a scenario in which all of the following
+happens:
+
+\begin{itemize}
+\tightlist
+\item
+  A person copies a bunch of ``important'' documents to their device
+  from a flash drive (which, ideally, is just a mountable folder
+  converted to an ISO using something like
+  \url{https://clalancette.github.io/pycdlib/,} and then
+  \url{https://serverfault.com/questions/171665/how-to-attach-a-virtual-hard-disk-using-vboxmanage}
+  to attach the iso)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    These documents are generated using the single-artifact AI thing
+  \end{itemize}
+\item
+  They interact with the internet, preferably doing a mix of web
+  browsing and chatting with someone using the native email application
+  (or something similar that leaves actual chat artifacts)
+\item
+  That other person sends them some ransomware
+\item
+  A bunch of those important documents disappear with the ransomware
+\item
+  The person pays the ransom by going to some website\ldots{} maybe? Or
+  maybe by just going to some stores implying they purchased some gift
+  cards, which they then visited a fictitious website to enter
+\end{itemize}
+
+The goal would be to have the student solve two things:
+
+\begin{itemize}
+\tightlist
+\item
+  Who did they pay the ransom to, and to what wallet/website/etc did
+  they pay the ransom to (whether giftcard or crypto)?
+\item
+  Can you reverse engineer the ransomware to recover the documents? In
+  particular, there's one document with some important details\ldots{}
+\end{itemize}
+
+this might be hard to convince AI to do, but we can just give examples,
+I'm guessing; also, some routine parts, like ``browse on the internet
+with a subset of the websites, then send some emails from the provided
+dataset'' can be done using the scenario-wide AI
 
 \section{How to do the things (for the
 paper)}\label{how-to-do-the-things-for-the-paper}
@@ -169,8 +370,8 @@ Order of operations:
 
 \section{Actual chapter to-dos}\label{actual-chapter-to-dos}
 
-\textbf{39.0 - Abstract} (100\%) Done (may require some light editing if
-we don't fulfill all the promises made in the abstract)
+\textbf{39.0 - Abstract} (\textasciitilde100\%) Done (may require some
+light editing if we don't fulfill all the promises made in the abstract)
 
 \autoref{chapter-one} (100\%) Done
 
@@ -184,9 +385,10 @@ we don't fulfill all the promises made in the abstract)
   2025-02-08
 \end{itemize}
 
-\autoref{chapter-three} (100\%) Done (unless the
-architecture diagram needs to be reworked, either to fit in better with
-the text or to actually move stuff around in the diagram itself)
+\autoref{chapter-three} (\textasciitilde100\%) Done
+(unless the architecture diagram needs to be reworked, either to fit in
+better with the text or to actually move stuff around in the diagram
+itself)
 
 \begin{itemize}
 \tightlist
@@ -281,11 +483,13 @@ the text or to actually move stuff around in the diagram itself)
   enough progress
 \end{itemize}
 
-\autoref{chapter-eight} (100\%) Done, except for some sentences that
-may be dependent on things getting done or not
+\autoref{chapter-eight} (\textasciitilde90\%) Done, except for some
+sentences that may be dependent on things getting done or not, as well
+as the ``distribution'' section (which also depends on things getting
+done or not)
 
-\autoref{chapter-nine} (100\%) Done, except for some sentences that
-may be dependent on things getting done or not
+\autoref{chapter-nine} (\textasciitilde100\%) Done, except for some
+sentences that may be dependent on things getting done or not
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

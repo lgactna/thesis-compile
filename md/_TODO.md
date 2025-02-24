@@ -1,5 +1,31 @@
 See **_Chapters_v2**
 
+# The shortest term
+
+Paper-related:
+
+- Rework all architectural diagram-related stuff. Make appendix A, which has individual architectural diagrams.
+	- At the start of each (sub)section, there should be a focus on just a specific part of the complex diagram, with non-related elements simplified. 
+	- Each chapter will have the complete simple diagram at the top, with irrelevant components reduced in opacity.
+	- Make a label-less version of the complex diagram (which will allow it to fit, rotated, on a single page). This can go into the appendix, and will help orient the user to where things are. It should be followed by a series of complex diagram insets, describing each part.
+
+- Rework text containing code blocks to only describe why things matter. Make appendix B, which has longer code blocks describing why specific structural changes are better. The appendix should (ideally?) have sections that can be referenced by the main text body.
+- As the below are finished, write their relevant sections.
+- Review text so that "feature parity" actually means "feature parity with most synthesizers" or something that doesn't mean "full feature parity", just "good enough and it is possible to reimplement all existing features if there was more time"
+
+---
+
+Implementation:
+
+- Implement the remaining hypervisor API stuff. More likely than not, we're going to fold on implementing direct disk writes.
+	- There is still *one* option, and that's seeing if pytsk can tell us the exact offset (and size) of a block with slack space so that we can just write directly to that space.
+
+- Implement declarative wrappers for the hypervisor API stuff, as well as simple Chrome-related actions (like "visit three websites, at some random interval, from this larger list of URLs")
+- Add CASE integrations
+- Single AI artifact generation
+- AI full scenario generation
+- Bonus for the agent: individual applications, pyautogui, mouse, keyboard
+
 # Things to address
 
 Things to address
@@ -15,9 +41,13 @@ Mechanical things to address:
 - ~~Code blocks also need to be done manually, which is a little annoying~~
 	- no longer is this the case, but the spacing and sizing is kinda annoying
 	- ==Do code blocks also have to adhere to the double spacing requirement? Do code blocks need a figure/listing number and a caption? Do they even belong in the thesis body?==
+	- Guidance: **Limit inline code blocks, and make them as short as possible. Make your point with a code block *once* - it's not supposed to be technical documentation. For longer code blocks, or those that require additional explanation, these belong in the appendix.**
 
 - Gotta standardize use of existing synthesizers - sometimes I wikilink them, sometimes I just italicize them, and that's inconsistent. Do I make a citation to the associated paper or repo every single time I mention it?
 	- =="Script and italic typefaces are not acceptable except where absolutely necessary i.e. in Latin designations of species, etc."== - so no italicization for emphasis or to designate names of tools? what's the convention for that?
+	- Should my tools also go in the Glossary?
+
+- Citing code repositories - do I need to go find the name of the person who made it? Or is what Zotero spits out fine?
 
 # Things to do
 
@@ -30,19 +60,52 @@ Things that can be done Right Now:
 	- currently it's in **39.1 - Introduction#1.5 - Contribution**, surely there is a better place to do it...
 
 - apparently i just Forgot that **TraceGen** exists, so that has to be included where relevant
-- have all references used that are currently in the Forensic Image Synthesis library/bibliography
-- apparently i need like a glossary. and acronyms. and stuff. gotta make those Soon:tm:
+- have all references used that are currently in the Forensic Image Synthesis library/bibliography, or delete them
+- apparently i need like a glossary. and acronyms. and stuff. gotta make those soon, since i'll probably end up wikilinking them...
+- Fix the architectural diagrams as per Nancy's suggestions
+- Double-check and clean up anything that has a code block near it; does it solve the purpose that it's supposed to be solving?
+	- I think we should move most/all of the code blocks, along with any significant explanations, to a dedicated appendix section for code snippets. This would also allow us to introduce that section with the links to the relevant repositories.
+
+- Roll back the "feature parity" language to something like "almost full feature parity", since physical generation seems Extra annoying
+	- but we can say somewhere that this is reflective of over 15 years of development in this field!
 
 Actual things that still have to be done:
 
-- Analysis and review of ForTrace's declarative system
-	-  ... and implementation of a declarative-to-imperative system
+- [x] Analysis and review of ForTrace's declarative system
+- [x] ... and implementation of a declarative-to-imperative system, with the bare minimum working
+- [ ] Integration of the CASE libraries EVERYWHERE (ideally)
+	- Start with adding CASE bundle options to the agent and hypervisor APIs, and let's go from there
+	- Also includes managing CASE bundles as part of the declarative translator; presumably, this means that the bundle would be part of global state, and also that the metadata for CASE bundles would also have to be included in scenario definitions
 
-- Integration of the CASE libraries EVERYWHERE (ideally)
-- Physical artifact generation (can `pytsk` really solve the issue of parsing and reading disk images?)
-- Finish up the VirtualBox concrete hypervisor API
-- Freshen up the Windows VM, develop a dedicated process for setting up a Windows VM and installing the agent on it for use
-- All the funny AI stuff
+- [ ] Physical artifact generation (can `pytsk` really solve the issue of parsing and reading disk images? what else?)
+	- implication: pytsk is not suitable for this task because it's largely read-only; you can *analyze* arbitrary filesystems through a very well-abstracted API, but it seems you can't write to anything. it'd probably have to be a manual implementation from one of the prior synthesizers but that seems like a lot of WORK (and may require some linux-specific tooling, which in turn requires docker)
+
+- [ ] Logical agentless generation (finish up the VirtualBox concrete hypervisor API, includes all the dumps, human inputs, and flash drive "from a folder" logic)
+- [ ] AI stuff: single artifacts
+- [ ] AI stuff: a whole ass declarative scenario
+- [x] Freshen up the Windows VM, develop a dedicated process for setting up a Windows VM and installing the agent on it for use
+	- see **Setting up the VM**. seems to yield a stable VM
+
+- [ ] Implement more application-specific stuff (this is the whole "feature parity" promise) - whatever is necessary to implement what's described below
+- [ ] Re-implement individual modules in the declarative-to-imperative system to implement whatever's necessary below
+	- this also includes implementing new modules that serve as a wrapper around multiple features, like "go visit a bunch of these websites at random"
+
+The ultimate goal: Develop a scenario in which all of the following happens:
+
+- A person copies a bunch of "important" documents to their device from a flash drive (which, ideally, is just a mountable folder converted to an ISO using something like [https://clalancette.github.io/pycdlib/,](https://clalancette.github.io/pycdlib/,) and then [https://serverfault.com/questions/171665/how-to-attach-a-virtual-hard-disk-using-vboxmanage](https://serverfault.com/questions/171665/how-to-attach-a-virtual-hard-disk-using-vboxmanage) to attach the iso)
+	- These documents are generated using the single-artifact AI thing
+
+- They interact with the internet, preferably doing a mix of web browsing and chatting with someone using the native email application (or something similar that leaves actual chat artifacts)
+- That other person sends them some ransomware
+- A bunch of those important documents disappear with the ransomware
+- The person pays the ransom by going to some website... maybe? Or maybe by just going to some stores implying they purchased some gift cards, which they then visited a fictitious website to enter
+
+The goal would be to have the student solve two things: 
+
+- Who did they pay the ransom to, and to what wallet/website/etc did they pay the ransom to (whether giftcard or crypto)?
+- Can you reverse engineer the ransomware to recover the documents? In particular, there's one document with some important details...
+
+this might be hard to convince AI to do, but we can just give examples, I'm guessing; also, some routine parts, like "browse on the internet with a subset of the websites, then send some emails from the provided dataset" can be done using the scenario-wide AI
 
 # How to do the things (for the paper)
 
@@ -63,7 +126,7 @@ Order of operations:
 
 # Actual chapter to-dos
 
-**39.0 - Abstract** (100%)
+**39.0 - Abstract** (~100%)
 Done (may require some light editing if we don't fulfill all the promises made in the abstract)
 
 **39.1 - Introduction** (100%)
@@ -74,7 +137,7 @@ Done
 
 - [x] #task 2.1 - Write this entire section, probably mostly from [@grajedaAvailabilityDatasetsDigital2017] 📅 2025-02-08 ✅ 2025-02-08
 
-**39.3 - Architecture and design** (100%)
+**39.3 - Architecture and design** (~100%)
 Done (unless the architecture diagram needs to be reworked, either to fit in better with the text or to actually move stuff around in the diagram itself)
 
 - [x] #task 3 - Consider incorporating concepts explicitly from [@horsmanDatasetConstructionChallenges2021] 📅 2025-02-09 ✅ 2025-02-08
@@ -109,10 +172,10 @@ Done (unless the architecture diagram needs to be reworked, either to fit in bet
 
 - The whole thing – can't be worked on *at all* unless we make enough progress 
 
-**39.8 - Future work** (100%)
-Done, except for some sentences that may be dependent on things getting done or not
+**39.8 - Future work** (~90%)
+Done, except for some sentences that may be dependent on things getting done or not, as well as the "distribution" section (which also depends on things getting done or not)
 
-**39.9 - Conclusion** (100%)
+**39.9 - Conclusion** (~100%)
 Done, except for some sentences that may be dependent on things getting done or not
 
 ---

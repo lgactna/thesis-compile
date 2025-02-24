@@ -1,10 +1,5 @@
 The chapter list, 2e.
 
-Left to do:
-**39.2 - Literature review**
-
-- 
-
 ---
 
 This outline assumes that *every* stretch goal is achieved, including those that I have doubts about being able to implement.
@@ -109,3 +104,5 @@ All following sections, except for **39.8 - Future work** and **39.9 - Conclusio
 
 - I conclude that this took a lot of time, and it is valuable, and i hope it will be useful to the greater forensic community because x, y, and z
 
+**39.A - Architectural diagrams**
+- The diagrams and explanations section. Includes a full label-less detailed diagram, individual sections of the detailed diagram (with a brief explanation and a link back to the relevant chapters), and the simplified diagram

@@ -44,6 +44,10 @@ def process_markdown_text(text: str) -> str:
     # Remove excess line breaks (two or more in a row, flags=re.MULTILINE)
     text = re.sub(r"\n{2,}", r"\n\n", text)
     
+    # Automatically identify valid URLs (http/https) and convert them to 
+    # Markdown hyperlinks, with the URL as the link text.
+    text = re.sub(r"(https?://\S+)", r"[\1](\1)", text)
+    
     return text
 
 def process_latex_text(text: str) -> str:
@@ -164,18 +168,31 @@ def join_tex_files(tex_dir: Path, output_file: Path, base_file: Path) -> None:
         "39.9 - Conclusion": ("Conclusion", "chapter-nine"),
     }
     
+    appendix_labels = {
+        "39.A - Architectural diagrams": ("Architectural diagrams", "appendix-a"),
+        "39.B - Code samples": ("Code samples", "appendix-b"),
+    }
+    
+    
     output = "% == Begin thesis content\n"
+    appendix = ""
     
     for tex_file in tex_dir.glob("*.tex"):
         if tex_file.stem in chapter_labels:
             chapter_name, label = chapter_labels[tex_file.stem]
             output += f"\\chapter{{{chapter_name}}}\\label{{{label}}}\n\n"
             output += tex_file.read_text() + "\n"
+        elif tex_file.stem in appendix_labels:
+            appendix_name, label = appendix_labels[tex_file.stem]
+            appendix += f"\\chapter{{{appendix_name}}}\\label{{{label}}}\n\n"
+            appendix += tex_file.read_text() + "\n"
     
     output += "% == End thesis content\n"
     
     text = base_file.read_text()
     text = text.replace("{{thesis_sub_here}}", output)
+    
+    text = text.replace("{{thesis_appendix_here}}", appendix)
     
     with output_file.open("w") as f:
         f.write(text)

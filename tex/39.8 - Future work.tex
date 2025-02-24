@@ -177,13 +177,109 @@ protocol for issuing commands.
 
 \section{Distribution}\label{distribution}
 
-Depends a lot on what we do implement, but this would be stuff like
-Packer/Vagrant and any image ``squeezing'' that's done as part of
-\autoref{chapter-five}
+One notable aspect of prior synthesizers not implemented as part of AKF
+are various improvements to the distribution of forensic datasets,
+particularly in environments with limited bandwidth or limited storage
+space. AKF largely addresses challenges in the \emph{creation} of
+forensic datasets, not their \emph{distribution}. This section largely
+focuses on prior efforts to reduce the size of forensic datasets, as
+well as how they could be integrated into AKF in the future.
+
+The size of forensic datasets can be trivially reduced in various ways.
+For example, a full forensic dataset (with various core outputs) can be
+compressed using a standard algorithm such as LZMA. Specific core
+outputs, such as disk images, can be stored in a dynamically expandable
+image format such as VDI or VHD. Such formats only use as much space as
+is currently used on the disk image itself, even if the size reported to
+the operating system is much larger. Such reductions are ``lossless'',
+in the sense that they largely reflect what a forensic analyst would
+encounter using real hardware.
+
+However, there are more aggressive improvements that can be made with
+respect to the distribution process. These typically come at one of two
+expenses -- either irrelevant data is outright removed, or additional
+effort must be taken by the end user to finish ``constructing'' the
+forensic scenario for use after downloading relevant files (which are
+significantly smaller than the finished forensic dataset itself). The
+first is a tradeoff between realism and image size; the second is a
+tradeoff between immediate usability and additional processing time.
+
+The first method describes the process of simply removing data that is
+not deemed to be relevant for educational or research purposes. For
+example, if an instructor is simply interested in demonstrating the
+recovery and analysis of SQLite databases in Chrome's AppData directory,
+there is no need to include files from most other directories on the
+filesystem. One option for achieving this is by using a logical disk
+image format, such as the .AD1 format, which are collections of files
+(much like a ZIP archive) as opposed to a collection of physical disk
+units.
+
+A more notable approach to removing irrelevant information is described
+by Russell et al.~as part of their work developing \textbf{SFX}
+\cite{russellForensicImageDescription2012}. Their approach,
+described as ``partition squeezing'', is based on the idea that the
+contents of files irrelevant to an educational scenario can be truncated
+to the size of a single filesystem cluster or block. This preserves the
+file and directory structure of the overall filesystem (thus preserving
+realism), while also removing data that is unlikely to be useful to
+students performing analysis. Thus, the educational value of the image
+remains the same, even if some data is missing. Russell et al.~note that
+additional space can be saved by replacing irrelevant files,
+particularly those deep within the filesystem that are highly unlikely
+to be analyzed in detail by students, with hard links to other files.
+This eliminates the original contents of the file entirely while
+preserving most of its attributes.
+
+The use of logical images and partition squeezing, of course, is not
+suitable in all cases. In particular, logical images generally do not
+include slack or unallocated space. The partition squeezing approach
+destroys data that may be required for certain forensic analysis tools
+to function, as well as data that might be of interest to users of the
+dataset in other research or educational contexts.
+
+AKF does not provide any functionality for directly generating logical
+images or performing partition squeezing. However, generating logical
+images is relatively straightforward using a publicly available tool
+such as FTK Imager, so long as the scenario developer is aware of
+relevant directories that should be included -- a process that might
+occur with AKF's reporting features in mind. Partition squeezing might
+be achieved by leveraging the filesystem-aware functionality of
+libraries such as \passthrough{\lstinline!libtsk!} and
+\passthrough{\lstinline!dfvfs!}, which is used as part of AFK's physical
+planting techniques described in \autoref{akf-implementation}. Such functionality could be implemented either in
+AKF or as part of a wholly independent tool.
+
+The second method describes a variety of techniques in which end users
+must take additional actions after downloading relevant materials before
+a forensic dataset is ready for use. One example described by Scanlon et
+al.~is the use of ``evidence packages'', in which users are provided
+with a base image of a single operating system that can be reused to
+build multiple forensic datasets through \textbf{EviPlant}
+\cite{scanlonEviPlantEfficientDigital2017}. After a scenario
+developer has finished creating artifacts (whether manually or through a
+synthesizer), they can use EviPlant's ``diffing'' tool to determine and
+extract differences between the base image and the developer's current
+disk state. These differences can be distributed to users, who can then
+use EviPlant's ``injection'' tool on the previously-distributed base
+image to recreate the final disk image.
+
+This is described more broadly as ``differential imaging'', in which
+only differences from some initial file are transmitted to users. These
+differences are often significantly smaller than the disk images they
+are designed to build, and therefore are much easier to distribute than
+complete disk images. In exchange, each user must spend additional
+processing time before the image can be used for analysis. EviPlant's
+injection tool operates through a combination of logical and physical
+planting, which requires time software, and resources that are not
+required when distributing complete disk images. This is an acceptable
+cost particularly when conducting remote classes, where not all students
+may have high-speed internet. Again, although AKF does not implement
+differential imaging, this functionality can likely be implemented as
+part of an independent tool.
 
 \section{Mobile synthesis}\label{mobile-synthesis}
 
-Finally, while outside the scope of this thesis, there is also the
+Finally, while well outside the scope of this thesis, there is also the
 challenge of building a synthesizer for non-desktop platforms,
 particularly mobile devices. For many people, mobile devices are the
 primary means through which we interact with the digital world, causing
@@ -241,9 +337,11 @@ to support mobile dataset generation, primarily by interacting with
 Android emulators and existing developer tools. However, the isolation
 around individual Android applications suggests that it may be difficult
 to use a logical agent-based approach to automating application
-activity; this simultaneously implies that it may be easier to use
-physical approaches to generating information, because the locations of
-generated artifacts are likely to be smaller in scope. More research is
-needed to determine available avenues through which Android datasets can
-be constructed. This is especially true for iOS, for which there are far
-fewer resources.
+activity; a Python agent running as an application is unlikely to have
+full filesystem access on a non-rooted device. However, application
+isolation also suggests that it may be easier to build and use physical
+approaches to generating mobile artifacts, since these artifacts will
+largely be constrained to the application's allocated directory. More
+research is needed to determine viable options through which Android
+datasets can be constructed. This is especially true for iOS, for which
+there are significantly fewer resources.
