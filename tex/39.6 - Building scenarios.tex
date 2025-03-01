@@ -81,7 +81,8 @@ synthesizer.
 Consider the following declarative \emph{SFX} code taken from
 \cite{russellForensicImageDescription2012}. Here, a Windows 7
 partition is created, after which a user called ``Gordon'' uses Firefox
-to browse the internet:
+to browse the internet. (It should be noted that this simple scenario
+will be reused throughout this chapter.)
 
 \begin{lstlisting}[language=XML]
 <disk
@@ -123,7 +124,6 @@ if __name__ == "__main__":
     while browser_obj.is_busy:
         time.sleep(2)
     browser_obj.close()
-    
 \end{lstlisting}
 
 Observe that although these two code blocks have the same expressive
@@ -248,7 +248,10 @@ as described in \autoref{distribution}.)
 
 The AKF Windows agent includes a Vagrantfile for creating a new Windows
 11 virtual machine with the agent installed and configured, which can
-easily be adapted for other platforms and hypervisors. A robust
+easily be adapted for other platforms and hypervisors. The Vagrantfiles
+used to generate a dataset should be included with the dataset itself to
+maximize reproducibility, as described in \textbf{39.5 - Output and
+validation\#5.5 - Community distribution and reproducibility}. A robust
 ecosystem of Vagrant boxes for varying Linux distributions and Windows
 versions exists, many of which can be pulled from the Vagrant public
 registry \cite{hashicorpHashiCorpCloudPlatform}. When combined with
@@ -533,25 +536,35 @@ part of the scenario. Each task refers to a single \emph{module} by name
 using a qualified Python import path, accepting a dictionary of
 arguments in addition to global configuration overrides.
 
-These modules are implemented as subclasses of
-\passthrough{\lstinline!AKFModule!}, an abstract base class that accepts
-Pydantic models. These Pydantic models dictate and validate the
-arguments accepted by the module, which must act accordingly.
-\passthrough{\lstinline!AKFModule!}s are responsible for two separate
-tasks:
+Similar to Ansible, individual modules are implemented as well-defined
+subclasses of \passthrough{\lstinline!AKFModule!}, an abstract base
+class that serves as the root of all AKF declarative modules. Each
+module must define Pydantic models that specify the arguments accepted
+by the module. The arguments declared in the YAML file are then passed
+to these module-specific Pydantic models for validation, after which the
+\passthrough{\lstinline!AKFModule!} must perform one of two tasks:
 
 \begin{itemize}
 \tightlist
 \item
-  When instructed to perform actions directly from the argument model,
-  the \passthrough{\lstinline!AKFModule!} should import AKF core
-  libraries and agent APIs to carry out the required actions.
+  \textbf{Execution}: When instructed to perform actions directly from
+  the argument model, the \passthrough{\lstinline!AKFModule!} should
+  import AKF core libraries and agent APIs to carry out the required
+  actions.
 \item
-  When instructed to generate imperative code from the argument model,
-  the \passthrough{\lstinline!AKFModule!} should generate the equivalent
-  code that \emph{would} execute the actions if run and report on the
-  library dependencies necessary to run the code.
+  \textbf{Translation:} When instructed to generate imperative code from
+  the argument model, the \passthrough{\lstinline!AKFModule!} should
+  generate the equivalent code that \emph{would} perform related actions
+  if executed through a standard Python interpreter with the necessary
+  libraries installed.
 \end{itemize}
+
+The ability of AKF to both \emph{execute} and \emph{translate}
+declarative scripts provides significant flexibility to scenario
+developers. To the best of the author's knowledge, prior synthesizers
+have only supported direct execution from declarative scripts, which
+limits the opportunities to use declarative scripts as a ``starting
+point'' for writing more complex imperative scripts.
 
 In both cases, modules can read and modify a global state dictionary
 that allows otherwise independent modules to cooperate with each other.
@@ -561,60 +574,105 @@ modules generating code within the context manager can increase the
 indentation level of generated code, as well. Additionally, this allows
 for ``outputs'', such as CASE bundles, to be passed and gradually
 constructed across modules. This design allows for context-aware code
-generation and action execution. More importantly, it allows for the
-declarative syntax to be implemented wholly independently of the core
-libraries, allowing for flexibility in the implementation of other AKF
-features.
+generation and action execution.
 
 An example of a declarative AKF scenario, carrying out the same actions
-as \ldots{}
+as the SFX, ForTrace, and imperative AKF script above, is shown below:
 
-(a brief explanation of the actual elements of the declarative file,
-like the keys and stuff)
+\begin{lstlisting}
+name: sample scenario
+description: sample scenario
+author: lgactna
+seed: "0"
+libraries:
+  - akflib.actions
+actions:
+  - name: Run the sample action
+    module: akflib.actions.sample.SampleModule
+    args:
+      arg1: "value1"
+      arg2: "value2"
+\end{lstlisting}
 
-how the interpreter actually works (based on this example) -- how it
-instantiates stuff based on the declared libraries, and how it actually
-looks up the modules and passes information to them
+AKF declarative scripts, which are simply large YAML dictionaries,
+contain three distinct elements. The first is a set of high-level
+metadata keys associated with the scenario. The second is a set of
+scenario-wide configuration; in particular, it lists the libraries
+containing the necessary modules to execute or translate this imperative
+script. Finally, scripts list out a sequence of actions, which are
+typically a \passthrough{\lstinline!module!} specified by name and a
+dictionary of \passthrough{\lstinline!args!}.
 
-something to tie it into the next two sections.
+The execution flow of the declarative interpreter itself is relatively
+straightforward. Given a path to a YAML script, the interpreter will
+load the necessary libraries and configuration keys defined in the file
+and instantiate resources accordingly. This may include setting global
+configuration variables, locating and starting a virtual machine by
+name, setting the \passthrough{\lstinline!random!} seed, and so on.
+Then, the interpreter simply runs each module under the
+\passthrough{\lstinline!actions!} key with the provided arguments and
+configuration in order, continuing until all
+\passthrough{\lstinline!actions!} have been completed.
+
+Modules are located and executed using Python's dynamic import system.
+(For efficiency and safety, all modules in the script are located at the
+start of script execution.) These modules can be located in any library
+so long as they can be found through Python's import system. For
+example, both \passthrough{\lstinline!akflib!} and the AKF Windows agent
+contain their own declarative module libraries, leveraging functionality
+specific to each code repository.
+
+This design allows for declarative modules to be written independently
+of the libraries they depend on, reducing the ``impact'' of supporting
+declarative features on the core imperative libraries. In fact, this
+independence allows for the AKF module system to be used in
+general-purpose scripting, similar to Ansible; it is not tightly bound
+to the creation of forensic scenarios and artifacts.
+
+While the AKF imperative and declarative scripts provide users with
+significant flexibility in \emph{using} AKF, there still remains the
+challenge of building artifacts and scenarios to generate through these
+execution options. The remainder of this chapter addresses this
+challenge.
 
 \section{Using generative AI for individual
 artifacts}\label{using-generative-ai-for-individual-artifacts}
 
-As it currently stands, users of synthesizers must still perform a
-significant amount of work towards generating the artifacts to be
-planted. While the process of generating an image based on some
-predefined scenario has been streamlined through existing synthesizers,
-users still need to define all of the data that they want to plant. For
+Users of synthesizers must still perform a significant amount of work
+when generating individual artifacts. More precisely -- while AKF and
+other synthesizers can streamline the process of placing artifacts on a
+dataset, users must still provide the actual artifacts themselves. For
 example:
 
 \begin{itemize}
 \tightlist
 \item
   If a user wants to place 100 photos on the drive to simulate real
-  usage, the user needs to pass in 100 realistic images;
+  usage, the user needs to create and provide 100 realistic images.
 \item
   If a user wants to simulate an email or other online conversation, the
-  user needs to pass in the entirety of the conversation to simulate;
+  user needs to provide the entirety of the conversation to simulate.
 \item
   If a user wants to generate ``proprietary'' documents to emulate some
-  form of corporate sabotage, the user would need to generate a variety
-  of Microsoft Office, PDF, or other files in these formats ahead of
-  time.
+  form of corporate sabotage, the user would need to create and provide
+  a variety of Microsoft Office, PDF, or other files in these formats.
 \end{itemize}
 
-The net result is that although creating images for the purposes of tool
-validation and research can be accomplished with existing frameworks,
-creating realistic images that are more reflective of real-world
-scenarios that a forensic analyst might encounter still requires
-extensive work. While true that images should often be small enough in a
-classroom setting to allow the student to explore a single specific
-technique, real-world scenarios encountered by analysts are typically
-not limited by time or size. An analyst might have to deal with a drive
-used over the course of a decade to store many photographs and send many
-messages. Such scenarios are valuable training material for courses that
-encapsulate a long period of forensic study, allowing a student to apply
-many different techniques in reconstructing a large-scale scenario.
+This is particularly relevant when adding background noise that is often
+present in real-world datasets -- the gigabytes of documents created as
+part of a user's benign activity over . The net result is that although
+creating forensic datasets can be accomplished with the work presented
+thus far, creating realistic images that are more reflective of
+real-world scenarios that a forensic analyst might encounter still
+requires extensive work. While true that images should often be small
+enough in a classroom setting to allow the student to explore a single
+specific technique, real-world scenarios encountered by analysts are
+typically not limited by time or size. An analyst might have to deal
+with a drive used over the course of a decade to store many photographs
+and send many messages. Such scenarios are valuable training material
+for courses that encapsulate a long period of forensic study, allowing a
+student to apply many different techniques in reconstructing a
+large-scale scenario.
 
 With recent advancements in generative AI, popularized by services such
 as Midjourney and ChatGPT, it is now significantly easier to generate

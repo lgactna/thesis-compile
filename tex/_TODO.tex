@@ -70,6 +70,10 @@ Implementation:
 \item
   Bonus for the agent: individual applications, pyautogui, mouse,
   keyboard
+\item
+  GitHub action to automatically build AKF agent for multiple platforms
+  on tagged commits; update the Vagrant file to point to the latest
+  available Windows release (or a specific release is fine too)
 \end{itemize}
 
 \section{Things to address}\label{things-to-address}
@@ -113,6 +117,14 @@ Mechanical things to address:
     ==Do code blocks also have to adhere to the double spacing
     requirement? Do code blocks need a figure/listing number and a
     caption? Do they even belong in the thesis body?==
+
+    \begin{itemize}
+    \tightlist
+    \item
+      currently they're condensed in size to make them easier to read
+    \item
+      go to grad school and ask q
+    \end{itemize}
   \item
     Guidance: \textbf{Limit inline code blocks, and make them as short
     as possible. Make your point with a code block \emph{once} - it's
@@ -122,9 +134,10 @@ Mechanical things to address:
   \end{itemize}
 \item
   Gotta standardize use of existing synthesizers - sometimes I wikilink
-  them, sometimes I just italicize them, and that's inconsistent. Do I
-  make a citation to the associated paper or repo every single time I
-  mention it?
+  them, sometimes I just italicize them, sometimes I do nothing, and
+  that's inconsistent. ==Do I make a citation to the associated paper or
+  repo every single time I mention it?== \textbf{Answer: yes} (it won't
+  hurt)
 
   \begin{itemize}
   \tightlist
@@ -132,13 +145,40 @@ Mechanical things to address:
     ==``Script and italic typefaces are not acceptable except where
     absolutely necessary i.e.~in Latin designations of species, etc.''==
     - so no italicization for emphasis or to designate names of tools?
-    what's the convention for that?
+    what's the convention for that? - ask the grad school
   \item
     Should my tools also go in the Glossary?
   \end{itemize}
 \item
-  Citing code repositories - do I need to go find the name of the person
-  who made it? Or is what Zotero spits out fine?
+  ==Citing code repositories - do I need to go find the name of the
+  person who made it? Or is what Zotero spits out fine?== (but what if
+  it's \emph{a lot} of people?)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ==Also, do I even cite names of tools to begin with? If I mention
+    that \passthrough{\lstinline!pycdlib!} is a thing, do I now need to
+    cite it? Or do I just need to make a generic hyperlink to it?==
+    \textbf{Answer: yes}; references aren't just to cover your ass, they
+    may be actual references to interesting things as well. zotero's
+    autocite is fine, and you can refer to the University of Arizona's
+    guidelines for more detail.
+  \end{itemize}
+\item
+  Glossary and acronym entries need to be ref-linked. Those use
+  \passthrough{\lstinline!\\acrfull\{\}!} tags based on the names in the
+  glossary.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ==Do I need a glossary and acronym listing?== optional, but if it
+    would be helpful you can
+  \item
+    ==Should the names of synthesizers go into the glossary? What
+    belongs in a glossary?== - sure, it wouldn't hurt
+  \end{itemize}
 \end{itemize}
 
 \section{Things to do}\label{things-to-do}
@@ -148,7 +188,7 @@ Things that can be done Right Now:
 \begin{itemize}
 \tightlist
 \item
-  5.2 (core outputs)
+  \st{5.2 (core outputs)}
 \item
   \st{8.2 (future work), things that are out of scope that we
   \emph{definitely} know won't happen and therefore don't have to wait
@@ -173,7 +213,8 @@ Things that can be done Right Now:
   Synthesis library/bibliography, or delete them
 \item
   apparently i need like a glossary. and acronyms. and stuff. gotta make
-  those soon, since i'll probably end up wikilinking them\ldots{}
+  those soon, since i'll probably end up wikilinking them or
+  smth\ldots{}
 \item
   Fix the architectural diagrams as per Nancy's suggestions
 \item
@@ -370,6 +411,8 @@ Order of operations:
 
 \section{Actual chapter to-dos}\label{actual-chapter-to-dos}
 
+deadline by april 1st, after spring break, for committee to review
+
 \textbf{39.0 - Abstract} (\textasciitilde100\%) Done (may require some
 light editing if we don't fulfill all the promises made in the abstract)
 
@@ -385,10 +428,9 @@ light editing if we don't fulfill all the promises made in the abstract)
   2025-02-08
 \end{itemize}
 
-\autoref{chapter-three} (\textasciitilde100\%) Done
-(unless the architecture diagram needs to be reworked, either to fit in
-better with the text or to actually move stuff around in the diagram
-itself)
+\autoref{chapter-three} (\textasciitilde95\%) Done,
+except for reworking chapters 3-6 based on the whole architectural
+diagram stuff
 
 \begin{itemize}
 \tightlist
@@ -414,7 +456,9 @@ itself)
   \end{itemize}
 \end{itemize}
 
-\autoref{chapter-four} (\textasciitilde75\%)
+\autoref{chapter-four} (\textasciitilde95\%) Done, except for
+the architectural diagram stuff and any additional table rows for new
+RPyC submodules
 
 \begin{itemize}
 \tightlist
@@ -423,54 +467,87 @@ itself)
   architectural diagram, and then briefly explaining what parts of the
   diagram correspond to which sections below; also consider moving the
   content into 4.1 📅 2025-02-08 ✅ 2025-02-08
-\item
+\item[$\boxtimes$]
   4.2 - after more agentless generation is implemented, it needs to be
   discussed in greater detail in the context of AKF
+
+  \begin{itemize}
+  \tightlist
+  \item
+    basically done, it's just the same as VMPOP
+  \end{itemize}
 \item
   4.3 - add any new application-specific information to the table
 
   \begin{itemize}
   \tightlist
-  \item[$\square$]
-    \#task by extension: achieve feature party with what's discussed in
-    ForTrace page 11, at least as close as possible 📅 2025-02-09
+  \item
+    this can kinda just be written as we go, it's just individual table
+    lines
   \end{itemize}
-\item[$\square$]
+\item[$\boxtimes$]
   \#task 4.4 - after physical generation is implemented, it needs to be
-  discussed in greater detail in the context of AKF 📅 2025-02-10
+  discussed in greater detail in the context of AKF 📅 2025-02-10 ✅
+  2025-02-27
 \end{itemize}
 
-\autoref{chapter-five} (\textasciitilde30\%)
+\autoref{chapter-five} (\textasciitilde75\%) Also needs
+architectural diagram stuff
 
 \begin{itemize}
 \tightlist
 \item
   5.1 - Consider removing this section and just having it be at the top
   level
-\item[$\square$]
-  \#task 5.2 - Write the entire section (how do we generate relevant
-  outputs from the framework? how do we optimize these outputs for
-  distribution and storage?) 📅 2025-02-08
-\item
+\item[$\boxtimes$]
+  5.2 - Write the entire section (how do we generate relevant outputs
+  from the framework? how do we optimize these outputs for distribution
+  and storage?)
+\item[$\boxtimes$]
   5.3.3 - Show how the CASE bindings are actually used throughout AKF
+
+  \begin{itemize}
+  \tightlist
+  \item
+    i don't really show how they're used but it's at a high-enough level
+    detail that you'll get the point -- anyways, that can be deferred to
+    sections 6.2 and 6.3
+  \end{itemize}
 \item
   5.4 - Write the entire section (human readable reporting) - also
-  requires implementation
+  requires some implementation
+\item[$\boxtimes$]
+  5.5 - need to talk about making scenarios reproducibility
 \end{itemize}
 
-\autoref{chapter-six} (\textasciitilde20\%)
+\autoref{chapter-six} (\textasciitilde60\%) Also needs
+architectural diagram stuff
 
 \begin{itemize}
 \tightlist
-\item
+\item[$\square$]
   6.2 - Demonstrate what simple usage of the AKF libraries look like
-\item
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Still need example imperative script of AKF doing some basic browser
+    stuff and dumping out core outputs, preferably also using CASE
+  \end{itemize}
+\item[$\square$]
   6.3 - Describe the design decisions and analysis of prior declarative
   languages, and also implement the declarative syntax + translator
   itself
-\item
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Still need example declarative script doing the same browser stuff,
+    with brief explanation
+  \end{itemize}
+\item[$\square$]
   6.4 - Describe using generative AI for artifacts
-\item
+\item[$\square$]
   6.5 - Describing using generative AI for scenarios
 \end{itemize}
 
@@ -483,13 +560,23 @@ itself)
   enough progress
 \end{itemize}
 
-\autoref{chapter-eight} (\textasciitilde90\%) Done, except for some
-sentences that may be dependent on things getting done or not, as well
-as the ``distribution'' section (which also depends on things getting
-done or not)
+\autoref{chapter-eight} (\textasciitilde100\%) Basically done, might
+need to change some language depending on what does/doesn't get done
 
 \autoref{chapter-nine} (\textasciitilde100\%) Done, except for some
 sentences that may be dependent on things getting done or not
+
+\textbf{39.A - Architectural diagrams} (0\%) Need to rework everything,
+break up the architectural diagrams and put them here (maybe)
+
+\textbf{39.B - Code samples} (\textasciitilde100\%) Likely done unless
+more code blocks need to be moved in here
+
+\textbf{39.C - Acronyms} (?) Will take some work to integrate with rest
+of thesis
+
+\textbf{39.D - Glossary} (?) Will take some work to integrate with
+thesis; also need to identify actual glossary terms to include
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
