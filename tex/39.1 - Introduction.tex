@@ -1,27 +1,26 @@
 \section{History of digital
 forensics}\label{history-of-digital-forensics}
 
-Digital forensics is a relatively new field that rose out of the growing
-need to address computer crimes. Through the explosion of computing that
-has occurred over the last 30 years, computers have become critical in
-virtually every modern industry. In turn, they have become the target of
-many attacks. Much like conventional crimes, these cyberattacks leave
-behind traces of digital evidence that can be analyzed to determine the
-methodologies of the attackers, the scope and extent of the damage, and
-more. Today, digital forensics is also applicable to a variety of
-non-criminal contexts, including research and corporate investigations,
-further highlighting the need for quality educational material and
-hands-on training for new forensic analysts.
+Digital forensics is a relatively new field originating from the growing
+need to address computer crimes. Over the last 30 years, computers have
+become critical in virtually every modern industry. In turn, they have
+become the target -- and weapon -- of many attacks. Much like
+conventional crimes, cybercrimes leave behind traces of digital evidence
+that can be analyzed to determine the nature of the incident, the scope
+and extent of the crime, and more. Today, digital forensics is also
+applicable to a variety of other contexts, such as incident response and
+corporate investigations, further highlighting the need for quality
+educational material and hands-on training for new forensic analysts.
 
 The origins of digital forensics can be traced to the 1980s, during
 which computers began to be adopted by the general public. Prior to
-this, computers were largely restricted to industry, academia, and
+this, computers were restricted mainly to industry, academia, and
 governments with dedicated infrastructure and staff
 \cite{pollittHistoryDigitalForensics2010}. However, with the
-introduction of PCs more accessible to the typical consumer, such as the
-Commodore 64 and the IBM PC, computer usage within the public grew. And
-in turn, so did crimes committed with computers; people discovered that
-they could hack telephone networks to illegally obtain software and
+introduction of PCs that were more accessible to the typical consumer,
+such as the Commodore 64 and the IBM PC, computer usage within the
+public grew. So did crimes committed with computers; people discovered
+that they could hack telephone networks to illegally obtain software and
 ``free'' telephone services \cite{jonesInsightDigitalForensics2022}.
 In 1983, Canada would be the first government to amend its criminal code
 to cover cybercrime; the United States, the United Kingdom, and
@@ -30,109 +29,118 @@ Australia would follow suit in the following decade.
 During this time, investigations were relatively ad-hoc and very simple.
 Teams often built their own software to analyze devices, though a few
 hobbyists and software vendors began to develop dedicated forensic
-tools. However, computers had yet to truly enter the mainstream; the
-vast majority of individual computer owners were (relatively wealthy)
-computer hobbyists rather than the general public. In 1984, the U.S.
-Census Bureau determined that only about 8.2\% of U.S. households owned
-a computer \cite{robertkominskiComputerUseUnited1988}, nearly
-doubling to 15\% in 1989 \cite{robertkominskiComputerUseUnited1991}.
+tools. However, computers had yet to truly enter the mainstream; most
+individual computer owners were (relatively wealthy) computer hobbyists
+rather than the general public. In 1984, the U.S. Census Bureau
+determined that only about 8.2\% of U.S. households owned a computer
+\cite{robertkominskiComputerUseUnited1988}, nearly doubling to 15\%
+in 1989 \cite{robertkominskiComputerUseUnited1991}.
 
-As technology continued to advance throughout the 1990s, digital
-forensics -- and computing as a whole -- began to quickly grow in scope
-and importance. The rise of mobile devices and the internet drastically
-changed the role of computing in the eyes of the public. With it came
-the rise of cybercrime and the importance of computer investigations.
-Early investigations were often performed by investigators who happened
-to be experienced with computers, rather than those with formal digital
-forensics training \cite{hargreavesDigitalForensicsEducation2017}.
+As technology continued to advance past the 1990s, digital forensics --
+and computing as a whole -- began to grow in scope and importance. The
+rise of mobile devices and the internet drastically changed the role of
+computing in the eyes of the public; with it came the rise of cybercrime
+and a recognition of the importance of computer investigations. These
+early investigations continued to be performed by investigators who
+happened to be experienced with computers rather than those with formal
+digital forensics training
+\cite{hargreavesDigitalForensicsEducation2017}. Such investigations
+lacked a standardized structure (unlike the formal approaches in
+``traditional'' forensic disciplines), contributing to debates about the
+reliability of digital forensics \cite{montasariRoadMapDigital2019}.
 
 By the turn of the century, digital forensics had grown beyond law
-enforcement and niche cases to a major focus of research and education.
-The first use of the phrase ``computer forensics'' in ACM literature
-appeared in 1999 \cite{cooperStandardsDigitalForensics2010}, with
-the first Digital Forensic Research Workshop (DFRWS) held in 2001 to
-identify priorities in the growing field of digital forensics
+enforcement and niche cases to becoming a focus of broader research and
+education. The first use of the phrase ``computer forensics'' in ACM
+literature appeared in 1999
+\cite{cooperStandardsDigitalForensics2010}, with the first Digital
+Forensic Research Workshop (DFRWS) held in 2001 to identify priorities
+in the growing field of digital forensics
 \cite{palmerRoadMapDigital2001}. A particularly notable case was
 that of the September 11, 2001 attacks, in which computers were found to
-contain meaningful evidence related to the organization and planning of
+contain significant evidence related to the organization and planning of
 the attack. Intelligence communities and law enforcement agencies
-throughout the world began establishing digital forensics teams,
-shifting the agenda of digital forensics from individuals and small
-teams to governments and professional organizations.
+worldwide began establishing digital forensics teams, demonstrating a
+shift in which investigations previously only conducted by individuals
+and small teams were now also performed by governments and professional
+organizations.
 
 It was during this time that tools such as EnCase and Forensic Toolkit
 (better known as FTK) evolved to become dedicated products that remain a
 mainstay of the digital forensics field today
 \cite{pollittHistoryDigitalForensics2010}. At the same time,
 anti-forensics began to grow in popularity; numerous tools and resources
-were developed with the express goal to exploit and hinder the digital
-forensics process, generally with the stated motivation of guarding
-users' privacy and protecting users from punishment for undesirable
-computer activity
+were developed with the express goal of exploiting and hindering the
+digital forensics process, generally with the stated motivation of
+guarding users' privacy and protecting users from punishment for
+undesirable computer activity
 \cite{geigerEvaluatingCommercialCounterForensic2005,harrisArrivingAntiforensicsConsensus2006}.
 
 By this time, it had become abundantly clear that there needed to be
 dedicated training to develop specialists in digital forensics.
-Undergraduate and graduate programs dedicated to the study of digital
-forensics were gradually developed
-\cite{andersonComparativeStudyTeaching2006}, along with numerous
-efforts to standardize and improve digital forensics curricula
-\cite{cooperStandardsDigitalForensics2010,nanceDigitalForensicsDefining2009,nanceDigitalForensicsDefining2010}.
-This became particularly important due to the growing importance of
-digital forensics from a legal perspective; analysts must follow a
-strict procedure that ensures the admissibility of digital evidence into
-court \cite{conklinComputerForensics2022}. Simultaneously, analysts
-must have the experience needed to provide an unbiased, accurate opinion
-of digital evidence in court as an expert witness.
+Undergraduate and graduate curricula dedicated to the study of digital
+forensics were developed
+\cite{andersonComparativeStudyTeaching2006,srinivasanDigitalForensicsCurriculum2013}
+along with numerous efforts to standardize and improve digital forensics
+curricula
+\cite{cooperStandardsDigitalForensics2010,nanceDigitalForensicsDefining2009,nanceDigitalForensicsDefining2010,dafoulasOverviewDigitalForensics2019,lucianoDigitalForensicsNext2018}.
+The development of formal education was significant due to the growing
+importance of digital forensics from a legal perspective; analysts were
+expected to follow a strict procedure to ensure the admissibility of
+digital evidence into a court of law
+\cite{conklinComputerForensics2022}. Simultaneously, analysts needed
+sufficient experience to provide an unbiased, accurate opinion of this
+digital evidence in court as an expert witness.
 
-Digital forensics continues to be an important focus in industry -- and
-in turn, education and research. Broadly, the Bureau of Labor Statistics
-projects that information security employment will grow 32\% over the
-next decade from 2022 to 2032, adding over 50,000 new jobs
+Digital forensics continues to be an important focus in industry. The
+Bureau of Labor Statistics projects that information security employment
+will grow 32\% over the next decade from 2022 to 2032, adding over
+50,000 new jobs
 \cite{bureauoflaborstatisticsu.s.departmentoflaborInformationSecurityAnalysts2023}.
-The diversity and depth of digital forensics continues to grow with the
-broad variety of devices and software involved in modern computing.
+The diversity and depth of digital forensics will continue to grow with
+sustained developments in modern computing -- a fact that extends beyond
+industry and into research and education.
 
 With the growing importance and complexity of digital forensics, there
 is a clear need for high-quality, realistic data for researchers and
-instructors alike. Yet, there continues to be significant gaps in both
-the quantity and variety of material suitable for digital forensic
-training. The primary barrier to availability has been the privacy and
-legal concerns associated with releasing real-world data
+instructors alike. However, there continue to be significant gaps in the
+quantity and variety of material suitable for digital forensic training;
+in particular, privacy and legal concerns prevent the use and
+distribution of real-world data
 \cite{garfinkelForensicCorporaChallenge2007}. From a research
 perspective, the result is that many researchers develop their own
-datasets, often with a very narrow scope and a very low degree of
+datasets, often with a very narrow scope and a low degree of
 reproducibility
 \cite{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
 From an education perspective, the result is that most training material
 is either manually created by instructors or reused from existing
 sources. That is, researchers and instructors alike often create their
-own datasets because publicly available corpora is insufficient;
+own datasets because publicly available corpora are insufficient;
 however, this is a time-consuming process that responds slowly to
 changes in technology and software.
 
-Various efforts have been made to automate or streamline the process of
-creating new forensic datasets from high-level descriptions and
-predefined forensic artifacts. These forensic synthesis frameworks (also
-referred to as ``synthesizers'' throughout this paper) include a variety
-of features that are geared towards research and education. This
-includes the rapid creation of datasets for a large classroom, the
-generation of metadata useful in tool validation, and the ability to
-export a variety of forensic artifacts from the synthesizer. In
-particular, these frameworks enable instructors to create images that
-allow students to learn about a specific forensic technique while
-emulating some of the real-world challenges that forensic analysts face
-in industry.
+There have been various efforts to automate and streamline the process
+of creating new forensic datasets from high-level descriptions and
+predefined forensic artifacts. These forensic synthesis frameworks, also
+known as ``synthesizers,'' include various features geared toward
+rapidly developing datasets for research and education. These features
+include mass dataset generation for large classrooms, metadata
+generation useful in tool validation, and the ability to generate and
+export a variety of forensic artifacts from the synthesizer. This is
+particularly valuable in classrooms, as these datasets enable
+instructors to create images that allow students to learn about a
+specific forensic technique while emulating some real-world challenges
+that forensic analysts face in practice.
 
 However, there is still much work to be done towards increasing the
 accessibility and flexibility of these frameworks. Before exploring
 synthesizers in greater detail, it is necessary to first understand the
 purpose and characteristics of forensic datasets in a variety of
 contexts. Doing so will not only outline \emph{why} the development of
-synthesizers is necessary, but also \emph{what} features these
+synthesizers is necessary but also \emph{what} features these
 synthesizers must provide. Once we have established this foundation, we
 can begin exploring \emph{how} a synthesizer should be architected --
-the focus of the reminder of this thesis.
+the focus of the remainder of this thesis.
 
 \section{Purpose of forensic
 datasets}\label{purpose-of-forensic-datasets}
@@ -141,8 +149,8 @@ datasets}\label{purpose-of-forensic-datasets}
 
 Before considering the use of forensic datasets in research and
 education, we begin by exploring how these datasets are acquired and
-used in the ``real world'' -- that is, investigations made by
-professionals in industry.
+used in the ``real world'' -- that is, in the context of investigations
+conducted by professionals in industry.
 
 In practice, forensic datasets -- and digital forensics as a whole --
 are used for a variety of purposes. In particular, Conklin et
@@ -152,39 +160,38 @@ performed \cite{conklinComputerForensics2022}:
 \begin{itemize}
 \tightlist
 \item
-  \emph{To investigate computer systems related to a violation of law}:
-  This includes cases such as the distribution and storage of illegal
-  content, the use of a computer to launch denial of service attacks
-  against an individual or organization, and the proliferation of
-  harmful malware within an organization.
+  \textbf{To investigate computer systems related to a violation of
+  law}: This includes cases regarding the distribution and storage of
+  illegal content, the use of a computer to launch denial of service
+  attacks against an individual or organization, and the proliferation
+  of harmful malware within an organization.
 \item
-  \emph{To investigate computer systems for compliance (or a violation
+  \textbf{To investigate computer systems for compliance (or a violation
   of) an organization's policies}: This primarily covers internal
-  investigations in which a user may act well within the laws of their
-  jurisdiction, but may have violated a company policy. For example,
-  many companies restrict access to computing systems based on the time
-  of day as a security measure. Although a user may normally have
-  authorization to access the organization's network, an unexpected
-  weekend access to the network may require investigation to determine
-  if the activity was done with malicious intent.
+  investigations in which a user may not have broken local legislation
+  but may have violated a company policy. For example, many companies
+  restrict access to computing systems based on the time of day as a
+  security measure. Although a user may typically have authorization to
+  access the organization's network, unexpected weekend activity may
+  require forensic analysis to determine if any actions were done with
+  malicious intent.
 \item
-  \emph{Responding to a legal (or internal) request for digital
+  \textbf{Responding to a legal (or internal) request for digital
   evidence}: This process is known as e-discovery, in which an
   organization preserves and produces digital information typically as
-  part of the discovery process in civil lawsuits. With court approval,
+  part of the discovery process in lawsuits. With court approval,
   organizations can be compelled to turn over relevant information to a
   particular lawsuit, including digital documents and digital artifacts
-  such as file metadata. (The \emph{Federal Rules of Civil Procedure}
-  were amended in December 2006 to include ``electronically stored
+  such as file metadata. (The Federal Rules of Civil Procedure were
+  amended in December 2006 to include ``electronically stored
   information'' as part of civil discovery
   \cite{withersj.ElectronicallyStoredInformation2006}.)
 \end{itemize}
 
 Additionally, it is important to note that the acquisition of forensic
-images are only one specific part of the overall digital forensics
-process, in which analysts must consider the priority of obtaining
-evidence and local requirements for ensuring the admissibility of
-digital evidence into a court of law. Again, Conklin et al.~identify
+evidence is only one part of the overall digital forensics process. For
+example, analysts must consider the order in which to obtain evidence
+while adhering to chain of custody procedures. Conklin et al.~identify
 several steps throughout the lifespan of a digital forensic
 investigation that are summarized here
 \cite{conklinComputerForensics2022}:
@@ -192,36 +199,38 @@ investigation that are summarized here
 \begin{itemize}
 \tightlist
 \item
-  \emph{Identification}: While outside of the scope of forensics itself,
-  it is important to determine the scope of the devices that need to be
-  analyzed as a result of some incident. Necessarily, it is impossible
-  to investigate an incident until an organization can ascertain that
-  one has occurred (which, in turn, requires implementing detection and
-  protection as described in the NIST Cybersecurity Framework
+  \textbf{Identification}: While rarely covered by educational datasets,
+  it is important to determine the scope of the devices that must be
+  analyzed for an incident. It is impossible to investigate an incident
+  until an organization can ascertain that one has occurred (which
+  requires implementing detection and protection practices, such as
+  those described in the NIST Cybersecurity Framework
   \cite{nistNISTCybersecurityFramework2023}). Similarly, if the
-  scope of an incident is poorly-defined, the subsequent forensic
-  investigation may fail to find significant related evidence, which has
-  a direct outcome on the success of the investigation (and often, the
-  response of the organization as a whole).
+  scope of an incident is poorly defined, the subsequent forensic
+  investigation may fail to find relevant evidence. Scoping not only
+  impacts the investigation's success but also the organization's
+  response as a whole.
 \item
-  \emph{Preservation}: After identifying the relevant machines, analysts
-  must secure and preserve the physical device itself. With guidance
-  from the organization and an analyst's judgment, this often involves
-  prioritizing the devices that must be imaged first; for example, a
-  critical server may be more likely to cycle out important logs first,
-  or an employee's device may only hold important information in
-  volatile memory.
+  \textbf{Preservation}: After identifying the relevant machines,
+  analysts must secure and preserve the physical device itself. With
+  guidance from the organization and an analyst's judgment, this often
+  involves prioritizing the devices that must be imaged first; for
+  example, a critical server may be more likely to cycle out important
+  logs first, or an employee's device may only hold important
+  information in volatile memory. Such devices should be prioritized
+  over those that are unlikely to lose relevant information if not
+  imaged immediately.
 \item
-  \emph{Collection:} At this point, an analyst must now duplicate the
-  digital evidence, in addition to any relevant physical evidence. This
-  must be done in a way that passes legal scrutiny; that is to say, it
-  must meet requirements for accuracy, reliability, and relevance
+  \textbf{Collection}: At this point, an analyst must now duplicate the
+  digital evidence and any relevant physical evidence. Collection must
+  be performed in a manner that passes legal scrutiny; that is to say,
+  it must meet requirements for accuracy, reliability, and relevance
   \cite{conklinComputerForensics2022,garfinkelBringingScienceDigital2009}
   (in the United States). In the case of disk imaging, this is typically
   done with a write blocker and cryptographic hashing algorithms to
-  ensure a faithful copy has been created of nonvolatile memory.
+  ensure a faithful copy of nonvolatile memory has been created.
 \item
-  \emph{Analysis}: Here, an analyst uses tools and their own knowledge
+  \textbf{Analysis}: Here, an analyst uses tools and their own knowledge
   to identify significant pieces of information within collected images,
   reconstructing data fragments and drawing conclusions to form a
   coherent timeline and scenario. In many cases, this is done using
@@ -230,37 +239,37 @@ investigation that are summarized here
   parse and automatically identify data of interest on a reconstructed
   file system.
 \item
-  \emph{Reporting}: After an analyst (or a team of analysts) has
+  \textbf{Reporting}: After an analyst (or a team of analysts) has
   completed their analysis of the collected data, they must summarize
   and provide a non-technical overview of the conclusions drawn from the
   investigation.
 \end{itemize}
 
 Throughout this process, analysts must adhere to well-established norms
-for ensuring the admissibility of any digital evidence in court. One
-notable example is the use of a chain of custody, which details who has
-had access to the evidence. This applies to ``conventional'' and digital
+to ensure the admissibility of any digital evidence in court. For
+example, chain of custody must be maintained, detailing access and
+movement of any evidence. This applies to ``conventional'' and digital
 forensics alike, as this documentation asserts that the evidence has not
-been tampered with as it is transported between analysts and locations.
-Without proper documentation such as a chain of custody, critical
+been tampered with as it is handled between analysts and locations.
+Without proper documentation, such as a chain of custody, critical
 evidence may not meet the legal requirements for admissibility, changing
 the outcome of a trial.
 
-Generally speaking, a forensic investigation is only part of a larger
-incident response effort; for example, if a data breach occurs, a
-digital forensic investigation may be used to determine the scope and
+A forensic investigation is often only part of a larger incident
+response effort. For example, if a data breach occurs, a digital
+forensic investigation may be used to determine the scope and
 methodology of the breach itself. However, other teams within the
 organization may be responsible for patching the devices responsible for
 the breach, determining legal consequences, and engaging in other
 recovery-related activities. Additionally, a forensic analyst may have
-other responsibilities outside of this ``chain''; for example, in
-addition to developing a written report, they may be called as an expert
-witness to testify and defend conclusions drawn from the investigation
+non-analytic responsibilities; for example, in addition to developing a
+written report, they may be called as an expert witness to testify and
+defend conclusions drawn from the investigation
 \cite{andersonComparativeStudyTeaching2006,conklinComputerForensics2022,cooperStandardsDigitalForensics2010}.
 
 In the context of research and education, most hands-on or practical
-training typically focuses on the analysis and reporting steps, rather
-than the rest of the investigation process. That is to say, although the
+training typically focuses on the analysis and reporting steps rather
+than the complete investigation process. That is to say, although the
 theory provided in training covers this entire process in detail, it is
 relatively rare for students to secure data from an organization, use a
 write blocker and other hardware needed to image devices, and then
@@ -272,16 +281,16 @@ the techniques of analysis and reporting are arguably the most
 important; while the other steps can be learned ``on the job''
 relatively quickly, all students must be familiar with modern software
 and tooling, as well as recent advancements in forensic and
-anti-forensic techniques. (As a more concrete example: deep technical
-knowledge of operating systems is not required to acquire disk images,
-but it is certainly required for effective analysis and reporting.)
+anti-forensic techniques. As a more concrete example, deep technical
+knowledge of operating systems is not required to acquire disk images
+but is undoubtedly required for effective analysis and reporting.
 
 It is for this reason that the vast majority of education and research
 focuses primarily on the analysis step. Improvements to the distribution
 and creation of training material -- such as the use of online labs and
-synthesizers -- are largely driven by the fact that no physical lab is
-strictly necessary, focusing instead on the software and skillset needed
-to effectively analyze images and draw conclusions
+synthesizers -- are primarily driven by the fact that physical labs are
+not necessary, allowing institutions to instead focus on the software
+and skill set needed to analyze images and draw conclusions effectively
 \cite{bruecknerAutomatedComputerForensics2008,lawrenceFrameworkDesignWebbased2009}.
 
 \subsection{In research}\label{in-research}
@@ -292,22 +301,22 @@ investigation. This includes the development of analysis techniques for
 niche platforms, direct improvements to existing techniques, or novel
 methodologies for performing forensic investigations for a particular
 platform. For example, recent publications from the Digital Forensic
-Research Conference detail a new hashing technique for detecting
+Research Workshop detail a new hashing technique for detecting
 similarities in arbitrary files \cite{changFbHashNewSimilarity2019},
 an analysis of the NAND memory of the Nintendo 3DS
 \cite{pessolanoForensicAnalysisNintendo2019}, and the development of
 a new tool for the automated analysis of Android mobile devices
-\cite{linAutomatedForensicAnalysis2018}. Necessarily, each of these
-publications require forensic datasets; in most cases, these are
-obtained or developed manually by the authors, as opposed to using an
-existing public or private dataset.
+\cite{linAutomatedForensicAnalysis2018}. Necessarily, the research
+in each of these publications requires forensic datasets; in most cases,
+these are obtained or developed manually by the authors, as opposed to
+using an existing public or private dataset.
 
 Besides novel contributions to the field, other research focuses on
 upholding the quality of the investigation process as new technologies
 and tools to analyze datasets are developed. For example, NIST maintains
 the \emph{Computer Forensics Tool Testing} (CFTT) program, which
-provides a common methodology and test corpora for evaluating specific
-tool capabilities
+provides a standard methodology and test corpora for evaluating specific
+forensic tool capabilities
 \cite{nationalinstituteofstandardsandtechnologyComputerForensicsTool2017}.
 Specific capabilities tested include the ability of a tool to perform
 string searching, disk imaging, and the recovery of deleted files. The
@@ -321,41 +330,42 @@ and researchers
 \subsection{In education}\label{in-education}
 
 Finally, we address the generation of forensic datasets as it applies to
-education. Datasets in an educational setting typically focus on
-covering a range of techniques and tools, allowing students to practice
-applying theoretical concepts learned through lectures and recitations
+education. Datasets in an educational setting typically cover a range of
+techniques and tools, allowing students to practice applying theoretical
+concepts learned through lectures and recitations
 \cite{adelsteinAutomaticallyCreatingRealistic2005}. Often, this is
 done in the context of a specific scenario, such as a user stealing
 files from a protected company server, using steganography to hide
-information, or recovering a file from volatile memory. Besides the the
-specific technical skills covered by these scenarios, the overall goal
-of these images is to develop the analytical skills needed to adapt to
-new technologies. as tools and the technologies they analyze continue to
-evolve \cite{cooperStandardsDigitalForensics2010}. In other words,
-students should be familiar with common tools and patterns in digital
-forensics, providing a foundation on which more niche techniques can be
-learned \cite{lawrenceFrameworkDesignWebbased2009}.
+information, or recovering a file from volatile memory. Besides the
+specific technical skills covered by these scenarios, these datasets aim
+to develop the analytical skills needed for students to adapt to
+developments in tools and technology
+\cite{cooperStandardsDigitalForensics2010}. In other words, students
+should be familiar with common tools and patterns in digital forensics,
+providing a foundation on which more niche techniques can be learned
+\cite{lawrenceFrameworkDesignWebbased2009}.
 
-Although the focus of individual forensic images is often to improve the
-skills of students in the analysis phase, these images have a direct
+Although the focus of individual forensic datasets is often to improve
+the skills of students in the analysis phase, these images have a direct
 impact on the reporting phase as well. Indeed, students must be able to
-accurately summarize their conclusions, using their judgement to
-describe a scenario and identify topics of interest in a manner that is
-consistent with law. Although important, digital forensics is not just
-the effective use of tools and techniques; a student should also aim to
-be well-rounded in the legal, social, and professional aspects of
-digital forensics \cite{andersonComparativeStudyTeaching2006}.
+accurately summarize their conclusions, using their judgment to describe
+a scenario and identify topics of interest in a manner consistent with
+the law. Although important, digital forensics is not just the effective
+use of tools and techniques; a student should also aim to be
+well-rounded in the legal, social, and professional aspects of digital
+forensics \cite{andersonComparativeStudyTeaching2006}.
 
 The challenge, however, is providing hands-on labs that comprehensively
 support the ideas learned in theoretical courses. Indeed, instructors
 face numerous challenges when providing realistic lab material,
 including limited access to the necessary software and hardware; the
-extensive time needed to develop, distribute and grade labs; and the
+extensive time needed to develop, distribute, and grade labs; and the
 high variability between different forensics programs
 \cite{adelsteinAutomaticallyCreatingRealistic2005,guptaDigitalForensicsLab2022,lawrenceFrameworkDesignWebbased2009}.
 Much of this difficulty in providing high-quality images can be traced
-to the issues associated with acquiring images for educational purposes,
-as described in the following section.
+to the issues associated with acquiring both ``real'' and ``synthetic''
+datasets for educational purposes, as described in the following
+section.
 
 \section{Real and synthetic
 datasets}\label{real-and-synthetic-datasets}
@@ -367,38 +377,37 @@ datasets. This section focuses on the qualities of real and synthetic
 datasets, including some examples. A more detailed survey of existing
 datasets is presented in \autoref{existing-forensic-corpora}.
 
-Broadly speaking, there are two types of forensic datasets summarized by
-Park \cite{parkTREDEVMPOPCultivating2018}, based on the original
-taxonomy described by Garfinkel et al.
+There are two types of forensic datasets described by Park
+\cite{parkTREDEVMPOPCultivating2018} based on the original taxonomy
+described by Garfinkel et al.
 \cite{garfinkelBringingScienceDigital2009}. The first is ``real''
-data, which is data that was organically created by human beings without
-the explicit intent of being used in a forensic investigation. The other
-is ``synthetic'' data, which is data generated for specific forensic
-purposes, including research and education. Synthetic datasets are
-considerably more common than real datasets in education for the reasons
-discussed in this section, though their manual creation still poses a
-significant problem.
+data, which is organically created by humans without the explicit intent
+of being used in a forensic investigation. The other is ``synthetic''
+data, which is generated for specific educational and research purposes.
+Synthetic datasets are considerably more common than real datasets in
+education for the reasons discussed in the following sections, even if
+they require significantly more effort to develop.
 
 It should also be noted that this section provides a general overview of
-forensic datasets as it relates to education and research, providing the
-necessary context for forensic synthesizers. However, a more exhaustive
-description of dataset construction and usage has been performed by
-Horsman and Lyle in \cite{horsmanDatasetConstructionChallenges2021}.
+forensic datasets as they relate to education and research, providing
+the necessary context for forensic synthesizers. However, Horsman and
+Lyle have performed a more exhaustive description of dataset
+construction and usage
+\cite{horsmanDatasetConstructionChallenges2021}.
 
 \subsection{Real datasets}\label{real-datasets}
 
 Real data is inherently the most ``realistic'' form of forensic data,
-containing extensive background noise as a result of typical computer
-usage in addition to a broad variety of software, operating system
+containing extensive background noise as a result of typical long-term
+device usage in addition to a variety of software, operating system
 artifacts, and other files that might be of interest in a real forensic
-investigation. These are most reflective of the scenarios that industry
-professionals face, and allow students to train themselves in separating
-relevant content from irrelevant content while identifying and
-synthesizing details from both a system and a human perspective.
+investigation. Real datasets are most reflective of the scenarios that
+industry professionals face, allowing students to train themselves in
+separating relevant content from irrelevant content while identifying
+and synthesizing details from both a system and a human perspective.
 
-In general, real data can be sourced from far more than just the hard
-drives of computers. Other potential and previously used data sources
-include:
+Real data can be sourced from far more than just the hard drives of
+computers. Other potential and previously used data sources include:
 
 \begin{itemize}
 \tightlist
@@ -423,34 +432,34 @@ include:
 
 Many more public forensic repositories are described by Grajeda et al.,
 though just as many datasets used in research remain private
-\cite{grajedaAvailabilityDatasetsDigital2017}. Within reason, with
-the billions of internet-connected devices today, there should be no
-shortage of sources for real datasets. However, real datasets are the
-most challenging to work with in education for a variety of reasons,
-particularly the legal and privacy concerns surrounding the use and
-distribution of these datasets, as well as their broad scope and lack of
-prior analysis.
+\cite{grajedaAvailabilityDatasetsDigital2017}. With the billions of
+internet-connected devices today, there should be no shortage of sources
+for real datasets. However, real datasets are the most challenging to
+work with in education for a variety of reasons, particularly the legal
+and privacy concerns surrounding the use and distribution of these
+datasets, as well as their broad scope and lack of prior analysis.
 
-Necessarily, real datasets were not created to educate students about a
-particular technique, and may not adequately supplement an instructor's
-material without significant effort. For example, Garfinkel identifies
-several requirements for forensic datasets to be suitable for a broad
-variety of uses in research and industry
-\cite{garfinkelForensicCorporaChallenge2007}. In particular,
-Garfinkel notes that in addition to the lack of variety in publicly
-available forensic corpora, many real datasets suffer from a lack of
-complexity, supplemental annotations, or ongoing maintenance - all of
-which are often needed in an educational context.
+From a scoping perspective, real datasets were not created to educate
+students about a particular technique and may not adequately supplement
+an instructor's material without significant effort. For example,
+Garfinkel identifies several requirements for forensic datasets to be
+suitable for various uses in research and industry
+\cite{garfinkelForensicCorporaChallenge2007}. Garfinkel notes that
+in addition to the overall lack of publicly available corpora, many real
+datasets suffer from a lack of complexity, supplemental annotations, or
+ongoing maintenance -- all of which are often needed in an educational
+context and cannot easily be added to real datasets after the fact.
 
 With respect to availability, some of these datasets are inherently
 publicly available; in other cases, their access is restricted to within
 an organization. However, just because the underlying data is public
 does not necessarily mean that it exists in an aggregate form
-immediately suitable for research. Even when aggregated, questions arise
-from the use of public datasets for unintended purposes, such as the use
-of social media as a source of forensic data; these questions are
-already the focus of debate in generative AI, which use publicly
-available data to train models for both commercial and research use
+immediately suitable for research while preserving individuals' privacy.
+Even when aggregated, concerns arise from the use of public datasets for
+unintended purposes, such as the use of social media as a source of
+forensic data; these questions are already the focus of debate in
+generative AI, which uses publicly available data to train models for
+both commercial and research use
 \cite{avrahamiOwnershipCreativityGenerative2021,eshraghianHumanOwnershipArtificial2020,rooseAIgeneratedPictureWon2022}.
 
 That said, the primary barriers to the use of real forensic datasets are
@@ -462,15 +471,15 @@ for use by private institutions, the same dataset was barred from use at
 the Naval Postgraduate School due to concerns with federal privacy
 legislation. Similarly, Grajeda et al.~noted that nearly half of all
 digital forensic literature reviewed using a novel dataset did not
-publish the dataset due to legal restrictions or NDAs. This was
-typically because the datasets were obtained from government agencies,
-corporations, and law enforcement agencies, and therefore could not be
-publicly released \cite{grajedaAvailabilityDatasetsDigital2017}.
-Another reason is that the dataset may contain objectionable or illicit
-material, such as licensed software or pornography, preventing its
-public distribution.
+publish the dataset due to legal restrictions or NDAs. This was often
+because the datasets were obtained from government agencies,
+corporations, and law enforcement agencies and could not be publicly
+released \cite{grajedaAvailabilityDatasetsDigital2017}. Another
+reason is that the dataset may contain objectionable or illicit
+material, such as licensed software or pornography, preventing public
+distribution.
 
-Certain organizations and researchers have made efforts to make real
+Some organizations and researchers have made efforts to make real
 datasets accessible to the public through various means. For example,
 the emails seized during the Federal Energy Regulatory Commission's
 investigation of Enron were purchased by the Massachusetts Institute of
@@ -481,7 +490,7 @@ In other cases, institutions have aimed to ensure the data can be made
 publicly available ahead of time, such as by requesting that individuals
 sign an agreement before any data is collected.
 
-Indeed, some educational institutions do use real-world datasets for
+Indeed, some educational institutions use real-world datasets in
 forensic labs. Besides the sources mentioned above, students may also
 opt to image their own devices or the device of a friend with
 permission; these approaches are mentioned in older works
@@ -491,59 +500,52 @@ easier access to education-focused datasets. Naturally, this method of
 acquiring real-world images suffers from other issues as well; students
 know exactly what they will find on their own computer, and although
 individuals may consent to the use of their images for educational
-purposes, there remains the risk of highly personal data being leaked
-\cite{garfinkelBringingScienceDigital2009}. Simultaneously, they
-often lack the ground truth or annotations needed to assert that a
-student has found everything of interest.
+purposes, there remains the risk of highly personal data being leaked as
+a result of the exercise \cite{garfinkelBringingScienceDigital2009}.
+Simultaneously, they often lack the ground truth or annotations needed
+to assert that a student has found everything of interest.
 
 \subsection{Overview of synthetic
 datasets}\label{overview-of-synthetic-datasets}
 
 Because of the various issues associated with real-world data, many
-instructors opt to use synthetic data (or ``manually created data'')
-instead, in which the scenario and data are artificially generated based
-on some predetermined procedure. That is to say, the data exists with
-the explicit intent of being used in research or education.
+instructors use synthetic data (or ``manually created data'') instead,
+in which the scenario and data are artificially generated based on some
+predetermined procedure. That is to say, the data exists with the
+explicit intent of being used in research or education. More precisely,
+synthetic datasets are created to accurately reflect the challenges
+faced by industry professionals while avoiding the privacy and legal
+restrictions of using genuine, real-world scenarios.
 
-From an educational perspective, an ideal dataset should accurately
-reflect the problems and challenges faced by industry professionals
-while avoiding the problems of real-world datasets. In turn, synthetic
-datasets are often created with the express intent of allowing students
-to explore forensic techniques in realistic scenarios while avoiding the
-privacy and legal restrictions of genuine real-world scenarios. (The
-same largely holds true in research, as well.)
-
-Again, as described by Park and Garfinkel et al., synthetic data can be
+As described by Park and Garfinkel et al., synthetic data can be
 categorized into two distinct groups
 \cite{garfinkelBringingScienceDigital2009,parkTREDEVMPOPCultivating2018}:
 
 \begin{itemize}
 \tightlist
 \item
-  \emph{Synthetic test data}, which refers to forensic corpora that have
-  been developed to test specific features in a group of tools. These
-  are well-annotated datasets with extensive reference information and
-  ground truth data, and are typically used to assert that a tool is
-  able to analyze and identify data of interest. One example discussed
-  so far is the Computer Forensics Tool Testing program administered by
-  NIST
+  \textbf{Synthetic test data}, which refers to forensic corpora that
+  have been developed to test specific features in a group of tools.
+  These are well-annotated datasets with extensive reference information
+  and ground truth data, typically used to assert that a tool is able to
+  analyze and identify data of interest. One example discussed so far is
+  the Computer Forensics Tool Testing program administered by NIST
   \cite{nationalinstituteofstandardsandtechnologyComputerForensicsTool2017}.
 \item
-  \emph{Synthetic realistic data}, which is designed to mimic a
+  \textbf{Synthetic realistic data}, which is designed to mimic a
   situation that a forensic examiner might encounter in a real-world
-  investigation. These are typically much more applicable to an
-  educational context than test data, though test data can be used as
-  educational material for learning new tools or very specific
-  techniques.
+  investigation. These are typically more applicable to an educational
+  context than test data, though test data can be used as educational
+  material for learning new tools or particular techniques.
 \end{itemize}
 
-Synthetic realistic data varies greatly in scope. Simple realistic data
-might form a realistic emulation of how a user might use a particular
-piece of software or anti-forensic technique, which creates forensic
-artifacts directly associated with these actions. In contrast, realistic
-data could form a full simulation of a scenario, whether based on real
-events (such as the one developed by Moch and Freiling based on the Arno
-Funke blackmail case in Germany
+Synthetic realistic data varies greatly in scope. Simple datasets might
+form a realistic emulation of how a real-world user might use a
+particular piece of software or anti-forensic technique, which creates
+forensic artifacts directly associated with these actions. More complex
+datasets can form a complete simulation of a scenario, whether based on
+actual events (such as the one developed by Moch and Freiling based on
+the Arno Funke blackmail case in Germany
 \cite{mochForensicImageGenerator2009}) or on common industry themes,
 such as the NIST CFReDS data leakage case
 \cite{nationalinstituteofstandardsandtechnologyCFReDSDataLeakage}.
@@ -551,26 +553,26 @@ such as the NIST CFReDS data leakage case
 \subsection{Motivation for synthetic
 datasets}\label{motivation-for-synthetic-datasets}
 
-Besides the issues mentioned in \autoref{overview-of-synthetic-datasets}, one major motivation for the development of synthetic
+Besides the issues mentioned in \autoref{real-datasets}, one primary motivation for the development of synthetic
 datasets is the need to fill various gaps in publicly available corpora.
 The survey done by Grajeda et al.~found that some researchers created
-new datasets not because of legal or privacy hurdles, but simply because
-there was no available dataset for their needs
+new datasets simply because there was no available dataset for their
+needs -- not because of legal or privacy concerns
 \cite{grajedaAvailabilityDatasetsDigital2017}. The researchers
 interviewed in the survey also recognized the value of publishing their
-datasets, but were hindered by a lack of available resources to maintain
-or distribute the datasets. Other researchers were prevented from doing
-so due to a non-disclosure agreement. The survey concluded that there
-was no preference for building new datasets from scratch in research,
-though there was clear agreement that private datasets made it more
-difficult for researchers to reproduce results; in general, publishing
-datasets contributed to the advancement of the field.
+datasets but were often hindered by a lack of available resources to
+maintain or distribute the datasets. Other researchers were prevented
+from doing so due to a non-disclosure agreement. The survey concluded
+that there was no preference for building new datasets from scratch in
+research, though there was clear agreement that private datasets made it
+more difficult for researchers to reproduce results; in general,
+publishing datasets contributed to the advancement of the field.
 
 Similar sentiment also exists in an educational context, though the
 motivation for creating new images from scratch differs from that of
-research. For example, the direct reuse of existing datasets is often
-undesirable, as it is often the case that answer keys and walkthroughs
-have already been published online
+research. For example, the direct reuse of existing datasets is
+sometimes undesirable, as it is often the case that answer keys and
+walkthroughs have already been published online
 \cite{woodsCreatingRealisticCorpora2011}; additionally, students in
 the same class can simply replicate the exact methodology of other
 classmates to come to the same conclusions without needing to perform
@@ -578,39 +580,38 @@ meaningful analysis. Even in labs where students' actions can be
 monitored to provide insight into their methodology and possible
 mistakes, such as in the \emph{CYDEST} platform developed by ATC-NY
 \cite{bruecknerAutomatedComputerForensics2008}, it is still possible
-to exactly copy the methodology of another student if the labs
-themselves do not differ.
+to copy the methodology of another student if the labs themselves do not
+differ.
 
-Additionally, many datasets that may be reflective of real-world
-scenarios are often unsuitable for academic purposes. For example, the
-forensic challenges of the Honeynet Project, DFRWS, and DC3 are suitable
-training material for experienced forensic analysts, but are often too
-difficult for students to solve
-\cite{woodsCreatingRealisticCorpora2011}. As mentioned before, many
-real-world datasets lack ``ground truth'' or annotated information that
-is suitable for determining what the contents of an image are,
-preventing the development of an answer key and qualitative grading of
-students' work based on what they find and report. The same is true of
-certain synthetic datasets, which may have been developed without a
-focus on detailed documentation.
+Additionally, some datasets that reflect real-world scenarios are
+unsuitable for academic purposes. For example, the forensic challenges
+of the Honeynet Project, DFRWS, and DC3 are suitable training material
+for experienced forensic analysts but are often too difficult for
+students to solve \cite{woodsCreatingRealisticCorpora2011}. As
+mentioned before, many real-world datasets lack ``ground truth'' or
+annotated information that is suitable for determining the contents of a
+dataset, preventing the development of an answer key and qualitative
+grading of students' work based on what they find and report. The same
+is true of these synthetic datasets, which may have been developed
+without a focus on detailed documentation.
 
-Clearly, there is a need for images that allow students to explore the
+Clearly, there is a need for datasets that allow students to explore the
 techniques and tools used by forensic analysts in industry in a
-realistic setting. Preferably, these images should be built in such a
-way that they challenge students to explore the same technique, but have
-distinguishable differences to dissuade cheating (for example, different
-files of interest may be placed, the specific disk sector written to may
-vary, or relevant metadata may be changed). Simultaneously, instructors
-need to know what the contents of the image are (including these
-variations), so that they can judge the accuracy of students' findings
+realistic setting. These datasets should be built such that they
+challenge students to explore the same techniques but have
+distinguishable differences to dissuade cheating. For example, data may
+be written to a different disk sector, relevant metadata may be changed,
+and files not relevant to a scenario may be modified. Simultaneously,
+instructors need to know what is contained in these datasets (including
+the presence of variations) to judge the accuracy of students' findings
 and determine which images are suitable hands-on material to complement
 lecture material.
 
 As a result, many instructors ultimately turn to manually developing
 realistic forensic scenarios that students can analyze, much like
-researchers. Some of these efforts have lead to publicly available
+researchers. Some of these efforts have led to publicly available
 datasets that encompass realistic scenarios, such as the datasets and
-scenario published by Woods et al.~as a direct response to the issues
+scenarios published by Woods et al.~as a direct response to the issues
 noted above \cite{woodsCreatingRealisticCorpora2011}.
 
 \subsection{Challenges in developing synthetic
@@ -618,117 +619,120 @@ datasets}\label{challenges-in-developing-synthetic-datasets}
 
 However, fulfilling all of the ideal characteristics of a forensic
 dataset is difficult, especially if an instructor wants to create
-variations of the same forensic scenario, multiplied by the number of
-scenarios used throughout the course. There are three distinct issues
-associated with the manual development of forensic datasets: the
-significant amount of time involved in their creation, the inherent
-non-determinism of human creation, and the lack of realistic background
-usage.
+multiple variations of the same forensic scenario, further multiplied by
+the number of scenarios presented throughout a course. There are three
+distinct issues associated with the manual development of forensic
+datasets: the significant amount of time involved in their creation, the
+inherent non-determinism of human creation, and the lack of realistic
+background usage.
 
 The primary issue associated with manual development is the extensive
 amount of work and time that must be put into not only planning and
-developing the scenario, but also executing it. Virtually all prior
-works recognize the time-consuming process involved in the manual
-development of disk images suitable for education
+developing the scenario but also executing it. The time-consuming
+process involved in the manual development of disk images suitable for
+education is widely recognized
 \cite{adelsteinAutomaticallyCreatingRealistic2005,gobelForTraceHolisticForensic2022,guptaDigitalForensicsLab2022,mochForensicImageGenerator2009,russellForensicImageDescription2012,scanlonEviPlantEfficientDigital2017,woodsCreatingRealisticCorpora2011},
 motivating research into possible solutions to streamlining their
 development.
 
-Depending on the artifacts involved in the scenario, it can also be
-difficult to ``falsify'' metadata as a means of speeding development up.
-More precisely, it can be challenging to produce the artifacts
-associated with a scenario over a shorter period of time than is
-suggested by the metadata attached to the artifacts. For example, it is
-possible to directly change the time in virtualization software (the
-approach often used by synthesizers
+One such solution is to ``falsify'' metadata as a means of speeding
+development up. In particular, it is possible to directly change the
+time in virtualization software (the approach often used by synthesizers
 \cite{gobelForTraceHolisticForensic2022,mochForensicImageGenerator2009})
 to allow time to pass without leaving any artifacts that suggest that
-the system time has been tampered with. However, making this consistent
-with online services can be challenging, since artifacts such as emails
-or cached external websites would be based on ``real'' time; additional
-work would then be needed to synchronize online content outside of the
-control of the instructor. While there are workarounds that could be
-considered -- such as saving the contents of various external websites
-over a period of time and then ``replaying'' them at the time of
-scenario development -- these are not trivial.
+the system time has been tampered with. However, it is often challenging
+to produce the artifacts associated with a scenario over a shorter
+period of time than is suggested by the metadata attached to the
+artifacts. For example, modifying metadata to be consistent with online
+services can be challenging since artifacts such as emails or cached
+external websites might be based on ``real'' time; additional work might
+be needed to synchronize online content typically outside of the control
+of the instructor. While there are workarounds that could be considered
+-- such as saving the contents of various external websites and then
+``replaying'' them at the time of scenario development -- these are not
+trivial.
 
-Finally, the long development period comes with the challenge of
-addressing mistakes. In the event a mistake is made relative to the
-desired scenario, instructors have several options. They may be able to
-simply log the deviation and move on, or correct it after the fact by
-directly editing the virtual hard drive after image creation. This was
-the approach taken by Woods et al.~in which at least one researcher
-logged into their personal email account while developing a fictional
-scenario; the images were later scanned for personal identifiers and
+The net result is that a scenario implied to take place over several
+days will also require several days of effort to create if done
+manually. This extended development period also comes with the challenge
+of addressing mistakes. If an unintended action is performed while
+constructing a dataset, instructors have several options. Documenting
+the deviation may be sufficient; in other cases, these must be corrected
+by directly editing the virtual hard drive. This was the approach taken
+by Woods et al.~in which at least one researcher logged into their
+personal email account while developing a fictional scenario; the
+resulting disk images were later scanned for personal identifiers and
 stripped as needed \cite{woodsCreatingRealisticCorpora2011}.
-However, consider a scenario in which it is absolutely essential that
-certain files are deleted and written in a particular order, perhaps to
-ensure the operating system behaves in a specific manner. In this case -
-and possibly many others - the only option may be to start the process
-of developing the image from the beginning.
+However, consider a scenario in which it is essential that specific
+files are deleted and written in a particular order, perhaps to ensure
+the operating system behaves in an expected manner. In this case -- and
+possibly many others -- the only option may be to restart the process of
+developing the dataset.
 
-The nondeterminism associated with human creation is a double-edged
-sword. Given the same general scenario, this allows multiple images to
-differ very slightly in nature (a desirable feature as described earlier
-in this section); as described by Woods et al., the researchers all
-acted out events in a pre-defined timeline, but did not do so at the
-exact same time or in the exact same way
+Furthermore, the non-determinism associated with human creation is a
+double-edged sword. Given the same general scenario, this allows
+multiple images to differ very slightly in nature (a desirable feature
+as described earlier in this section). For example, in the scenario
+developed by Woods et al., the scenario developers performed actions
+according to a predefined timeline. However, these developers did not
+carry out these actions at the same time or in the same manner
 \cite{woodsCreatingRealisticCorpora2011}. This provides the
-variability needed to prevent students from directly copying answers,
-but allows students to explore the same techniques at a high level.
+variability needed to prevent students from directly copying answers
+while allowing students to explore the same techniques at a high level.
 
-Simultaneously, however, this also adds a degree of uncertainty within
-the images. Various artifacts or results on the images may be the result
-of some confounding factor in the procedure; for example, suppose that
-two researchers follow the same procedure to delete and overwrite a file
-with the goal of making an image that allows students to explore file
-carving in slack space. Due to variations in operating systems, drivers,
-and other related software, it may be the case that the recoverable
-contents in the slack space differ significantly between the two
-researchers. Similarly, consider a case in which two researchers follow
-the same procedure to develop volatile memory captures on a Linux
-machine. It might be the case that the paging daemon evicts relevant
-data for one image but not the other, causing significant differences.
-Without careful preparation in creating a consistent environment for
-development and testing, these differences might arise without a clear
-reason. Where possible, sources of uncertainty should be minimized or at
-least known to the scenario developer.
+However, this also adds uncertainty to the images. The existence of
+certain artifacts within the datasets may vary due to confounding
+factors in the procedure used to create them. For example, suppose that
+two researchers follow the same procedure to delete and overwrite
+several files, creating a disk image suitable for testing file carving
+techniques from slack space. Due to variations in operating systems,
+drivers, and other related software, the recoverable contents in slack
+space may differ significantly between the two researchers. Similarly,
+consider a case in which two researchers follow the same procedure to
+develop volatile memory captures on a Linux machine. It might be the
+case that the paging daemon evicts relevant data for one image but not
+the other, causing significant differences. Without careful preparation
+to create a consistent environment for development and testing, these
+differences might arise without a clear reason. Where possible, sources
+of uncertainty should be minimized or at least known to the scenario
+developer.
 
 Finally, an inherent limitation of the long development time needed to
-produce these images is the difficulty in populating realistic
-background noise, in which a user performs normal activities on the
-computer that are completely unrelated to the meaningful components of
-the scenario. This must be done in a way that is realistic to the
+produce these images is the difficulty in creating realistic background
+noise, in which a user performs normal activities on the computer that
+are entirely unrelated to the meaningful elements of the scenario.
+Background noise must be generated in a way that is realistic to the
 scenario while avoiding any activity that could personally identify the
-researcher or instructor. Although some of this background noise can be
-automated - such as by scripting the process of browsing to websites or
-sending emails - the fact remains that many realistic ``background''
-activities, such as working in software such as Microsoft Office,
-MATLAB, and SolidWorks, are not easy to perform without a human.
-Furthermore, some of this background noise may comprise a significant
-portion of the day, such as if these activities comprise a user's day
-job in the scenario. Naturally, it is not the case that most instructors
-or researchers have the time available to spend several hours each day
-generating this information, much less over multiple variations of
-multiple scenarios.
+researcher or instructor. Although some background noise can be
+automated -- such as browsing predefined websites or sending predefined
+emails -- the fact remains that many realistic ``background'' activities
+on GUI-based operating systems are not easy to perform without a human.
+Furthermore, background noise may comprise a significant portion of each
+day within a scenario, such as if these activities comprise a user's day
+job. Naturally, it is not the case that instructors or researchers often
+have the time to spend several hours each day generating this
+information, much less over multiple variations of multiple scenarios.
 
 \section{Research objectives}\label{research-objectives}
 
-At this point, we have clearly established a need for a more streamlined
-method of developing scenarios for research and education, while still
-providing the variability and content needed for images to be
-interesting and adequately train students in forensic methodologies.
-Additionally, these scenarios need to provide ground truth data to
-determine the artifacts contained in each image, allowing instructors to
-identify what should be contained in students' reports of the scenario.
-Some research has been done into developing image synthesizers, which
-aim to automate part or all of this work, as described in \autoref{chapter-two}.
+At this point, we have clearly established a need for a more
+streamlined, reproducible method of developing scenarios for research
+and education. Simultaneously, this methodology should provide the
+variability and content needed for datasets to be interesting and useful
+in training students. These scenarios must also provide ground truth
+data to document the artifacts contained in each dataset, allowing users
+to determine its usefulness. In a classroom setting, this same
+information could be used to identify what should be contained in
+students' reports of the dataset.
 
-This thesis aims to directly improve upon the foundations provided by
-prior synthesizers, with the explicit goal of achieving feature parity
-with all existing synthesizers. In particular, this thesis will describe
-the components and architecture necessary to build an effective forensic
-synthesizer for research and education with the following elements:
+Some research has been done into developing image synthesizers, which
+aim to automate part or all of dataset development, as described in
+\autoref{chapter-two}. This thesis aims to directly improve
+upon the foundations provided by past research, with the explicit goal
+of incorporating nearly all features from prior synthesizers. In
+particular, this thesis will describe the components and architecture
+necessary to build an effective forensic synthesizer for research and
+education with the following elements:
 
 \begin{itemize}
 \tightlist
@@ -742,7 +746,7 @@ synthesizer for research and education with the following elements:
   the ability to log every action in a standardized format, the
   Cyber-investigation Analysis Standard Expression (CASE)
   \cite{caseyAdvancingCoordinatedCyberinvestigations2017}, to
-  address existing standardization concerns
+  address existing dataset standardization concerns
   \cite{horsmanDatasetConstructionChallenges2021};
 \item
   and the use of modern Python libraries, standards, and practices,
@@ -751,26 +755,25 @@ synthesizer for research and education with the following elements:
 \end{itemize}
 
 Furthermore, this thesis aims to leverage recent advancements in
-generative AI to streamline the development of full forensic scenarios,
-as well as individual forensic artifacts to be added to a larger
-forensic dataset. Finally, this thesis will evaluate the viability of
-this framework in an actual classroom setting.
+generative AI to streamline the development of complete forensic
+scenarios, as well as individual forensic artifacts to be added to a
+larger forensic dataset. Finally, this thesis will evaluate the
+viability of this framework in an actual classroom setting.
 
 \section{Contribution}\label{contribution}
 
-This thesis contributes the \emph{automated kinetic framework}, or AKF,
-a modernized synthesizer framework that aims to provide the foundation
+This thesis contributes the \textbf{automated kinetic framework}, or
+AKF, a modern synthesizer framework that aims to provide the foundation
 of a larger forensic dataset ecosystem. This framework can be used to
 not only vastly reduce the time spent developing new datasets for
-research and education, but also improve the discoverability of both
+research and education but also improve the discoverability of both
 AKF-generated and non-AKF-generated datasets. Additionally, by focusing
-on the long-term viability of AKF through its modular architecture, the
-hope is that educators and researchers will have greater variety in the
-datasets available to them, even as new developments and advancements in
-technology occur.
+on the long-term viability of AKF through its modular architecture,
+educators and researchers will be able to rapidly develop relevant
+datasets, even as new developments and advancements in technology occur.
 
 In many ways, this thesis is intended to be the culmination of over 15
 years of development in the field of synthesizers (beginning with
 Forensig2 \cite{mochForensicImageGenerator2009}), re-implementing
-the unique contributions of previous synthesizers using modern
-techniques and technologies.
+and adding to the unique contributions of previous synthesizers using
+modern techniques and technologies.

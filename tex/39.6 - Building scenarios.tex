@@ -1,8 +1,8 @@
 This chapter addresses the modules responsible for allowing users to
-invoke the framework, both through a standard Python script and through
-a high-level YAML file. It also addresses the generative AI modules that
-can assist a user in building a scenario, as depicted in the partial
-architectural diagram below.
+invoke the framework through a standard Python script and a high-level
+YAML file. It also addresses the generative AI modules that can assist a
+user in building a scenario, as depicted in the partial architectural
+diagram below.
 
 !\textbf{39.6 - Building scenarios 2025-02-08 17.23.40.excalidraw}
 
@@ -10,15 +10,15 @@ At this point, we have provided the implementations for automating
 artifact generation in a near-deterministic manner with comprehensive
 logging and reporting. However, there is still the challenge of exposing
 this functionality in a user-friendly manner. At a high level, there are
-currently two ways to define an input to a synthesizer:
+two primary ways to define an input to a synthesizer:
 
 \begin{itemize}
 \tightlist
 \item
   An \textbf{imperative} format, in which the synthesizer is provided
-  instructions in an imperative language and the developer must provide
-  the exact instructions for the synthesizer to take through some
-  exposed API.
+  instructions in an imperative programming language, and the developer
+  must provide the exact instructions for the synthesizer to take
+  through some exposed API.
 \item
   A \textbf{declarative} format, in which the synthesizer is provided a
   file that describes the desired elements of the result, and it is up
@@ -26,79 +26,81 @@ currently two ways to define an input to a synthesizer:
   the result.
 \end{itemize}
 
-Even if the \emph{process} of placing artifacts or performing actions
-can be simplified through imperative and declarative inputs, the
-challenge of deciding what actions to perform still remains. It is still
-largely the responsibility of instructors to provide the actual
-background noise to populate the images with. Although the high-level
-languages provided by many of these frameworks make it easy to place
-files at desired locations or visit websites that are part of a
-scenario, these must all be defined and created ahead of time.
+These formats describe the \emph{process} of placing artifacts and
+performing actions. However, the challenge of deciding \emph{what}
+actions to perform remains. It is still mainly the responsibility of
+instructors to provide background noise and other realistic artifacts to
+insert into a scenario. Although the high-level languages provided by
+many of these frameworks make it easy to place files at desired
+locations or visit websites that are part of a scenario, these must all
+be defined and created ahead of time.
 
-This chapter addresses the challenges of creating background noise and
-providing simple APIs for complex GUI-driven applications. More
-precisely, we address two questions -- how do we invoke AKF's automation
-systems, and how does AKF assist a user in building a scenario? Here, we
-explore AKF's imperative and declarative syntaxes, as well as the
-viability of using large language models (LLMs) to assist in building
-individual files and complete scenario descriptions.
+This chapter addresses the challenges of providing APIs for complex
+GUI-driven applications and creating background noise. More precisely,
+we address two questions -- how do we invoke AKF's automation systems,
+and how does AKF assist a user in building a scenario? Here, we explore
+AKF's imperative and declarative syntaxes and the viability of using
+large language models (LLMs) to assist in building individual files and
+complete scenario descriptions.
 
 \section{Scripting background}\label{scripting-background}
 
 We begin by analyzing how synthesizers accept instructions for execution
 -- more precisely, how do users define the sequence of operations that
-the synthesizer should take to form the image?
+the synthesizer should take to create the dataset?
 
 For many of the frameworks created in the last decade, users define
-scenarios by using a Python library to interact with the framework,
-setting up the virtualized environment and performing high-level actions
-on the environment. This abstracts away the underlying calls to the
-virtualized environment from the scenario developer. This code-based
-approach represents an \emph{imperative} strategy to scenario creation,
-where the user describes how the image should be created by describing
-the exact order and methodology by which actions should be taken.
+scenarios by using a Python library to interact with the framework. The
+library is responsible for setting up the virtualized environment and
+performing high-level actions on the environment, abstracting away the
+underlying calls to the hypervisor from the scenario developer. This
+code-based approach represents an \emph{imperative} strategy for
+scenario creation, where the user describes how the dataset should be
+created by defining the exact order and means to perform synthesizer
+actions. (It is worth noting that the language used to interact with the
+synthesizer's API does not need to match the language used to implement
+the synthesizer itself (although this is often the case). For example,
+the automation framework Playwright is implemented in TypeScript,
+initially exposing a Node.JS API
+\cite{MicrosoftPlaywrightpython2025}. Today, Playwright provides
+APIs in Python, Java, and C\#.)
 
-It is worth noting that, like many automation frameworks such as
-Playwright \cite{MicrosoftPlaywrightpython2025}, the language used
-to interact with the synthesizer's API does not need to match the
-language used to implement the synthesizer itself (although this is
-often the case). For example, Playwright itself is implemented in
-TypeScript, and therefore began with a Node.JS API. Today, Playwright
-provides APIs in Python, Java, and C\#.
+In contrast, custom scenario formats provided by D-FET
+\cite{williamCloudbasedDigitalForensics2011}, SFX
+\cite{russellForensicImageDescription2012}, and Yannikos et al.
+\cite{yannikosDataCorporaDigital2014} follow a different approach.
+For these synthesizers, a custom high-level language describes the
+desired final state of the dataset. Instead of importing libraries and
+writing code, users state the desired elements of the forensic dataset,
+allowing the synthesizer to decide how to create the desired dataset --
+a \emph{declarative} strategy for scenario creation. The specifics of
+state management and execution are delegated to the synthesizer.
 
-In contrast, custom scenario formats provided by \emph{D-FET}
-\cite{williamCloudbasedDigitalForensics2011}, \emph{SFX}
-\cite{russellForensicImageDescription2012}, and Yannikos
-\cite{yannikosDataCorporaDigital2014} follow a \emph{declarative}
-strategy. Here, a custom high-level language describes what the final
-state of the image should be, representing a \emph{declarative} strategy
-to scenario creation. Instead of importing libraries and writing code,
-users state the desired elements of the forensic dataset, allowing the
-synthesizer to decide \emph{how} to achieve the desired state. The
-specifics of state management and execution are delegated to the
-synthesizer.
-
-Consider the following declarative \emph{SFX} code taken from
-\cite{russellForensicImageDescription2012}. Here, a Windows 7
-partition is created, after which a user called ``Gordon'' uses Firefox
-to browse the internet. (It should be noted that this simple scenario
-will be reused throughout this chapter.)
+Consider the following declarative SFX code taken from Russell et al.
+\cite{russellForensicImageDescription2012}:
 
 \begin{lstlisting}[language=XML]
-<disk
-    <partition index="p1" hidden="0" size="48M" type="ntfs"
-        <base os="windows7x64"/
-        <user username = "Gordon"
-             <browserhistory browser="firefox"
-                 <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013"/
-             </browserhistory
-        </user
-    </partition
-</disk
+<disk>
+    <partition index="p1" hidden="0" size="48M" type="ntfs">
+        <base os="windows7x64"/>
+        <user username = "Gordon">
+             <browserhistory browser="firefox">
+                 <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013"/>
+             </browserhistory>
+        </user>
+    </partition>
+</disk>
 \end{lstlisting}
 
-The same might be partially expressed in \emph{ForTrace} as the
-following, excluding additional overhead for ground truth generation:
+Here, a Windows 7 partition is created as part of a larger disk image.
+The partition is loaded in a virtual machine to create a user called
+``Gordon,'' who uses Firefox to browse the internet. (This simple web
+browsing scenario will be reused throughout this chapter to demonstrate
+several code examples.)
+
+The same might be expressed in ForTrace
+\cite{gobelForTraceHolisticForensic2022} as the following, excluding
+additional code required for ground truth and disk image generation:
 
 \begin{lstlisting}[language=Python]
 import logging
@@ -126,54 +128,53 @@ if __name__ == "__main__":
     browser_obj.close()
 \end{lstlisting}
 
-Observe that although these two code blocks have the same expressive
-power (i.e., they achieve the same overall outcomes), there is a clear
-difference in the complexity and length between the two. It is
-significantly easier to read and write the declarative XML in the first
-code block, as it abstracts away the need to instantiate various
-synthesizer objects and call specific methods. By extension, this also
-allows for a common declarative syntax to be used across multiple
-synthesizers, since low-level details do not need to be exposed as part
-of the declarative syntax.
+Although these two code blocks have the same expressive power (that is,
+they achieve the same overall outcomes), there is a clear difference in
+the complexity and length between them. It is significantly easier to
+read and write the declarative XML in the first code block, as it
+abstracts away the need to instantiate various synthesizer objects and
+call specific methods. By extension, this also allows for a common
+declarative syntax to be used across multiple synthesizers since
+low-level synthesizer details do not need to be exposed as part of the
+declarative syntax.
 
 The primary benefit of an imperative approach to generation is its
 flexibility; on a Python-based synthesizer, one can simply import
 another library to extend the functionality of the base scenario
 definition. This flexibility naturally comes at the expense of a greater
-learning curve; while true that many digital forensic specialists are
-likely to have programming experience, it is far easier to learn a
-restricted declarative specification (like XML) than an entire
-programming language, which may entail additional setup (such as an IDE,
+learning curve. Although many digital forensic specialists are likely to
+have programming experience, it is far easier to learn a restricted
+declarative specification (like XML) than an entire programming
+language, which may entail additional setup (such as installing an IDE,
 dependencies, and so on).
 
 When accessibility is preferred over functionality, declarative syntaxes
-are often more powerful than imperative syntaxes. Certain scenario
-developers, such as classroom instructors, may not need the low-level
-control provided by an imperative syntax or a full programming language
-such as Python. It also takes time to learn about the functionality
-exposed by the synthesizer's library, not to mention learning the
-programming language itself. These are the primary motivators behind
-supporting well-defined declarative syntaxes.
+can be more valuable than imperative syntaxes. Some scenario developers,
+such as classroom instructors, may not need the low-level control
+provided by an imperative syntax or a complete programming language such
+as Python. It also takes time to learn about the functionality exposed
+by the synthesizer's library, not to mention learning the programming
+language itself. These are the primary motivators behind supporting
+well-defined declarative syntaxes.
 
 Of course, low-level control is still important, especially when
 external libraries must be used to implement functionality not
 inherently exposed by a synthesizer. For this reason, some synthesizers
-support both declarative and imperative scripts to generate scenarios;
-for example, the Python-based \emph{hystck} and \emph{ForTrace}
-frameworks allow users to write YAML scripts to execute actions. This
-highlights the fact that both declarative and imperative approaches can
-be used simultaneously; in particular, it demonstrates that
-declarative-to-imperative translators can be written to support
-arbitrary declarative languages, such as those of both SFX and ForTrace.
-(While not explored in this thesis, it is also worth noting the
-GUI-based interfaces provided by \textbf{Yannikos et al.} and
-\textbf{ForGe} for building scenarios.)
+support both declarative and imperative scripts to generate scenarios.
+For example, the Python-based hystck and ForTrace frameworks
+\cite{gobelNovelApproachGenerating2020,gobelForTraceHolisticForensic2022}
+allow users to write YAML scripts to execute actions. Support for both
+formats can be implemented through various means, such as
+declarative-to-imperative translators. (While not explored in this
+thesis, it is also worth noting the GUI-based interfaces provided by
+Yannikos et al. \cite{yannikosDataCorporaDigital2014} and ForGe
+\cite{vistiAutomaticCreationComputer2015} for building scenarios.)
 
-AKF supports both an imperative syntax (through its Python API) as well
-as a declarative syntax. Unlike prior synthesizers, AKF's declarative
-syntax supports both execution and declarative-to-imperative
-translation, allowing users to quickly create and modify imperative
-scripts from high-level declarative descriptions.
+AKF supports an imperative syntax (through its Python API) and a custom
+declarative syntax. Unlike prior synthesizers, AKF's declarative syntax
+supports both execution and declarative-to-imperative translation,
+allowing users to quickly create and modify imperative scripts from
+high-level declarative descriptions.
 
 \section{Setup and basic usage}\label{setup-and-basic-usage}
 
@@ -181,20 +182,21 @@ Like many of its predecessors, AKF implements its functionality and
 exposes its API in the same language, Python 3. There are numerous
 advantages to a Python-based API; besides the relatively low difficulty
 of setting up and using Python, its rich ecosystem allows scenarios to
-be extended through the use of other libraries from the Python
-ecosystem. For example, if a user wanted to conditionally execute
-certain parts of a scenario by testing if a particular remote service is
-currently online, a user could use the \emph{Requests} library
-\cite{Requests31Documentation} to issue an HTTP request out-of-band
-before performing the same action in a virtualized environment.
+be extended through other libraries from the Python ecosystem. For
+example, if a user wanted to conditionally execute certain parts of a
+scenario by testing if a particular remote service is currently online,
+a user could use the Requests library \cite{Requests31Documentation}
+to issue an HTTP request out-of-band before performing the same action
+in a virtualized environment.
 
-Users must have two foundational technologies for AKF to operate -- an
-installation of Python 3.11 or later and a supported hypervisor. AKF
-currently only supports VirtualBox, though QEMU/libvirt has also been
+Users must install two foundational technologies for AKF to operate --
+Python 3.11 (or later) and a supported hypervisor. AKF currently only
+supports VirtualBox as its hypervisor, though QEMU/libvirt has also been
 used in prior synthesizers. AKF uses
 \passthrough{\lstinline!pyproject.toml!} to define Python library
 dependencies, which can be installed into a virtual environment using a
-package manager such as \emph{pip} or \emph{uv}.
+package manager such as \passthrough{\lstinline!pip!} or
+\passthrough{\lstinline!uv!}.
 
 At this point, a virtual machine must be prepared for use with AKF. As
 with prior synthesizers, it is possible to manually configure a machine
@@ -208,152 +210,157 @@ other synthesizers, is as follows:
   Download an ISO or pre-prepared virtual machine from a distributor
   with the desired operating system.
 \item
-  If necessary, create a new VM with that operating system image and
-  install it.
+  If necessary, install the operating system on a new virtual machine.
 \item
   Configure the virtual machine with the desired host resources,
-  including two network interfaces - one connected to the NAT adapter
-  for general internet usage, and one connected to the host-only adapter
+  including two network interfaces -- one connected to the NAT adapter
+  for general internet usage and one connected to the host-only adapter
   for agent communications.
 \item
   Create an administrative user with known credentials. Configure the
   operating system as desired to reduce friction with the synthesizer
-  (disabling UAC prompts, enabling auto-logon, etc.)
+  (such as disabling UAC prompts, enabling auto-logon, and so on.)
 \item
   Build and copy the OS-specific AKF agent to the virtual machine,
   configuring it as a startup application. Add firewall rules to ensure
   that the host and agent are able to communicate.
 \end{itemize}
 
-After following this process, the virtual machine can now be cloned and
-used as needed in AKF scripts. Although relatively straightforward, this
+After this process, the virtual machine can be cloned and reused in
+multiple AKF scenarios. Although relatively straightforward, this
 process is still time-consuming, especially when adapting this process
-for new operating systems. While a prepared AKF virtual machine can
+to new operating systems. While a prepared AKF virtual machine can
 theoretically be distributed (in a virtual appliance format such as
-OVF), this may run into legal issues if software on the underlying
+OVF), this can run into legal issues if the software on the underlying
 operating system is copyrighted.
 
-As a result, AKF makes use of modern infrastructure-as-code solutions to
-vastly simplify the setup of new virtual machines. Vagrant, developed by
+As a result, AKF uses modern infrastructure-as-code solutions to vastly
+simplify the setup of new virtual machines. Vagrant, developed by
 HashiCorp, is a tool for rapidly building development environments
 \cite{HashicorpVagrant2025}. It allows users to define and build
-virtual machines on a variety of virtualization platforms, such as
-VirtualBox and VMWare. Virtual machines are built using a ``box'' as a
-base image, which is then configured according to a Vagrantfile
-describing hypervisor-specific configuration options as well as
-instructions to provision the machine with applications. (A similar
-approach of distributing the ``differences'' of base images is used to
-reduce the size of distributed forensic datasets by \textbf{EviPlant},
-as described in \autoref{distribution}.)
+virtual machines on several virtualization platforms, including
+VirtualBox and VMWare. Virtual machines are built by configuring a base
+image according to a Vagrantfile, which describes hypervisor-specific
+configuration options and instructions to configure the machine. The
+Vagrantfile can be distributed to users, allowing them to build the same
+virtual machine without distributing virtual drives. (A similar approach
+of distributing the ``differences'' of base images is used to reduce the
+size of distributed forensic datasets by EviPlant
+\cite{scanlonEviPlantEfficientDigital2017}, as described in
+\autoref{distribution}.)
 
 The AKF Windows agent includes a Vagrantfile for creating a new Windows
 11 virtual machine with the agent installed and configured, which can
-easily be adapted for other platforms and hypervisors. The Vagrantfiles
-used to generate a dataset should be included with the dataset itself to
-maximize reproducibility, as described in \textbf{39.5 - Output and
-validation\#5.5 - Community distribution and reproducibility}. A robust
-ecosystem of Vagrant boxes for varying Linux distributions and Windows
-versions exists, many of which can be pulled from the Vagrant public
-registry \cite{hashicorpHashiCorpCloudPlatform}. When combined with
-the flexibility of Vagrant over multiple virtualization platforms, this
-can significantly improve the reproducibility and usability of AKF
-across many platforms. It should also be noted that Vagrant can be used
-to configure and build larger environments with multiple machines. For
-organizations that are able to express corporate environments as
-Vagrantfiles, this could allow AKF to perform artifact generation at
-scale, allowing for incident response scenarios reflecting real-world
-networks.
+easily be adapted for other platforms and hypervisors. The
+Vagrantfile(s) used to generate a dataset should be included with the
+dataset itself to maximize reproducibility, as described in \autoref{distribution-and-community-reproducibility}. A robust ecosystem of Vagrant boxes for varying Linux
+distributions and Windows versions exists, many of which can be pulled
+from the Vagrant public registry
+\cite{hashicorpHashiCorpCloudPlatform}. When combined with the
+flexibility of Vagrant over multiple virtualization platforms, this can
+significantly improve the reproducibility and usability of AKF across
+many platforms. It should also be noted that Vagrant can configure and
+build larger environments with multiple machines. For organizations that
+can express corporate environments as Vagrantfiles, AKF could perform
+artifact generation at scale, allowing for incident response scenarios
+reflecting real-world networks and events.
 
-Following setup, developers can build scenarios by using the AKF core
+Following setup, developers can build scenarios using the AKF core
 libraries (\passthrough{\lstinline!akflib!}) and the API of the
 platform-specific agent installed onto the virtual machine. This
 reflects typical imperative usage, in which environment setup, artifact
-generation, and output generation is handled explicitly through a script
-executed through the Python interpreter.
+generation, and output generation are handled explicitly through a
+script executed through the Python interpreter.
 
 A simple AKF script achieving the same outcomes as the ForTrace and SFX
 scripts above follows:
 
 \section{Declarative usage}\label{declarative-usage}
 
-\subsection{Existing declarative
-syntaxes}\label{existing-declarative-syntaxes}
-
 As described previously, declarative inputs are well-structured files
 with a fixed set of available actions -- effectively forming an API --
-where each entry in the file specifies an artifact (or set of artifacts)
-to be placed in the dataset, along with any configurable options that
-are available for that artifact.
+where each entry in the file specifies an action or artifact to be
+generated as part of a dataset. Individual entries may contain
+additional configuration data that modifies how that specific action or
+artifact is generated. An \emph{interpreter} is responsible for parsing
+and acting on the entries in the declarative file.
 
-Declarative formats can be used in one of two ways. The first is
-\emph{execution}, in which the elements of the declarative script are
-directly interpreted to generate imperative API calls. This is
-characteristic of synthesizers that only support declarative script
-inputs, exposing no low-level APIs. This takes advantage of the
+Interpreters can act on declarative formats in one of two ways. The
+first is \emph{execution}, in which the elements of the declarative
+script are directly interpreted to generate imperative API calls. This
+is characteristic of synthesizers that only support declarative script
+inputs, exposing no low-level APIs. Execution takes advantage of the
 high-level nature of declarative scripts; a declarative script can
 remain the same even if the libraries that execute it change, so long as
-the \emph{interpreter} is updated accordingly. The second is
+the interpreter is updated accordingly. The second is
 \emph{translation}, in which the declarative script is used to generate
 an equivalent imperative script adhering to a particular synthesizer's
-API. This allows the declarative script to be used as a ``base'', after
-which an experienced scenario developer can make additional
-modifications to the generated imperative script as needed. Such scripts
-are subject to changing dependencies and deprecated functions, but can
-be regenerated so long as the \emph{translator} is updated accordingly.
+API. This allows the declarative script to be used as a ``base'' for
+creating imperative scripts, such that an experienced scenario developer
+can modify the generated imperative script as needed. Imperative scripts
+can be regenerated from the same declarative script to reflect updates
+in library usage so long as the interpreter is updated accordingly,
+inheriting the perennial nature of declarative scripts.
 
 It is important to note that a declarative syntax, which may be more
-``rigid'' in structure, does not preclude the use of randomness. One
-notable example of this is the discrete-time Markov chains used by
-Yannikos et al.~to express scenarios in a probabilistic manner, with
-each state of the Markov chain representing a particular action (sending
-an email, deleting a file, etc.) taken by the synthesizer
-\cite{yannikosDataCorporaDigital2014}. These chains are evaluated at
-runtime to generate multiple unique datasets from a single description.
+``rigid'' in structure, does not preclude the use of non-determinism or
+randomness. One notable example of this is the discrete-time Markov
+chains used by Yannikos et al.~to express scenarios in a probabilistic
+manner, with each state of the Markov chain representing a particular
+action taken by the synthesizer (such as sending an email or deleting a
+file) \cite{yannikosDataCorporaDigital2014}. These chains are
+evaluated at runtime to generate multiple unique datasets from a single
+description.
 
 The challenges of defining a suitable declarative syntax for a
-particular synthesizer is not unlike the challenges faced in general
+particular synthesizer are not unlike the challenges faced in general
 programming language design. There are several key factors to the
 success of imperative programming languages that extend to declarative
-syntaxes, some of which are derived from \cite{finkel1996advanced}
-and described as follows:
+syntaxes, some of which are derived from Finkel and described as follows
+\cite{finkel1996advanced}:
 
 \begin{itemize}
 \tightlist
 \item
-  The language should be \textbf{simple}, using as few basic concepts as
+  The language should be \emph{simple}, using as few basic concepts as
   possible. This makes code easier to read and write, an important
-  aspect for users with limited programming experience.\\
+  aspect for users with limited programming experience.
 \item
-  The language should be \textbf{modular}, such that the role and
-  interfaces of individual program units is clear.
+  The language should be \emph{modular}, such that the role and
+  interfaces of individual program units are clear.
 \item
-  The language should be \textbf{predictable}, such that users can apply
-  their existing knowledge of a synthesizer to easily implement or add
-  new features to a scenario.\\
+  The language should be \emph{predictable}, such that users can apply
+  their existing knowledge of a synthesizer to quickly implement or add
+  new features to a scenario.
 \item
-  The language should \textbf{abstract} as much as possible away from
-  the user, such that the minimum information needed to fulfill artifact
+  The language should \emph{abstract} as much as possible away from the
+  user, such that the minimum information needed to fulfill artifact
   generation is exposed to the user.
 \end{itemize}
 
-Perhaps the most important factor, however, is an awareness of the
-\textbf{purpose} of the declarative syntax. The purpose of a synthesizer
+The most important factor, however, is an awareness of the
+\emph{purpose} of the declarative syntax. The purpose of a synthesizer
 is to make it easier to generate forensic artifacts and datasets. The
 declarative language should reflect this, focusing on making actions and
 artifacts as easy to declare and customize as possible.
 
 In designing the AKF declarative syntax, the declarative syntaxes of
-both prior syntaxes and unrelated technologies were evaluated. An
+prior synthesizers and unrelated technologies were evaluated. An
 analysis of some of these syntaxes, with examples, is described briefly
 in \autoref{historical-declarative-syntaxes}.
 However, two syntaxes in particular contributed the most to the AKF
-declarative syntax: those of ForTrace and Ansible.
+declarative syntax: those of ForTrace and Ansible, described in the
+following section.
 
-ForTrace uses YAML to express scenarios in a declarative manner.
-ForTrace influenced both AKF declarative syntax and the libraries
-leveraging the syntax significantly, in large part because it was the
-sole synthesizer identified with both imperative and declarative support
-that was open source.
+\subsection{Existing declarative
+syntaxes}\label{existing-declarative-syntaxes}
+
+ForTrace \cite{gobelForTraceHolisticForensic2022} uses YAML to
+express scenarios in a declarative manner. ForTrace significantly
+influenced both the AKF declarative syntax itself and the implementation
+of the declarative interpreter, primarily because it was the sole
+synthesizer with both imperative and declarative support known to be
+open-source.
 
 Below is a simple example of a ForTrace declarative scenario:
 
@@ -391,14 +398,14 @@ At a high level, ForTrace scenarios contain five distinct elements:
 \begin{itemize}
 \tightlist
 \item
-  Metadata about the scenario, such as the name, description, and author
-  of the scenario.
+  Metadata about the scenario, such as the scenario's name, description,
+  and author.
 \item
   ``Collections'' of data that can be reused throughout the scenario in
   supported application types, such as a newline-separated list of URLs.
 \item
-  Configuration options, which may be applied to individual applications
-  or the entire scenario.
+  Configuration options that may be applied to all actions of a
+  particular action type or the entire scenario.
 \item
   The actual artifacts to create as part of the
   \passthrough{\lstinline!hay!} and \passthrough{\lstinline!needles!}
@@ -407,13 +414,13 @@ At a high level, ForTrace scenarios contain five distinct elements:
   \passthrough{\lstinline!needles!} includes artifacts that should be
   considered significant. Each artifact contains a unique ID, an
   application type (the \passthrough{\lstinline!application!} key), and
-  arguments that are specific to the application responsible for
-  generating the artifact, such as a the URLs for web browsing.\\
+  arguments specific to the application responsible for generating the
+  artifact, such as the URLs for web browsing.
 \item
   Any core outputs that should be created as part of the scenario.
 \end{itemize}
 
-This file is passed into a ``generator'', which parses the contents of
+This file is passed into a ``generator,'' which parses the contents of
 the YAML file to prepare various internal data structures, initialize
 the virtual machine, and then execute the actions specified in the
 \passthrough{\lstinline!hay!} and \passthrough{\lstinline!needles!}
@@ -428,14 +435,14 @@ actions have been executed, the generator creates any requested outputs
 This analysis provided insight into the design decisions and
 functionality required to execute actions from the high-level
 descriptions of a scenario. In particular, it demonstrates the need for
-actions or artifacts to be defined in a consistent, flexible manner such
-that program state and other data can be passed to application-specific
+actions or artifacts to be defined consistently and flexibly so that
+program state and other data can be passed to application-specific
 libraries as needed. It also demonstrates the need for various levels of
 configuration, including scenario-wide configuration,
 application-specific configuration, and action/artifact-specific
-configuration. ForTrace implements this in a somewhat inflexible manner;
-in fact, nearly all declarative language support is contained in a
-single file, with a hardcoded ``router'' handling each unique
+configuration. ForTrace implements these features in a somewhat awkward
+manner; in fact, nearly all declarative language support is contained in
+a single file, with a hardcoded ``router'' handling each unique
 \passthrough{\lstinline!application!} type. This makes it difficult to
 add support for new applications without significant effort,
 particularly because the generator must be aware of every possible
@@ -444,22 +451,23 @@ action/artifact type ahead of time.
 With these priorities and issues from ForTrace identified, are there
 ideas from other technologies that can be used to address them? That is,
 are there other technologies designed to execute a large set of complex
-actions, using a simple but flexible and configurable syntax, and how
+actions using a simple but flexible and configurable syntax, and how
 does it work? Ansible, the second major inspiration for the AKF
 declarative syntax, precisely fills this need.
 
-Ansible is an open-source automation framework that is often used to
-remotely configure Windows and Linux machines at scale, allowing
-organizations to interact with many machines at once without the need to
-install orchestration software on these machines in advance. To achieve
-this, users write \emph{playbooks}, which are simple YAML files that
-contain one or more \emph{plays}. Each play is simply a set of
-\emph{tasks} that is run on multiple machines at once, and each task
-depends on a \emph{module} that is designed to achieve a single,
-specific outcome.
+Ansible \cite{AnsibleAnsible2025} is an open-source automation
+framework often used to remotely configure Windows and Linux machines at
+scale, allowing organizations to manage many machines at once without
+installing orchestration software on these machines in advance. To
+achieve this, users write \emph{playbooks}, which are simple YAML files
+that contain one or more \emph{plays}. Each play is simply a set of
+\emph{tasks} run on multiple machines simultaneously, and each task
+depends on a \emph{module} designed to achieve a single, specific
+outcome.
 
 The following is a simple Ansible playbook with a single play, derived
-from the official Ansible documentation for playbooks:
+from the official Ansible documentation for playbooks
+\cite{ansibleprojectcontributorsAnsiblePlaybooks}:
 
 \begin{lstlisting}
 
@@ -478,30 +486,29 @@ from the official Ansible documentation for playbooks:
 \end{lstlisting}
 
 This play uses the \passthrough{\lstinline!yum!} package manager to
-install Apache, and then copies a local file to the remote host.
-\passthrough{\lstinline!ansible.builtin.yum!} and
-\passthrough{\lstinline!ansible.builtin.template!} are both modules in
-the \passthrough{\lstinline!ansible.builtin!} collection included with
-all default Ansible installations, which accept parameters passed as a
-YAML dictionary.
+install Apache before copying a local configuration file to the remote
+host. \passthrough{\lstinline!ansible.builtin.yum!} and
+\passthrough{\lstinline!ansible.builtin.template!} are both modules,
+which accept parameters passed as a YAML dictionary. These modules are
+part of the \passthrough{\lstinline!ansible.builtin!} collection
+included with all default Ansible installations.
 
 Although Ansible contains many features that contribute to its
-flexibility, the two important concepts of Ansible that are relevant to
-AKF are \emph{roles} and \emph{modules}. Roles are a collection of
-Ansible resources that typically achieve some ``larger'' reproducible
-goal, typically by running multiple tasks and leveraging variables,
-configuration options, and files included as part of the role. Roles can
-include \emph{modules}, which are standalone imperative scripts
-(typically in Python) that accept arguments, execute code based on those
-arguments, and return data using well-structured interfaces. These
-modules, as shown above, can be called and executed from playbooks or
+flexibility, the two important concepts relevant to AKF are \emph{roles}
+and \emph{modules}. Roles are a collection of Ansible resources that
+typically achieve some ``larger'' reproducible goal, typically by
+running multiple tasks and leveraging variables, configuration options,
+and files included as part of the role. Roles can include
+\emph{modules}, which are standalone imperative scripts (typically in
+Python) that accept arguments, execute code based on those arguments,
+and return data using well-structured interfaces. As shown above, these
+modules can be called and executed from playbooks; they can also be
 executed independently on the command line.
 
-These concepts are extremely relevant to synthesizers, as they must
-support individual application-specific actions and group these actions
-together in a flexible, well-defined manner. As described in
-\autoref{chapter-four}, each of the RPyC subservices of AKF
-agents expose a group of application-specific automation methods. The
+These concepts are highly relevant to synthesizers, which must support
+application-specific actions and group these actions together in a
+flexible, well-defined manner. As described in \autoref{the-akf-agent}, each RPyC subservice of an AKF agent
+exposes a group of application-specific automation methods. The
 functionality of each of these groups must be re-exposed in a
 declarative manner, which can be achieved by adapting the concept of
 Ansible roles and modules to AKF.
@@ -513,17 +520,16 @@ section:
 \begin{itemize}
 \tightlist
 \item
-  The overall structure and information of the data contained in the
-  YAML file
+  The overall structure and contents of the declarative YAML file.
 \item
   An action syntax that allows us to declare individual actions,
   referring to those actions by name, and pass arguments directly to
-  that action for translation \emph{or} execution
+  that action for \emph{translation} or \emph{execution}.
 \item
   A modular architecture that allows us to define the supported
   arguments of each action and expose them to the declarative
-  interpreter, while also being as decoupled from the standard
-  imperative library as much as possible
+  interpreter while also being decoupled from the standard imperative
+  library as much as possible.
 \end{itemize}
 
 \subsection{The AKF declarative
@@ -536,7 +542,7 @@ part of the scenario. Each task refers to a single \emph{module} by name
 using a qualified Python import path, accepting a dictionary of
 arguments in addition to global configuration overrides.
 
-Similar to Ansible, individual modules are implemented as well-defined
+Like Ansible, individual modules are implemented as well-defined
 subclasses of \passthrough{\lstinline!AKFModule!}, an abstract base
 class that serves as the root of all AKF declarative modules. Each
 module must define Pydantic models that specify the arguments accepted
@@ -548,33 +554,33 @@ to these module-specific Pydantic models for validation, after which the
 \tightlist
 \item
   \textbf{Execution}: When instructed to perform actions directly from
-  the argument model, the \passthrough{\lstinline!AKFModule!} should
-  import AKF core libraries and agent APIs to carry out the required
+  the declarative script, the \passthrough{\lstinline!AKFModule!} should
+  import AKF core libraries and agent APIs to perform the required
   actions.
 \item
-  \textbf{Translation:} When instructed to generate imperative code from
-  the argument model, the \passthrough{\lstinline!AKFModule!} should
-  generate the equivalent code that \emph{would} perform related actions
-  if executed through a standard Python interpreter with the necessary
-  libraries installed.
+  \textbf{Translation}: When instructed to translate the declarative
+  script, the \passthrough{\lstinline!AKFModule!} should generate the
+  equivalent code that \emph{would} perform related actions if executed
+  through a standard Python interpreter with the necessary libraries
+  installed.
 \end{itemize}
 
-The ability of AKF to both \emph{execute} and \emph{translate}
-declarative scripts provides significant flexibility to scenario
-developers. To the best of the author's knowledge, prior synthesizers
-have only supported direct execution from declarative scripts, which
-limits the opportunities to use declarative scripts as a ``starting
-point'' for writing more complex imperative scripts.
+The ability of AKF to both execute and translate declarative scripts
+provides significant flexibility to scenario developers. To the best of
+our knowledge, prior synthesizers have only supported direct execution
+from declarative scripts, which limits the opportunities to use
+declarative scripts as a ``starting point'' for writing more complex
+imperative scripts.
 
 In both cases, modules can read and modify a global state dictionary
-that allows otherwise independent modules to cooperate with each other.
-For example, if an action should be executed in a context manager,
-causing the indentation level of the code to increase, successive
-modules generating code within the context manager can increase the
-indentation level of generated code, as well. Additionally, this allows
-for ``outputs'', such as CASE bundles, to be passed and gradually
-constructed across modules. This design allows for context-aware code
-generation and action execution.
+that allows otherwise independent modules to cooperate. For example,
+suppose that a module creates a new context manager in a
+\passthrough{\lstinline!with!} block, causing the indentation level of
+the translated code to increase. Successive modules can read the state
+dictionary to retrieve variable names and correctly indent generated
+code. Additionally, this allows for ``outputs,'' such as CASE bundles,
+to be passed and gradually constructed across modules. This design
+allows for context-aware code generation and action execution.
 
 An example of a declarative AKF scenario, carrying out the same actions
 as the SFX, ForTrace, and imperative AKF script above, is shown below:
@@ -597,11 +603,11 @@ actions:
 AKF declarative scripts, which are simply large YAML dictionaries,
 contain three distinct elements. The first is a set of high-level
 metadata keys associated with the scenario. The second is a set of
-scenario-wide configuration; in particular, it lists the libraries
+scenario-wide configurations; in particular, it lists the libraries
 containing the necessary modules to execute or translate this imperative
-script. Finally, scripts list out a sequence of actions, which are
-typically a \passthrough{\lstinline!module!} specified by name and a
-dictionary of \passthrough{\lstinline!args!}.
+script. Finally, scripts list a sequence of actions, typically a
+\passthrough{\lstinline!module!} specified by name and a dictionary of
+\passthrough{\lstinline!args!}.
 
 The execution flow of the declarative interpreter itself is relatively
 straightforward. Given a path to a YAML script, the interpreter will
@@ -609,31 +615,30 @@ load the necessary libraries and configuration keys defined in the file
 and instantiate resources accordingly. This may include setting global
 configuration variables, locating and starting a virtual machine by
 name, setting the \passthrough{\lstinline!random!} seed, and so on.
-Then, the interpreter simply runs each module under the
+Then, the interpreter runs each module under the
 \passthrough{\lstinline!actions!} key with the provided arguments and
 configuration in order, continuing until all
 \passthrough{\lstinline!actions!} have been completed.
 
 Modules are located and executed using Python's dynamic import system.
-(For efficiency and safety, all modules in the script are located at the
-start of script execution.) These modules can be located in any library
-so long as they can be found through Python's import system. For
-example, both \passthrough{\lstinline!akflib!} and the AKF Windows agent
-contain their own declarative module libraries, leveraging functionality
-specific to each code repository.
+(For efficiency and safety, all modules in the script are located and
+``cached'' at the start of script execution.) These modules can be
+located in any library so long as they can be found through Python's
+import system. For example, both \passthrough{\lstinline!akflib!} and
+the AKF Windows agent contain their own declarative module libraries,
+leveraging functionality specific to each code repository.
 
-This design allows for declarative modules to be written independently
-of the libraries they depend on, reducing the ``impact'' of supporting
+This design allows declarative modules to be written independently of
+the libraries they depend on, reducing the ``impact'' of supporting
 declarative features on the core imperative libraries. In fact, this
 independence allows for the AKF module system to be used in
 general-purpose scripting, similar to Ansible; it is not tightly bound
 to the creation of forensic scenarios and artifacts.
 
 While the AKF imperative and declarative scripts provide users with
-significant flexibility in \emph{using} AKF, there still remains the
-challenge of building artifacts and scenarios to generate through these
-execution options. The remainder of this chapter addresses this
-challenge.
+significant flexibility in \emph{using} AKF, the challenge of building
+artifacts and scenarios to generate through these execution options
+remains. The remainder of this chapter addresses this challenge.
 
 \section{Using generative AI for individual
 artifacts}\label{using-generative-ai-for-individual-artifacts}
@@ -658,21 +663,20 @@ example:
   a variety of Microsoft Office, PDF, or other files in these formats.
 \end{itemize}
 
-This is particularly relevant when adding background noise that is often
-present in real-world datasets -- the gigabytes of documents created as
-part of a user's benign activity over . The net result is that although
-creating forensic datasets can be accomplished with the work presented
-thus far, creating realistic images that are more reflective of
-real-world scenarios that a forensic analyst might encounter still
-requires extensive work. While true that images should often be small
-enough in a classroom setting to allow the student to explore a single
-specific technique, real-world scenarios encountered by analysts are
-typically not limited by time or size. An analyst might have to deal
-with a drive used over the course of a decade to store many photographs
-and send many messages. Such scenarios are valuable training material
-for courses that encapsulate a long period of forensic study, allowing a
-student to apply many different techniques in reconstructing a
-large-scale scenario.
+This is particularly relevant when adding background noise often present
+in real-world datasets, namely the gigabytes of documents created as
+part of a user's benign activity over time. Although creating forensic
+datasets can be accomplished with the work presented thus far, creating
+realistic images that reflect real-world scenarios still requires
+extensive work. While it is true that images should often be small
+enough to allow students to explore a single specific technique,
+real-world scenarios encountered by analysts are rarely limited by time
+or size. An analyst might have to deal with a disk image used over a
+decade to store many photographs and send many messages. Such scenarios
+are valuable training material for courses that encapsulate a long
+period of forensic study, allowing students to apply many techniques
+learned throughout a forensic curriculum to analyze a realistic
+scenario.
 
 With recent advancements in generative AI, popularized by services such
 as Midjourney and ChatGPT, it is now significantly easier to generate
@@ -682,16 +686,16 @@ video files that emulate a particular person's voice or facial
 movements; these can be used to generate additional scenario content of
 interest, especially if the scenario is based on a real-world event.
 
-It holds that generative AI can be used to quickly populate forensic
-datasets with realistic conversations and images consistent with an
-arbitrary scenario. For example, a corporate espionage case could be
-built by providing a large language model such as ChatGPT with prompts
-to describe complex machinery in both a technical writing and a
-conversational style. Simultaneously, similar prompts can be passed into
-an image synthesizer such as Midjourney to produce related images. The
-images and text produced can then be used to create documents describing
-an unreleased product of high value, providing a pipeline through which
-significant artifacts can be planted onto a forensic image.
+It holds that generative AI can quickly populate forensic datasets with
+realistic conversations and images consistent with an arbitrary
+scenario. For example, a corporate espionage case could be built by
+providing a large language model such as ChatGPT with prompts to
+describe complex machinery in both technical and conversational styles.
+Simultaneously, similar prompts can be passed into an image synthesizer
+such as Midjourney to produce related images. The images and text
+produced can then be used to create documents describing an unreleased
+product of high value, providing a pipeline through which significant
+artifacts can be placed onto a forensic dataset.
 
 This idea can be extended further by training models on specific
 datasets; for example, if an instructor wished to create a fictional
@@ -705,13 +709,13 @@ AI model.
 
 It is important to note that the inclusion of generative AI into
 synthesizers does not necessarily require deep integration with the
-framework itself. Many existing frameworks could be extended to use
+framework itself. Many existing synthesizers could be extended to use
 documents, images, or other data sourced from generative AI instead of
-user-defined files without the need to change the architecture of the
-framework. However, as advancements in AI continue, it may make sense to
-directly integrate AI-driven actions into synthesizers. For example,
+user-defined files without the need to change the synthesizer's
+architecture. However, as advancements in AI continue, it may make sense
+to directly integrate AI-driven actions into synthesizers. For example,
 there may come a time in which synthesizers can be provided natural
 language prompts (such as ``Open Firefox and browse to news-related
-websites'') that directly lead to the generation of relevant artifacts,
+websites'') that directly lead to the generation of relevant artifacts
 without the need to explicitly program the process of browsing to a
 website in advance.

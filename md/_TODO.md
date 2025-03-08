@@ -9,9 +9,10 @@ Paper-related:
 	- Each chapter will have the complete simple diagram at the top, with irrelevant components reduced in opacity.
 	- Make a label-less version of the complex diagram (which will allow it to fit, rotated, on a single page). This can go into the appendix, and will help orient the user to where things are. It should be followed by a series of complex diagram insets, describing each part.
 
-- Rework text containing code blocks to only describe why things matter. Make appendix B, which has longer code blocks describing why specific structural changes are better. The appendix should (ideally?) have sections that can be referenced by the main text body.
+- ~~Rework text containing code blocks to only describe why things matter. Make appendix B, which has longer code blocks describing why specific structural changes are better. The appendix should (ideally?) have sections that can be referenced by the main text body.~~
 - As the below are finished, write their relevant sections.
 - Review text so that "feature parity" actually means "feature parity with most synthesizers" or something that doesn't mean "full feature parity", just "good enough and it is possible to reimplement all existing features if there was more time"
+- The shortcomings of the CASE bindings in the *fastlabel* paper, should those be included as part of section 5.3 or chapter 8? should they be included at all?
 
 ---
 
@@ -19,6 +20,7 @@ Implementation:
 
 - Implement the remaining hypervisor API stuff. More likely than not, we're going to fold on implementing direct disk writes.
 	- There is still *one* option, and that's seeing if pytsk can tell us the exact offset (and size) of a block with slack space so that we can just write directly to that space.
+	- this works, but gotta implement it now
 
 - Implement declarative wrappers for the hypervisor API stuff, as well as simple Chrome-related actions (like "visit three websites, at some random interval, from this larger list of URLs")
 - Add CASE integrations
@@ -26,6 +28,11 @@ Implementation:
 - AI full scenario generation
 - Bonus for the agent: individual applications, pyautogui, mouse, keyboard
 - GitHub action to automatically build AKF agent for multiple platforms on tagged commits; update the Vagrant file to point to the latest available Windows release (or a specific release is fine too)
+
+Other fun stuff:
+
+- CASE human-readable rendering (simplest is to just recursively search for and combine objects of a particular type in a bundle and check if there is a suitable renderer for it; pipe that section out to markdown and use pandoc with the nice-looking template from fastlabel)
+- 
 
 # Things to address
 
@@ -45,9 +52,24 @@ Mechanical things to address:
 		- currently they're condensed in size to make them easier to read
 		- go to grad school and ask q
 	- Guidance: **Limit inline code blocks, and make them as short as possible. Make your point with a code block *once* - it's not supposed to be technical documentation. For longer code blocks, or those that require additional explanation, these belong in the appendix.**
+	- Examples in other papers (you can find plenty by looking up "import numpy" and setting the decade to be 2020-2025) -> **there are few, if any, examples of code in the body text, since they're usually in the appendix. but there is precedent! single-spacing code is fine, and having an actual referenced listing (Listing 1, Listing 2.1, etc -- search these by name) is fine too**:
+		- Mackenzie just takes a screenshot of her code (page 79): [https://www.proquest.com/pqdtlocal1006038/docview/2923154002/52FEA492619348F4PQ/19?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/2923154002/52FEA492619348F4PQ/19?accountid=452&sourcetype=Dissertations%20&%20Theses)
+		- This paper just provides the abstract algorithm (pg 45): [https://www.proquest.com/pqdtlocal1006038/docview/2480781593/52FEA492619348F4PQ/26?accountid=452&sourcetype=Dissertations%20&%20Theses,](https://www.proquest.com/pqdtlocal1006038/docview/2480781593/52FEA492619348F4PQ/26?accountid=452&sourcetype=Dissertations%20&%20Theses,) not actual code (think analysis of algorithms)
+			- same with [https://www.proquest.com/pqdtlocal1006038/docview/2480748215/52FEA492619348F4PQ/25?accountid=452&sourcetype=Dissertations%20&%20Theses,](https://www.proquest.com/pqdtlocal1006038/docview/2480748215/52FEA492619348F4PQ/25?accountid=452&sourcetype=Dissertations%20&%20Theses,) pg 39
+		- This paper has actual R code as an explicit listing (in the appendix): [https://www.proquest.com/pqdtlocal1006038/docview/2832901170/FC7376D71FC6431EPQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses,](https://www.proquest.com/pqdtlocal1006038/docview/2832901170/FC7376D71FC6431EPQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses,) single spaced (even though the rest of the paper is double spaced)
+		- This physics dissertation has Python code in the appendix (pg 183): [https://www.proquest.com/pqdtlocal1006038/docview/3103097487/50A7BF8EAA645E1PQ/2?accountid=452&sourcetype=Dissertations%20&%20Theses,](https://www.proquest.com/pqdtlocal1006038/docview/3103097487/50A7BF8EAA645E1PQ/2?accountid=452&sourcetype=Dissertations%20&%20Theses,) but the paper as a whole is already single spaced
+		- This one straight up has a Jupyter notebook lol (single spaced) [https://www.proquest.com/pqdtlocal1006038/docview/2832695245/9305EEF423D04311PQ/12?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/2832695245/9305EEF423D04311PQ/12?accountid=452&sourcetype=Dissertations%20&%20Theses)
+		- Single-spaced code C++ listing, but is from 2010 (pg 12): [https://www.proquest.com/pqdtlocal1006038/docview/839907194/193224F9AC742B1PQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/839907194/193224F9AC742B1PQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses)
+		- 2012 (pg 31): [https://www.proquest.com/pqdtlocal1006038/docview/1285524410/E415D65B724D4DD3PQ/2?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/1285524410/E415D65B724D4DD3PQ/2?accountid=452&sourcetype=Dissertations%20&%20Theses) single-spaced code listing
+		- 2012 (pg 45): [https://www.proquest.com/pqdtlocal1006038/docview/1285524188/E415D65B724D4DD3PQ/6?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/1285524188/E415D65B724D4DD3PQ/6?accountid=452&sourcetype=Dissertations%20&%20Theses)
 
 - Gotta standardize use of existing synthesizers - sometimes I wikilink them, sometimes I just italicize them, sometimes I do nothing, and that's inconsistent. ==Do I make a citation to the associated paper or repo every single time I mention it?== **Answer: yes** (it won't hurt)
 	- =="Script and italic typefaces are not acceptable except where absolutely necessary i.e. in Latin designations of species, etc."== - so no italicization for emphasis or to designate names of tools? what's the convention for that? - ask the grad school
+		- Italicization in general seems to be fine -> **it's probably fine**:
+			- Mackenzie uses it to italicize the name of her strategies, namely "passive" and "active" ([https://www.proquest.com/pqdtlocal1006038/docview/2923154002/52FEA492619348F4PQ/19?accountid=452&sourcetype=Dissertations%20&%20Theses)](https://www.proquest.com/pqdtlocal1006038/docview/2923154002/52FEA492619348F4PQ/19?accountid=452&sourcetype=Dissertations%20&%20Theses))
+			- Italicizing stuff as part of quoted material (that is also italicized) is fine: [https://www.proquest.com/pqdtlocal1006038/docview/2562274528/52FEA492619348F4PQ/20?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/2562274528/52FEA492619348F4PQ/20?accountid=452&sourcetype=Dissertations%20&%20Theses)
+			- Italicizing "names" of bullet points is fine (see pg 51): [https://www.proquest.com/pqdtlocal1006038/docview/2082295369/C721F11FA06F4ABFPQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/2082295369/C721F11FA06F4ABFPQ/1?accountid=452&sourcetype=Dissertations%20&%20Theses)
+			- Italicizing names of tools and functions is fine (see pg 149): [https://www.proquest.com/pqdtlocal1006038/docview/3165607263/50A7BF8EAA645E1PQ/3?accountid=452&sourcetype=Dissertations%20&%20Theses](https://www.proquest.com/pqdtlocal1006038/docview/3165607263/50A7BF8EAA645E1PQ/3?accountid=452&sourcetype=Dissertations%20&%20Theses)
 	- Should my tools also go in the Glossary?
 
 - ==Citing code repositories - do I need to go find the name of the person who made it? Or is what Zotero spits out fine?== (but what if it's *a lot* of people?)
@@ -56,6 +78,8 @@ Mechanical things to address:
 - Glossary and acronym entries need to be ref-linked. Those use `\acrfull{}` tags based on the names in the glossary.
 	- ==Do I need a glossary and acronym listing?== optional, but if it would be helpful you can
 	- ==Should the names of synthesizers go into the glossary? What belongs in a glossary?== - sure, it wouldn't hurt
+
+- The spacing for the references section can be single-spaced (this is explicitly spelled out in the filing guidelines)
 
 # Things to do
 
@@ -134,38 +158,43 @@ Order of operations:
 
 # Actual chapter to-dos
 
-deadline by april 1st, after spring break, for committee to review
+deadline by april 1st, after spring break, for committee to review. in addition to *finishing* the content for each section, the following need to happen:
 
-**39.0 - Abstract** (~100%)
-Done (may require some light editing if we don't fulfill all the promises made in the abstract)
+- **proofing**: proofread on grammarly
+- **cite-checked**: all individual synthesizer references have been cited, all citations are used, and everything citation-related is done
+- **acronyms**: acronyms have been created and linked (consider using footnotes?)
+- **glossary**: glossary items have been created and linked (consider using footnotes?)
+- **final:** content is effectively finalized
 
-**39.1 - Introduction** (100%)
-Done
+if using footnotes, the footnote labels should be equal to the reference name that'll be generated when we go through the acronym and glossary tables independently. we can then just regex out any footnotes, as well as any parenthesized words with a footnote right next to them?
 
-**39.2 - Literature review** (100%)
-Done
+```
+This is a reference to an LLM[^llm] which does stuff
 
-- [x] #task 2.1 - Write this entire section, probably mostly from [@grajedaAvailabilityDatasetsDigital2017] 📅 2025-02-08 ✅ 2025-02-08
+[^llm]: ...
 
-**39.3 - Architecture and design** (~95%)
-Done, except for reworking chapters 3-6 based on the whole architectural diagram stuff
+```
 
-- [x] #task 3 - Consider incorporating concepts explicitly from [@horsmanDatasetConstructionChallenges2021] 📅 2025-02-09 ✅ 2025-02-08
-- [x] #task 3.2 - Update the architecture diagram to look nicer, and remove all "notes" that are supposed to just be for me 📅 2025-02-09 ✅ 2025-02-08
-- [x] #task 3.2 - Consider making the connection between the "three distinct concepts" and the diagram to be more clear, most likely by editing or adding a simpler diagram that provides a closer 1-1 connection between those components 📅 2025-02-09 ✅ 2025-02-08
-	- that is, you'd have one big scary diagram, and then a simplified version of the same diagram
+or alternatively we can just blindly link anything matching a glossary or acronym entry, it'll probably do the same thing lol (the problem is whether or not it should be `acrfull` or `acrshort`)
+
+or double-alternatively we can just bite the bullet and make new folders for acronym and glossary entries, and actually wikilink to them. they'd all have a property for the definition, reference, and (for acronyms) the acronym itself. Glossary wikilinks are `acrshort` by default, unless they contain display text (which makes them `acrfull` regardless of what the display text is).
+
+note that some sections may require light editing if we don't fulfill the promises/implementation claims made in those sections
+
+**39.0 - Abstract** (100% + proofed)
+Done (needs to be copied over from Grammarly)
+
+**39.1 - Introduction** (100% + proofed)
+Done (needs to be copied over from Grammarly)
+
+**39.2 - Literature review** (100% + proofed)
+Done (needs to be copied over from Grammarly)
+
+**39.3 - Architecture and design** (~95% + proofed)
+Done, except for the whole architectural diagram stuff (everything but the architectural diagram stuff has been proofed and needs to be copied over from Grammarly)
 
 **39.4 - Action automation** (~95%)
 Done, except for the architectural diagram stuff and any additional table rows for new RPyC submodules
-
-- [x] #task 4 - Consider adding an inset diagram from the complete architectural diagram, and then briefly explaining what parts of the diagram correspond to which sections below; also consider moving the content into 4.1 📅 2025-02-08 ✅ 2025-02-08
-- [x] 4.2 - after more agentless generation is implemented, it needs to be discussed in greater detail in the context of AKF
-	- basically done, it's just the same as VMPOP
-
-- 4.3 - add any new application-specific information to the table
-	- this can kinda just be written as we go, it's just individual table lines
-
-- [x] #task 4.4 - after physical generation is implemented, it needs to be discussed in greater detail in the context of AKF 📅 2025-02-10 ✅ 2025-02-27
 
 **39.5 - Output and validation** (~75%)
 Also needs architectural diagram stuff
@@ -194,17 +223,17 @@ Also needs architectural diagram stuff
 
 - The whole thing – can't be worked on *at all* unless we make enough progress 
 
-**39.8 - Future work** (~100%)
-Basically done, might need to change some language depending on what does/doesn't get done
+**39.8 - Future work** (~100% + proofed)
+Done (needs to be copied over from Grammarly)
 
-**39.9 - Conclusion** (~100%)
-Done, except for some sentences that may be dependent on things getting done or not
+**39.9 - Conclusion** (~100% + proofed)
+Done (needs to be copied over from Grammarly)
 
 **39.A - Architectural diagrams** (0%)
 Need to rework everything, break up the architectural diagrams and put them here (maybe)
 
-**39.B - Code samples** (~100%)
-Likely done unless more code blocks need to be moved in here
+**39.B - Code samples** (~100% + proofed)
+Done unless more code blocks need to be moved in here (needs to be copied over from Grammarly - only copy text, don't copy code blocks, since those get completely messed up)
 
 **39.C - Acronyms** (?)
 Will take some work to integrate with rest of thesis

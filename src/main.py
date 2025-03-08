@@ -17,7 +17,7 @@ PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
 
 def process_markdown_text(text: str) -> str:
     # Remove all blockquotes
-    text = re.sub(r">.*", "", text)
+    text = re.sub(r"^>.*", "", text, flags=re.MULTILINE)
     
     # Remove everything inside dataview blocks entirely
     text = re.sub(r"```dataview.*?```", "\n\n", text, flags=re.DOTALL) 

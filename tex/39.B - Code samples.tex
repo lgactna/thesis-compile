@@ -11,18 +11,19 @@ following locations:
 \item
   The AKF agent for Windows:
   \url{https://github.com/lgactna/akf-windows}
+\item
+  Standalone CASE/UCO 2.0 bindings for Python:
+  \url{https://github.com/lgactna/CASE-pydantic}
 \end{itemize}
-
-Additionally, a standalone library for CASE/UCO 2.0 is provided at
-\url{https://github.com/lgactna/CASE-pydantic,} which is used throughout
-AKF.
 
 \section{Comparison of ForTrace and AKF
 agents}\label{comparison-of-fortrace-and-akf-agents}
 
-Invoking commands in ForTrace entails issuing a simple string to the
-agent running on the VM. For example, invoking a command to add a new
-user to the VM may look like the following:
+Invoking commands in ForTrace
+\cite{gobelForTraceHolisticForensic2022} is straightforward; at the
+network level, commands are performed by issuing a simple string to the
+agent running on the target VM. For example, invoking a command to add a
+new user to the VM may look like the following:
 
 \begin{lstlisting}[language=Python]
 
@@ -52,7 +53,7 @@ time.sleep(5)
 \end{lstlisting}
 
 The agent's main loop, which receives and interprets these commands, is
-extremely simple:
+also straightforward:
 
 \begin{lstlisting}[language=Python]
 def main():
@@ -76,20 +77,20 @@ def main():
         a.receiveCommands()
 \end{lstlisting}
 
-When the \passthrough{\lstinline!Agent!} is first instantiated, it forms
-a permanent TCP socket out to the configured port and IP address where
-it expects the server (the VMM) to be issuing commands.
-\passthrough{\lstinline!Agent.receiveCommands()!} receives every message
-available by reading the socket, parsing it, and then invoking
+When the \passthrough{\lstinline!Agent!} is instantiated, it binds a TCP
+socket to the configured port and IP address, where it expects the
+server (the VMM) to issue commands.
+\passthrough{\lstinline!Agent.receiveCommands()!} executes commands by
+reading the socket, parsing the received content, and then invoking
 \passthrough{\lstinline!Agent.do\_command()!}, which converts the
 command message into a specific Python function call with arguments.
 
 The server, or ``virtual machine monitor'' (VMM), issues commands over
 TCP to a running instance of the agent on the VM. Each module under
 \passthrough{\lstinline!fortrace.application!} can be thought of as a
-coherent group of commands associated with a particular \emph{real}
-application (like Firefox or Thunderbird). Recall earlier how we found
-our \passthrough{\lstinline!userManagement!} application and invoked
+coherent group of commands associated with a particular user application
+(such as Firefox or Thunderbird). Recall earlier how we found our
+\passthrough{\lstinline!userManagement!} application and invoked
 \passthrough{\lstinline!addUser!}:
 
 \begin{lstlisting}[language=Python]
@@ -103,7 +104,7 @@ attempts to import
 Although not enforced by a higher-level interface, each of these modules
 contains subclasses of the following four classes (defined in
 \passthrough{\lstinline!fortrace.application.application!}) at minimum,
-with possibly more helper classes for OS-specific functionality or other
+with additional helper classes for OS-specific functionality or other
 modularity as needed:
 
 \begin{itemize}
@@ -127,9 +128,9 @@ modularity as needed:
   commands and arguments, calling the respective function in the
   corresponding \passthrough{\lstinline!ApplicationGuestSide!} subclass.
   This allows the actual dispatch of commands to be delegated to this
-  class, which is free to choose how actions are performed (threading,
-  multiprocessing, etc.) as well as any module-wide state it may need to
-  maintain.
+  class, which is free to choose how actions are performed (such as the
+  use of threading and multiprocessing) as well as any module-wide state
+  it may need to maintain.
 \end{itemize}
 
 This naming convention is intentional, as individual modules dictate the
@@ -155,9 +156,9 @@ class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommand
 
 In the example above,
 \passthrough{\lstinline!UserManagementGuestSide.addUser()!} contains the
-literal code to execute on the guest when
-\passthrough{\lstinline!addUser()!} is called, such as adding the
-registry keys needed for a user to be created. On the other hand,
+code to execute on the guest when \passthrough{\lstinline!addUser()!} is
+called, such as adding the registry keys needed for a user to be
+created. On the other hand,
 \passthrough{\lstinline!UserManagementVmmSide.addUser()!} contains the
 code to send a message over TCP that the agent will understand,
 eventually leading to the execution of the agent's version of
@@ -198,7 +199,7 @@ Calling the \passthrough{\lstinline!open()!} command from the host
 causes a message of the following form to be sent to the agent:
 
 \begin{lstlisting}
-application webBrowserFirefox <window id
+application webBrowserFirefox <window id> open Firefox <url>
 \end{lstlisting}
 
 Upon receiving this message, the agent's main loop will search for the
@@ -218,7 +219,7 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
             web_browser = arguments[0]
             url = arguments[1]
 
-            if len(arguments) 
+            if len(arguments) > 2:
                 self.timeout = arguments[2]
             else:
                 self.timeout = 30
@@ -252,10 +253,10 @@ ForTrace modules. In addition to providing the RPyC services themselves,
 agents also implement an API to call these services using typed
 functions.
 
-For example, suppose that we wanted to implement functionality similar
-to the ForTrace code above, which allows users to navigate to a webpage.
-An equivalent RPyC service and its corresponding API may be implemented
-as follows:
+For example, suppose we wanted to implement functionality similar to the
+ForTrace code above, allowing users to navigate to a webpage. An
+equivalent RPyC service and its corresponding API may be implemented as
+follows:
 
 \begin{lstlisting}[language=Python]
 
@@ -264,7 +265,7 @@ as follows:
 class ChromiumService(AKFService):
     def exposed_set_browser(
         self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
-    ) -
+    ) -> BrowserContext:
         # Various setup code...
         self.browser = chromium.launch_persistent_context(
             headless=False,
@@ -278,7 +279,7 @@ class ChromiumService(AKFService):
 # Client-side API
 
 class ChromiumServiceAPI(WindowsServiceAPI):
-    def __init__(self, host: str, port: int) -
+    def __init__(self, host: str, port: int) -> None:
         """
         Initialize the API with an RPyC connection to the service.
         """
@@ -290,13 +291,13 @@ class ChromiumServiceAPI(WindowsServiceAPI):
 
     def set_browser(
         self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
-    ) -
+    ) -> BrowserContext:
         self.browser = self.rpyc_conn.root.set_browser(browser_type, profile)
         return self.browser
 \end{lstlisting}
 
-Observe that implementing support for a particular service on the
-client-side API is as simple as calling an untyped function
+Implementing support for a particular service on the client-side API is
+as simple as calling an untyped function
 \passthrough{\lstinline!rpyc\_conn.root.set\_browser()!}. By wrapping it
 around a typed function,
 \passthrough{\lstinline!ChromiumServiceAPI.set\_browser()!}, users
@@ -339,7 +340,7 @@ observable:ApplicationFacet
     .
 \end{lstlisting}
 
-An instance of a \passthrough{\lstinline!Application!} object may thus
+An instance of an \passthrough{\lstinline!Application!} object may thus
 be represented in the JSON-LD format using the
 \passthrough{\lstinline!ApplicationFacet!} as follows (including
 attributes omitted above):
@@ -359,13 +360,15 @@ attributes omitted above):
 }
 \end{lstlisting}
 
-The CASE project provides Python bindings, though it stores all object
-attributes as dictionaries after instantiation. This can be seen in the
-example of an \passthrough{\lstinline!ApplicationFacet!} below.
-Intuitive usage suggests that the
-\passthrough{\lstinline!application\_identifier!} attribute is
-accessible through the \passthrough{\lstinline!facet!} object, but it
-must instead be accessed as a dictionary key with a non-intuitive name.
+The CASE project provides official Python bindings
+\cite{CaseworkCASEMappingPython}. One notable implementation detail
+is that it stores all object attributes in a dictionary after
+instantiation. This can be seen in the example of an
+\passthrough{\lstinline!ApplicationFacet!} below. Intuitive usage
+suggests that the \passthrough{\lstinline!application\_identifier!}
+attribute is accessible through the \passthrough{\lstinline!facet!}
+object, but it must instead be accessed as a dictionary key with a
+non-intuitive name.
 
 \begin{lstlisting}[language=Python]
 facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
@@ -380,12 +383,12 @@ facet.number_of_launches
 # not return a simple integer, but instead returns a dictionary
 app_facet['uco-observable:numberOfLaunches']
 
-# -
+# -> {"@type": "xsd:integer", "@value": "3"}
 \end{lstlisting}
 
 AKF's Pydantic-based bindings greatly simplify the declaration of
-individual CASE objects while allowing for normal attribute-based
-access. For example, AKF's declaration of
+individual CASE objects while allowing typical attribute-based access.
+For example, AKF's declaration of
 \passthrough{\lstinline!ApplicationFacet!} can be seen below:
 
 \begin{lstlisting}[language=Python]
@@ -398,12 +401,13 @@ class ApplicationFacet(core.Facet):
     applicationIdentifier: Optional[str] = None
 \end{lstlisting}
 
-This definition is only three lines, which is 40 lines shorter than the
+This definition is only three lines, which is 32 lines shorter than the
 declaration of \passthrough{\lstinline!ApplicationFacet!} provided by
-the CASE project's existing Python bindings.
+the CASE project's existing Python bindings (excluding the docstring).
 
 A simple CASE bundle, representing the complete contents of a forensic
-scenario, can be constructed and exported to JSON-LD as shown below:
+scenario, can be constructed and exported to JSON-LD using AKF libraries
+as shown below:
 
 \begin{lstlisting}[language=Python]
 from caselib import case, uco
@@ -427,18 +431,22 @@ with open("example.jsonld", "wt+") as f:
 \section{Historical declarative
 syntaxes}\label{historical-declarative-syntaxes}
 
-While designing the declarative syntax for AKF, the syntaxes of D-FET,
-SFX, and the work of Yannikos et al.~were reviewed. For completeness,
-brief examples of scenarios in each of these synthesizers are included
-here. Notably, none of these works provide details into how the parser
-of their declarative languages are implemented, nor the architecture of
-the code used to carry out the actions described in the examples below.
-This may be attributed to the fact that the scenario creation enabled by
-these declarative syntaxes, rather than the syntaxes themselves, was the
-primary contribution of these works.
+While designing the declarative syntax for AKF, the syntaxes ofD-FET
+\cite{williamCloudbasedDigitalForensics2011}, SFX
+\cite{russellForensicImageDescription2012}, and Yannikos et al.
+\cite{yannikosDataCorporaDigital2014} were reviewed. For
+completeness, brief examples of scenarios in each of these synthesizers
+are included here. Notably, none of these works provide details on how
+the parser of their declarative languages is implemented. Similarly, few
+details are provided about the architecture and design of the code used
+to carry out actions based on interpreted declarative instructions. This
+lack of detail may be attributed to the fact that the scenario creation
+enabled by these declarative syntaxes, rather than the syntaxes
+themselves, was the primary focus of these works.
 
-D-FET uses a custom language that does not depend on any existing
-text-based languages \cite{williamCloudbasedDigitalForensics2011}:
+\textbf{D-FET} uses a custom language that does not depend on any
+existing text-based languages
+\cite{williamCloudbasedDigitalForensics2011}:
 
 \begin{lstlisting}
 INSTANCE LOAD [Image=WINDOWS2003] 
@@ -449,17 +457,17 @@ ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS]
     FOR [User=Fred]
 \end{lstlisting}
 
-The scenario above will create an instance based on WINDOWS2003 from the
-Host Forensics Image library (which contains predefined instances and
-are created from OS installation discs). It will then load 12 .jpg
-images from the ``DRUGS'' class of images, using the ``STANDARDDISK''
-disk image. This creates a host with \emph{predefined}, but not
-\emph{timed} activity -- the machine simply begins in this state, rather
+The scenario above will create an instance based on the WINDOWS2003
+image from the Host Forensics Image library (which contains pre-created
+images from OS installation discs). It will then load 12 JPEG images
+from the ``DRUGS'' class of images using the ``STANDARDDISK'' disk
+image. This appears to create a host with \emph{predefined}, but not
+\emph{timed} activity -- the machine simply begins in this state rather
 than simulating a user doing this over some period of time.
 
-To make activity that can be placed on a timeline, \emph{events} can be
-added, such as logging in as a user, deleting files, and then logging
-out.
+To generate timed activity that can be placed on a timeline, D-FET
+allows users to add ``events.'' The sequence of events below directs the
+synthesizer to log in as a user, delete files, and log out.
 
 \begin{lstlisting}
 INSTANCE LOAD [Image=WINDOWS2003] 
@@ -473,56 +481,56 @@ ACTIVITY EVENT [Event=DELETEFILE; User=Fred; File=JPEF IMAGES]
 ACTIVITY EVENT [Event=LOGOUT; User=Fred ]
 \end{lstlisting}
 
-SFX uses an XML-based language with tags and attributes that are easily
-readable \cite{russellForensicImageDescription2012}:
+\textbf{SFX} uses an XML-based language with tags and attributes that
+are easily readable \cite{russellForensicImageDescription2012}:
 
 \begin{lstlisting}[language=XML]
-<disk size="512M" alignment="cylinder" diskid="0x12345678"
-    <partition index="p1" hidden="0" size="48M" type="vfat"
-        <expand archive="part1.zip" /
-        <copy from="fake.dat" to="/fake01.dat" /
-        <copy from="fake.dat" to="/fake02.dat" /
-        <delete from="/Thomas.jpg" /
-    </partition
-    <partition index="p2" hidden="0" size="48M" type="ntfs"
-        <base os="windows7x64" /
-        <copy from="fake.dat" to="/fake03.dat" /
-        <copy from="fake.dat" to="/fake04.dat" /
-        <user username="Gordon"
-            <browserhistory browser="firefox"
-                <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013" /
-            </browserhistory
-        </user
-    </partition
-    <partition index="p3" hidden="1" size="64M" type="ntfs"
-        <expand archive="part3.zip" /
-        <copy from="fake.dat" to="/fake11.dat" /
-        <copy from="fake.dat" to="/fake12.dat" /
-        <delete from="/docs/image.exe" /
-        <slackspace offset="20" file="/tomas.gif" message="This is a secret message" /
-    </partition
-    <partition index="s1" hidden="0" size="144M" type="ext3"
-        <base os="fedora15x64" /
-        <expand archive="part2.tar" /
-        <copy from="fake.dat" to="/tmp/fake01.dat" /
-        <copy from="fake.dat" to="/tmp/fake02.dat" /
-    </partition
-</disk
+<disk size="512M" alignment="cylinder" diskid="0x12345678">
+    <partition index="p1" hidden="0" size="48M" type="vfat">
+        <expand archive="part1.zip" />
+        <copy from="fake.dat" to="/fake01.dat" />
+        <copy from="fake.dat" to="/fake02.dat" />
+        <delete from="/Thomas.jpg" />
+    </partition>
+    <partition index="p2" hidden="0" size="48M" type="ntfs">
+        <base os="windows7x64" />
+        <copy from="fake.dat" to="/fake03.dat" />
+        <copy from="fake.dat" to="/fake04.dat" />
+        <user username="Gordon">
+            <browserhistory browser="firefox">
+                <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013" />
+            </browserhistory>
+        </user>
+    </partition>
+    <partition index="p3" hidden="1" size="64M" type="ntfs">
+        <expand archive="part3.zip" />
+        <copy from="fake.dat" to="/fake11.dat" />
+        <copy from="fake.dat" to="/fake12.dat" />
+        <delete from="/docs/image.exe" />
+        <slackspace offset="20" file="/tomas.gif" message="This is a secret message" />
+    </partition>
+    <partition index="s1" hidden="0" size="144M" type="ext3">
+        <base os="fedora15x64" />
+        <expand archive="part2.tar" />
+        <copy from="fake.dat" to="/tmp/fake01.dat" />
+        <copy from="fake.dat" to="/tmp/fake02.dat" />
+    </partition>
+</disk>
 \end{lstlisting}
 
-Here, a user is able to define multiple partitions on a single disk,
-each with a distinct filesystem that may or may not contain an
-underlying filesystem. SFX allows users to generate artifacts in
-multiple ways, with each unique application- or OS-specific feature
-using a distinct XML element name. Artifact generation features include
-copying files to the guest machine in bulk, inserting files in the slack
-space of an existing file, and using browser artifacts.
+Here, a user can define multiple partitions on a single disk, each with
+a distinct filesystem that may or may not contain an underlying
+operating system. SFX allows users to generate artifacts in multiple
+ways, with each unique application- or OS-specific feature using a
+distinct XML element name. Artifact generation features include copying
+files to the guest machine in bulk, inserting files in the slack space
+of an existing file, and using browser artifacts.
 
 Finally, the work of Yannikos et al.~is particularly notable because it
 appears to be fully GUI-based, expecting users to visually construct
 Markov chains to define scenarios
 \cite{yannikosDataCorporaDigital2014}. An example scenario from
-their publication can be seen below:
+their publication can be seen in Figure \textbf{unknown}:
 
 !\textbf{Pasted image 20250207182912.png}
 
@@ -532,5 +540,5 @@ parameters that can be used to configure how their associated artifacts
 are created. Each ``box'' encompasses a complete Markov chain, with
 transitions from one box to another occurring after an unknown condition
 is fulfilled. Finally, the diamonds outside the boxes, known as
-extensions, are additional libraries that provide additional
-functionality during the execution of the overall scenario.
+extensions, are libraries that provide extra functionality during the
+execution of the overall scenario.

@@ -43,7 +43,7 @@
 % out, as well as the \nocite command, when compiling for readers.
 % 
 % See https://tex.stackexchange.com/questions/43276/unused-bibliography-entries-how-to-check-which-entries-were-not-used
-\usepackage{refcheck}
+% \usepackage{refcheck}
 
 % Table support.
 \usepackage{booktabs}
@@ -282,8 +282,12 @@ from which some of this content is derived.
 \printglossary[type=\acronymtype]
 \printglossary
 
-\nocite{*}
+% \nocite{*}
+\singlespacing
 \bibliography{lloyd_gonzales_thesis}
+
+\doublespacing
+\appendix
 
 \appendix
 

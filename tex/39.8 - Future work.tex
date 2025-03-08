@@ -1,9 +1,9 @@
 AKF was built with the expectation that it would be easy to maintain,
-develop, and extend. Indeed, there are several use-cases that AKF does
+develop, and extend. Indeed, there are several use cases that AKF does
 not fulfill as of writing, primarily due to time constraints. Future
-work related to AKF can be divided into two groups -- tasks that
-integrate cutting-edge advancements to implement new features, and tasks
-that extend or improve existing functionality. \autoref{open-ended-automation-with-ai} describes the application of recent AI
+work related to AKF can be characterized as either tasks that integrate
+cutting-edge advancements to implement new features or tasks that extend
+or improve existing functionality. \autoref{open-ended-automation-with-ai} describes the application of recent AI
 developments towards addressing tasks relevant to forensic dataset
 development; the remaining sections focus on extending existing concepts
 in AKF.
@@ -15,303 +15,316 @@ During the development of AKF, OpenAI announced the release of Operator,
 an ``agent'' capable of automating tasks on webpages using natural
 language prompts \cite{openaiIntroducingOperator2025}. Rather than
 using a browser automation framework like Playwright or Selenium, it
-leverages its own browser to interact with webpages. This allows users
-to provide Operator with a high-level goal, which it can then convert to
-concrete webpage actions to achieve that goal.
+leverages its own browser to interact with webpages. Users can provide
+Operator with a high-level goal, which it then converts to concrete
+actions on its browser to achieve that goal.
 
-The example provided by OpenAI involves Operator searching Allrecipes
-for a clam linguine recipe, then ordering the ingredients for the
-linguine through Instacart. Various sensitive actions, such as inputting
-payment information or logging into a service, are delegated to the user
-to complete. Operator is also capable of identifying ambiguity in a task
-and prompting the user, such as asking the user which store to use for
-ordering Instacart items. This demonstrates multiple notable features
-that are relevant to forensic synthesizers; in particular, it
-demonstrates the ability to both \emph{interpret} and \emph{interact}
-with arbitrary GUIs, as well as the ability to convert human prompts
-into a sequence of automated actions that may change as the agent
-discovers new information or encounters unexpected issues.
+OpenAI provides an example in which Operator searches Allrecipes for a
+clam linguine recipe and then orders the ingredients for the linguine
+through Instacart. Various sensitive actions during this process are
+delegated to the user to complete, such as inputting payment information
+or logging into a service. Operator is also capable of identifying
+ambiguity in a task and prompting the user for clarification, such as
+asking which store to use for ordering items through Instacart. This
+example demonstrates multiple notable features that are relevant to
+forensic synthesizers; in particular, it demonstrates the ability to
+both \emph{interpret} and \emph{interact} with arbitrary GUIs, as well
+as the ability to convert human prompts into a sequence of automated
+actions that may change as the agent discovers new information or
+encounters unexpected issues.
 
-It is powered by what OpenAI calls its ``Computer-Using Agent'', or CUA,
+It is powered by what OpenAI calls its ``Computer-Using Agent,'' or CUA,
 which is trained to interact with a virtual machine by accepting natural
 language and a screenshot of a virtual monitor
 \cite{openaiComputerUsingAgent2025}. It leverages OpenAI's GPT-4o
 model, following a three-step process in which it analyzes screenshots
 of the virtual desktop, conducts reasoning to determine the necessary
-steps to achieve a task (using its own prior context), and executes
-actions on the virtual machine. OpenAI notes that CUA can reliably
-perform simple tasks that a human would normally take, such as
-navigating to specific categories of websites or repeating UI
-interactions. However, it struggles with UIs that it has not encountered
-before and tends to be inefficient or hallucinate on more complex
-tasking.
+steps to achieve a task (using prior context), and executes actions on
+the virtual machine. OpenAI notes that CUA can reliably perform simple
+tasks that a human would usually perform, such as navigating to specific
+categories of websites or repeating UI interactions. However, it
+struggles with some interfaces it has not encountered before and tends
+to be inefficient or hallucinate on more complex tasks.
 
 The challenge of automating open-ended tasks through AI is not new.
 Multiple benchmarks (mentioned in OpenAI's articles), including
 WebVoyager, WebArena, and OSWorld, were developed in early 2024 to
-provide examples of typical webpage and OS interaction tasks done by
-humans
+provide examples of typical webpage and OS interaction tasks performed
+by humans
 \cite{zhouWebArenaRealisticWeb2024,heWebVoyagerBuildingEndtoEnd2024,xieOSWorldBenchmarkingMultimodal2024}.
 CUA is stated to achieve state-of-the-art results in these benchmarks,
-and therefore represents the current ability of AI to address open-ended
-tasking. Although CUA has clear limitations and falls well behind human
+representing the current ability of AI to address open-ended tasking.
+Although CUA has clear limitations and falls well behind human
 performance on these benchmarks, Operator demonstrates significant
 progress in the ability of AI models to replicate actions that are often
-performed by real users. Even in its current state, CUA is likely able
-to automate the ``simple'' tasking that is characteristic of generating
-background noise for forensic datasets, such as browsing news sites,
-interacting with social media platforms, and more.
+performed by real users. Even in its current state, CUA can likely
+automate the ``simple'' tasking involved in generating background noise
+for forensic datasets, such as browsing news sites, interacting with
+social media platforms, and more.
 
-In the near future, it is likely that works similar to CUA or Operator
-will be capable of fully automating human actions as part of a larger
-scenario with a high degree of reliability and accuracy. Not only does
-this accelerate the process of building forensic datasets, it also
-improves the variety of applications that can be used as part of a
-scenario due to the flexibility of these models. For educators whose
-focus is to build scenarios with investigative and analytic value to
-students, this may be exactly what is needed to streamline scenario
-development. What does this mean for synthesizers?
+In the near future, works similar to CUA or Operator will likely be
+capable of fully automating human actions as part of a larger scenario
+with high reliability and accuracy. Improvements to interacting with
+previously unseen GUI-based applications will increase the variety and
+complexity of actions that can be automated. These capabilities are
+extremely valuable in synthetic dataset generation, as they dramatically
+reduce the time needed to implement artifact generation functionality
+for novel technologies or developments.
 
+What do these developments mean for ``conventional'' synthesizer
+architectures, which depend on scripts instead of natural language?
 First, the verbosity of writing a script and passing it to a synthesizer
-is still valuable, especially in contexts where the non-determinism and
-opacity of an AI model may not be acceptable. Non-determinism is often
-acceptable in educational contexts, so long as the actions taken by the
-model are logged and can be verified after the fact. However, the
-development of datasets for research and tool validation may require
-that actions are taken in a specific manner every time the dataset is
-generated. Several works have described the non-deterministic nature of
-LLMs in multiple distinct tasks
+is still valuable, particularly in contexts where the non-determinism
+and opacity of an AI model may not be acceptable. Several works have
+described the non-deterministic nature of LLMs in multiple distinct
+tasks
 \cite{astekinExploratoryStudyHow2024,songGoodBadGreedy2024,ouyangEmpiricalStudyNonDeterminism2025},
 which negatively impacts the reproducibility of results -- an important
 quality of forensic datasets as described by Grajeda et al.
-\cite{grajedaAvailabilityDatasetsDigital2017}.
+\cite{grajedaAvailabilityDatasetsDigital2017}.~Non-determinism is
+often acceptable in educational contexts so long as the actions taken by
+the model are logged and can be verified after the fact. However, the
+development of datasets for research and tool validation may require
+that a set of instructions always generates the same dataset every time,
+ensuring reproducibility from the instructions alone.
 
-Second, these developments are not \emph{incompatible} with
-synthesizers, and should instead be seen as an option to complement
-them. The capabilities provided by Operator could likely be built into
-AKF as part of its internal library or an OS-specific agent, providing
-users with access to both verbose imperative/declarative scripts as well
-as simpler natural language prompts when automating actions and building
-scenarios. Additionally, these agents cannot (currently) act as a
-substitute for physical artifact generation, in which the underlying
-filesystem or disk image must be edited to fulfill a certain task.
+Second, these developments are not \emph{incompatible} with synthesizers
+and should instead be seen as an option to complement them. The
+capabilities provided by Operator could likely be built into AKF as part
+of its internal library or an OS-specific agent, providing users with
+access to both verbose imperative/declarative scripts as well as simpler
+natural language prompts when automating actions and building scenarios.
+Additionally, these agents cannot (currently) act as a substitute for
+physical artifact generation, in which the underlying filesystem or disk
+image must be edited to fulfill a particular task. Since these agents
+are trained to work with ``live'' operating systems and applications,
+they are likely unsuitable for automating physical operations on
+filesystems and disk images.
 
 \section{Alternative platform
 support}\label{alternative-platform-support}
 
-Perhaps the most impactful example is implementing support for other
-desktop environments, such as Mac and Linux. At a high level, this
-requires implementing all three artifact generation methods described in
-\autoref{chapter-four}.
+One future extension is implementing support for other desktop
+environments, such as Mac and Linux. At a high level, this requires
+implementing artifact generation methods described in \autoref{chapter-four} for each platform.
 
 Consistent with AKF's focus on using existing automation frameworks
 through agents to implement application-specific functionality, much of
 the effort for supporting other platforms requires writing and deploying
-a new OS-specific agent. It is likely that much of the same code and
-overall design can be shared between the Windows agent and other
-platforms. This is largely possible through the portability of Python
-and the lack of OS-specific assumptions made by RPyC. Certain automation
-frameworks may have significant cross-platform support (such as
-Playwright and \passthrough{\lstinline!pywinauto!}, which supports
+a new OS-specific agent. Much of the code and overall design can be
+inherited from the Windows agent, enabled through the portability of
+Python and the lack of OS-specific assumptions made by RPyC. Certain
+automation frameworks may have significant cross-platform support (such
+as Playwright and \passthrough{\lstinline!pywinauto!}, which support
 Windows, Mac, and Linux), though implementing functionality for other
 applications may require more effort.
 
-In general, implementing logical agentless generation through VirtualBox
-is likely straightforward, in large part because Oracle supports
-VirtualBox Guest Additions on MacOS and a large variety of Linux
-distributions. Similarly, the physical artifact generation implemented
-in AKF for FAT32 and NTFS (the most common filesystems for Windows) may
-be extensible to other disks, such as ext4 (the default for modern Linux
-distributions).
+Implementing logical agentless generation through VirtualBox is likely
+straightforward, mainly because Oracle supports Guest Additions on MacOS
+and many Linux distributions. Similarly, the physical artifact
+generation implemented in AKF for FAT32 and NTFS (the most common
+filesystems for Windows) is likely extensible to other disks, such as
+ext4 (the default for modern Linux distributions). This is because
+\passthrough{\lstinline!dfvfs!}, the library used to support disk image
+and filesystem editing, supports many filesystems, partitioning
+standards, and disk images commonly used by other operating systems.
 
-The challenge here lies in accounting for artifacts or mechanisms unique
-to other operating systems. Some features, such as the use of
-PowerShell/WinRM to carry out actions on Windows, are analogous to
-Bash/SSH on Unix-based systems and can be adapted accordingly. However,
+The primary challenge in cross-platform support lies in accounting for
+artifacts or mechanisms unique to other operating systems. Some
+features, such as PowerShell/WinRM and Bash/SSH, are analogous between
+Windows and Unix-based systems and can be adapted accordingly. However,
 some concepts are truly unique to an operating system, such as
-performing modifications to the operating system through registry keys,
-and may require more effort to adapt the same outcomes to other
-platforms.
+performing modifications to the operating system through Windows
+registry keys, and may require more effort to adapt the same outcomes to
+other platforms.
 
 \section{Additional interface
 implementations}\label{additional-interface-implementations}
 
-Another example is extending the various concrete implementations of AKF
-interfaces to other technologies that may have better support for
-specific host and guest platforms. AKF currently provides a
-VirtualBox-based implementation of the hypervisor-agnostic interface
-provided as part of \passthrough{\lstinline!akflib!}, largely depending
-on the VirtualBox Guest Additions software to function. Indeed, this is
-the approach taken by virtually all prior synthesizers that require
-virtualization -- existing works in implementing synthesizer
-functionality in VirtualBox have contributed significantly to its
-adoption in these synthesizers, as well as AKF.
+Another future extension involves developing new concrete
+implementations of AKF interfaces using other technologies that may have
+better support for specific host and guest platforms. AKF currently
+provides a VirtualBox implementation of the hypervisor-agnostic
+interface provided as part of \passthrough{\lstinline!akflib!}, largely
+depending on the VirtualBox Guest Additions software to function.
+Indeed, this is the approach taken by virtually all prior synthesizers
+that require virtualization; existing work leveraging VirtualBox to
+implement automation functionality has contributed significantly to its
+adoption across many synthesizers, including AKF.
 
 However, prior synthesizers have also considered KVM/Qemu and VMWare as
 hypervisors; in particular, Forensig2 leveraged Qemu as its
-virtualization platform \cite{mochForensicImageGenerator2009}. There
-are several motivations for using other synthesizers, including support
-on different host platforms, performance, and available functionality.
-For example, Hwang et al.~compared the performance and low-level
-features of multiple hypervisors, including Hyper-V, KVM/Qemu, and
-VSphere, finding significant variability between hypervisors when
-running workloads and applications
+virtualization platform \cite{mochForensicImageGenerator2009}.
+Several considerations exist for using other synthesizers, including
+support on different host platforms, performance, and available
+functionality. For example, Hwang et al.~compared the performance and
+low-level features of multiple hypervisors, including Hyper-V, KVM/Qemu,
+and VSphere, finding significant variability between these hypervisors
+when running workloads and applications
 \cite{hwangComponentbasedPerformanceComparison2013}. It may be the
-case that certain scenarios or host machines are better suited for other
-hypervisors, or even a multi-hypervisor environment. It is worth noting
-that VMWare has similar guest-specific software to VirtualBox, with
-multiple Python libraries for interacting with guests on VSphere such as
-\passthrough{\lstinline!pyvmomi!} \cite{VmwarePyvmomi2025}.
+case that specific scenarios or host machines are better suited for
+other hypervisors or even a multi-hypervisor environment. It is worth
+noting that VMWare has guest-specific software similar to the VirtualBox
+Guest Additions; multiple Python libraries exist for interacting with
+guests on VSphere, such as \passthrough{\lstinline!pyvmomi!}
+\cite{VmwarePyvmomi2025}.
 
 Similarly, rather than create new implementations of existing
 interfaces, it may also be worth building new interfaces entirely. One
-particular example is the implementation of agents in languages other
-than Python. This may cover needs for specific tasks (such as actions
-that can be automated using a library for which no Python equivalent
-exists) or specific deployment restrictions (such as avoiding specific
-forms of synthesis pollution). In general, the implementation for an
-agent can be written in any language, so long as a Python API exists;
-the burden would be on the author to handle any communication or
-discrepancies across disparate languages, such as writing a TCP-based
-protocol for issuing commands.
+example is the implementation of agents in languages other than Python.
+Using non-Python agents may cover needs for specific tasks (such as
+actions that can be automated using a library for which no Python
+equivalent exists) or specific deployment restrictions (such as avoiding
+specific forms of synthesis pollution). In general, the implementation
+for an agent can be written in any language, so long as a corresponding
+Python API exists; the burden would be on the author to handle any
+communication or discrepancies across disparate languages, such as
+writing a TCP-based protocol for issuing commands.
 
 \section{Distribution}\label{distribution}
 
-One notable aspect of prior synthesizers not implemented as part of AKF
-are various improvements to the distribution of forensic datasets,
-particularly in environments with limited bandwidth or limited storage
-space. AKF largely addresses challenges in the \emph{creation} of
-forensic datasets, rather than their \emph{distribution}. This section
-largely focuses on prior efforts to reduce the size of forensic
-datasets, as well as how they could be integrated into AKF in the
-future.
+One notable development of prior synthesizers not implemented as part of
+AKF is the various improvements to the distribution of generated
+datasets, particularly in environments with limited bandwidth or storage
+space. AKF primarily addresses challenges in the \emph{creation} of
+forensic datasets rather than their \emph{distribution}. This section
+addresses prior efforts to reduce the size of forensic datasets and how
+they could be integrated into AKF in the future.
 
 The size of forensic datasets can be trivially reduced in various ways.
-For example, a full forensic dataset (with various core outputs) can be
-compressed using a standard algorithm such as LZMA. Specific core
-outputs, such as disk images, can be stored in a dynamically expandable
-image format such as VDI or VHD. Such formats only use as much space as
-is currently used on the disk image itself, even if the size reported to
-the operating system is much larger. Such reductions are ``lossless'',
-in the sense that they largely reflect what a forensic analyst would
-encounter using real hardware.
+For example, a full forensic dataset can be compressed using a standard
+algorithm such as LZMA. Specific core outputs, such as disk images, can
+be stored in a dynamically expandable image format such as VDI or VHD.
+Such formats only use as much space as is currently used on the disk
+image itself, even if the size reported to the operating system is much
+larger. Such reductions are ``lossless'' in that they can be reversed to
+reflect what a forensic analyst would encounter using real hardware.
 
-However, there are more aggressive improvements that can be made with
-respect to the distribution process. These typically come at one of two
-expenses -- either irrelevant data is outright removed, or additional
-effort must be taken by the end user to finish ``constructing'' the
-forensic scenario for use after downloading relevant files (which are
+However, more aggressive ``lossy'' reductions can be performed to
+further reduce dataset size. These can be broadly described as one of
+two approaches -- either irrelevant data is outright removed, or the end
+user must take additional effort to finish preparing the forensic
+scenario for use after downloading relevant files (which are
 significantly smaller than the finished forensic dataset itself). The
-first is a tradeoff between realism and image size; the second is a
-tradeoff between immediate usability and additional processing time.
+first approach reduces realism in exchange for a smaller dataset size;
+the second approach requires additional processing time in exchange for
+reduced network transfer sizes.
 
 The first method describes the process of simply removing data that is
 not deemed to be relevant for educational or research purposes. For
-example, if an instructor is simply interested in demonstrating the
-recovery and analysis of SQLite databases in Chrome's AppData directory,
-there is no need to include files from most other directories on the
-filesystem. One option for achieving this is by using a logical disk
-image format, such as the .AD1 format, which are collections of files
-(much like a ZIP archive) as opposed to a collection of physical disk
-units.
+example, suppose an instructor is interested in demonstrating only the
+recovery and analysis of SQLite databases in Chrome's AppData directory.
+For this scenario, there is no need to include files from most other
+directories on the filesystem. One option for achieving this is to use a
+logical disk image format, such as the AD1 format, which is a collection
+of files (much like a ZIP archive) instead of a collection of physical
+disk units (like a standard disk image).
 
 A more notable approach to removing irrelevant information is described
-by Russell et al.~as part of their work developing \textbf{SFX}
+by Russell et al.~as part of their work developing SFX
 \cite{russellForensicImageDescription2012}. Their approach,
-described as ``partition squeezing'', is based on the idea that the
+described as ``partition squeezing,'' is based on the idea that the
 contents of files irrelevant to an educational scenario can be truncated
-to the size of a single filesystem cluster or block. This preserves the
-file and directory structure of the overall filesystem (thus preserving
-realism), while also removing data that is unlikely to be useful to
-students performing analysis. Thus, the educational value of the image
-remains the same, even if some data is missing. Russell et al.~note that
-additional space can be saved by replacing irrelevant files,
-particularly those deep within the filesystem that are highly unlikely
-to be analyzed in detail by students, with hard links to other files.
-This eliminates the original contents of the file entirely while
-preserving most of its attributes.
+to the size of a single filesystem cluster or block. (In some
+filesystems, a file can be further truncated to fit entirely within
+filesystem metadata structures, such as resident files in NTFS.) This
+preserves the file and directory structure of the overall filesystem
+(thus preserving realism) while also removing data that is unlikely to
+be useful to students performing analysis. Thus, the educational value
+of the image remains the same, even if some data is missing. Russell et
+al.~note that additional space can be saved by replacing irrelevant
+files with hard links to other files, particularly those deep within the
+filesystem that are highly unlikely to be analyzed in detail by
+students. This entirely eliminates the original contents of the file
+while preserving most of its attributes.
 
 The use of logical images and partition squeezing, of course, is not
 suitable in all cases. In particular, logical images generally do not
 include slack or unallocated space. The partition squeezing approach
 destroys data that may be required for certain forensic analysis tools
 to function, as well as data that might be of interest to users of the
-dataset in other research or educational contexts.
+dataset in other research or educational contexts than initially
+intended.
 
 AKF does not provide any functionality for directly generating logical
 images or performing partition squeezing. However, generating logical
 images is relatively straightforward using a publicly available tool
 such as FTK Imager, so long as the scenario developer is aware of
 relevant directories that should be included -- a process that might
-occur with AKF's reporting features in mind. Partition squeezing might
+occur with AKF's reporting features in mind. Partition squeezing could
 be achieved by leveraging the filesystem-aware functionality of
 libraries such as \passthrough{\lstinline!libtsk!} and
-\passthrough{\lstinline!dfvfs!}, which is used as part of AFK's physical
-planting techniques described in \autoref{akf-implementation}. Such functionality could be implemented either in
-AKF or as part of a wholly independent tool.
+\passthrough{\lstinline!dfvfs!}, which is used as part of AKF's physical
+planting techniques described in \autoref{akf-implementation}. However, a more straightforward approach is to
+mount the filesystem and truncate all irrelevant files to the size of a
+single block or cluster. Such functionality could be implemented either
+in AKF or as part of a wholly independent tool.
 
-The second method describes a variety of techniques in which end users
-must take additional actions after downloading relevant materials before
-a forensic dataset is ready for use. One example described by Scanlon et
-al.~is the use of ``evidence packages'', in which users are provided
+The second method describes various techniques in which end users must
+take additional actions after downloading relevant materials before a
+forensic dataset is ready for use. One example described by Scanlon et
+al.~is the use of ``evidence packages,'' in which users are provided
 with a base image of a single operating system that can be reused to
-build multiple forensic datasets through \textbf{EviPlant}
+build multiple forensic datasets through EviPlant
 \cite{scanlonEviPlantEfficientDigital2017}. After a scenario
 developer has finished creating artifacts (whether manually or through a
 synthesizer), they can use EviPlant's ``diffing'' tool to determine and
 extract differences between the base image and the developer's current
 disk state. These differences can be distributed to users, who can then
-use EviPlant's ``injection'' tool on the previously-distributed base
+use EviPlant's ``injection'' tool on the previously distributed base
 image to recreate the final disk image.
 
-This is described more broadly as ``differential imaging'', in which
-only differences from some initial file are transmitted to users. These
-differences are often significantly smaller than the disk images they
-are designed to build, and therefore are much easier to distribute than
-complete disk images. In exchange, each user must spend additional
+This approach can described more generally as ``differential imaging'',
+in which only differences from some initial files are saved and
+transmitted to users. These differences are often significantly smaller
+than the disk images they are designed to build and are much easier to
+distribute than complete disk images. (This is very similar to the
+approach used by Vagrant to distribute and prepare reproducible virtual
+machines, as described in \autoref{setup-and-basic-usage}.) In exchange, each user must spend additional
 processing time before the image can be used for analysis. EviPlant's
 injection tool operates through a combination of logical and physical
-planting, which requires time software, and resources that are not
-required when distributing complete disk images. This is an acceptable
-cost particularly when conducting remote classes, where not all students
-may have high-speed internet. Again, although AKF does not implement
-differential imaging, this functionality can likely be implemented as
-part of an independent tool or module.
+planting, which requires time, software, and resources that are not
+required when using and distributing complete disk images. This is an
+acceptable cost in some cases; for example, not all students in a remote
+classroom may have high-speed internet, limiting the size of files that
+can be distributed. Again, although AKF does not implement differential
+imaging, this functionality can likely be implemented as part of an
+independent tool or module.
 
 \section{Mobile synthesis}\label{mobile-synthesis}
 
-Finally, while well outside the scope of this thesis, there is also the
-challenge of building a synthesizer for non-desktop platforms,
+Finally, although well outside the scope of this thesis, there is also
+the challenge of building a synthesizer for non-desktop platforms,
 particularly mobile devices. For many people, mobile devices are the
-primary means through which we interact with the digital world, causing
-them to play a unique role in investigations
-\cite{chernyshevMobileForensicsAdvances2017}. They can contain data
-from many facets of our lives, including text messages, location
-history, images, application logs, and other information that can
-provide insight into an individual's actions during a period of interest
-\cite{sutiknoCapabilitiesCellebriteUniversal2024}. This information
-can be combined with other investigative methods, such as desktop and
-conventional forensics, to form a better understanding of a larger
-scenario.
+primary means of interacting with the digital world, causing them to
+play a unique role in investigations
+\cite{chernyshevMobileForensicsAdvances2017}. Mobile devices can
+contain data from many facets of one's life, including text messages,
+location history, images, application logs, and other information that
+can provide insight into an individual's actions during a period of
+interest \cite{sutiknoCapabilitiesCellebriteUniversal2024}. This
+information can be combined with other investigative methods, such as
+desktop and conventional forensics, to form a better understanding of a
+larger scenario.
 
-Naturally, this means that there is a need for datasets in digital
-forensics, as well. Grajeda et al.~identify a small number of existing
-mobile dataset collections, including those containing Android malware,
-Android application files, and smartphone disk images
+Naturally, this means that there is a need for mobile datasets in
+digital forensics, as well. Grajeda et al.~identify a small number of
+existing mobile dataset collections, including those containing Android
+malware, Android application files, and smartphone disk images
 \cite{grajedaAvailabilityDatasetsDigital2017}. However, these
-datasets are far less common than their desktop counterparts. When
-compared to the hundreds of desktop disk images hosted on Digital
-Corpora and CFReDS, there are only around 25 mobile disk images on the
-same platforms. A mobile-specific survey conducted by Gonçalves et
-al.~in 2022 found not only a low availability of mobile images, but also
-lack the recency and variety of data that would be present in a modern
-investigation \cite{goncalvesRevisitingDatasetGap2022}.
+datasets are far less common than their desktop counterparts. Compared
+to the hundreds of desktop disk images hosted on Digital Corpora and
+CFReDS, there are only around 25 mobile disk images on the same
+platforms. A mobile-specific survey conducted by Gonçalves et al.~in
+2022 found not only a low availability of mobile images but also a lack
+of background noise and recent applications that would be present in a
+modern investigation \cite{goncalvesRevisitingDatasetGap2022}.
 
 There has been limited work in developing forensic synthesizers for
 mobile platforms. Two notable examples are FADE
 \cite{ceballosdelgadoFADEForensicImage2022}, developed by Delgado et
 al.~in 2022, and an unnamed framework developed by Demmel et al.~in 2024
-\cite{demmelDataSynthesisGoing2024}. FADE operates largely through
+\cite{demmelDataSynthesisGoing2024}. FADE operates primarily through
 physical artifact generation, which it achieves by extracting and
 mounting partitions from an emulated, rooted Android device using the
 Android Debug Bridge. It then modifies application-specific database
@@ -319,16 +332,17 @@ files to create artifacts such as phone call entries and text messages.
 
 In contrast, Demmel et al.~generate data using a logical agentless
 approach, using a tool called AndroidViewClient (AVC) to send keypresses
-and touch gestures. Unlike VMPOP, which uses hardcoded mouse movements
-to click on GUI-based elements, this framework leverages AVC to dump all
-interactable UI elements and directly ``touch'' these elements once the
-desired element has been found. This allows it to implement more
+and touch gestures \cite{demmelDataSynthesisGoing2024}. Unlike
+VMPOP, which uses hardcoded mouse movements to click on GUI-based
+elements, this framework leverages AVC to expose all interactable UI
+elements and programmatically ``touch'' these elements once the desired
+element has been found. This allows it to implement more complex
 application-specific functionality, such as using WhatsApp and opening
 Google Chrome. There has also been broader work in automating actions as
 part of testing pipelines for Android applications
 \cite{janickiObstaclesOpportunitiesDeploying2012,nagowahNovelApproachAutomation2012,linares-vasquezHowDevelopersTest2017},
-though these largely address actions at the application scope, rather
-than automating actions across the entire device. Of note is the lack of
+though these primarily address application-specific actions, rather than
+automating actions across the entire device. Of note is the lack of
 iOS-relevant synthesizer functionality, perhaps due to the greater
 difficulty of working on a closed-source operating system with fewer
 options for exposing internal functionality.
@@ -339,10 +353,13 @@ Android emulators and existing developer tools. However, the isolation
 around individual Android applications suggests that it may be difficult
 to use a logical agent-based approach to automating application
 activity; a Python agent running as an application is unlikely to have
-full filesystem access on a non-rooted device. However, application
-isolation also suggests that it may be easier to build and use physical
-approaches to generating mobile artifacts, since these artifacts will
-largely be constrained to the application's allocated directory. More
-research is needed to determine viable options through which Android
-datasets can be constructed. This is especially true for iOS, for which
-there are significantly fewer resources.
+full filesystem access on a non-rooted device. For simple
+application-specific artifacts, using physical techniques and editing
+artifacts in an application's allocated directory may be more effective.
+Much like Windows, however, Android applications may generate both
+application-specific artifacts and system artifacts (such as system
+logs) located elsewhere in the filesystem.
+
+More research is needed to determine viable options for constructing
+Android datasets. This is especially true for iOS, for which there are
+significantly fewer resources.
