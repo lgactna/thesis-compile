@@ -23,3 +23,117 @@ AKF. A complete architecture diagram is shown in \autoref{fig:architecture-full}
 \end{lstlisting}
 
 !\textbf{Pasted image 20250209180929.png}
+
+\section{The stupid tables}\label{the-stupid-tables}
+
+Naturally, this means that the text in the table shall not be double
+spaced because the thing is HUGE. Also try 0.2-0.2-0.6 for the table
+widths. The row spacing is honestly fine with
+\passthrough{\lstinline!\\small!}, but you can take it lower if
+necessary. Note that this will bring it closer to the text of the
+previous paragraph if you don't compensate.
+
+\passthrough{\lstinline!\\small!}, on a paper that is 12pt default,
+produces 10pt text. This is still within the limits of the filing
+guidelines.
+
+\begin{lstlisting}[language=TeX]
+{
+\small % Begin group to apply small font size
+% \renewcommand{\arraystretch}{0.8} % Adjust row spacing
+\setstretch{1} % Adjust line spacing (single spacing)
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.20}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.20}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.60}}@{}}
+\caption{Supported applications for the AKF Windows agent}\label{table:akf-applications} \\
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Module
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Dependencies
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Details
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Chromium & Playwright \cite{MicrosoftPlaywrightpython2025} & Allows
+arbitrary webpages to be visited on Chrome and Edge, as well as perform
+complex actions such as completing forms and clicking links based on
+HTML selectors \\
+Chromium & Playwright \cite{MicrosoftPlaywrightpython2025} & Allows
+arbitrary webpages to be visited on Chrome and Edge, as well as perform
+complex actions such as completing forms and clicking links based on
+HTML selectors \\
+\end{longtable}
+} % End group
+\end{lstlisting}
+
+With the exception of the caption and label, it should be possible to
+just replace everything inside the
+\passthrough{\lstinline!\{longtable\}!} environment itself.
+
+The first table should be static so:
+
+\begin{lstlisting}[language=TeX]
+{
+\small % Begin group to apply small font size
+% \renewcommand{\arraystretch}{0.8} % Adjust row spacing
+\setstretch{1} % Adjust line spacing (single spacing)
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.20}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}@{}}
+\caption{Summary of artifact generation techniques in prior synthesizers}\label{table:prior-techniques} \\
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Synthesizer
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Physical
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agentless
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Agent-based
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{FALCON} \cite{adelsteinAutomaticallyCreatingRealistic2005},
+2005 & ? & ? & ? \\
+\textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008}, 2008
+& ? & ? & ? \\
+\textbf{Forensig2}
+\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
+2009 & Yes (filesystem mounting; filesystem-independent editing)
+& Yes (over SSH only) & No \\
+\textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011}, 2011 &
+Yes (filesystem mounting; filesystem-independent editing) & No &
+No \\
+\textbf{SFX} \cite{russellForensicImageDescription2012}, 2012 & Yes
+(filesystem mounting) & No & No \\
+\textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}, 2014
+& ? & ? & ? \\
+\textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
+Yes (hypervisor interfaces) & No \\
+\textbf{ForGe} \cite{vistiAutomaticCreationComputer2015}, 2015 & Yes
+(filesystem-aware editing) & No & No \\
+\textbf{ForGen} \cite{jjk422Jjk422ForGen2019}, 2016 & No & No &
+No \\
+\textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}, 2017 &
+Yes (filesystem-independent editing) & No & Yes (unknown
+mechanism) \\
+\textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
+(hypervisor interfaces) & No \\
+\textbf{hystck} \cite{gobelNovelApproachGenerating2020}, 2020 & No &
+No & Yes (Python agent) \\
+\textbf{TraceGen} \cite{duTraceGenUserActivity2021}, 2021 & No & No
+& Yes (unknown mechanism) \\
+\textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
+No & No & Yes (Python agent) \\
+\end{longtable}
+} % End group
+\end{lstlisting}

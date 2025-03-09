@@ -150,7 +150,7 @@ Compilation notes:
 Order of operations:
 
 - Write the whole thing (code and paper), get the overall structure approved (so answer the questions above)
-- Make sure that the bibliography file contains only used references, rewrite so that this is the case
+- ~~Make sure that the bibliography file contains only used references, rewrite so that this is the case~~
 - Do grammar checking by copying *from Obsidian* to Grammarly, and apply edits in Obsidian
 - Use the thesis compiler to generate `thesis.tex`, copy it directly into Overleaf
 - Add/fix figures, code blocks, and other things as needed (this is the most time-consuming step, and hopefully only needs to be done once - use `git diff` on the base output if needed)

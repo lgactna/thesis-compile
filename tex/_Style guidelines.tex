@@ -1,0 +1,37 @@
+\begin{itemize}
+\item
+  Synthesizers are not to be italicized. Every mention of a synthesizer
+  in a paragraph not focusing on that synthesizer should have a
+  citation.
+\item
+  Bulleted lists should have their key element \textbf{bolded} where
+  applicable.
+\item
+  Tools or libraries may be \passthrough{\lstinline!monospace!} to
+  distinguish them from regular text. Use this sparingly; tools with
+  ``actual names'' should have no formatting applied. (for example:
+  \passthrough{\lstinline!uv!}, \passthrough{\lstinline!dfvfs!}, the
+  Digital Forensics Virtual Filesystem, Pydantic, CASE,
+  \passthrough{\lstinline!caselib!})
+\item
+  Italicization \emph{for emphasis} is allowed. Bolding for emphasis is
+  not.
+\item
+  Italicization for ``proper'' terms, such as the names of modules, is
+  allowed but should be limited in usage.
+\end{itemize}
+
+\passthrough{\lstinline!\\autoref!} is used to stick the word
+``chapter'' and ``section'' into the actual reference. Don't do
+hyperlinks like ``refer to chapter \textbf{39.0 - Abstract}'', just use
+``refer to \textbf{39.0 - Abstract}''.
+
+There's a special syntax for making code listings appear. Anything of
+the form \passthrough{\lstinline"**!lst:(.*?)**"} will turn into an
+\passthrough{\lstinline!\\autoref\{lst:label\}!}. Also, if the first
+line of an \passthrough{\lstinline!lstlisting!} is of the form
+\passthrough{\lstinline"!label|caption"}, it'll make the listing
+accordingly. You can see the syntax towards the start of \autoref{scripting-background}.
+
+For now, figures are just going to be done manually. We don't really
+even have any yet, so I guess it's not an issue lol

@@ -68,9 +68,9 @@ def process_latex_text(text: str) -> str:
         text,
     )
 
-    # Search for the special syntax \textbf{!lst:(.*?)} and replace it with
-    # \autoref{lst:\1}
-    text = re.sub(r"\\textbf\{!lst:(.*?)\}", r"\\autoref{lst:\1}", text)
+    # Search for the special syntax \textbf{!(.*?)} and replace it with
+    # \autoref{\1}
+    text = re.sub(r"\\textbf\{!(.*?)\}", r"\\autoref{\1}", text)
 
     # Citations in code blocks sometimes just don't work, so manually extract
     # any [@citekey] and replace them with \cite{citkey}

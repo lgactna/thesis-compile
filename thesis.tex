@@ -1668,17 +1668,17 @@ approaches to artifact generation, as partly described by Scanlon et al.
 
 These three approaches are not mutually exclusive within a single
 synthesizer, though many prior synthesizers have used only one approach
-to generate artifacts. The table below denotes the approaches used by
-each of the synthesizers previously discussed. Where source code is
-unavailable, a best effort was made to identify the approach used by a
-particular synthesizer based on its published paper, if one exists;
-otherwise, the entire row contains question marks.
+to generate artifacts. \autoref{table:prior-techniques} below denotes
+the approaches used by each of the synthesizers previously discussed.
+Where source code is unavailable, a best effort was made to identify the
+approach used by a particular synthesizer based on its published paper,
+if one exists; otherwise, the entire row contains question marks.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4328}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3184}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1343}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1144}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4485}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2938}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1392}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1186}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Synthesizer
@@ -1699,24 +1699,22 @@ Agent-based
 & ? & ? & ? \\
 \textbf{Forensig2}
 \cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
-2009 & Yes (mounting filesystem, writing directly to disk using offset)
-& Yes (over SSH only) & No \\
+2009 & Yes (filesystem mounting; filesystem-independent editing) & Yes
+(over SSH only) & No \\
 \textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011}, 2011 &
-Yes (mounting filesystem, writing directly to disk using offset) & No &
-No \\
+Yes (filesystem mounting; filesystem-independent editing) & No & No \\
 \textbf{SFX} \cite{russellForensicImageDescription2012}, 2012 & Yes
-(mounting filesystem) & No & No \\
+(filesystem mounting) & No & No \\
 \textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}, 2014
 & ? & ? & ? \\
 \textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
 Yes (hypervisor interfaces) & No \\
 \textbf{ForGe} \cite{vistiAutomaticCreationComputer2015}, 2015 & Yes
-(emulates complete filesystem in memory as Python objects) & No & No \\
+(filesystem-aware editing) & No & No \\
 \textbf{ForGen} \cite{jjk422Jjk422ForGen2019}, 2016 & No & No &
 No \\
 \textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}, 2017 &
-Yes (write directly to image file using offset) & No & Yes (unknown
-mechanism) \\
+Yes (filesystem-independent editing) & No & Yes (unknown mechanism) \\
 \textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
 (hypervisor interfaces) & No \\
 \textbf{hystck} \cite{gobelNovelApproachGenerating2020}, 2020 & No &
