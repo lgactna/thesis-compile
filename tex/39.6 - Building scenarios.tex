@@ -76,16 +76,17 @@ allowing the synthesizer to decide how to create the desired dataset --
 a \emph{declarative} strategy for scenario creation. The specifics of
 state management and execution are delegated to the synthesizer.
 
-Consider the following declarative SFX code taken from Russell et al.
+Consider the following declarative SFX code taken from Russell et
+al.~shown in \autoref{lst:6.1}
 \cite{russellForensicImageDescription2012}:
 
-\begin{lstlisting}[language=XML]
+\begin{lstlisting}[language=XML, label={lst:6.1}, caption={Sample SFX scenario code}]
 <disk>
     <partition index="p1" hidden="0" size="48M" type="ntfs">
         <base os="windows7x64"/>
         <user username = "Gordon">
              <browserhistory browser="firefox">
-                 <url link="[http://bbc.co.uk"](http://bbc.co.uk") time="13:14:00 1 Jan 2013"/>
+                 <url link="bbc.co.uk" time="13:14:00 1 Jan 2013"/>
              </browserhistory>
         </user>
     </partition>
@@ -99,10 +100,11 @@ browsing scenario will be reused throughout this chapter to demonstrate
 several code examples.)
 
 The same might be expressed in ForTrace
-\cite{gobelForTraceHolisticForensic2022} as the following, excluding
-additional code required for ground truth and disk image generation:
+\cite{gobelForTraceHolisticForensic2022} as shown in
+\autoref{lst:6.2}, excluding additional code required for ground truth
+and disk image generation:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python, label={lst:6.2}, caption={Sample ForTrace scenario code \cite{gobelForTraceHolisticForensic2022}}]
 import logging
 
 from fortrace.core.vmm import Vmm
@@ -122,7 +124,7 @@ if __name__ == "__main__":
     guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime="2013-01-01 13:14:00")
 
     browser_obj = guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
-    browser_obj.open(url="[http://bbc.co.uk")](http://bbc.co.uk"))
+    browser_obj.open(url="bbc.co.uk")
     while browser_obj.is_busy:
         time.sleep(2)
     browser_obj.close()

@@ -112,6 +112,10 @@
     style=mystyle,
 }
 
+% Less spacing in between items in \begin{itemize}
+\usepackage{enumitem}
+\setitemize{noitemsep}
+
 % == End packages
 
 \renewcommand*\ttdefault{pcr}
@@ -269,6 +273,10 @@ from which some of this content is derived.
 
 \newpage
 \listoffigures
+
+\newpage
+\renewcommand{\lstlistlistingname}{List of Code Listings}
+\lstlistoflistings
 
 % == Set new page number style ===========================================
 \newpage
