@@ -15,7 +15,8 @@ AKF. A complete architecture diagram is shown in \autoref{fig:architecture-full}
     \includegraphics[width=20cm]{Figures/architecture-full.png}
     \caption{Complete AKF architectural diagram}
     \label{fig:architecture-full}
-\end{sidewaysfigure}   
+\end{sidewaysfigure} 
+
 ```
 
 !**Pasted image 20250209180929.png**

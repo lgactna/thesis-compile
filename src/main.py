@@ -1,5 +1,6 @@
 import concurrent.futures
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -7,6 +8,8 @@ from pathlib import Path
 SOURCE_MD_DIR = Path(
     "C:/Users/Kisun/Desktop/Obsidian/Academic research/30 - Research topics/39 - By chapter"
 )
+SOURCE_ASSET_DIR = SOURCE_MD_DIR / "Assets"
+
 # absolute path to the bibliography
 BIBLIOGRAPHY_PATH = Path("./Forensic Image Synthesis.bib")
 
@@ -14,6 +17,8 @@ BIBLIOGRAPHY_PATH = Path("./Forensic Image Synthesis.bib")
 TARGET_MD_DIR = Path("./md")
 # absolute path to the directory where the generated tex files should go
 TARGET_TEX_DIR = Path("./tex")
+# absolute path to the directory where stuff to include like images should go
+TARGET_ASSET_DIR = Path("./assets")
 
 PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
 
@@ -63,8 +68,8 @@ def process_latex_text(text: str) -> str:
     # Special syntax: if an lstlisting's first line contains a line of the form
     # !lst:caption|label, convert it to a lstlisting with a caption and label
     text = re.sub(
-        r"\\begin\{lstlisting\}\[(.*?)\]\n!(.*?)\|(.*?)\n",
-        r"\\begin{lstlisting}[\1, label={\2}, caption={\3}]\n",
+        r"\\begin\{lstlisting\}(?:\[(.*?)\])?\n!(.*?)\|(.*?)\n",
+        r"\\begin{lstlisting}[label={\2}, caption={\3}, \1]\n",
         text,
     )
 
@@ -75,6 +80,17 @@ def process_latex_text(text: str) -> str:
     # Citations in code blocks sometimes just don't work, so manually extract
     # any [@citekey] and replace them with \cite{citkey}
     text = re.sub(r"\[@(.*?)\]", r"\\cite{\1}", text)
+
+    # Convert \begin{figure} to \begin{figure}[h]
+    text = re.sub(r"^\\begin\{figure\}$", r"\\begin{figure}[h]", text, flags=re.MULTILINE)
+    
+    # A \pandocbounded{\includegraphics[...]{...}} command should be substtituted
+    # with \includegraphics[width=1\linewidth]{...}
+    text = re.sub(
+        r"\\pandocbounded\{\\includegraphics\[(.*?)\]\{(.*?)\}\}",
+        r"\\includegraphics[width=1\\linewidth]{\2}",
+        text,
+    )
 
     return text
 
@@ -101,6 +117,7 @@ def convert_with_pandoc(md_file, tex_file):
             "--verbose",
             "--biblatex",
             "--listings",
+            "--resource-path=.:./assets",
         ]
     )
     text = tex_file.read_text()
@@ -256,6 +273,11 @@ if __name__ == "__main__":
         # Write the processed markdown file to the target directory
         target_md_file = TARGET_MD_DIR / md_file.name
         target_md_file.write_text(text)
+        
+    # Also copy everything to the asset directory
+    TARGET_ASSET_DIR.mkdir(parents=True, exist_ok=True)
+    for asset_file in SOURCE_ASSET_DIR.glob("*"):
+        shutil.copy(asset_file, TARGET_ASSET_DIR / asset_file.name)
 
     # Invoke pandoc on each markdown file to generate a tex file
     TARGET_TEX_DIR.mkdir(parents=True, exist_ok=True)

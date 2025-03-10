@@ -1,8 +1,22 @@
 This chapter addresses the mechanisms through which AKF generates and
-documents its outputs, depicted in the partial architectural diagram
-below.
+documents its outputs, as seen in \autoref{fig:output-simple}. More
+specifically, this covers the modules and submodules seen in
+\autoref{fig:output-full}. The submodules for the \emph{virtual machine}
+and \emph{action automation library} have been omitted for brevity.
 
-!\textbf{39.5 - Output and validation 2025-02-08 17.13.11.excalidraw}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-simple.png}
+\caption{Simplified AKF architecture diagram with output and validation
+modules highlighted}\label{fig:output-simple}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-full.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-full}
+\end{figure}
 
 Whether generating artifacts through physical or logical means, these
 artifacts must ultimately be exported and documented. In most cases,
@@ -108,6 +122,16 @@ example, a user can pause an AKF script until instructed to continue;
 during this time, the user can manually run FTK Imager to extract the
 contents of RAM.
 
+The logic for generating physical outputs is contained in the opaque
+submodules seen in \autoref{fig:output-a}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-a.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-a}
+\end{figure}
+
 \section{Metadata and ground
 truth}\label{metadata-and-ground-truth}
 
@@ -149,7 +173,9 @@ content and does not necessarily contain equivalent information for the
 same analyzed disk image using default settings. This is the primary
 challenge with using an existing format, particularly a proprietary
 format subject to vendor changes; certain artifact types may be missing
-or change without warning.
+or change without warning. Similarly, many prior synthesizers (including
+AKF) generate structured log messages during artifact generation, though
+this is rarely suitable for documenting the contents of a dataset.
 
 There has been extensive work in other fields towards developing a
 structured ontology that describes relationships and low-level details.
@@ -274,10 +300,20 @@ overall design of the library for future needs.
 \subsection{CASE integration in
 AKF}\label{case-integration-in-akf}
 
-These Python bindings can be integrated throughout artifact-generating
-libraries in AKF. There are two distinct points at which CASE artifacts
-can be generated and attached to a scenario - during scenario generation
-and after scenario generation.
+AKF's CASE Python bindings can be integrated throughout
+artifact-generating libraries in AKF. This can be seen in the opaque
+submodules in \autoref{fig:output-b}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-b.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-b}
+\end{figure}
+
+There are two distinct points at which CASE artifacts can be generated
+and attached to a scenario - during scenario generation and after
+scenario generation.
 
 Various functions and classes throughout the AKF core libraries and
 agent API accept an optional CASE bundle when invoked or instantiated.
@@ -290,15 +326,14 @@ object describing the page visit and add it to the bundle. This process
 can occur entirely within the host, allowing CASE-related logic to
 remain out of the agent where needed.
 
-However, recall from \textbf{some section} that using RPyC for agent
-communication allows AKF to pass complex objects between the agent and
-the host machine. This includes CASE bundles and objects, as well. For
-example, suppose that a CASE object must be made for a file downloaded
-from the internet that frequently changes location, size, and content.
-The resulting CASE object can only be accurately constructed using some
-form of agent-side analysis as the action occurs. Once instantiated, the
-object can be returned to the host machine to append to a larger CASE
-bundle.
+However, recall from \autoref{the-akf-agent} that using RPyC for agent communication allows AKF to pass
+complex objects between the agent and the host machine. This includes
+CASE bundles and objects, as well. For example, suppose that a CASE
+object must be made for a file downloaded from the internet that
+frequently changes location, size, and content. The resulting CASE
+object can only be accurately constructed using some form of agent-side
+analysis as the action occurs. Once instantiated, the object can be
+returned to the host machine to append to a larger CASE bundle.
 
 Some CASE ontology objects, such as those describing Windows prefetch
 files, are best constructed when disk images and other core outputs are

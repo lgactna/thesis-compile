@@ -23,9 +23,9 @@ Invoking commands in ForTrace
 \cite{gobelForTraceHolisticForensic2022} is straightforward; at the
 network level, commands are performed by issuing a simple string to the
 agent running on the target VM. For example, invoking a command to add a
-new user to the VM may look like the following:
+new user to the VM can be seen in \autoref{lst:b.2.a}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.a}, caption={Creating a new user through ForTrace agent commands}, language=Python]
 
 # From Demo.py
 
@@ -53,9 +53,10 @@ time.sleep(5)
 \end{lstlisting}
 
 The agent's main loop, which receives and interprets these commands, is
-also straightforward:
+also straightforward. A simplified version of the main loop is depicted
+in \autoref{lstb.2.b}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.b}, caption={Simplified ForTrace agent entry point}, language=Python]
 def main():
     # create logger
     logger = create_logger('guestAgent', logging.INFO)
@@ -89,11 +90,12 @@ The server, or ``virtual machine monitor'' (VMM), issues commands over
 TCP to a running instance of the agent on the VM. Each module under
 \passthrough{\lstinline!fortrace.application!} can be thought of as a
 coherent group of commands associated with a particular user application
-(such as Firefox or Thunderbird). Recall earlier how we found our
-\passthrough{\lstinline!userManagement!} application and invoked
-\passthrough{\lstinline!addUser!}:
+(such as Firefox or Thunderbird). Recall from \autoref{lst:b.2.a} how we
+found our \passthrough{\lstinline!userManagement!} application and
+invoked \passthrough{\lstinline!addUser!}; a simplified snippet is
+depicted in \autoref{lst:b.2.c}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.c}, caption={Minimal ForTrace application API usage}, language=Python]
 userManagement_obj = guest.application("userManagement", {})
 userManagement_obj.addUser("user1", "password")
 \end{lstlisting}
@@ -140,18 +142,23 @@ name of the module in camelcase. For example,
 \passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
 Discovering and getting handles to these classes is performed through
 string manipulation of the relevant application's module name, as shown
-in the example below:
+in \autoref{lst:b.2.d} (an abridged version of the
+\passthrough{\lstinline!Agent.do\_command()!} method):
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.d}, caption={Demonstration of ForTrace agent module discovery and command execution}, language=Python]
+def do_command(self, command):
+    com = command.split(" ")
+    package = com[0]
+    module = com[1]
 
-# Agent.do_command()
-
-# load class moduleGuestSide and moduleGuestSideCommands
-name = "fortrace." + package + "." + module
-self.logger.debug("module to load: " + name)
-mod = __import__(name, fromlist=[''])
-self.logger.debug("module '" + module + "' will be loaded via __import__")
-class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+    # load class moduleGuestSide and moduleGuestSideCommands
+    name = "fortrace." + package + "." + module
+    self.logger.debug("module to load: " + name)
+    mod = __import__(name, fromlist=[''])
+    self.logger.debug("module '" + module + "' will be loaded via __import__")
+    class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+    
+    class_commands.commands(self, app_obj, " ".join(com[1:]))
 \end{lstlisting}
 
 In the example above,
@@ -169,9 +176,10 @@ subclass effectively serves as the API for calling the associated
 functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
 running on the virtual machine. This subclass, along with the complete
 agent-side code, is stored in a single file. For example, the API and
-code for opening a Firefox browser window is as follows:
+code for opening a Firefox browser window can be seen in
+\autoref{lst:b.2.e}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.e}, caption={Sample ForTrace agent API implementation}, language=Python]
 class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
     def open(self, url):
         """Sends a command to open a webBrowserFirefox on the associated guest.
@@ -195,10 +203,11 @@ browser = WebBrowserFirefoxVmmSide()
 browser.open("google.com")
 \end{lstlisting}
 
-Calling the \passthrough{\lstinline!open()!} command from the host
-causes a message of the following form to be sent to the agent:
+Calling the \passthrough{\lstinline!open()!} command from the host sends
+a structured message to the agent, generally of the form seen in
+\autoref{lst:b.2.f}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.2.f}, caption={Sample ForTrace agent protocol message}, ]
 application webBrowserFirefox <window id> open Firefox <url>
 \end{lstlisting}
 
@@ -207,10 +216,10 @@ Upon receiving this message, the agent's main loop will search for the
 corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
 subclass. After any state management, the subclass will then search for
 a function called \passthrough{\lstinline!open!} in its corresponding
-\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
-below:
+\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented in
+\autoref{lst:b.2.g}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.g}, caption={Corresponding ForTrace agent-side call }, language=Python]
 class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
     def open(self, args):
         # docstring omitted
@@ -256,9 +265,9 @@ functions.
 For example, suppose we wanted to implement functionality similar to the
 ForTrace code above, allowing users to navigate to a webpage. An
 equivalent RPyC service and its corresponding API may be implemented as
-follows:
+seen in \autoref{lst:b.2.h}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.h}, caption={Minimal reimplementation of ForTrace module as an RPyC service}, language=Python]
 
 # Server-side code
 
@@ -307,12 +316,12 @@ regain the ability to use code completion and static linting tools.
 
 As described in \autoref{case-and-python-bindings}, CASE is defined using Turtle, allowing objects to be
 written in a human-readable text format. For example, the following set
-of triples describes an object called
+of triples in \autoref{lst:b.3.a} describes an object called
 \passthrough{\lstinline!ApplicationFacet!} with two properties,
 \passthrough{\lstinline!numberOfLaunches!} and
 \passthrough{\lstinline!applicationIdentifier!}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.3.a}, caption={Example CASE object definition for applications \cite{UcoProjectUCO2025}}, ]
 observable:ApplicationFacet
     a
         owl:Class ,
@@ -342,10 +351,11 @@ observable:ApplicationFacet
 
 An instance of an \passthrough{\lstinline!Application!} object may thus
 be represented in the JSON-LD format using the
-\passthrough{\lstinline!ApplicationFacet!} as follows (including
-attributes omitted above):
+\passthrough{\lstinline!ApplicationFacet!} as seen in
+\autoref{lst:b.3.b}, including some attributes omitted from the example
+in \autoref{lst:b.3.a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.3.b}, caption={Instantiated CASE application object as JSON-LD }, ]
 {
     "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
     "@type": "uco-observable:Application",
@@ -364,13 +374,13 @@ The CASE project provides official Python bindings
 \cite{CaseworkCASEMappingPython}. One notable implementation detail
 is that it stores all object attributes in a dictionary after
 instantiation. This can be seen in the example of an
-\passthrough{\lstinline!ApplicationFacet!} below. Intuitive usage
-suggests that the \passthrough{\lstinline!application\_identifier!}
-attribute is accessible through the \passthrough{\lstinline!facet!}
-object, but it must instead be accessed as a dictionary key with a
-non-intuitive name.
+\passthrough{\lstinline!ApplicationFacet!} in \autoref{lst:b.3.c} below.
+Intuitive usage suggests that the
+\passthrough{\lstinline!application\_identifier!} attribute is
+accessible through the \passthrough{\lstinline!facet!} object, but it
+must instead be accessed as a dictionary key with a non-intuitive name.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.c}, caption={Sample usage of official CASE Python bindings \cite{CaseworkCASEMappingPython}}, language=Python]
 facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
 
 # These attributes do not exist
@@ -389,9 +399,10 @@ app_facet['uco-observable:numberOfLaunches']
 AKF's Pydantic-based bindings greatly simplify the declaration of
 individual CASE objects while allowing typical attribute-based access.
 For example, AKF's declaration of
-\passthrough{\lstinline!ApplicationFacet!} can be seen below:
+\passthrough{\lstinline!ApplicationFacet!} is shown in
+\autoref{lst:b.3.d}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.d}, caption={Example of Pydantic-based CASE object declaration used by AKF}, language=Python]
 from typing import Optional
 
 from uco import core
@@ -407,9 +418,9 @@ the CASE project's existing Python bindings (excluding the docstring).
 
 A simple CASE bundle, representing the complete contents of a forensic
 scenario, can be constructed and exported to JSON-LD using AKF libraries
-as shown below:
+as shown in \autoref{lst:b.3.e}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.e}, caption={Demonstration of bundle serialization using the AKF Python bindings for CASE}, language=Python]
 from caselib import case, uco
 
 bundle = uco.core.Bundle(
@@ -446,9 +457,10 @@ themselves, was the primary focus of these works.
 
 \textbf{D-FET} uses a custom language that does not depend on any
 existing text-based languages
-\cite{williamCloudbasedDigitalForensics2011}:
+\cite{williamCloudbasedDigitalForensics2011}, as seen in the simple
+scenario in \autoref{lst:b.4.a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.4.a}, caption={Sample D-FET declarative scenario without events \cite{williamCloudbasedDigitalForensics2011}}, ]
 INSTANCE LOAD [Image=WINDOWS2003] 
 MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
 ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
@@ -466,10 +478,11 @@ image. This appears to create a host with \emph{predefined}, but not
 than simulating a user doing this over some period of time.
 
 To generate timed activity that can be placed on a timeline, D-FET
-allows users to add ``events.'' The sequence of events below directs the
-synthesizer to log in as a user, delete files, and log out.
+allows users to add ``events.'' The sequence of events in
+\autoref{lst:b.4.b} directs the synthesizer to log in as a user, delete
+files, and log out.
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.4.b}, caption={Extension of the D-FET declarative scenario with events \cite{williamCloudbasedDigitalForensics2011}}, ]
 INSTANCE LOAD [Image=WINDOWS2003] 
 MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
 ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
@@ -482,9 +495,10 @@ ACTIVITY EVENT [Event=LOGOUT; User=Fred ]
 \end{lstlisting}
 
 \textbf{SFX} uses an XML-based language with tags and attributes that
-are easily readable \cite{russellForensicImageDescription2012}:
+are easily readable \cite{russellForensicImageDescription2012}, as
+shown in \autoref{lst:b.4.c}:
 
-\begin{lstlisting}[language=XML]
+\begin{lstlisting}[label={lst:b.4.c}, caption={Sample SFX declarative scenario expressed as XML \cite{russellForensicImageDescription2012}}, language=XML]
 <disk size="512M" alignment="cylinder" diskid="0x12345678">
     <partition index="p1" hidden="0" size="48M" type="vfat">
         <expand archive="part1.zip" />

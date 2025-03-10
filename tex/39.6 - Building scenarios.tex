@@ -77,10 +77,10 @@ a \emph{declarative} strategy for scenario creation. The specifics of
 state management and execution are delegated to the synthesizer.
 
 Consider the following declarative SFX code taken from Russell et
-al.~shown in \autoref{lst:6.1}
+al.~shown in \autoref{lst:6.1a}
 \cite{russellForensicImageDescription2012}:
 
-\begin{lstlisting}[language=XML, label={lst:6.1}, caption={Sample SFX scenario code}]
+\begin{lstlisting}[label={lst:6.1a}, caption={Declarative SFX scenario with web browsing}, language=XML]
 <disk>
     <partition index="p1" hidden="0" size="48M" type="ntfs">
         <base os="windows7x64"/>
@@ -101,10 +101,10 @@ several code examples.)
 
 The same might be expressed in ForTrace
 \cite{gobelForTraceHolisticForensic2022} as shown in
-\autoref{lst:6.2}, excluding additional code required for ground truth
+\autoref{lst:6.1b}, excluding additional code required for ground truth
 and disk image generation:
 
-\begin{lstlisting}[language=Python, label={lst:6.2}, caption={Sample ForTrace scenario code \cite{gobelForTraceHolisticForensic2022}}]
+\begin{lstlisting}[label={lst:6.1b}, caption={Imperative ForTrace scenario with web browsing \cite{gobelForTraceHolisticForensic2022}}, language=Python]
 import logging
 
 from fortrace.core.vmm import Vmm
@@ -361,12 +361,11 @@ ForTrace \cite{gobelForTraceHolisticForensic2022} uses YAML to
 express scenarios in a declarative manner. ForTrace significantly
 influenced both the AKF declarative syntax itself and the implementation
 of the declarative interpreter, primarily because it was the sole
-synthesizer with both imperative and declarative support known to be
-open-source.
+open-source synthesizer with both imperative and declarative support.
+\autoref{lst:6.3.1a} demonstrates a simple example of a ForTrace
+declarative scenario:
 
-Below is a simple example of a ForTrace declarative scenario:
-
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.1a}, caption={Declarative ForTrace scenario with web browsing \cite{gobelForTraceHolisticForensic2022}}, ]
 name: haystack-example
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
@@ -467,11 +466,10 @@ that contain one or more \emph{plays}. Each play is simply a set of
 depends on a \emph{module} designed to achieve a single, specific
 outcome.
 
-The following is a simple Ansible playbook with a single play, derived
-from the official Ansible documentation for playbooks
-\cite{ansibleprojectcontributorsAnsiblePlaybooks}:
+An example of an Ansible playbook can be seen in \autoref{lst:6.3.1b},
+which contains a single play to configure an Apache webserver.
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.1b}, caption={Minimal Ansible playbook for updating an Apache server \cite{ansibleprojectcontributorsAnsiblePlaybooks}}, ]
 
 - name: Update web servers
   hosts: webservers
@@ -585,9 +583,10 @@ to be passed and gradually constructed across modules. This design
 allows for context-aware code generation and action execution.
 
 An example of a declarative AKF scenario, carrying out the same actions
-as the SFX, ForTrace, and imperative AKF script above, is shown below:
+as the SFX, ForTrace, and imperative AKF script above, can be seen in
+\autoref{lst:6.3.2a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
 name: sample scenario
 description: sample scenario
 author: lgactna

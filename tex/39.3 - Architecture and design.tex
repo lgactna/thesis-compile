@@ -104,7 +104,7 @@ These four pillars are reflected throughout the design of AKF's
 architecture, which is described in the following section and the
 following three chapters of this thesis.
 
-\section{Overview}\label{overview}
+\section{The AKF architecture}\label{the-akf-architecture}
 
 At a minimum, every synthesizer must fulfill these high-level
 requirements through some means, derived mainly from the criteria
@@ -137,24 +137,19 @@ developed by Horsman and Lyle
 \end{itemize}
 
 These four requirements are fulfilled by various mechanisms throughout
-AKF. A complete architecture diagram is shown in the figure below.
+AKF. Detailed architectural diagrams can be seen in \textbf{39.A -
+Architectural diagrams}, but a simplified diagram of AKF's top-level
+modules is shown in \autoref{fig:architecture-simple}.
 
-!\textbf{Architecture 2025-02-07 17.07.24.excalidraw}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-simple.png}
+\caption{Simplified AKF architecture
+diagram}\label{fig:architecture-simple}
+\end{figure}
 
-\begin{itemize}
-\tightlist
-\item[$\square$]
-  \#task move this to the appendix and break it up into individual
-  colored boxes . . . simply can't be placed here
-\end{itemize}
-
-This can be simplified to the following high-level diagram, which
-broadly groups AKF into a set of seven modules:
-
-!\textbf{Architecture 2025-02-08 16.35.46.excalidraw}
-
-At a high level, this architecture can be broken up into three distinct
-concepts, each covering a distinct chapter.
+AKF's seven top-level modules can be grouped into three distinct
+concepts, each covering a specific chapter.
 
 The first set of modules is responsible for artifact generation. This
 encompasses three major systems - a hypervisor and its associated SDK,

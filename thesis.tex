@@ -1486,7 +1486,7 @@ These four pillars are reflected throughout the design of AKF's
 architecture, which is described in the following section and the
 following three chapters of this thesis.
 
-\section{Overview}\label{overview}
+\section{The AKF architecture}\label{the-akf-architecture}
 
 At a minimum, every synthesizer must fulfill these high-level
 requirements through some means, derived mainly from the criteria
@@ -1519,24 +1519,19 @@ developed by Horsman and Lyle
 \end{itemize}
 
 These four requirements are fulfilled by various mechanisms throughout
-AKF. A complete architecture diagram is shown in the figure below.
+AKF. Detailed architectural diagrams can be seen in \textbf{39.A -
+Architectural diagrams}, but a simplified diagram of AKF's top-level
+modules is shown in \autoref{fig:architecture-simple}.
 
-!\textbf{Architecture 2025-02-07 17.07.24.excalidraw}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-simple.png}
+\caption{Simplified AKF architecture
+diagram}\label{fig:architecture-simple}
+\end{figure}
 
-\begin{itemize}
-\tightlist
-\item[$\square$]
-  \#task move this to the appendix and break it up into individual
-  colored boxes . . . simply can't be placed here
-\end{itemize}
-
-This can be simplified to the following high-level diagram, which
-broadly groups AKF into a set of seven modules:
-
-!\textbf{Architecture 2025-02-08 16.35.46.excalidraw}
-
-At a high level, this architecture can be broken up into three distinct
-concepts, each covering a distinct chapter.
+AKF's seven top-level modules can be grouped into three distinct
+concepts, each covering a specific chapter.
 
 The first set of modules is responsible for artifact generation. This
 encompasses three major systems - a hypervisor and its associated SDK,
@@ -2070,7 +2065,7 @@ not preclude the ability to write convenience methods for more complex
 actions requiring the Playwright object.
 
 The list of applications supported by the AKF Windows agent is described
-in \textbf{the table} below.
+in \autoref{table:akf-applications} below.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0376}}
@@ -2107,7 +2102,7 @@ concealing them from network captures on the NAT adapter.
 \section{Physical artifact
 generation}\label{physical-artifact-generation}
 
-\subsection{Overview}\label{overview}
+\subsection{Background}\label{background}
 
 Physical artifact creation encompasses any technique in which
 virtualization of an operating system is not used to generate artifacts.
@@ -2376,10 +2371,24 @@ formats.
 \chapter{Output and validation}\label{chapter-five}
 
 This chapter addresses the mechanisms through which AKF generates and
-documents its outputs, depicted in the partial architectural diagram
-below.
+documents its outputs, as seen in \autoref{fig:output-simple}. More
+specifically, this covers the modules and submodules seen in
+\autoref{fig:output-full}. The submodules for the \emph{virtual machine}
+and \emph{action automation library} have been omitted for brevity.
 
-!\textbf{39.5 - Output and validation 2025-02-08 17.13.11.excalidraw}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-simple.png}
+\caption{Simplified AKF architecture diagram with output and validation
+modules highlighted}\label{fig:output-simple}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-full.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-full}
+\end{figure}
 
 Whether generating artifacts through physical or logical means, these
 artifacts must ultimately be exported and documented. In most cases,
@@ -2485,6 +2494,16 @@ example, a user can pause an AKF script until instructed to continue;
 during this time, the user can manually run FTK Imager to extract the
 contents of RAM.
 
+The logic for generating physical outputs is contained in the opaque
+submodules seen in \autoref{fig:output-a}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-a.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-a}
+\end{figure}
+
 \section{Metadata and ground
 truth}\label{metadata-and-ground-truth}
 
@@ -2526,7 +2545,9 @@ content and does not necessarily contain equivalent information for the
 same analyzed disk image using default settings. This is the primary
 challenge with using an existing format, particularly a proprietary
 format subject to vendor changes; certain artifact types may be missing
-or change without warning.
+or change without warning. Similarly, many prior synthesizers (including
+AKF) generate structured log messages during artifact generation, though
+this is rarely suitable for documenting the contents of a dataset.
 
 There has been extensive work in other fields towards developing a
 structured ontology that describes relationships and low-level details.
@@ -2651,10 +2672,20 @@ overall design of the library for future needs.
 \subsection{CASE integration in
 AKF}\label{case-integration-in-akf}
 
-These Python bindings can be integrated throughout artifact-generating
-libraries in AKF. There are two distinct points at which CASE artifacts
-can be generated and attached to a scenario - during scenario generation
-and after scenario generation.
+AKF's CASE Python bindings can be integrated throughout
+artifact-generating libraries in AKF. This can be seen in the opaque
+submodules in \autoref{fig:output-b}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{output-and-validation-b.png}
+\caption{Abridged diagram of AKF modules related to output and
+validation}\label{fig:output-b}
+\end{figure}
+
+There are two distinct points at which CASE artifacts can be generated
+and attached to a scenario - during scenario generation and after
+scenario generation.
 
 Various functions and classes throughout the AKF core libraries and
 agent API accept an optional CASE bundle when invoked or instantiated.
@@ -2667,15 +2698,14 @@ object describing the page visit and add it to the bundle. This process
 can occur entirely within the host, allowing CASE-related logic to
 remain out of the agent where needed.
 
-However, recall from \textbf{some section} that using RPyC for agent
-communication allows AKF to pass complex objects between the agent and
-the host machine. This includes CASE bundles and objects, as well. For
-example, suppose that a CASE object must be made for a file downloaded
-from the internet that frequently changes location, size, and content.
-The resulting CASE object can only be accurately constructed using some
-form of agent-side analysis as the action occurs. Once instantiated, the
-object can be returned to the host machine to append to a larger CASE
-bundle.
+However, recall from \autoref{the-akf-agent} that using RPyC for agent communication allows AKF to pass
+complex objects between the agent and the host machine. This includes
+CASE bundles and objects, as well. For example, suppose that a CASE
+object must be made for a file downloaded from the internet that
+frequently changes location, size, and content. The resulting CASE
+object can only be accurately constructed using some form of agent-side
+analysis as the action occurs. Once instantiated, the object can be
+returned to the host machine to append to a larger CASE bundle.
 
 Some CASE ontology objects, such as those describing Windows prefetch
 files, are best constructed when disk images and other core outputs are
@@ -2929,10 +2959,10 @@ a \emph{declarative} strategy for scenario creation. The specifics of
 state management and execution are delegated to the synthesizer.
 
 Consider the following declarative SFX code taken from Russell et
-al.~shown in \autoref{lst:6.1}
+al.~shown in \autoref{lst:6.1a}
 \cite{russellForensicImageDescription2012}:
 
-\begin{lstlisting}[language=XML, label={lst:6.1}, caption={Sample SFX scenario code}]
+\begin{lstlisting}[label={lst:6.1a}, caption={Declarative SFX scenario with web browsing}, language=XML]
 <disk>
     <partition index="p1" hidden="0" size="48M" type="ntfs">
         <base os="windows7x64"/>
@@ -2953,10 +2983,10 @@ several code examples.)
 
 The same might be expressed in ForTrace
 \cite{gobelForTraceHolisticForensic2022} as shown in
-\autoref{lst:6.2}, excluding additional code required for ground truth
+\autoref{lst:6.1b}, excluding additional code required for ground truth
 and disk image generation:
 
-\begin{lstlisting}[language=Python, label={lst:6.2}, caption={Sample ForTrace scenario code \cite{gobelForTraceHolisticForensic2022}}]
+\begin{lstlisting}[label={lst:6.1b}, caption={Imperative ForTrace scenario with web browsing \cite{gobelForTraceHolisticForensic2022}}, language=Python]
 import logging
 
 from fortrace.core.vmm import Vmm
@@ -3213,12 +3243,11 @@ ForTrace \cite{gobelForTraceHolisticForensic2022} uses YAML to
 express scenarios in a declarative manner. ForTrace significantly
 influenced both the AKF declarative syntax itself and the implementation
 of the declarative interpreter, primarily because it was the sole
-synthesizer with both imperative and declarative support known to be
-open-source.
+open-source synthesizer with both imperative and declarative support.
+\autoref{lst:6.3.1a} demonstrates a simple example of a ForTrace
+declarative scenario:
 
-Below is a simple example of a ForTrace declarative scenario:
-
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.1a}, caption={Declarative ForTrace scenario with web browsing \cite{gobelForTraceHolisticForensic2022}}, ]
 name: haystack-example
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
@@ -3319,11 +3348,10 @@ that contain one or more \emph{plays}. Each play is simply a set of
 depends on a \emph{module} designed to achieve a single, specific
 outcome.
 
-The following is a simple Ansible playbook with a single play, derived
-from the official Ansible documentation for playbooks
-\cite{ansibleprojectcontributorsAnsiblePlaybooks}:
+An example of an Ansible playbook can be seen in \autoref{lst:6.3.1b},
+which contains a single play to configure an Apache webserver.
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.1b}, caption={Minimal Ansible playbook for updating an Apache server \cite{ansibleprojectcontributorsAnsiblePlaybooks}}, ]
 
 - name: Update web servers
   hosts: webservers
@@ -3437,9 +3465,10 @@ to be passed and gradually constructed across modules. This design
 allows for context-aware code generation and action execution.
 
 An example of a declarative AKF scenario, carrying out the same actions
-as the SFX, ForTrace, and imperative AKF script above, is shown below:
+as the SFX, ForTrace, and imperative AKF script above, can be seen in
+\autoref{lst:6.3.2a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
 name: sample scenario
 description: sample scenario
 author: lgactna
@@ -4005,7 +4034,61 @@ datasets.
 
 \chapter{Architectural diagrams}\label{appendix-a}
 
+\autoref{fig:mini-full} is a complete representation of the AKF
+architecture, excluding labels. The remaining diagrams in this appendix
+chapter focus on individual modules in greater detail;
+\autoref{fig:mini-full} is intended to help the reader understand the
+relationships between individual sub-diagrams.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{mini-architecture-full.png}
+\caption{Complete diagram of AKF modules without
+labels}\label{fig:mini-full}
+\end{figure}
+
+Modules related to scenario construction, as described in \autoref{chapter-six}, are depicted in \autoref{fig:architecture-full-a}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-a.png}
+\caption{Detailed diagram of AKF modules related to scenario
+construction}\label{fig:architecture-full-a}
+\end{figure}
+
+The action automation library, described throughout \autoref{chapter-four}, is depicted in \autoref{fig:architecture-full-b}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-b.png}
+\caption{Detailed diagram of \passthrough{\lstinline!akflib!} and
+related modules}\label{fig:architecture-full-b}
+\end{figure}
+
+The output and validation library, described throughout \autoref{chapter-five}, is depicted in
+\autoref{fig:architecture-full-c}. Note that this is distinct from
+\autoref{fig:output-full}, which includes various virtual machine
+outputs due to their role in the chapter's discussion.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-c.png}
+\caption{Detailed diagram of AKF modules responsible for output and
+validation}\label{fig:architecture-full-c}
+\end{figure}
+
+Finally, the virtualized environment and its agent, also described
+throughout \autoref{chapter-four}, is depicted in
+\autoref{fig:architecture-full-d}. Note that some elements depicted in
+this figure are also described in \autoref{chapter-five}
+and \autoref{chapter-six}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-d.png}
+\caption{Detailed diagram of AKF's virtualized
+environment}\label{fig:architecture-full-d}
+\end{figure}
 
 \chapter{Code samples}\label{appendix-b}
 
@@ -4034,9 +4117,9 @@ Invoking commands in ForTrace
 \cite{gobelForTraceHolisticForensic2022} is straightforward; at the
 network level, commands are performed by issuing a simple string to the
 agent running on the target VM. For example, invoking a command to add a
-new user to the VM may look like the following:
+new user to the VM can be seen in \autoref{lst:b.2.a}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.a}, caption={Creating a new user through ForTrace agent commands}, language=Python]
 
 # From Demo.py
 
@@ -4064,9 +4147,10 @@ time.sleep(5)
 \end{lstlisting}
 
 The agent's main loop, which receives and interprets these commands, is
-also straightforward:
+also straightforward. A simplified version of the main loop is depicted
+in \autoref{lstb.2.b}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.b}, caption={Simplified ForTrace agent entry point}, language=Python]
 def main():
     # create logger
     logger = create_logger('guestAgent', logging.INFO)
@@ -4100,11 +4184,12 @@ The server, or ``virtual machine monitor'' (VMM), issues commands over
 TCP to a running instance of the agent on the VM. Each module under
 \passthrough{\lstinline!fortrace.application!} can be thought of as a
 coherent group of commands associated with a particular user application
-(such as Firefox or Thunderbird). Recall earlier how we found our
-\passthrough{\lstinline!userManagement!} application and invoked
-\passthrough{\lstinline!addUser!}:
+(such as Firefox or Thunderbird). Recall from \autoref{lst:b.2.a} how we
+found our \passthrough{\lstinline!userManagement!} application and
+invoked \passthrough{\lstinline!addUser!}; a simplified snippet is
+depicted in \autoref{lst:b.2.c}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.c}, caption={Minimal ForTrace application API usage}, language=Python]
 userManagement_obj = guest.application("userManagement", {})
 userManagement_obj.addUser("user1", "password")
 \end{lstlisting}
@@ -4151,18 +4236,23 @@ name of the module in camelcase. For example,
 \passthrough{\lstinline!UserManagementVmmSideCommands!}, and so on.
 Discovering and getting handles to these classes is performed through
 string manipulation of the relevant application's module name, as shown
-in the example below:
+in \autoref{lst:b.2.d} (an abridged version of the
+\passthrough{\lstinline!Agent.do\_command()!} method):
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.d}, caption={Demonstration of ForTrace agent module discovery and command execution}, language=Python]
+def do_command(self, command):
+    com = command.split(" ")
+    package = com[0]
+    module = com[1]
 
-# Agent.do_command()
-
-# load class moduleGuestSide and moduleGuestSideCommands
-name = "fortrace." + package + "." + module
-self.logger.debug("module to load: " + name)
-mod = __import__(name, fromlist=[''])
-self.logger.debug("module '" + module + "' will be loaded via __import__")
-class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+    # load class moduleGuestSide and moduleGuestSideCommands
+    name = "fortrace." + package + "." + module
+    self.logger.debug("module to load: " + name)
+    mod = __import__(name, fromlist=[''])
+    self.logger.debug("module '" + module + "' will be loaded via __import__")
+    class_commands = getattr(mod, module[0].upper() + module[1:] + 'GuestSideCommands')
+    
+    class_commands.commands(self, app_obj, " ".join(com[1:]))
 \end{lstlisting}
 
 In the example above,
@@ -4180,9 +4270,10 @@ subclass effectively serves as the API for calling the associated
 functions in the \passthrough{\lstinline!ApplicationGuestSide!} class
 running on the virtual machine. This subclass, along with the complete
 agent-side code, is stored in a single file. For example, the API and
-code for opening a Firefox browser window is as follows:
+code for opening a Firefox browser window can be seen in
+\autoref{lst:b.2.e}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.e}, caption={Sample ForTrace agent API implementation}, language=Python]
 class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
     def open(self, url):
         """Sends a command to open a webBrowserFirefox on the associated guest.
@@ -4206,10 +4297,11 @@ browser = WebBrowserFirefoxVmmSide()
 browser.open("google.com")
 \end{lstlisting}
 
-Calling the \passthrough{\lstinline!open()!} command from the host
-causes a message of the following form to be sent to the agent:
+Calling the \passthrough{\lstinline!open()!} command from the host sends
+a structured message to the agent, generally of the form seen in
+\autoref{lst:b.2.f}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.2.f}, caption={Sample ForTrace agent protocol message}, ]
 application webBrowserFirefox <window id> open Firefox <url>
 \end{lstlisting}
 
@@ -4218,10 +4310,10 @@ Upon receiving this message, the agent's main loop will search for the
 corresponding \passthrough{\lstinline!ApplicationGuestSideCommands!}
 subclass. After any state management, the subclass will then search for
 a function called \passthrough{\lstinline!open!} in its corresponding
-\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented
-below:
+\passthrough{\lstinline!ApplicationGuestSide!} class, as implemented in
+\autoref{lst:b.2.g}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.g}, caption={Corresponding ForTrace agent-side call }, language=Python]
 class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
     def open(self, args):
         # docstring omitted
@@ -4267,9 +4359,9 @@ functions.
 For example, suppose we wanted to implement functionality similar to the
 ForTrace code above, allowing users to navigate to a webpage. An
 equivalent RPyC service and its corresponding API may be implemented as
-follows:
+seen in \autoref{lst:b.2.h}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.2.h}, caption={Minimal reimplementation of ForTrace module as an RPyC service}, language=Python]
 
 # Server-side code
 
@@ -4318,12 +4410,12 @@ regain the ability to use code completion and static linting tools.
 
 As described in \autoref{case-and-python-bindings}, CASE is defined using Turtle, allowing objects to be
 written in a human-readable text format. For example, the following set
-of triples describes an object called
+of triples in \autoref{lst:b.3.a} describes an object called
 \passthrough{\lstinline!ApplicationFacet!} with two properties,
 \passthrough{\lstinline!numberOfLaunches!} and
 \passthrough{\lstinline!applicationIdentifier!}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.3.a}, caption={Example CASE object definition for applications \cite{UcoProjectUCO2025}}, ]
 observable:ApplicationFacet
     a
         owl:Class ,
@@ -4353,10 +4445,11 @@ observable:ApplicationFacet
 
 An instance of an \passthrough{\lstinline!Application!} object may thus
 be represented in the JSON-LD format using the
-\passthrough{\lstinline!ApplicationFacet!} as follows (including
-attributes omitted above):
+\passthrough{\lstinline!ApplicationFacet!} as seen in
+\autoref{lst:b.3.b}, including some attributes omitted from the example
+in \autoref{lst:b.3.a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.3.b}, caption={Instantiated CASE application object as JSON-LD }, ]
 {
     "@id": "kb:dcec8d09-a8bc-4b7c-93ab-16c7b363d48b",
     "@type": "uco-observable:Application",
@@ -4375,13 +4468,13 @@ The CASE project provides official Python bindings
 \cite{CaseworkCASEMappingPython}. One notable implementation detail
 is that it stores all object attributes in a dictionary after
 instantiation. This can be seen in the example of an
-\passthrough{\lstinline!ApplicationFacet!} below. Intuitive usage
-suggests that the \passthrough{\lstinline!application\_identifier!}
-attribute is accessible through the \passthrough{\lstinline!facet!}
-object, but it must instead be accessed as a dictionary key with a
-non-intuitive name.
+\passthrough{\lstinline!ApplicationFacet!} in \autoref{lst:b.3.c} below.
+Intuitive usage suggests that the
+\passthrough{\lstinline!application\_identifier!} attribute is
+accessible through the \passthrough{\lstinline!facet!} object, but it
+must instead be accessed as a dictionary key with a non-intuitive name.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.c}, caption={Sample usage of official CASE Python bindings \cite{CaseworkCASEMappingPython}}, language=Python]
 facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
 
 # These attributes do not exist
@@ -4400,9 +4493,10 @@ app_facet['uco-observable:numberOfLaunches']
 AKF's Pydantic-based bindings greatly simplify the declaration of
 individual CASE objects while allowing typical attribute-based access.
 For example, AKF's declaration of
-\passthrough{\lstinline!ApplicationFacet!} can be seen below:
+\passthrough{\lstinline!ApplicationFacet!} is shown in
+\autoref{lst:b.3.d}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.d}, caption={Example of Pydantic-based CASE object declaration used by AKF}, language=Python]
 from typing import Optional
 
 from uco import core
@@ -4418,9 +4512,9 @@ the CASE project's existing Python bindings (excluding the docstring).
 
 A simple CASE bundle, representing the complete contents of a forensic
 scenario, can be constructed and exported to JSON-LD using AKF libraries
-as shown below:
+as shown in \autoref{lst:b.3.e}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[label={lst:b.3.e}, caption={Demonstration of bundle serialization using the AKF Python bindings for CASE}, language=Python]
 from caselib import case, uco
 
 bundle = uco.core.Bundle(
@@ -4457,9 +4551,10 @@ themselves, was the primary focus of these works.
 
 \textbf{D-FET} uses a custom language that does not depend on any
 existing text-based languages
-\cite{williamCloudbasedDigitalForensics2011}:
+\cite{williamCloudbasedDigitalForensics2011}, as seen in the simple
+scenario in \autoref{lst:b.4.a}:
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.4.a}, caption={Sample D-FET declarative scenario without events \cite{williamCloudbasedDigitalForensics2011}}, ]
 INSTANCE LOAD [Image=WINDOWS2003] 
 MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
 ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
@@ -4477,10 +4572,11 @@ image. This appears to create a host with \emph{predefined}, but not
 than simulating a user doing this over some period of time.
 
 To generate timed activity that can be placed on a timeline, D-FET
-allows users to add ``events.'' The sequence of events below directs the
-synthesizer to log in as a user, delete files, and log out.
+allows users to add ``events.'' The sequence of events in
+\autoref{lst:b.4.b} directs the synthesizer to log in as a user, delete
+files, and log out.
 
-\begin{lstlisting}
+\begin{lstlisting}[label={lst:b.4.b}, caption={Extension of the D-FET declarative scenario with events \cite{williamCloudbasedDigitalForensics2011}}, ]
 INSTANCE LOAD [Image=WINDOWS2003] 
 MOUNT INSTANCE [Disk=STANDARDDISK] AS [Partition="c"] 
 ACTIVITY LOAD [Number=12] [Type=JPEG IMAGES; Class=DRUGS] 
@@ -4493,9 +4589,10 @@ ACTIVITY EVENT [Event=LOGOUT; User=Fred ]
 \end{lstlisting}
 
 \textbf{SFX} uses an XML-based language with tags and attributes that
-are easily readable \cite{russellForensicImageDescription2012}:
+are easily readable \cite{russellForensicImageDescription2012}, as
+shown in \autoref{lst:b.4.c}:
 
-\begin{lstlisting}[language=XML]
+\begin{lstlisting}[label={lst:b.4.c}, caption={Sample SFX declarative scenario expressed as XML \cite{russellForensicImageDescription2012}}, language=XML]
 <disk size="512M" alignment="cylinder" diskid="0x12345678">
     <partition index="p1" hidden="0" size="48M" type="vfat">
         <expand archive="part1.zip" />
