@@ -2,22 +2,14 @@
 architecture, excluding labels. The remaining diagrams in this appendix
 chapter focus on individual modules in greater detail;
 \autoref{fig:mini-full} is intended to help the reader understand the
-relationships between individual sub-diagrams.
+relationships between individual sub-diagrams, which contain the labels
+omitted from this figure.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{mini-architecture-full.png}
 \caption{Complete diagram of AKF modules without
 labels}\label{fig:mini-full}
-\end{figure}
-
-Modules related to scenario construction, as described in \autoref{chapter-six}, are depicted in \autoref{fig:architecture-full-a}.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1\linewidth]{architecture-full-a.png}
-\caption{Detailed diagram of AKF modules related to scenario
-construction}\label{fig:architecture-full-a}
 \end{figure}
 
 The action automation library, described throughout \autoref{chapter-four}, is depicted in \autoref{fig:architecture-full-b}.
@@ -27,6 +19,19 @@ The action automation library, described throughout \autoref{chapter-four}, is d
 \includegraphics[width=1\linewidth]{architecture-full-b.png}
 \caption{Detailed diagram of \passthrough{\lstinline!akflib!} and
 related modules}\label{fig:architecture-full-b}
+\end{figure}
+
+The virtualized environment and its agent, also described throughout
+\autoref{chapter-four}, is depicted in
+\autoref{fig:architecture-full-d}. Note that some elements depicted in
+this figure are also described in \autoref{chapter-five}
+and \autoref{chapter-six}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-d.png}
+\caption{Detailed diagram of AKF's virtualized
+environment}\label{fig:architecture-full-d}
 \end{figure}
 
 The output and validation library, described throughout \autoref{chapter-five}, is depicted in
@@ -41,15 +46,13 @@ outputs due to their role in the chapter's discussion.
 validation}\label{fig:architecture-full-c}
 \end{figure}
 
-Finally, the virtualized environment and its agent, also described
-throughout \autoref{chapter-four}, is depicted in
-\autoref{fig:architecture-full-d}. Note that some elements depicted in
-this figure are also described in \autoref{chapter-five}
-and \autoref{chapter-six}.
+Finally, modules related to scenario construction, as described in
+\autoref{chapter-six}, are depicted in
+\autoref{fig:architecture-full-a}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\linewidth]{architecture-full-d.png}
-\caption{Detailed diagram of AKF's virtualized
-environment}\label{fig:architecture-full-d}
+\includegraphics[width=1\linewidth]{architecture-full-a.png}
+\caption{Detailed diagram of AKF modules related to scenario
+construction}\label{fig:architecture-full-a}
 \end{figure}

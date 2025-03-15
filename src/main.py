@@ -11,7 +11,7 @@ SOURCE_MD_DIR = Path(
 SOURCE_ASSET_DIR = SOURCE_MD_DIR / "Assets"
 
 # absolute path to the bibliography
-BIBLIOGRAPHY_PATH = Path("./Forensic Image Synthesis.bib")
+BIBLIOGRAPHY_PATH = Path("./thesis_bib.bib")
 
 # absolute path to the directory where the markdown files will be copied
 TARGET_MD_DIR = Path("./md")
@@ -148,6 +148,8 @@ def substitute_labels(tex_dir: Path) -> dict:
         "39.7 - Evaluation and observations": "chapter-seven",
         "39.8 - Future work": "chapter-eight",
         "39.9 - Conclusion": "chapter-nine",
+        "39.A - Architectural diagrams": "appendix-a",
+        "39.B - Code samples": "appendix-b",
     }
 
     for tex_file in tex_dir.glob("*.tex"):

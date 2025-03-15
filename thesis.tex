@@ -29,8 +29,9 @@
 \usepackage{pdfpages}
 \usepackage[linesnumbered,lined,boxruled,commentsnumbered]{algorithm2e}
 \usepackage[acronym]{glossaries}
-\graphicspath{{Figures/}}
 \usepackage{attachfile}
+
+\graphicspath{{assets/}}
 
 % Below are ones I addded
 
@@ -122,7 +123,7 @@
 
 
 \makeglossaries
-\loadglsentries{lloyd_gonzales_thesis_glossary.tex}
+\loadglsentries{thesis_glossary.tex}
 
 \bibliographystyle{IEEEtran}
 
@@ -2379,8 +2380,8 @@ and \emph{action automation library} have been omitted for brevity.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{output-and-validation-simple.png}
-\caption{Simplified AKF architecture diagram with output and validation
-modules highlighted}\label{fig:output-simple}
+\caption{Simplified AKF architecture diagram for output and validation
+modules}\label{fig:output-simple}
 \end{figure}
 
 \begin{figure}[h]
@@ -2500,8 +2501,8 @@ submodules seen in \autoref{fig:output-a}.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{output-and-validation-a.png}
-\caption{Abridged diagram of AKF modules related to output and
-validation}\label{fig:output-a}
+\caption{Diagram of AKF modules related to physical output
+generation}\label{fig:output-a}
 \end{figure}
 
 \section{Metadata and ground
@@ -2679,8 +2680,8 @@ submodules in \autoref{fig:output-b}.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{output-and-validation-b.png}
-\caption{Abridged diagram of AKF modules related to output and
-validation}\label{fig:output-b}
+\caption{Diagram of AKF modules related to CASE object
+generation}\label{fig:output-b}
 \end{figure}
 
 There are two distinct points at which CASE artifacts can be generated
@@ -4025,7 +4026,7 @@ datasets.
 
 % \nocite{*}
 \singlespacing
-\bibliography{lloyd_gonzales_thesis}
+\bibliography{thesis_bib}
 
 \doublespacing
 \appendix
@@ -4038,22 +4039,14 @@ datasets.
 architecture, excluding labels. The remaining diagrams in this appendix
 chapter focus on individual modules in greater detail;
 \autoref{fig:mini-full} is intended to help the reader understand the
-relationships between individual sub-diagrams.
+relationships between individual sub-diagrams, which contain the labels
+omitted from this figure.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{mini-architecture-full.png}
 \caption{Complete diagram of AKF modules without
 labels}\label{fig:mini-full}
-\end{figure}
-
-Modules related to scenario construction, as described in \autoref{chapter-six}, are depicted in \autoref{fig:architecture-full-a}.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=1\linewidth]{architecture-full-a.png}
-\caption{Detailed diagram of AKF modules related to scenario
-construction}\label{fig:architecture-full-a}
 \end{figure}
 
 The action automation library, described throughout \autoref{chapter-four}, is depicted in \autoref{fig:architecture-full-b}.
@@ -4063,6 +4056,19 @@ The action automation library, described throughout \autoref{chapter-four}, is d
 \includegraphics[width=1\linewidth]{architecture-full-b.png}
 \caption{Detailed diagram of \passthrough{\lstinline!akflib!} and
 related modules}\label{fig:architecture-full-b}
+\end{figure}
+
+The virtualized environment and its agent, also described throughout
+\autoref{chapter-four}, is depicted in
+\autoref{fig:architecture-full-d}. Note that some elements depicted in
+this figure are also described in \autoref{chapter-five}
+and \autoref{chapter-six}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{architecture-full-d.png}
+\caption{Detailed diagram of AKF's virtualized
+environment}\label{fig:architecture-full-d}
 \end{figure}
 
 The output and validation library, described throughout \autoref{chapter-five}, is depicted in
@@ -4077,17 +4083,15 @@ outputs due to their role in the chapter's discussion.
 validation}\label{fig:architecture-full-c}
 \end{figure}
 
-Finally, the virtualized environment and its agent, also described
-throughout \autoref{chapter-four}, is depicted in
-\autoref{fig:architecture-full-d}. Note that some elements depicted in
-this figure are also described in \autoref{chapter-five}
-and \autoref{chapter-six}.
+Finally, modules related to scenario construction, as described in
+\autoref{chapter-six}, are depicted in
+\autoref{fig:architecture-full-a}.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\linewidth]{architecture-full-d.png}
-\caption{Detailed diagram of AKF's virtualized
-environment}\label{fig:architecture-full-d}
+\includegraphics[width=1\linewidth]{architecture-full-a.png}
+\caption{Detailed diagram of AKF modules related to scenario
+construction}\label{fig:architecture-full-a}
 \end{figure}
 
 \chapter{Code samples}\label{appendix-b}
@@ -4638,9 +4642,14 @@ Finally, the work of Yannikos et al.~is particularly notable because it
 appears to be fully GUI-based, expecting users to visually construct
 Markov chains to define scenarios
 \cite{yannikosDataCorporaDigital2014}. An example scenario from
-their publication can be seen in Figure \textbf{unknown}:
+their publication can be seen in Figure \autoref{fig:yannikos-gui}:
 
-!\textbf{Pasted image 20250207182912.png}
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{yannikos.png}
+\caption{GUI-based scenario declaration from Yannikos et al.
+\cite{yannikosDataCorporaDigital2014}}\label{fig:yannikos-gui}
+\end{figure}
 
 Although details are relatively limited, each node appears to be a
 distinct action that can be automated. Individual nodes accept
