@@ -5,6 +5,27 @@ chapter focus on individual modules in greater detail;
 relationships between individual sub-diagrams, which contain the labels
 omitted from this figure.
 
+The following conventions are used for all architectural figures
+throughout this thesis, including those below:
+
+\begin{itemize}
+\tightlist
+\item
+  Elements with a \textbf{solid border} refer to AKF submodules, which
+  contain processing logic.
+\item
+  Elements with a \textbf{dotted border} refer to inputs, such as
+  scripts and images, that should be used to construct a dataset.
+\item
+  Elements with a \textbf{dashed border} refer to outputs, such as disk
+  images and memory dumps, that should be included with a complete
+  dataset.
+\end{itemize}
+
+In general, colored boxes refer to a distinct module. The sole exception
+is the \emph{translation unit} (colored green), which is distinctly
+colored from other submodules due to its complexity.
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{mini-architecture-full.png}
@@ -24,8 +45,8 @@ related modules}\label{fig:architecture-full-b}
 The virtualized environment and its agent, also described throughout
 \autoref{chapter-four}, is depicted in
 \autoref{fig:architecture-full-d}. Note that some elements depicted in
-this figure are also described in \autoref{chapter-five}
-and \autoref{chapter-six}.
+this figure are described in \autoref{chapter-five} and
+\autoref{chapter-six}.
 
 \begin{figure}[h]
 \centering

@@ -439,6 +439,63 @@ with open("example.jsonld", "wt+") as f:
     f.write(json.dumps(data, indent=2))
 \end{lstlisting}
 
+Although the UCO/CASE 2.0 Python bindings developed as part of AKF
+significantly improve usability and flexibility over the existing CASE
+bindings, several limitations of the library do not make it fully
+compliant with the CASE ontology.
+
+In particular, the Python bindings aim to keep object definitions as
+simple as possible, preferring native Python types where possible. This
+means that some information from the ontology is lost when converting
+them to their respective Python class. Several examples include:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Datatypes}: Many XSD datatypes are not equivalent between the
+  turtle files and Python bindings. For example, the arbitrary-precision
+  \passthrough{\lstinline!xsd:decimal!} type is represented as a native
+  Python float, but is also written out as a native JSON float on
+  serialization to JSON-LD. The resulting datatype is
+  \passthrough{\lstinline!xsd:float!}, which may cause information to be
+  lost.
+\item
+  \textbf{Vocabularies}: Many CASE ``vocabularies'', a datatype in which
+  a field's value should be chosen from a fixed set of values, are
+  correctly converted to native Python string enumerations. However, the
+  vocabulary datatype is not serialized, only the value; thus, the
+  resulting JSON-LD makes no indication that the selected value is
+  actually from the vocabulary datatype, even if the value itself is
+  inside the vocabulary set. For example, if the string ``MD5'' is a
+  member of the \passthrough{\lstinline!HashNameVocab!} datatype, our
+  Python bindings serialize this as a standard
+  \passthrough{\lstinline!xsd:string!}, not
+  \passthrough{\lstinline!vocabulary:HashNameVocab!}.
+\item
+  \textbf{Field names}: Some fields of CASE objects, such as the
+  \passthrough{\lstinline!from!} field of an email message, are reserved
+  Python keywords that may not be used as the name of a variable. To
+  solve this, we append an underscore to any fields that would violate
+  this rule when automatically generating Pydantic classes from the
+  Turtle RDF files. However, the original name of the field is not
+  preserved when serializing objects; although the simplest fix is to
+  remove trailing underscores when serializing, a more robust solution
+  may be to attach the ``serialized name'' to the Pydantic field.
+\item
+  \textbf{Dangling references}: There are no built-in mechanisms to
+  ensure that an object is serialized in its ``full'' form at least
+  once; that is, a user could place references to an object identifier
+  throughout the document without adding the object being referred to.
+\end{itemize}
+
+Additionally, one major feature of CASE/UCO is not currently supported.
+CASE allows objects to be of multiple types at once, such as a disk
+image marked as both an \passthrough{\lstinline!observable:File!} and an
+\passthrough{\lstinline!observable:Image!}. Python types can inherit
+from multiple types, but a single object may not be multiple types at
+once; it would be necessary to create a ``wrapper'' type that
+encompasses both types and correctly serializes these types as expected.
+
 \section{Historical declarative
 syntaxes}\label{historical-declarative-syntaxes}
 
