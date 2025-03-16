@@ -36,17 +36,23 @@ approaches to artifact generation, as partly described by Scanlon et al.
 
 These three approaches are not mutually exclusive within a single
 synthesizer, though many prior synthesizers have used only one approach
-to generate artifacts. \autoref{table:prior-techniques} below denotes
-the approaches used by each of the synthesizers previously discussed.
-Where source code is unavailable, a best effort was made to identify the
+to generate artifacts. \autoref{tbl:prior-techniques} below denotes the
+approaches used by each of the synthesizers previously discussed. Where
+source code is unavailable, a best effort was made to identify the
 approach used by a particular synthesizer based on its published paper,
 if one exists; otherwise, the entire row contains question marks.
 
+
+{
+\small % 10pt font
+\setstretch{1} % Single spacing
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4485}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2938}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1392}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1186}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
+@{}}
+\caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques} \\
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Synthesizer
@@ -92,6 +98,8 @@ No & Yes (Python agent) \\
 \textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
 No & No & Yes (Python agent) \\
 \end{longtable}
+}
+
 
 There are advantages and disadvantages to each approach, in addition to
 requiring distinct implementation techniques for each. The remainder of
@@ -458,12 +466,18 @@ not preclude the ability to write convenience methods for more complex
 actions requiring the Playwright object.
 
 The list of applications supported by the AKF Windows agent is described
-in \autoref{table:akf-applications} below.
+in \autoref{tbl:akf-applications} below.
 
+
+{
+\small % 10pt font
+\setstretch{1} % Single spacing
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0376}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2019}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7606}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6}}
+@{}}
+\caption{Supported applications for the AKF Windows agent}\label{tbl:akf-applications} \\
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Module
@@ -481,6 +495,8 @@ arbitrary webpages to be visited on Chrome and Edge, as well as perform
 complex actions such as completing forms and clicking links based on
 HTML selectors \\
 \end{longtable}
+}
+
 
 The generic hypervisor interface is used to support agent discovery and
 communication. To avoid polluting network captures with agent-related

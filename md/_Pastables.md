@@ -35,7 +35,8 @@ Naturally, this means that the text in the table shall not be double spaced beca
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.20}}
   >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.20}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.60}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.60}}
+@{}}
 \caption{Supported applications for the AKF Windows agent}\label{table:akf-applications} \\
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright

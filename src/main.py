@@ -2,7 +2,9 @@ import concurrent.futures
 import re
 import shutil
 import subprocess
+from dataclasses import dataclass
 from pathlib import Path
+from textwrap import dedent
 
 # absolute path to the markdown files to copy here
 SOURCE_MD_DIR = Path(
@@ -24,6 +26,9 @@ PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
 
 ENGINE = "pdflatex"
 BIB_ENGINE = "biber"
+
+# Number of workers for ProcessPoolExecutor
+WORKERS = None
 
 
 def process_markdown_text(text: str) -> str:
@@ -64,6 +69,67 @@ def process_markdown_text(text: str) -> str:
     return text
 
 
+@dataclass
+class TableMeta:
+    label: str
+    caption: str
+    alignments: list[str]
+    
+    @classmethod
+    def from_match(cls, match: re.Match):
+        label = match[0].replace("\n", " ").strip()
+        caption = match[1].replace("\n", " ").strip()
+        alignments = [v.strip() for v in match[2].split(",")]
+        return cls(label, caption, alignments)
+    
+    def process_table(self, table_text: str) -> str:
+        """
+        Convert a Pandoc-generated table into a nicer-looking table with the provided
+        parameters.
+        """
+        
+        # Extract Pandoc's auto-calculated tabcolsep value
+        match = re.search(r"(\d+)\\tabcolsep", table_text)
+        if match is None:
+            raise ValueError("Table does not contain tabcolsep")
+        
+        tabcolsep = match.group(1)
+        
+        # Generate alignment lines for each column
+        alignments = ""
+        for alignment in self.alignments:
+            alignments += f"  >{{\\raggedright\\arraybackslash}}p{{(\\linewidth - {tabcolsep}\\tabcolsep) * \\real{{{alignment}}}}}\n"
+        
+        # Extract the rest of the table, everything between \toprule\noalign{} and \end{longtable}
+        match = re.search(r"\\toprule\\noalign\{\}(.*?)\\end\{longtable\}", table_text, flags=re.DOTALL | re.MULTILINE)
+        if match is None:
+            print(table_text)
+            raise ValueError("Table does not contain top rule or noalign")
+        table_text = match.group(1)
+        
+        template = dedent(
+            f"""
+            {{
+            \\small % 10pt font
+            \\setstretch{{1}} % Single spacing
+            \\begin{{longtable}}[]{{@{{}}
+            <substitute_alignments>
+            @{{}}}}
+            \\caption{{{self.caption}}}\\label{{{self.label}}} \\\\
+            \\toprule\\noalign{{}}
+            <substitute_content>
+            \\end{{longtable}}
+            }}
+            """
+        )
+        
+        # Substitute the alignments and content
+        template = template.replace("<substitute_alignments>", alignments.strip("\n"))
+        template = template.replace("<substitute_content>", table_text.strip("\n"))
+        
+        return template
+
+
 def process_latex_text(text: str) -> str:
     # Convert \autocite to \cite
     text = re.sub(r"\\autocite", r"\\cite", text)
@@ -94,6 +160,41 @@ def process_latex_text(text: str) -> str:
         r"\\includegraphics[width=1\\linewidth]{\2}",
         text,
     )
+
+    print(text)
+
+    # Special syntax for tables.
+    # Start by finding all meta declarations for tables
+    meta_matches = re.findall(
+        r"\\emph\{!([^\\]+?)\\textbar\s*([^\\]+?)\\textbar\s*([^}]+?)\}",
+        text,
+        flags=re.DOTALL | re.MULTILINE,
+    )
+    table_metas = [TableMeta.from_match(match) for match in meta_matches]
+    
+    # Also remove the meta declarations from the text
+    text = re.sub(
+        r"\\emph\{![^\\]+?\\textbar\s*[^\\]+?\\textbar\s*[^}]+?\}\n\n",
+        "",
+        text,
+        flags=re.DOTALL | re.MULTILINE,
+    )
+
+    table_matches = re.findall(
+        r"(\\begin\{longtable\}.*?\\end\{longtable\})",
+        text,
+        flags=re.DOTALL | re.MULTILINE
+    )
+
+    if len(table_matches) == len(table_metas):    
+        # Substitute table matches with the corresponding index in table_metas
+        for i, match in enumerate(table_matches):
+            table_meta = table_metas[i]
+            table_text = table_meta.process_table(match)
+            text = text.replace(match, table_text)
+            
+    else:
+        print("Table count and meta count do not match, won't perform substitutions")
 
     return text
 
@@ -324,7 +425,7 @@ if __name__ == "__main__":
 
     # this mangles stdout pretty bad, just set the worker count to 1
     # if needed
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as executor:
         futures = []
         for md_file in TARGET_MD_DIR.glob("*.md"):
             tex_file = TARGET_TEX_DIR / (md_file.stem + ".tex")
