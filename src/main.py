@@ -22,6 +22,9 @@ TARGET_ASSET_DIR = Path("./assets")
 
 PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
 
+ENGINE = "pdflatex"
+BIB_ENGINE = "biber"
+
 
 def process_markdown_text(text: str) -> str:
     # Remove all blockquotes
@@ -266,25 +269,25 @@ def compile_pdf(tex_file: Path) -> None:
     """
     subprocess.run(
         [
-            "lualatex",
+            ENGINE,
             str(tex_file),
         ]
     )
     subprocess.run(
         [
-            "biber",
+            BIB_ENGINE,
             str(tex_file.with_suffix("")),
         ]
     )
     subprocess.run(
         [
-            "lualatex",
+            ENGINE,
             str(tex_file),
         ]
     )
     subprocess.run(
         [
-            "lualatex",
+            ENGINE,
             str(tex_file),
         ]
     )
