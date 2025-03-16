@@ -3,15 +3,16 @@
 % == Packages ==========================================================
 
 % Unused packages from Mackenzie's thesis
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{lipsum}
-\usepackage{multicol}
-\usepackage{accents}
-\usepackage{wrapfig}
-\usepackage{euscript}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{amsfonts}
+% \usepackage{lipsum}
+% \usepackage{multicol}
+% \usepackage{accents}
+% \usepackage{wrapfig}
+% \usepackage{euscript}
 
+% All inherited from Mackenzie
 \usepackage{float}
 \usepackage{tabularx}
 \usepackage{latexsym}
@@ -27,31 +28,33 @@
 \usepackage{hyperref}
 \usepackage[left = 1.5in, right = 1in, top = 1in, bottom = 1.25in, head = 0.5in]{geometry}
 \usepackage{textcomp}
-% \usepackage{cite} % Using biblatex instead
 \usepackage{pdfpages}
 \usepackage[linesnumbered,lined,boxruled,commentsnumbered]{algorithm2e}
 \usepackage[acronym]{glossaries}
 \usepackage{attachfile}
 
+\graphicspath{{assets/}}
+
 % https://tex.stackexchange.com/questions/55096/anti-aliasing-from-latex-to-pd
-% Fixes some weird anti-aliasing issues that just don't happen on Overleaf
+% Fixes some weird anti-aliasing issues when compiling locally with pdflatex
+% that doesn't occur on Overleaf
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage[babel=true]{microtype}
 
-\graphicspath{{assets/}}
-
-% Table support.
+% Table support (using what Pandoc spits out).
 \usepackage{booktabs}
 
 % Pandoc uses tightlist for bullet lists, you can just do nothing
 \def\tightlist{}
 
-% Listings and inline code
+% Pandoc generates `passthrough' commands for inline code as described in 
+% https://github.com/jgm/pandoc/issues/5696, we can just effectively ignore it
 \newcommand{\passthrough}[1]{#1}
 
+% Code listings. We use inconsolata for the font.
 \usepackage{listings}
 \usepackage{inconsolata}
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -80,11 +83,12 @@
     belowskip=0pt, % Adjust spacing below listings
 }
 
-% Less spacing in between items in \begin{itemize}
+% Less spacing in between items in \begin{itemize} environments.
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
-% Better citation backend
+% Better citation support. biblatex's IEEE style spits out way more fields than
+% using \bibliographystyle{IEEEtran}, but that's fine
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{thesis_bib.bib} 
 
@@ -92,7 +96,6 @@
 
 % \makeglossaries
 % \loadglsentries{thesis_glossary.tex}
-
 
 % == Customizations ====================================================
 \allowdisplaybreaks
@@ -124,7 +127,7 @@ University of Nevada, Reno \\
 
 \vspace{1.5in}
 
-\textbf{AKF: A modern synthesis framework for building digital forensic datasets}
+\textbf{AKF: A modern synthesis framework for building digital forensics datasets}
 
 \vspace{1.5in}
 
@@ -462,11 +465,11 @@ investigation that are summarized here
   until an organization can ascertain that one has occurred (which
   requires implementing detection and protection practices, such as
   those described in the NIST Cybersecurity Framework
-  \cite{nistNISTCybersecurityFramework2023}). Similarly, if the
-  scope of an incident is poorly defined, the subsequent forensic
-  investigation may fail to find relevant evidence. Scoping not only
-  impacts the investigation's success but also the organization's
-  response as a whole.
+  \cite{nationalinstituteofstandardsandtechnologyNISTCybersecurityFramework2024}).
+  Similarly, if the scope of an incident is poorly defined, the
+  subsequent forensic investigation may fail to find relevant evidence.
+  Scoping not only impacts the investigation's success but also the
+  organization's response as a whole.
 \item
   \textbf{Preservation}: After identifying the relevant machines,
   analysts must secure and preserve the physical device itself. With
