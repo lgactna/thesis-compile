@@ -89,8 +89,14 @@
 
 % Better citation support. biblatex's IEEE style spits out way more fields than
 % using \bibliographystyle{IEEEtran}, but that's fine
+% 
+% If you *really* need to get this to compile on Overleaf, comment these two lines
+% and uncomment the \bibliographystyle{IEEEtran} line below. Also uncomment
+% the \bibliography{thesis_bib} line below and comment \printbibliography. Compile
+% twice on Overleaf if needed.
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{thesis_bib.bib} 
+% \bibliographystyle{IEEEtran}
 
 % == End packages
 
@@ -264,6 +270,7 @@ from which some of this content is derived.
 % \nocite{*}
 \singlespacing
 \printbibliography
+% \bibliography{thesis_bib}
 
 \doublespacing
 \appendix
