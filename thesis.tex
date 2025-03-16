@@ -25,7 +25,7 @@
 \usepackage{hyperref}
 \usepackage[left = 1.5in, right = 1in, top = 1in, bottom = 1.25in, head = 0.5in]{geometry}
 \usepackage{textcomp}
-\usepackage{cite}
+% \usepackage{cite}
 \usepackage{pdfpages}
 \usepackage[linesnumbered,lined,boxruled,commentsnumbered]{algorithm2e}
 \usepackage[acronym]{glossaries}
@@ -33,59 +33,22 @@
 
 \graphicspath{{assets/}}
 
-% Below are ones I addded
-
-% Warn on unused citations (and labels, too - this makes it very noisy). By default,
-% unused citations don't get added to the bibliography anyways.
-% 
-% There's also a \nocite{*} command at the end of the document that creates the funny
-% looking labels in the bibliography - if it's surrounded by question marks, then it wasn't
-% used anywhere in the diagram (and should be removed from the .bib file). Comment this line
-% out, as well as the \nocite command, when compiling for readers.
-% 
-% See https://tex.stackexchange.com/questions/43276/unused-bibliography-entries-how-to-check-which-entries-were-not-used
-% \usepackage{refcheck}
-
 % Table support.
 \usepackage{booktabs}
 
 % Pandoc uses tightlist for bullet lists, you can just do nothing
-% See https://tex.stackexchange.com/questions/257418/error-tightlist-converting-md-file-into-pdf-using-pandoc
 \def\tightlist{}
 
 % Listings and inline code
-
-% Pandoc generates a bunch of these for inline code, just do nothing with them
 \newcommand{\passthrough}[1]{#1}
 
 \usepackage{listings}
-\usepackage{inconsolata} % Use the Inconsolata font
+\usepackage{fontspec} % Use fontspec to load system fonts
+\setmonofont{Inconsolata} % Set the monospaced font to Inconsolata
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-% \lstdefinestyle{mystyle}{
-%     backgroundcolor=\color{backcolour},   
-%     commentstyle=\color{codegreen},
-%     keywordstyle=\color{magenta},
-%     numberstyle=\tiny\color{codegray},
-%     stringstyle=\color{codepurple},
-%     basicstyle=\ttfamily\footnotesize\linespread{0.8},
-%     breakatwhitespace=false,         
-%     breaklines=true,                 
-%     captionpos=b,                    
-%     keepspaces=true,                 
-%     numbers=left,                    
-%     numbersep=5pt,                  
-%     showspaces=false,                
-%     showstringspaces=false,
-%     showtabs=false,                  
-%     tabsize=2,
-% }
-% \lstset{
-%     style=mystyle,
-% }
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -93,9 +56,7 @@
     keywordstyle=\color{magenta},
     numberstyle=\ttfamily\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    % Adjust line spacing with \setstretch
-    % Font set to Inconsolata
-    basicstyle=\ttfamily\footnotesize\setstretch{1}\fontfamily{zi4}\selectfont, 
+    basicstyle=\ttfamily\footnotesize\setstretch{1}\fontspec{Inconsolata}, 
     breakatwhitespace=false,         
     breaklines=true,                 
     captionpos=b,                    
@@ -117,15 +78,19 @@
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
+% Use with lualatex
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{thesis_bib.bib} 
+
 % == End packages
 
 \renewcommand*\ttdefault{pcr}
 
-
 \makeglossaries
-\loadglsentries{thesis_glossary.tex}
+% \loadglsentries{thesis_glossary.tex}
 
-\bibliographystyle{IEEEtran}
+% Redundant with biblatex
+% \bibliographystyle{IEEEtran}
 
 % == Customizations ====================================================
 \allowdisplaybreaks
@@ -1594,8 +1559,8 @@ simpler terms, this thesis addresses the following questions in order:
 At the core of every synthesizer is the ability to generate forensic
 artifacts as part of a larger scenario; this chapter addresses the AKF
 modules responsible for automating artifact generation, depicted in
-\autoref{actions-simple} below. The detailed diagrams for these modules
-are part of \autoref{appendix-a}, depicted in
+\autoref{fig:actions-simple} below. The detailed diagrams for these
+modules are part of \autoref{appendix-a}, depicted in
 \autoref{fig:architecture-full-b} and \autoref{fig:architecture-full-d}.
 
 \begin{figure}[h]
@@ -4094,7 +4059,8 @@ datasets.
 
 % \nocite{*}
 \singlespacing
-\bibliography{thesis_bib}
+% \bibliography{thesis_bib}
+\printbibliography
 
 \doublespacing
 \appendix
@@ -4241,7 +4207,7 @@ time.sleep(5)
 
 The agent's main loop, which receives and interprets these commands, is
 also straightforward. A simplified version of the main loop is depicted
-in \autoref{lstb.2.b}:
+in \autoref{lst:b.2.b}:
 
 \begin{lstlisting}[label={lst:b.2.b}, caption={Simplified ForTrace agent entry point}, language=Python]
 def main():

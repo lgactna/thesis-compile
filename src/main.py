@@ -260,6 +260,41 @@ def join_tex_files(tex_dir: Path, output_file: Path, base_file: Path) -> None:
     with output_file.open("w") as f:
         f.write(text)
 
+def compile_pdf(tex_file: Path) -> None:
+    """
+    Compile a tex file into a PDF.
+    """
+    subprocess.run(
+        [
+            "lualatex",
+            str(tex_file),
+        ]
+    )
+    subprocess.run(
+        [
+            "biber",
+            str(tex_file.with_suffix("")),
+        ]
+    )
+    subprocess.run(
+        [
+            "lualatex",
+            str(tex_file),
+        ]
+    )
+    subprocess.run(
+        [
+            "lualatex",
+            str(tex_file),
+        ]
+    )
+    
+    print("Cleaning up...")
+    # Clean up everything that isn't *.pdf or *.tex
+    for file in tex_file.parent.glob("*"):
+        if file.stem == tex_file.stem and file.suffix not in [".pdf", ".tex"]:
+            file.unlink()
+
 
 if __name__ == "__main__":
     # Start by copying everything in SOURCE_MD_DIR to TARGET_MD_DIR
@@ -299,3 +334,5 @@ if __name__ == "__main__":
     substitute_labels(TARGET_TEX_DIR)
 
     join_tex_files(TARGET_TEX_DIR, Path("./thesis.tex"), Path("./base.tex"))
+    
+    compile_pdf(Path("./thesis.tex"))
