@@ -420,9 +420,9 @@ if __name__ == "__main__":
     for asset_file in SOURCE_ASSET_DIR.glob("*"):
         shutil.copy(asset_file, TARGET_ASSET_DIR / asset_file.name)
 
-    # Invoke pandoc on each markdown file to generate a tex file
     TARGET_TEX_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Invoke pandoc on each markdown file to generate a tex file
     # this mangles stdout pretty bad, just set the worker count to 1
     # if needed
     with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as executor:
