@@ -1,10 +1,16 @@
 import concurrent.futures
+import os
 import re
 import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from textwrap import dedent
+
+# Check if platform is windows
+CODESPACE = False
+if os.name != "nt":
+    CODESPACE = True
 
 # absolute path to the markdown files to copy here
 SOURCE_MD_DIR = Path(
@@ -22,10 +28,17 @@ TARGET_TEX_DIR = Path("./tex")
 # absolute path to the directory where stuff to include like images should go
 TARGET_ASSET_DIR = Path("./assets")
 
-PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
+if CODESPACE:
+    # absolute path to the pandoc executable
+    PANDOC_EXE = Path("/usr/bin/pandoc")
+    ENGINE = "/usr/bin/pdflatex"
+    BIB_ENGINE = "/usr/bin/biber"
+else:
+    # absolute path to the pandoc executable
+    PANDOC_EXE = Path("C:/Program Files/Pandoc/pandoc.exe")
+    ENGINE = "pdflatex"
+    BIB_ENGINE = "biber"
 
-ENGINE = "pdflatex"
-BIB_ENGINE = "biber"
 
 # Number of workers for ProcessPoolExecutor
 WORKERS = None
@@ -160,8 +173,6 @@ def process_latex_text(text: str) -> str:
         r"\\includegraphics[width=1\\linewidth]{\2}",
         text,
     )
-
-    print(text)
 
     # Special syntax for tables.
     # Start by finding all meta declarations for tables
@@ -400,29 +411,34 @@ def compile_pdf(tex_file: Path) -> None:
             file.unlink()
 
 
-if __name__ == "__main__":
-    # Start by copying everything in SOURCE_MD_DIR to TARGET_MD_DIR
-    # Create the target directory if it doesn't exist
-    TARGET_MD_DIR.mkdir(parents=True, exist_ok=True)
+if __name__ == "__main__":    
+    # If on my actual machine, copy stuff over from Obsidian
+    
+    if not CODESPACE:
+        # Start by copying everything in SOURCE_MD_DIR to TARGET_MD_DIR
+        # Create the target directory if it doesn't exist
+        TARGET_MD_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Copy all the markdown files from the source directory to the target directory
-    for md_file in SOURCE_MD_DIR.glob("*.md"):
-        # Process the markdown file
-        text = md_file.read_text()
-        text = process_markdown_text(text)
+        # Copy all the markdown files from the source directory to the target directory
+        for md_file in SOURCE_MD_DIR.glob("*.md"):
+            # Process the markdown file
+            text = md_file.read_text()
+            text = process_markdown_text(text)
 
-        # Write the processed markdown file to the target directory
-        target_md_file = TARGET_MD_DIR / md_file.name
-        target_md_file.write_text(text)
-        
-    # Also copy everything to the asset directory
-    TARGET_ASSET_DIR.mkdir(parents=True, exist_ok=True)
-    for asset_file in SOURCE_ASSET_DIR.glob("*"):
-        shutil.copy(asset_file, TARGET_ASSET_DIR / asset_file.name)
-
-    TARGET_TEX_DIR.mkdir(parents=True, exist_ok=True)
+            # Write the processed markdown file to the target directory
+            target_md_file = TARGET_MD_DIR / md_file.name
+            target_md_file.write_text(text)
+            
+        # Also copy everything to the asset directory
+        TARGET_ASSET_DIR.mkdir(parents=True, exist_ok=True)
+        for asset_file in SOURCE_ASSET_DIR.glob("*"):
+            shutil.copy(asset_file, TARGET_ASSET_DIR / asset_file.name)
 
     # Invoke pandoc on each markdown file to generate a tex file
+    # Start by creating the target directory for the tex files
+    TARGET_TEX_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Run pandoc on each markdown file in parallel
     # this mangles stdout pretty bad, just set the worker count to 1
     # if needed
     with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as executor:
