@@ -89,6 +89,11 @@
 
 % Better citation support. biblatex's IEEE style spits out way more fields than
 % using \bibliographystyle{IEEEtran}, but that's fine
+% 
+% If you *really* need to get this to compile on Overleaf, comment these two lines
+% and uncomment the \bibliographystyle{IEEEtran} line below. Also uncomment
+% the \bibliography{thesis_bib} line below and comment \printbibliography. Compile
+% twice on Overleaf if needed.
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{thesis_bib.bib} 
 % \bibliographystyle{IEEEtran}
@@ -273,38 +278,39 @@ applicable to a variety of other contexts, such as incident response and
 corporate investigations, further highlighting the need for quality
 educational material and hands-on training for new forensic analysts.
 
-The origins of digital forensics can be traced to the 1980s, during
-which computers began to be adopted by the general public. Prior to
-this, computers were restricted mainly to industry, academia, and
-governments with dedicated infrastructure and staff
+The origins of digital forensics can be traced to the 1980s, when
+computers began to be accessible to the general public. Prior to this,
+computers were restricted mainly to industry, academia, and governments
+with dedicated infrastructure and staff to support computers
 \cite{pollittHistoryDigitalForensics2010}. However, with the
-introduction of PCs that were more accessible to the typical consumer,
-such as the Commodore 64 and the IBM PC, computer usage within the
-public grew. So did crimes committed with computers; people discovered
-that they could hack telephone networks to illegally obtain software and
-``free'' telephone services \cite{jonesInsightDigitalForensics2022}.
-In 1983, Canada would be the first government to amend its criminal code
-to cover cybercrime; the United States, the United Kingdom, and
-Australia would follow suit in the following decade.
+introduction of PCs that were more compact and accessible to the typical
+consumer, such as the Commodore 64 and the IBM PC, computer usage within
+the public grew. So did crimes committed with computers; people
+discovered that they could hack telephone networks to illegally obtain
+software and ``free'' telephone services
+\cite{jonesInsightDigitalForensics2022}. In 1983, Canada would be
+the first government to amend its criminal code to cover cybercrime; the
+United States, the United Kingdom, and Australia would follow suit over
+the next decade.
 
-During this time, investigations were relatively ad-hoc and very simple.
-Teams often built their own software to analyze devices, though a few
-hobbyists and software vendors began to develop dedicated forensic
-tools. However, computers had yet to truly enter the mainstream; most
-individual computer owners were (relatively wealthy) computer hobbyists
-rather than the general public. In 1984, the U.S. Census Bureau
-determined that only about 8.2\% of U.S. households owned a computer
-\cite{robertkominskiComputerUseUnited1988}, nearly doubling to 15\%
-in 1989 \cite{robertkominskiComputerUseUnited1991}.
+During this time, investigations were typically ad hoc and simple in
+nature. Teams often built their own software to analyze devices, though
+a some hobbyists and software vendors began to develop dedicated
+forensic tools. However, computers had yet to truly enter the
+mainstream; most individual computer owners were (relatively wealthy)
+hobbyists rather than the general public. In 1984, the U.S. Census
+Bureau determined that only about 8.2\% of U.S. households owned a
+computer \cite{robertkominskiComputerUseUnited1988}, nearly doubling
+to 15\% in 1989 \cite{robertkominskiComputerUseUnited1991}.
 
-As technology continued to advance past the 1990s, digital forensics --
-and computing as a whole -- began to grow in scope and importance. The
-rise of mobile devices and the internet drastically changed the role of
-computing in the eyes of the public; with it came the rise of cybercrime
-and a recognition of the importance of computer investigations. These
-early investigations continued to be performed by investigators who
-happened to be experienced with computers rather than those with formal
-digital forensics training
+As technology continued to advance throughout the 1990s, digital
+forensics -- and computing as a whole -- began to grow in scope and
+importance. The rise of mobile devices and the internet drastically
+changed the role of computing in the eyes of the public; with it came
+the rise of cybercrime and a recognition of the importance of computer
+investigations. These early investigations continued to be performed by
+investigators who happened to be experienced with computers rather than
+those with formal digital forensics training
 \cite{hargreavesDigitalForensicsEducation2017}. Such investigations
 lacked a standardized structure (unlike the formal approaches in
 ``traditional'' forensic disciplines), contributing to debates about the
@@ -318,13 +324,13 @@ literature appeared in 1999
 Forensic Research Workshop (DFRWS) held in 2001 to identify priorities
 in the growing field of digital forensics
 \cite{palmerRoadMapDigital2001}. A particularly notable case was
-that of the September 11, 2001 attacks, in which computers were found to
-contain significant evidence related to the organization and planning of
-the attack. Intelligence communities and law enforcement agencies
-worldwide began establishing digital forensics teams, demonstrating a
-shift in which investigations previously only conducted by individuals
-and small teams were now also performed by governments and professional
-organizations.
+that of the September 11, 2001 attacks, in which computers containing
+significant evidence related to the organization and planning of the
+attack were discovered. Intelligence communities and law enforcement
+agencies worldwide began establishing digital forensics teams,
+demonstrating a shift in which investigations previously only conducted
+by individuals and small teams were now also performed by governments
+and professional organizations.
 
 It was during this time that tools such as EnCase and Forensic Toolkit
 (better known as FTK) evolved to become dedicated products that remain a
@@ -343,9 +349,9 @@ Undergraduate and graduate curricula dedicated to the study of digital
 forensics were developed
 \cite{andersonComparativeStudyTeaching2006,srinivasanDigitalForensicsCurriculum2013}
 along with numerous efforts to standardize and improve digital forensics
-curricula
+education
 \cite{cooperStandardsDigitalForensics2010,nanceDigitalForensicsDefining2009,nanceDigitalForensicsDefining2010,dafoulasOverviewDigitalForensics2019,lucianoDigitalForensicsNext2018}.
-The development of formal education was significant due to the growing
+The development of formal curricula was significant due to the growing
 importance of digital forensics from a legal perspective; analysts were
 expected to follow a strict procedure to ensure the admissibility of
 digital evidence into a court of law
@@ -359,19 +365,18 @@ will grow 32\% over the next decade from 2022 to 2032, adding over
 50,000 new jobs
 \cite{bureauoflaborstatisticsu.s.departmentoflaborInformationSecurityAnalysts2023}.
 The diversity and depth of digital forensics will continue to grow with
-sustained developments in modern computing -- a fact that extends beyond
-industry and into research and education.
+developments in modern computing -- a fact that extends beyond industry
+and into research and education.
 
 With the growing importance and complexity of digital forensics, there
 is a clear need for high-quality, realistic data for researchers and
 instructors alike. However, there continue to be significant gaps in the
-quantity and variety of material suitable for digital forensic training;
-in particular, privacy and legal concerns prevent the use and
+quantity and variety of material suitable for digital forensics
+training; in particular, privacy and legal concerns prevent the use and
 distribution of real-world data
 \cite{garfinkelForensicCorporaChallenge2007}. From a research
 perspective, the result is that many researchers develop their own
-datasets, often with a very narrow scope and a low degree of
-reproducibility
+datasets, often with a very narrow scope and limited reproducibility
 \cite{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
 From an education perspective, the result is that most training material
 is either manually created by instructors or reused from existing
@@ -383,15 +388,13 @@ changes in technology and software.
 There have been various efforts to automate and streamline the process
 of creating new forensic datasets from high-level descriptions and
 predefined forensic artifacts. These forensic synthesis frameworks, also
-known as ``synthesizers,'' include various features geared toward
-rapidly developing datasets for research and education. These features
-include mass dataset generation for large classrooms, metadata
-generation useful in tool validation, and the ability to generate and
-export a variety of forensic artifacts from the synthesizer. This is
-particularly valuable in classrooms, as these datasets enable
-instructors to create images that allow students to learn about a
-specific forensic technique while emulating some real-world challenges
-that forensic analysts face in practice.
+known as ``synthesizers,'' include functionality geared toward rapidly
+developing datasets for research and education. These features include
+mass dataset generation for large classrooms, metadata generation useful
+in tool validation, and the ability to generate and export a variety of
+forensic artifacts from the synthesizer. In particular, synthesizers
+significantly reduce the difficulty of both generating and documenting
+application-specific artifacts as part of a dataset.
 
 However, there is still much work to be done towards increasing the
 accessibility and flexibility of these frameworks. Before exploring
@@ -411,7 +414,7 @@ datasets}\label{purpose-of-forensic-datasets}
 Before considering the use of forensic datasets in research and
 education, we begin by exploring how these datasets are acquired and
 used in the ``real world'' -- that is, in the context of investigations
-conducted by professionals in industry.
+conducted by professionals in industry and law enforcement.
 
 In practice, forensic datasets -- and digital forensics as a whole --
 are used for a variety of purposes. In particular, Conklin et
@@ -449,9 +452,9 @@ performed \cite{conklinComputerForensics2022}:
   \cite{withersj.ElectronicallyStoredInformation2006}.)
 \end{itemize}
 
-Additionally, it is important to note that the acquisition of forensic
+Additionally, it is important to note that the analysis of forensic
 evidence is only one part of the overall digital forensics process. For
-example, analysts must consider the order in which to obtain evidence
+example, analysts must consider the order in which to acquire evidence
 while adhering to chain of custody procedures. Conklin et al.~identify
 several steps throughout the lifespan of a digital forensic
 investigation that are summarized here
@@ -1098,7 +1101,7 @@ collection with the explicit intent of providing them for digital
 forensics research. This began to change towards the late 2000s; for
 example, Garfinkel's collection of disk images would eventually evolve
 into the Real Data Corpus, growing to 30 terabytes by 2013
-\cite{garfinkelBringingScienceDigital2009a,yannikosDataCorporaDigital2014}.
+\cite{garfinkelBringingScienceDigital2009,yannikosDataCorporaDigital2014}.
 The collection included disk images, flash drive images, and a variety
 of optical discs sourced from real-world usage, requiring institutional
 review board approval to use. This collection would eventually be part
@@ -2048,16 +2051,22 @@ Module
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Dependencies
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Details
+Features
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Chromium & Playwright \cite{MicrosoftPlaywrightpython2025} & Allows
-arbitrary webpages to be visited on Chrome and Edge, as well as perform
-complex actions such as completing forms and clicking links based on
-HTML selectors \\
+\passthrough{\lstinline!autogui!} & PyAutoGUI
+\cite{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
+mouse and keyboard control, as well as other PyAutoGUI features \\
+\passthrough{\lstinline!artifacts!} & Windows-Prefetch-Parser
+\cite{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
+Windows artifacts and conversion to corresponding CASE objects \\
+\passthrough{\lstinline!chromium!} & Playwright
+\cite{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
+also allows for performing complex actions such as completing forms and
+clicking links based on HTML selectors \\
 \end{longtable}
 }
 
@@ -2361,6 +2370,9 @@ documents its outputs, as seen in \autoref{fig:output-simple}. More
 specifically, this covers the modules and submodules seen in
 \autoref{fig:output-full}. The submodules for the \emph{virtual machine}
 and \emph{action automation library} have been omitted for brevity.
+(Note that the ``imaging library'' and ``validation library'' are
+theoretical submodules that would fulfill the ``after the fact''
+analysis described in \autoref{human-readable-reporting}, and are not currently implemented.)
 
 \begin{figure}[h]
 \centering
@@ -2717,18 +2729,20 @@ as Autopsy) or tools that explicitly focus on constructing CASE objects
 (such as tools built with the official or AKF Python bindings for CASE).
 
 However, ``after the fact'' analysis can also be achieved on live
-virtual machines using existing AKF design patterns. In particular, it
-is possible to write RPyC subservices whose sole purpose is to generate
-CASE objects. For example, a subservice can collect the Windows prefetch
-files immediately after a disk image is created, allowing it to
-construct CASE prefetch objects that reflect the disk image without
-needing independent tooling. CASE-oriented behavior can also be
-implemented in existing subservices, such as adding a function to the
-Chromium subservice dedicated to identifying and creating CASE objects
-for all Chrome or Edge artifacts after all browser actions have been
-performed. This allows the dataset to be documented independently of
-synthesizer actions intended to emulate human activity -- a desirable
-feature identified at the beginning of this chapter.
+virtual machines using existing AKF design patterns. In particular,
+agents may have RPyC subservices whose sole purpose is to generate CASE
+objects. For example, the \passthrough{\lstinline!artifacts!} subservice
+mentioned in \autoref{the-akf-agent}
+can collect the Windows prefetch files immediately before a disk image
+is created, allowing it to construct CASE prefetch objects that reflect
+the disk image without requiring separate tooling. CASE-oriented
+behavior can also be implemented in existing subservices; for example,
+the \passthrough{\lstinline!chromium!} subservice is capable of creating
+CASE objects for Chrome and Edge browser history after all browser
+automation actions have been performed. This allows the dataset to be
+documented independently of synthesizer actions intended to emulate
+human activity -- a desirable feature identified at the beginning of
+this chapter.
 
 The flexibility of these two approaches -- enabled by CASE's deep
 integration into AKF -- makes it possible to construct CASE objects in a
@@ -2737,8 +2751,8 @@ Scenario developers do not need to be concerned with instantiating their
 own CASE objects when using high-level APIs so long as an AKF library
 developer has written support for automatic CASE object construction.
 This significantly reduces the need for scenario developers to construct
-artifact-specific ground truth through manual analysis of
-synthesizer-created outputs.
+ground truth information by manually analyzing synthesizer-created
+outputs.
 
 By extension, this means that the detailed documentation of AKF outputs
 is innate to many scenarios constructed using AKF. Lowering the effort
@@ -2783,7 +2797,8 @@ elements that may be useful to a human. The results of each renderer are
 combined to form a larger Markdown document (or documents) with multiple
 sections, one for each renderer. The combined document can be converted
 to a PDF using Pandoc \cite{macfarlanePandoc2025}, a general-purpose
-tool for converting between documents of various types.
+tool for converting between documents of various types. Users can modify
+the generated Markdown documents before running Pandoc, if desired.
 
 A single CASE bundle can be passed through as many or as few renderers
 as needed to generate a suitable report for a dataset. So long as the
@@ -2801,22 +2816,34 @@ the CASE bundle remains the single, comprehensive source of truth.
 Contrast this with human-written PDF reports, which may contain human
 biases and are rarely maintained in older datasets.
 
-A sample report, generated from the AKF scenario described in
-\autoref{setup-and-basic-usage}, is
-displayed in \autoref{fig:scenario-report}:
+\autoref{fig:scenario-report} shows a page taken from a sample report.
+The information contained in this report was derived from collected
+\passthrough{\lstinline!WindowsPrefetch!} and
+\passthrough{\lstinline!URLHistory!} CASE objects, which were then
+passed through their associated renderers. Each renderer generated
+Markdown tables with the entries shown below, which were then rendered
+by Pandoc. (Note that \autoref{fig:scenario-report} uses the Eisvogel
+template \cite{waglerWandmalfarbePandoclatextemplate2025} for
+Pandoc, significantly improving the appearance and readability of
+generated documents. Eisvogel is not distributed with AKF but can be
+manually installed alongside Pandoc; \passthrough{\lstinline!akflib!}
+will use Eisvogel if it is detected.)
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\linewidth]{yannikos.png}
+\includegraphics[width=1\linewidth]{human-reporting.png}
 \caption{Sample PDF report generated by AKF
 renderers}\label{fig:scenario-report}
 \end{figure}
 
-Note that the displayed PDF uses the Eisvogel template
-\cite{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
-significantly improving the appearance and readability of generated
-documents. Eisvogel is not distributed with AKF but can be manually
-installed alongside Pandoc.
+Of course, there are other options for generating human-readable (and
+machine-readable) reporting from an AKF-generated dataset. For example,
+the analysis features provided by tools such as Plaso
+\cite{Log2timelinePlaso2025} and those developed by Eric Zimmerman
+\cite{zimmermanEricZimmermansTools} can be used to supplement the
+existing reporting and validation features of AKF. Although not
+currently the case, these can be directly integrated into AKF workflows
+in the future.
 
 After generating the scenario itself and any metadata and reporting that
 should be included with the dataset, the challenge of distributing this
@@ -2948,7 +2975,9 @@ At this point, we have provided the implementations for automating
 artifact generation in a near-deterministic manner with comprehensive
 logging and reporting. However, there is still the challenge of exposing
 this functionality in a user-friendly manner. At a high level, there are
-two primary ways to define an input to a synthesizer:
+two primary ways to define an input to a synthesizer. These formats
+describe the process (the \emph{how}) of placing artifacts and
+performing actions:
 
 \begin{itemize}
 \tightlist
@@ -2964,22 +2993,32 @@ two primary ways to define an input to a synthesizer:
   the result.
 \end{itemize}
 
-These formats describe the \emph{process} of placing artifacts and
-performing actions. However, the challenge of deciding \emph{what}
-actions to perform remains. It is still mainly the responsibility of
-instructors to provide background noise and other realistic artifacts to
-insert into a scenario. Although the high-level languages provided by
-many of these frameworks make it easy to place files at desired
-locations or visit websites that are part of a scenario, these must all
-be defined and created ahead of time.
+However, the challenge of deciding \emph{what} actions to perform
+remains. It is still mainly the responsibility of instructors to provide
+background noise and other realistic artifacts to insert into a
+scenario. Although synthesizers make it easier to place files at desired
+locations or visit websites, these scenario elements must be defined and
+created ahead of time. This can be broken down into two separate issues:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Generating standalone artifacts}: Users must include email
+  conversations, documents, and other application-specific artifacts to
+  be generated as part of a scenario.
+\item
+  \textbf{Creating the scenario itself}: Users must combine these
+  standalone artifacts to generate a cohesive scenario, following a
+  theme such as corporate espionage or ransomware attacks.
+\end{itemize}
 
 This chapter addresses the challenges of providing APIs for complex
 GUI-driven applications and creating background noise. More precisely,
 we address two questions -- how do we invoke AKF's automation systems,
 and how does AKF assist a user in building a scenario? Here, we explore
 AKF's imperative and declarative syntaxes and the viability of using
-large language models (LLMs) to assist in building individual files and
-complete scenario descriptions.
+generative AI to assist in building individual files and complete
+scenario descriptions.
 
 \section{Scripting background}\label{scripting-background}
 
@@ -3043,13 +3082,9 @@ The same might be expressed in ForTrace
 and disk image generation:
 
 \begin{lstlisting}[label={lst:6.1b}, caption={Imperative ForTrace scenario with web browsing \cite{gobelForTraceHolisticForensic2022}}, language=Python]
-import logging
-
 from fortrace.core.vmm import Vmm
 from fortrace.utility.logger_helper import create_logger
 from fortrace.core.vmm import GuestListener
-
-logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     logger = create_logger('fortraceManager', logging.DEBUG)
@@ -3213,7 +3248,58 @@ generation, and output generation are handled explicitly through a
 script executed through the Python interpreter.
 
 A simple AKF script achieving the same outcomes as the ForTrace and SFX
-scripts above follows:
+scripts above is show in \autoref{lst:6.2a}:
+
+\begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario}, language=Python]
+from akf_windows.api.chromium import ChromiumServiceAPI
+from akflib.core.hypervisor.vbox import VBoxExportFormatEnum
+from akflib.core.hypervisor.vbox import VBoxHypervisor
+from pathlib import Path
+
+# Instantiate a hypervisor object tied to a specific virtual machine
+
+vbox_obj = VBoxHypervisor("akf-windows-1")
+
+# Start the virtual machine
+
+vbox_obj.start_vm(wait_for_guest_additions=True)
+
+# Visit a single website
+
+with ChromiumServiceAPI.auto_connect(vbox_obj.get_maintenance_ip()) as chromium_service:
+    chromium_service.kill_edge()
+    chromium_service.set_browser("msedge")
+    page = chromium_service.browser.new_page()
+    page.goto("[https://bbc.co.uk")](https://bbc.co.uk"))  
+
+# Stop the virtual machine
+
+vbox_obj.stop_vm(force=False)
+
+# Export the virtual machine to a disk image
+
+vbox_obj.create_disk_image(
+    Path("C:/Users/kisun/Desktop/akf-windows_1.raw"),
+    VBoxExportFormatEnum.RAW
+)
+\end{lstlisting}
+
+Here, we create a new \passthrough{\lstinline!VBoxHypervisor!} instance
+that will allow us to start and interact with a VirtualBox machine
+called \passthrough{\lstinline!akf-windows-1!} (created previously with
+Vagrant as described above). To initialize the Chromium subservice, we
+query VirtualBox for the IP address of the host-only adapter, then use
+the \passthrough{\lstinline!auto\_connect!} convenience method to
+automatically perform the required RPyC setup and return an instance of
+\passthrough{\lstinline!ChromiumServiceAPI!}. This instantiated API
+allows us to interact with Microsoft Edge on the virtual machine over
+RPyC (which is abstracted away from the user); as part of the context
+manager, the RPyC connection is automatically closed at the end of the
+\passthrough{\lstinline!with!}block. Finally, we create a raw disk image
+and save it to the desktop.
+
+With this in mind, how do we expose this same functionality through a
+declarative syntax?
 
 \section{Declarative usage}\label{declarative-usage}
 
@@ -3508,35 +3594,68 @@ provides significant flexibility to scenario developers. To the best of
 our knowledge, prior synthesizers have only supported direct execution
 from declarative scripts, which limits the opportunities to use
 declarative scripts as a ``starting point'' for writing more complex
-imperative scripts.
+imperative scripts. (In fact, the code in \autoref{lst:6.2a} was largely
+derived from the auto-generated code using \autoref{lst:6.3.2a}.)
 
-In both cases, modules can read and modify a global state dictionary
-that allows otherwise independent modules to cooperate. For example,
-suppose that a module creates a new context manager in a
-\passthrough{\lstinline!with!} block, causing the indentation level of
-the translated code to increase. Successive modules can read the state
-dictionary to retrieve variable names and correctly indent generated
-code. Additionally, this allows for ``outputs,'' such as CASE bundles,
-to be passed and gradually constructed across modules. This design
-allows for context-aware code generation and action execution.
-
-An example of a declarative AKF scenario, carrying out the same actions
-as the SFX, ForTrace, and imperative AKF script above, can be seen in
+An example of a minimal AKF scenario, carrying out the same actions as
+the SFX, ForTrace, and imperative AKF script above, can be seen in
 \autoref{lst:6.3.2a}:
 
 \begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
-name: sample scenario
-description: sample scenario
-author: lgactna
+name: Minimal scenario
+description: Sample included with thesis
+author: Lloyd Gonzales
 seed: "0"
 libraries:
-  - akflib.actions
+  - akflib.modules
+  - akf_windows.modules
 actions:
-  - name: Run the sample action
-    module: akflib.actions.sample.SampleModule
+  # Create a new CASE bundle and start a virtual machine.
+  - name: Instantiate a hypervisor object tied to a specific virtual machine
+    module: vbox_start
     args:
-      arg1: "value1"
-      arg2: "value2"
+      machine_name: "akf-windows-1"
+  - name: Start the virtual machine
+    module: akflib.modules.vbox.VBoxStartMachineModule
+
+  # Visit a website using Mcirosoft Edge. A temporary instance of the Chromium
+  # subservice API is created for the lietime of this module.
+  - name: Visit a single website
+    module: chromium_visit_urls
+    args:
+      browser: "msedge"
+      urls: 
+       - "[https://www.google.com"](https://www.google.com")
+
+  # Stop the virtual machine and export the virtual machine to a disk image.
+  - name: Stop the virtual machine
+    module: vbox_stop_machine
+    args:
+      force: false
+  - name: Export the virtual machine to a disk image
+    module: vbox_create_disk_image
+    args:
+      output_path: "C:/Users/user/Desktop/akf-windows_1.raw"
+      image_format: "raw"
+\end{lstlisting}
+
+The \passthrough{\lstinline!akf-translate!} interpreter, which is added
+to PATH when installing \passthrough{\lstinline!akflib!}, handles both
+execution and translation from a declarative script. It uses the same
+underlying library calls as the imperative code in \autoref{lst:6.2a}.
+To use this declarative script with
+\passthrough{\lstinline!akf-translate!}, one of the following commands
+in \autoref{lst:6.3.2b} can be used:
+
+\begin{lstlisting}[label={lst:6.3.2b}, caption={Sample usage of the akf-translate utility}, language=sh]
+
+# Translate this scenario to a valid Python script and save it to disk
+
+akf-translate scenarios/thesis.yaml --translate --output-file scenarios/thesis.py
+
+# Execute this scenario directly
+
+akf-translate scenarios/thesis.yaml --execute
 \end{lstlisting}
 
 AKF declarative scripts, which are simply large YAML dictionaries,
@@ -3548,45 +3667,121 @@ script. Finally, scripts list a sequence of actions, typically a
 \passthrough{\lstinline!module!} specified by name and a dictionary of
 \passthrough{\lstinline!args!}.
 
-The execution flow of the declarative interpreter itself is relatively
+The execution flow of \passthrough{\lstinline!akf-translate!} itself is
 straightforward. Given a path to a YAML script, the interpreter will
 load the necessary libraries and configuration keys defined in the file
-and instantiate resources accordingly. This may include setting global
-configuration variables, locating and starting a virtual machine by
-name, setting the \passthrough{\lstinline!random!} seed, and so on.
-Then, the interpreter runs each module under the
-\passthrough{\lstinline!actions!} key with the provided arguments and
-configuration in order, continuing until all
-\passthrough{\lstinline!actions!} have been completed.
+and instantiate resources accordingly. This may include setting aliases
+for module names, verifying that all required modules are available,
+setting the \passthrough{\lstinline!random!} seed, and so on. Then, the
+interpreter runs each module under the \passthrough{\lstinline!actions!}
+key with the provided arguments and configuration in order, continuing
+until all modules have been used.
+
+Modules can read and modify a global state dictionary that allows
+otherwise independent modules to cooperate. For example, suppose that a
+module creates a new context manager in a \passthrough{\lstinline!with!}
+block, causing the indentation level of the translated code to increase.
+Successive modules can read the state dictionary to retrieve context
+variables and correctly indent generated code. Additionally, this allows
+for ``outputs,'' such as CASE bundles, to be passed and gradually
+constructed across modules. This design allows for context-aware code
+generation and action execution.
 
 Modules are located and executed using Python's dynamic import system.
-(For efficiency and safety, all modules in the script are located and
-``cached'' at the start of script execution.) These modules can be
-located in any library so long as they can be found through Python's
-import system. For example, both \passthrough{\lstinline!akflib!} and
-the AKF Windows agent contain their own declarative module libraries,
-leveraging functionality specific to each code repository.
+These modules can be located in any library so long as they can be found
+through Python's import system. For example, both
+\passthrough{\lstinline!akflib!} and the AKF Windows agent contain their
+own declarative module libraries, leveraging functionality specific to
+each code repository. All modules in the script are located and
+``cached'' at the start of script execution, which allows for
+verification and runtime efficiency.
 
 This design allows declarative modules to be written independently of
 the libraries they depend on, reducing the ``impact'' of supporting
 declarative features on the core imperative libraries. In fact, this
 independence allows for the AKF module system to be used in
 general-purpose scripting, similar to Ansible; it is not tightly bound
-to the creation of forensic scenarios and artifacts.
+to the creation of forensic scenarios and artifacts. That said, the
+existing declarative modules of AKF expose nearly all existing
+functionality provided by \passthrough{\lstinline!akflib!}, including
+PDF report generation, virtual machine interaction, and more.
 
-While the AKF imperative and declarative scripts provide users with
-significant flexibility in \emph{using} AKF, the challenge of building
-artifacts and scenarios to generate through these execution options
-remains. The remainder of this chapter addresses this challenge.
+The list of declarative modules available through
+\passthrough{\lstinline!akflib!} and the Windows agent is described in
+\autoref{tbl:akf-declarative-modules} below. Note that these modules are
+referred to by their alias, not their fully-qualified module paths.
+
+
+{
+\small % 10pt font
+\setstretch{1} % Single spacing
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7}}
+@{}}
+\caption{Available AKF declarative modules}\label{tbl:akf-declarative-modules} \\
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\passthrough{\lstinline!create\_akf\_bundle!} & Creates a new CASE
+bundle for use throughout the declarative scenario. \\
+\passthrough{\lstinline!write\_akf\_bundle!} & Write the contents of the
+currently active CASE bundle to disk as a JSON-LD file. \\
+\passthrough{\lstinline!render\_akf\_bundle!} & Pass the currently
+active CASE bundle through a set of provided renderers and construct a
+valid PDF using Pandoc. \\
+\passthrough{\lstinline!vbox\_start!} & Create a new VirtualBox instance
+bound to a specific virtual machine by name. \\
+\passthrough{\lstinline!vbox\_start\_machine!} & Power on the currently
+active virtual machine. \\
+\passthrough{\lstinline!vbox\_stop\_machine!} & Power down the currently
+active virtual machine. \\
+\passthrough{\lstinline!vbox\_create\_disk\_image!} & Export a disk
+image of the current virtual machine. \\
+\passthrough{\lstinline!artifact\_service\_start!} & Remotely start and
+connect to the subservice responsible for collecting Windows
+artifacts. \\
+\passthrough{\lstinline!artifact\_service\_stop!} & Disconnect from the
+subservice responsible for collecting Windows artifacts. \\
+\passthrough{\lstinline!prefetch!} & Analyze all prefetch files on disk
+and construct their corresponding CASE objects. \\
+\passthrough{\lstinline!chromium\_service\_start!} & Remotely start and
+connect to the subservice responsible for interacting with Chromium
+browsers. \\
+\passthrough{\lstinline!chromium\_service\_stop!} & Disconnect from the
+subservice responsible for interacting with Chromium browsers. \\
+\passthrough{\lstinline!chromium\_visit\_urls!} & Visit one or more URLs
+using a specified web browser. \\
+\passthrough{\lstinline!chromium\_history!} & Collect browsing history
+from a specified web browser and construct their corresponding CASE
+objects. \\
+\end{longtable}
+}
+
+
+While these declarative modules (and the imperative library) provide
+users with significant flexibility in \emph{using} AKF, the challenge of
+building artifacts and scenarios to generate through these execution
+options remains. The remainder of this chapter addresses this challenge.
 
 \section{Using generative AI for individual
 artifacts}\label{using-generative-ai-for-individual-artifacts}
 
+\subsection{Challenges of standalone
+artifacts}\label{challenges-of-standalone-artifacts}
+
 Users of synthesizers must still perform a significant amount of work
 when generating individual artifacts. More precisely -- while AKF and
-other synthesizers can streamline the process of placing artifacts on a
-dataset, users must still provide the actual artifacts themselves. For
-example:
+other synthesizers can streamline the process of placing and generating
+artifacts, users must still provide some of the artifacts themselves.
+For example:
 
 \begin{itemize}
 \tightlist
@@ -3596,6 +3791,8 @@ example:
 \item
   If a user wants to simulate an email or other online conversation, the
   user needs to provide the entirety of the conversation to simulate.
+  Such conversations would need to be consistent with the ``theme'' of a
+  scenario.
 \item
   If a user wants to generate ``proprietary'' documents to emulate some
   form of corporate sabotage, the user would need to create and provide
@@ -3603,67 +3800,238 @@ example:
 \end{itemize}
 
 This is particularly relevant when adding background noise often present
-in real-world datasets, namely the gigabytes of documents created as
-part of a user's benign activity over time. Although creating forensic
-datasets can be accomplished with the work presented thus far, creating
-realistic images that reflect real-world scenarios still requires
-extensive work. While it is true that images should often be small
-enough to allow students to explore a single specific technique,
-real-world scenarios encountered by analysts are rarely limited by time
-or size. An analyst might have to deal with a disk image used over a
-decade to store many photographs and send many messages. Such scenarios
-are valuable training material for courses that encapsulate a long
-period of forensic study, allowing students to apply many techniques
-learned throughout a forensic curriculum to analyze a realistic
-scenario.
+in real-world datasets created as part of a user's benign activity over
+time. Such datasets are valuable training material in forensic courses
+that encapsulate a long period of study, allowing students to apply many
+different techniques learned throughout a curriculum to analyze a
+realistic scenario.
 
-With recent advancements in generative AI, popularized by services such
-as Midjourney and ChatGPT, it is now significantly easier to generate
-realistic images and text content from short, high-level descriptions.
-Additionally, various services exist for creating realistic audio and
-video files that emulate a particular person's voice or facial
-movements; these can be used to generate additional scenario content of
-interest, especially if the scenario is based on a real-world event.
+Indeed, the artifacts in the bulleted list above are all elements of the
+NIST CFReDS Data Leakage Case
+\cite{nationalinstituteofstandardsandtechnologyCFReDSDataLeakage},
+which contains web browsing history, images, documents, and other media
+relevant to the theft of proprietary information related to a product in
+development. However, many of these documents are not specific to the
+scenario; in particular, the technical documents ``stolen'' as part of
+the scenario are actually files from the general-purpose Govdocs corpora
+\cite{garfinkelBringingScienceDigital2009}, with a cover page
+denoting its intended role in the scenario. For example, one PowerPoint
+file is portrayed as a presentation of the detailed design of the
+product, but its actual contents are that of a Yale University
+presentation on brain physiology.
 
-It holds that generative AI can quickly populate forensic datasets with
-realistic conversations and images consistent with an arbitrary
-scenario. For example, a corporate espionage case could be built by
-providing a large language model such as ChatGPT with prompts to
-describe complex machinery in both technical and conversational styles.
-Simultaneously, similar prompts can be passed into an image synthesizer
-such as Midjourney to produce related images. The images and text
-produced can then be used to create documents describing an unreleased
-product of high value, providing a pipeline through which significant
-artifacts can be placed onto a forensic dataset.
+The use of ``irrelevant'' files to portray ``relevant'' files can be
+acceptable when the actual content of the artifact is not important in
+analyzing the scenario as a whole. This significantly reduces the time
+spent creating individual artifacts, both those directly related to the
+focus of the scenario and those that are intended to be background
+noise. However, this technique still detracts from the realism of the
+scenario, and may not be sufficient to cover all use cases. One notable
+example in the Data Leakage Case is the lack of emails on the device;
+the sole email conversation is strictly related to the scenario. A
+real-world suspect would almost certainly have many other email
+conversations that are consistent with their background, such as
+employer-related emails or marketing emails from websites that the user
+has visited.
+
+Recent advancements in AI models have made it significantly easier to
+generate text, images, and other media from high-level descriptions.
+Generative AI can quickly populate forensic datasets with realistic
+conversations and images consistent with an arbitrary scenario, such as
+the scenario presented by the Data Leakage Case. For example, a large
+language model (LLM) could be prompted to generate text describing a
+fictional piece of machinery in both technical and conversational
+styles. The text could then be combined with images generated by another
+model to create documents and emails, providing a pipeline through which
+thematically-consistent artifacts can be generated and placed onto a
+forensic dataset. The same process can be performed for artifacts that
+are simply background noise; generating hundreds of ``irrelevant''
+emails would be impractical for a human, but viable for an LLM.
 
 This idea can be extended further by training models on specific
 datasets; for example, if an instructor wished to create a fictional
 scenario in which a user frequently interacts with users of a particular
-online community, a large language model could be trained on available
-conversations to provide a degree of realism to the scenario. However,
-as mentioned before, this faces the challenges of ownership, privacy,
-and legality behind works derived from publicly available information
-that was (likely) not published with the expectation of its usage in an
-AI model.
+online community, a large language model could be trained on (or
+otherwise provided) existing conversations to provide a degree of
+realism to the scenario. However, this faces the challenges of
+ownership, privacy, and legality behind works derived from publicly
+available information that was not published with the expectation of its
+usage in an AI model -- issues that bring us back to the motivations of
+synthesizers described in \autoref{motivation-for-synthetic-datasets}.
 
 It is important to note that the inclusion of generative AI into
 synthesizers does not necessarily require deep integration with the
 framework itself. Many existing synthesizers could be extended to use
 documents, images, or other data sourced from generative AI instead of
 user-defined files without the need to change the synthesizer's
-architecture. However, as advancements in AI continue, it may make sense
-to directly integrate AI-driven actions into synthesizers. For example,
-there may come a time in which synthesizers can be provided natural
-language prompts (such as ``Open Firefox and browse to news-related
-websites'') that directly lead to the generation of relevant artifacts
-without the need to explicitly program the process of browsing to a
-website in advance.
+architecture. However, it may eventually make sense to directly
+integrate AI-driven actions into synthesizers, a topic addressed in
+\autoref{open-ended-automation-with-ai}.
+
+\subsection{Building sample standalone
+artifacts}\label{building-sample-standalone-artifacts}
+
+This section explores the use of Deepseek-R1
+\cite{deepseek-aiDeepSeekR1IncentivizingReasoning2025} and SDXL 1.0
+\cite{podellSDXLImprovingLatent2023} in constructing documents and
+images, with the goal of demonstrating its viability in scenario
+construction. In particular, we focus on building artifacts similar in
+quality and theming to those found in the NIST CFReDS Data Leakage Case.
+Note that the approach detailed below can be generalized to any
+generative model producing text and images.
+
+As described previously, the Data Leakage Case contained files presented
+as technical documentation, but had content that was irrelevant to the
+scenario itself. Our goal, then, is to create comparable documents
+containing both text and images that are consistent with a theme
+provided to the models responsible for generating this content. We
+propose a three-step process to generating multimedia artifacts:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Body text}: A prompt is provided to Deepseek-R1 to create
+  Markdown document(s) consistent with the scenario. The model is
+  instructed to insert suitable image generation prompts (with
+  configuration) throughout the document using a special syntax.
+\item
+  \textbf{Image generation}: The prompts are extracted from the Markdown
+  document and passed to SDXL 1.0. The resulting images are saved to a
+  temporary folder, and the special syntax is replaced with the standard
+  Markdown syntax for inserting inline images at a known path.
+\item
+  \textbf{Rendering}: The resulting Markdown document is passed to a
+  tool such as Pandoc to generate the final artifact, similar to the
+  approach taken in \textbf{39.5 - Output and validation\#5.3 - Human
+  readable reporting}. Pandoc supports various formats, including PDFs,
+  Microsoft Word, and Microsoft PowerPoint. Other tools could be used to
+  produce artifacts in other formats.
+\end{itemize}
+
+The example document in \autoref{fig:artifact-document-example} was
+produced by following the steps above on locally-hosted instances of
+Deepseek-R1 and SDXL 1.0, using Ollama \cite{OllamaOllama2025} and
+ComfyUI \cite{comfyanonymousComfyanonymousComfyUI2025} as
+interfaces. An instance of \passthrough{\lstinline!deepseek-r1:14b!} was
+directed to create a document describing the technical details of a
+fictional semiconductor manufacturing product under various constraints.
+
+Of course, the process can be simplified to exclusively generating
+images. For example, the images in \autoref{fig:artifact-image-example}
+were generated by instructing Deepseek-R1 to provide a list of suitable
+image generation prompts that were related to semiconductor
+manufacturing, which were then passed to SDXL 1.0.
+
+Finally, we also noted that the Data Leakage case lacks a significant
+number of email conversations. Email conversations as part of a scenario
+can be divided into three categories:
+
+\begin{itemize}
+\tightlist
+\item
+  Emails that are relevant to the focus or topic of the scenario, such
+  as corporate espionage
+\item
+  Emails that are irrelevant to the scenario but are consistent with the
+  persona included as part of the scenario, such as benign emails to
+  coworkers
+\item
+  Emails that are wholly irrelevant to the scenario, such as marketing
+  or spam emails.
+\end{itemize}
+
+To generate these emails, Deepseek-R1 was prompted to generate email
+conversations according to the three email categories above in a
+well-structured format that could easily be converted to a valid
+\passthrough{\lstinline!.eml!} file using the Python standard library.
+Deepseek-R1 was provided details such as the email address to use when
+sending/receiving emails, the corporate email domain to use in relevant
+emails, and so on. A sample email conversation can be seen in
+\autoref{fig:artifact-email-example}.
+
+Consistent with the architectural diagram depicted in
+\autoref{fig:architecture-full-a}, the use of generative AI in AKF is
+almost entirely decoupled from other parts of the framework, and can be
+applied outside of synthesizer contexts. Although the three-step process
+to generate the artifacts above was carried out manually, the same
+process could be implemented in standalone modules in the AKF library.
+There are various libraries and solutions for interfacing with Ollama
+and ComfyUI through Python; these libraries could be leveraged in such
+an implementation.
+
+\section{Using LLMs for high-level
+scenarios}\label{using-llms-for-high-level-scenarios}
+
+The prior section addressed the challenge of generating individual
+artifacts for a dataset. However, there remains the challenge of using
+these artifacts to generate a cohesive scenario. That is, with an
+overall scenario theme or goal in mind, what specific synthesizer
+actions should be taken to construct a dataset that adheres to that
+theme? Even with the automation routines provided by AKF and individual
+artifacts prepared (whether created manually or using generative AI), it
+still takes time to define a scenario, especially one that involves many
+different types of actions that cannot easily be simplified into a small
+number of synthesizer actions. This is true even if a simplified
+declarative syntax is used.
+
+One solution is providing the details of AKF's declarative syntax to an
+LLM and instructing it to generate valid declarative scripts. In
+particular, there are two features of the declarative syntax that lends
+itself well to this process:
+
+\begin{itemize}
+\tightlist
+\item
+  The role of each module is well-defined and corresponds one-to-one to
+  a specific action that a human might take, such as visiting a set of
+  websites.
+\item
+  The expected inputs for each module is well-defined, as they are
+  documented by the Pydantic model that is a required component of each
+  module.
+\end{itemize}
+
+This information is sufficient for an LLM to ``understand'' the AKF
+syntax. Such details could be automatically provided as context to an
+LLM through automatically generated documentation, such as the contents
+of docstrings and Pydantic model schemas.
 
 \chapter{Evaluation and observations}\label{chapter-seven}
 
 \section{Context and scenario}\label{context-and-scenario}
 
+What class was this used in, and elements of the class are worth
+mentioning? What was the scenario we gave students? What was the context
+provided to students about the dataset (for example, were they told this
+was a synthetic dataset? if so, what were they told about it being
+synthetic?)?
+
 \section{Student analysis}\label{student-analysis}
+
+How well were students able to analyze the scenario? If there were
+specific items that we expected students to find, how many of these
+items were identified in the reports that students created?
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Extreme} stretch goal - this only covers the student side of
+  things. What about the instructor side of things? Do they think AKF
+  covers their use cases, and is it as easy to use as I claim it is?
+\item
+  Wouldn't it be great to have a full ransomware incident response
+  scenario, where all of network, memory, and disk images are relevant,
+  and there's more than one machine involved, and there's a bunch of
+  ``typical'' user files that get encrypted? wouldn't that be great ???
+\end{itemize}
+
+\section{Findings and
+observations}\label{findings-and-observations}
+
+Were there other things of note, like the students noticing traces of
+AKF being left behind? Did students like the alternative scenario
+compared to an existing, human-crafted scenario? What did students like
+or dislike?
 
 \chapter{Future work}\label{chapter-eight}
 
@@ -4184,12 +4552,21 @@ following locations:
   Core libraries (\passthrough{\lstinline!akflib!}):
   \url{https://github.com/lgactna/akflib}
 \item
-  The AKF agent for Windows:
+  The AKF agent for Windows (\passthrough{\lstinline!akf\_windows!}):
   \url{https://github.com/lgactna/akf-windows}
 \item
-  Standalone CASE/UCO 2.0 bindings for Python:
+  Standalone CASE/UCO 2.0 bindings for Python
+  (\passthrough{\lstinline!caselib!}):
   \url{https://github.com/lgactna/CASE-pydantic}
 \end{itemize}
+
+The \passthrough{\lstinline!akf\_windows!} repository contains a sample
+declarative script utilizing every implemented declarative module,
+demonstrating nearly all existing AKF functionality. It also contains an
+equivalent imperative script that was generated using
+\passthrough{\lstinline!akf-translate!}. Both scripts, and some of their
+outputs, can be found in the \passthrough{\lstinline!./scenarios!}
+folder.
 
 \section{Comparison of ForTrace and AKF
 agents}\label{comparison-of-fortrace-and-akf-agents}

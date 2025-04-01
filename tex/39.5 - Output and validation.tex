@@ -5,6 +5,9 @@ documents its outputs, as seen in \autoref{fig:output-simple}. More
 specifically, this covers the modules and submodules seen in
 \autoref{fig:output-full}. The submodules for the \emph{virtual machine}
 and \emph{action automation library} have been omitted for brevity.
+(Note that the ``imaging library'' and ``validation library'' are
+theoretical submodules that would fulfill the ``after the fact''
+analysis described in \autoref{human-readable-reporting}, and are not currently implemented.)
 
 \begin{figure}[h]
 \centering
@@ -361,18 +364,20 @@ as Autopsy) or tools that explicitly focus on constructing CASE objects
 (such as tools built with the official or AKF Python bindings for CASE).
 
 However, ``after the fact'' analysis can also be achieved on live
-virtual machines using existing AKF design patterns. In particular, it
-is possible to write RPyC subservices whose sole purpose is to generate
-CASE objects. For example, a subservice can collect the Windows prefetch
-files immediately after a disk image is created, allowing it to
-construct CASE prefetch objects that reflect the disk image without
-needing independent tooling. CASE-oriented behavior can also be
-implemented in existing subservices, such as adding a function to the
-Chromium subservice dedicated to identifying and creating CASE objects
-for all Chrome or Edge artifacts after all browser actions have been
-performed. This allows the dataset to be documented independently of
-synthesizer actions intended to emulate human activity -- a desirable
-feature identified at the beginning of this chapter.
+virtual machines using existing AKF design patterns. In particular,
+agents may have RPyC subservices whose sole purpose is to generate CASE
+objects. For example, the \passthrough{\lstinline!artifacts!} subservice
+mentioned in \autoref{the-akf-agent}
+can collect the Windows prefetch files immediately before a disk image
+is created, allowing it to construct CASE prefetch objects that reflect
+the disk image without requiring separate tooling. CASE-oriented
+behavior can also be implemented in existing subservices; for example,
+the \passthrough{\lstinline!chromium!} subservice is capable of creating
+CASE objects for Chrome and Edge browser history after all browser
+automation actions have been performed. This allows the dataset to be
+documented independently of synthesizer actions intended to emulate
+human activity -- a desirable feature identified at the beginning of
+this chapter.
 
 The flexibility of these two approaches -- enabled by CASE's deep
 integration into AKF -- makes it possible to construct CASE objects in a
@@ -381,8 +386,8 @@ Scenario developers do not need to be concerned with instantiating their
 own CASE objects when using high-level APIs so long as an AKF library
 developer has written support for automatic CASE object construction.
 This significantly reduces the need for scenario developers to construct
-artifact-specific ground truth through manual analysis of
-synthesizer-created outputs.
+ground truth information by manually analyzing synthesizer-created
+outputs.
 
 By extension, this means that the detailed documentation of AKF outputs
 is innate to many scenarios constructed using AKF. Lowering the effort
@@ -427,7 +432,8 @@ elements that may be useful to a human. The results of each renderer are
 combined to form a larger Markdown document (or documents) with multiple
 sections, one for each renderer. The combined document can be converted
 to a PDF using Pandoc \cite{macfarlanePandoc2025}, a general-purpose
-tool for converting between documents of various types.
+tool for converting between documents of various types. Users can modify
+the generated Markdown documents before running Pandoc, if desired.
 
 A single CASE bundle can be passed through as many or as few renderers
 as needed to generate a suitable report for a dataset. So long as the
@@ -445,22 +451,34 @@ the CASE bundle remains the single, comprehensive source of truth.
 Contrast this with human-written PDF reports, which may contain human
 biases and are rarely maintained in older datasets.
 
-A sample report, generated from the AKF scenario described in
-\autoref{setup-and-basic-usage}, is
-displayed in \autoref{fig:scenario-report}:
+\autoref{fig:scenario-report} shows a page taken from a sample report.
+The information contained in this report was derived from collected
+\passthrough{\lstinline!WindowsPrefetch!} and
+\passthrough{\lstinline!URLHistory!} CASE objects, which were then
+passed through their associated renderers. Each renderer generated
+Markdown tables with the entries shown below, which were then rendered
+by Pandoc. (Note that \autoref{fig:scenario-report} uses the Eisvogel
+template \cite{waglerWandmalfarbePandoclatextemplate2025} for
+Pandoc, significantly improving the appearance and readability of
+generated documents. Eisvogel is not distributed with AKF but can be
+manually installed alongside Pandoc; \passthrough{\lstinline!akflib!}
+will use Eisvogel if it is detected.)
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\linewidth]{yannikos.png}
+\includegraphics[width=1\linewidth]{human-reporting.png}
 \caption{Sample PDF report generated by AKF
 renderers}\label{fig:scenario-report}
 \end{figure}
 
-Note that the displayed PDF uses the Eisvogel template
-\cite{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
-significantly improving the appearance and readability of generated
-documents. Eisvogel is not distributed with AKF but can be manually
-installed alongside Pandoc.
+Of course, there are other options for generating human-readable (and
+machine-readable) reporting from an AKF-generated dataset. For example,
+the analysis features provided by tools such as Plaso
+\cite{Log2timelinePlaso2025} and those developed by Eric Zimmerman
+\cite{zimmermanEricZimmermansTools} can be used to supplement the
+existing reporting and validation features of AKF. Although not
+currently the case, these can be directly integrated into AKF workflows
+in the future.
 
 After generating the scenario itself and any metadata and reporting that
 should be included with the dataset, the challenge of distributing this

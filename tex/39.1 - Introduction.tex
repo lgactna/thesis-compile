@@ -12,38 +12,39 @@ applicable to a variety of other contexts, such as incident response and
 corporate investigations, further highlighting the need for quality
 educational material and hands-on training for new forensic analysts.
 
-The origins of digital forensics can be traced to the 1980s, during
-which computers began to be adopted by the general public. Prior to
-this, computers were restricted mainly to industry, academia, and
-governments with dedicated infrastructure and staff
+The origins of digital forensics can be traced to the 1980s, when
+computers began to be accessible to the general public. Prior to this,
+computers were restricted mainly to industry, academia, and governments
+with dedicated infrastructure and staff to support computers
 \cite{pollittHistoryDigitalForensics2010}. However, with the
-introduction of PCs that were more accessible to the typical consumer,
-such as the Commodore 64 and the IBM PC, computer usage within the
-public grew. So did crimes committed with computers; people discovered
-that they could hack telephone networks to illegally obtain software and
-``free'' telephone services \cite{jonesInsightDigitalForensics2022}.
-In 1983, Canada would be the first government to amend its criminal code
-to cover cybercrime; the United States, the United Kingdom, and
-Australia would follow suit in the following decade.
+introduction of PCs that were more compact and accessible to the typical
+consumer, such as the Commodore 64 and the IBM PC, computer usage within
+the public grew. So did crimes committed with computers; people
+discovered that they could hack telephone networks to illegally obtain
+software and ``free'' telephone services
+\cite{jonesInsightDigitalForensics2022}. In 1983, Canada would be
+the first government to amend its criminal code to cover cybercrime; the
+United States, the United Kingdom, and Australia would follow suit over
+the next decade.
 
-During this time, investigations were relatively ad-hoc and very simple.
-Teams often built their own software to analyze devices, though a few
-hobbyists and software vendors began to develop dedicated forensic
-tools. However, computers had yet to truly enter the mainstream; most
-individual computer owners were (relatively wealthy) computer hobbyists
-rather than the general public. In 1984, the U.S. Census Bureau
-determined that only about 8.2\% of U.S. households owned a computer
-\cite{robertkominskiComputerUseUnited1988}, nearly doubling to 15\%
-in 1989 \cite{robertkominskiComputerUseUnited1991}.
+During this time, investigations were typically ad hoc and simple in
+nature. Teams often built their own software to analyze devices, though
+a some hobbyists and software vendors began to develop dedicated
+forensic tools. However, computers had yet to truly enter the
+mainstream; most individual computer owners were (relatively wealthy)
+hobbyists rather than the general public. In 1984, the U.S. Census
+Bureau determined that only about 8.2\% of U.S. households owned a
+computer \cite{robertkominskiComputerUseUnited1988}, nearly doubling
+to 15\% in 1989 \cite{robertkominskiComputerUseUnited1991}.
 
-As technology continued to advance past the 1990s, digital forensics --
-and computing as a whole -- began to grow in scope and importance. The
-rise of mobile devices and the internet drastically changed the role of
-computing in the eyes of the public; with it came the rise of cybercrime
-and a recognition of the importance of computer investigations. These
-early investigations continued to be performed by investigators who
-happened to be experienced with computers rather than those with formal
-digital forensics training
+As technology continued to advance throughout the 1990s, digital
+forensics -- and computing as a whole -- began to grow in scope and
+importance. The rise of mobile devices and the internet drastically
+changed the role of computing in the eyes of the public; with it came
+the rise of cybercrime and a recognition of the importance of computer
+investigations. These early investigations continued to be performed by
+investigators who happened to be experienced with computers rather than
+those with formal digital forensics training
 \cite{hargreavesDigitalForensicsEducation2017}. Such investigations
 lacked a standardized structure (unlike the formal approaches in
 ``traditional'' forensic disciplines), contributing to debates about the
@@ -57,13 +58,13 @@ literature appeared in 1999
 Forensic Research Workshop (DFRWS) held in 2001 to identify priorities
 in the growing field of digital forensics
 \cite{palmerRoadMapDigital2001}. A particularly notable case was
-that of the September 11, 2001 attacks, in which computers were found to
-contain significant evidence related to the organization and planning of
-the attack. Intelligence communities and law enforcement agencies
-worldwide began establishing digital forensics teams, demonstrating a
-shift in which investigations previously only conducted by individuals
-and small teams were now also performed by governments and professional
-organizations.
+that of the September 11, 2001 attacks, in which computers containing
+significant evidence related to the organization and planning of the
+attack were discovered. Intelligence communities and law enforcement
+agencies worldwide began establishing digital forensics teams,
+demonstrating a shift in which investigations previously only conducted
+by individuals and small teams were now also performed by governments
+and professional organizations.
 
 It was during this time that tools such as EnCase and Forensic Toolkit
 (better known as FTK) evolved to become dedicated products that remain a
@@ -82,9 +83,9 @@ Undergraduate and graduate curricula dedicated to the study of digital
 forensics were developed
 \cite{andersonComparativeStudyTeaching2006,srinivasanDigitalForensicsCurriculum2013}
 along with numerous efforts to standardize and improve digital forensics
-curricula
+education
 \cite{cooperStandardsDigitalForensics2010,nanceDigitalForensicsDefining2009,nanceDigitalForensicsDefining2010,dafoulasOverviewDigitalForensics2019,lucianoDigitalForensicsNext2018}.
-The development of formal education was significant due to the growing
+The development of formal curricula was significant due to the growing
 importance of digital forensics from a legal perspective; analysts were
 expected to follow a strict procedure to ensure the admissibility of
 digital evidence into a court of law
@@ -98,19 +99,18 @@ will grow 32\% over the next decade from 2022 to 2032, adding over
 50,000 new jobs
 \cite{bureauoflaborstatisticsu.s.departmentoflaborInformationSecurityAnalysts2023}.
 The diversity and depth of digital forensics will continue to grow with
-sustained developments in modern computing -- a fact that extends beyond
-industry and into research and education.
+developments in modern computing -- a fact that extends beyond industry
+and into research and education.
 
 With the growing importance and complexity of digital forensics, there
 is a clear need for high-quality, realistic data for researchers and
 instructors alike. However, there continue to be significant gaps in the
-quantity and variety of material suitable for digital forensic training;
-in particular, privacy and legal concerns prevent the use and
+quantity and variety of material suitable for digital forensics
+training; in particular, privacy and legal concerns prevent the use and
 distribution of real-world data
 \cite{garfinkelForensicCorporaChallenge2007}. From a research
 perspective, the result is that many researchers develop their own
-datasets, often with a very narrow scope and a low degree of
-reproducibility
+datasets, often with a very narrow scope and limited reproducibility
 \cite{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
 From an education perspective, the result is that most training material
 is either manually created by instructors or reused from existing
@@ -122,15 +122,13 @@ changes in technology and software.
 There have been various efforts to automate and streamline the process
 of creating new forensic datasets from high-level descriptions and
 predefined forensic artifacts. These forensic synthesis frameworks, also
-known as ``synthesizers,'' include various features geared toward
-rapidly developing datasets for research and education. These features
-include mass dataset generation for large classrooms, metadata
-generation useful in tool validation, and the ability to generate and
-export a variety of forensic artifacts from the synthesizer. This is
-particularly valuable in classrooms, as these datasets enable
-instructors to create images that allow students to learn about a
-specific forensic technique while emulating some real-world challenges
-that forensic analysts face in practice.
+known as ``synthesizers,'' include functionality geared toward rapidly
+developing datasets for research and education. These features include
+mass dataset generation for large classrooms, metadata generation useful
+in tool validation, and the ability to generate and export a variety of
+forensic artifacts from the synthesizer. In particular, synthesizers
+significantly reduce the difficulty of both generating and documenting
+application-specific artifacts as part of a dataset.
 
 However, there is still much work to be done towards increasing the
 accessibility and flexibility of these frameworks. Before exploring
@@ -150,7 +148,7 @@ datasets}\label{purpose-of-forensic-datasets}
 Before considering the use of forensic datasets in research and
 education, we begin by exploring how these datasets are acquired and
 used in the ``real world'' -- that is, in the context of investigations
-conducted by professionals in industry.
+conducted by professionals in industry and law enforcement.
 
 In practice, forensic datasets -- and digital forensics as a whole --
 are used for a variety of purposes. In particular, Conklin et
@@ -188,9 +186,9 @@ performed \cite{conklinComputerForensics2022}:
   \cite{withersj.ElectronicallyStoredInformation2006}.)
 \end{itemize}
 
-Additionally, it is important to note that the acquisition of forensic
+Additionally, it is important to note that the analysis of forensic
 evidence is only one part of the overall digital forensics process. For
-example, analysts must consider the order in which to obtain evidence
+example, analysts must consider the order in which to acquire evidence
 while adhering to chain of custody procedures. Conklin et al.~identify
 several steps throughout the lifespan of a digital forensic
 investigation that are summarized here
