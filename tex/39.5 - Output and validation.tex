@@ -368,11 +368,11 @@ virtual machines using existing AKF design patterns. In particular,
 agents may have RPyC subservices whose sole purpose is to generate CASE
 objects. For example, the \passthrough{\lstinline!artifacts!} subservice
 mentioned in \autoref{the-akf-agent}
-can collect the Windows prefetch files immediately before a disk image
-is created, allowing it to construct CASE prefetch objects that reflect
-the disk image without requiring separate tooling. CASE-oriented
-behavior can also be implemented in existing subservices; for example,
-the \passthrough{\lstinline!chromium!} subservice is capable of creating
+can collect Windows prefetch files immediately before a disk image is
+created, allowing it to construct CASE prefetch objects that reflect the
+disk image without requiring separate tooling. CASE-oriented
+functionality can also be implemented in existing subservices; for
+example, the \passthrough{\lstinline!chromium!} subservice can create
 CASE objects for Chrome and Edge browser history after all browser
 automation actions have been performed. This allows the dataset to be
 documented independently of synthesizer actions intended to emulate
@@ -456,13 +456,14 @@ The information contained in this report was derived from collected
 \passthrough{\lstinline!WindowsPrefetch!} and
 \passthrough{\lstinline!URLHistory!} CASE objects, which were then
 passed through their associated renderers. Each renderer generated
-Markdown tables with the entries shown below, which were then rendered
-by Pandoc. (Note that \autoref{fig:scenario-report} uses the Eisvogel
-template \cite{waglerWandmalfarbePandoclatextemplate2025} for
-Pandoc, significantly improving the appearance and readability of
-generated documents. Eisvogel is not distributed with AKF but can be
-manually installed alongside Pandoc; \passthrough{\lstinline!akflib!}
-will use Eisvogel if it is detected.)
+Markdown documents containing the information in the report, which were
+then converted to a PDF with Pandoc. (Note that
+\autoref{fig:scenario-report} uses the Eisvogel template
+\cite{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
+significantly improving the appearance and readability of generated
+documents. Eisvogel is not distributed with AKF but can be manually
+installed alongside Pandoc; \passthrough{\lstinline!akflib!} will use
+Eisvogel if it is detected.)
 
 \begin{figure}[h]
 \centering
@@ -471,14 +472,14 @@ will use Eisvogel if it is detected.)
 renderers}\label{fig:scenario-report}
 \end{figure}
 
-Of course, there are other options for generating human-readable (and
+Of course, other options exist for generating human-readable (and
 machine-readable) reporting from an AKF-generated dataset. For example,
 the analysis features provided by tools such as Plaso
 \cite{Log2timelinePlaso2025} and those developed by Eric Zimmerman
 \cite{zimmermanEricZimmermansTools} can be used to supplement the
-existing reporting and validation features of AKF. Although not
-currently the case, these can be directly integrated into AKF workflows
-in the future.
+existing reporting and validation features of AKF. These tools can be
+directly integrated into AKF workflows in the future, although this is
+not currently the case.
 
 After generating the scenario itself and any metadata and reporting that
 should be included with the dataset, the challenge of distributing this

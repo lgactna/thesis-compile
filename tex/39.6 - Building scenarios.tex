@@ -13,7 +13,7 @@ located in \autoref{appendix-a} as
 modules}\label{fig:scenarios-simple}
 \end{figure}
 
-At this point, we have provided the implementations for automating
+At this point, we have provided the functionality for automating
 artifact generation in a near-deterministic manner with comprehensive
 logging and reporting. However, there is still the challenge of exposing
 this functionality in a user-friendly manner. At a high level, there are
@@ -38,9 +38,10 @@ performing actions:
 However, the challenge of deciding \emph{what} actions to perform
 remains. It is still mainly the responsibility of instructors to provide
 background noise and other realistic artifacts to insert into a
-scenario. Although synthesizers make it easier to place files at desired
-locations or visit websites, these scenario elements must be defined and
-created ahead of time. This can be broken down into two separate issues:
+scenario. Additionally, although synthesizers make it easier to place
+files at desired locations or visit websites, these scenario elements
+must be defined and created beforehand. More precisely, these represent
+challenges in two specific areas:
 
 \begin{itemize}
 \tightlist
@@ -290,7 +291,7 @@ generation, and output generation are handled explicitly through a
 script executed through the Python interpreter.
 
 A simple AKF script achieving the same outcomes as the ForTrace and SFX
-scripts above is show in \autoref{lst:6.2a}:
+scripts above is shown in \autoref{lst:6.2a}:
 
 \begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario}, language=Python]
 from akf_windows.api.chromium import ChromiumServiceAPI
@@ -337,8 +338,8 @@ automatically perform the required RPyC setup and return an instance of
 allows us to interact with Microsoft Edge on the virtual machine over
 RPyC (which is abstracted away from the user); as part of the context
 manager, the RPyC connection is automatically closed at the end of the
-\passthrough{\lstinline!with!}block. Finally, we create a raw disk image
-and save it to the desktop.
+\passthrough{\lstinline!with!} block. Finally, we create a raw disk
+image and save it to the desktop.
 
 With this in mind, how do we expose this same functionality through a
 declarative syntax?
@@ -636,8 +637,9 @@ provides significant flexibility to scenario developers. To the best of
 our knowledge, prior synthesizers have only supported direct execution
 from declarative scripts, which limits the opportunities to use
 declarative scripts as a ``starting point'' for writing more complex
-imperative scripts. (In fact, the code in \autoref{lst:6.2a} was largely
-derived from the auto-generated code using \autoref{lst:6.3.2a}.)
+imperative scripts. (In fact, the code in \autoref{lst:6.2a} was
+primarily derived from the auto-generated code using
+\autoref{lst:6.3.2a}.)
 
 An example of a minimal AKF scenario, carrying out the same actions as
 the SFX, ForTrace, and imperative AKF script above, can be seen in
@@ -660,8 +662,8 @@ actions:
   - name: Start the virtual machine
     module: akflib.modules.vbox.VBoxStartMachineModule
 
-  # Visit a website using Mcirosoft Edge. A temporary instance of the Chromium
-  # subservice API is created for the lietime of this module.
+  # Visit a website using Microsoft Edge. A temporary instance of the Chromium
+  # subservice API is created for the lifetime of this module.
   - name: Visit a single website
     module: chromium_visit_urls
     args:
@@ -717,7 +719,7 @@ for module names, verifying that all required modules are available,
 setting the \passthrough{\lstinline!random!} seed, and so on. Then, the
 interpreter runs each module under the \passthrough{\lstinline!actions!}
 key with the provided arguments and configuration in order, continuing
-until all modules have been used.
+until all actions have been processed.
 
 Modules can read and modify a global state dictionary that allows
 otherwise independent modules to cooperate. For example, suppose that a
@@ -783,7 +785,7 @@ valid PDF using Pandoc. \\
 bound to a specific virtual machine by name. \\
 \passthrough{\lstinline!vbox\_start\_machine!} & Power on the currently
 active virtual machine. \\
-\passthrough{\lstinline!vbox\_stop\_machine!} & Power down the currently
+\passthrough{\lstinline!vbox\_stop\_machine!} & Power off the currently
 active virtual machine. \\
 \passthrough{\lstinline!vbox\_create\_disk\_image!} & Export a disk
 image of the current virtual machine. \\
@@ -808,7 +810,7 @@ objects. \\
 }
 
 
-While these declarative modules (and the imperative library) provide
+Although these declarative modules (and the imperative library) provide
 users with significant flexibility in \emph{using} AKF, the challenge of
 building artifacts and scenarios to generate through these execution
 options remains. The remainder of this chapter addresses this challenge.
@@ -841,12 +843,11 @@ For example:
   a variety of Microsoft Office, PDF, or other files in these formats.
 \end{itemize}
 
-This is particularly relevant when adding background noise often present
-in real-world datasets created as part of a user's benign activity over
-time. Such datasets are valuable training material in forensic courses
-that encapsulate a long period of study, allowing students to apply many
-different techniques learned throughout a curriculum to analyze a
-realistic scenario.
+This is particularly relevant when adding background noise intended to
+emulate benign activity. Such datasets are valuable training material in
+forensic courses that encapsulate a long period of study, allowing
+students to apply many different techniques learned throughout a
+curriculum to analyze a realistic scenario.
 
 Indeed, the artifacts in the bulleted list above are all elements of the
 NIST CFReDS Data Leakage Case
@@ -854,27 +855,27 @@ NIST CFReDS Data Leakage Case
 which contains web browsing history, images, documents, and other media
 relevant to the theft of proprietary information related to a product in
 development. However, many of these documents are not specific to the
-scenario; in particular, the technical documents ``stolen'' as part of
-the scenario are actually files from the general-purpose Govdocs corpora
+scenario; in particular, the ``technical documents'' present in the
+scenario are actually files from the general-purpose Govdocs corpora
 \cite{garfinkelBringingScienceDigital2009}, with a cover page
-denoting its intended role in the scenario. For example, one PowerPoint
-file is portrayed as a presentation of the detailed design of the
-product, but its actual contents are that of a Yale University
+denoting their intended role in the scenario. For example, one
+PowerPoint file is portrayed as a presentation of the detailed design of
+the product, but its actual contents are that of a Yale University
 presentation on brain physiology.
 
 The use of ``irrelevant'' files to portray ``relevant'' files can be
 acceptable when the actual content of the artifact is not important in
-analyzing the scenario as a whole. This significantly reduces the time
-spent creating individual artifacts, both those directly related to the
-focus of the scenario and those that are intended to be background
-noise. However, this technique still detracts from the realism of the
-scenario, and may not be sufficient to cover all use cases. One notable
-example in the Data Leakage Case is the lack of emails on the device;
-the sole email conversation is strictly related to the scenario. A
-real-world suspect would almost certainly have many other email
-conversations that are consistent with their background, such as
-employer-related emails or marketing emails from websites that the user
-has visited.
+analyzing the scenario as a whole. This practice significantly reduces
+the time spent creating individual artifacts, both those directly
+related to the focus of the scenario and those that are intended to be
+background noise. However, this technique still detracts from the
+realism of the scenario and may not be sufficient to cover all use
+cases. One notable example in the Data Leakage Case is the lack of
+emails on the device; the sole email conversation is strictly related to
+the scenario. A real-world suspect would almost certainly have many
+other email conversations consistent with their background, such as
+employer-related emails or marketing emails from websites the user has
+visited.
 
 Recent advancements in AI models have made it significantly easier to
 generate text, images, and other media from high-level descriptions.
@@ -884,11 +885,11 @@ the scenario presented by the Data Leakage Case. For example, a large
 language model (LLM) could be prompted to generate text describing a
 fictional piece of machinery in both technical and conversational
 styles. The text could then be combined with images generated by another
-model to create documents and emails, providing a pipeline through which
-thematically-consistent artifacts can be generated and placed onto a
-forensic dataset. The same process can be performed for artifacts that
+model to create documents and emails. This provides a pipeline through
+which thematically-consistent artifacts can be generated and placed onto
+a forensic dataset. The same process can be performed for artifacts that
 are simply background noise; generating hundreds of ``irrelevant''
-emails would be impractical for a human, but viable for an LLM.
+emails would be impractical for a human but trivial for an LLM.
 
 This idea can be extended further by training models on specific
 datasets; for example, if an instructor wished to create a fictional
@@ -898,75 +899,88 @@ otherwise provided) existing conversations to provide a degree of
 realism to the scenario. However, this faces the challenges of
 ownership, privacy, and legality behind works derived from publicly
 available information that was not published with the expectation of its
-usage in an AI model -- issues that bring us back to the motivations of
-synthesizers described in \autoref{motivation-for-synthetic-datasets}.
+usage in an AI model -- issues very similar to those described in
+\autoref{motivation-for-synthetic-datasets}.
 
 It is important to note that the inclusion of generative AI into
 synthesizers does not necessarily require deep integration with the
 framework itself. Many existing synthesizers could be extended to use
 documents, images, or other data sourced from generative AI instead of
 user-defined files without the need to change the synthesizer's
-architecture. However, it may eventually make sense to directly
-integrate AI-driven actions into synthesizers, a topic addressed in
-\autoref{open-ended-automation-with-ai}.
+architecture. Directly integrating AI-driven actions into synthesizers
+is addressed further in \autoref{open-ended-automation-with-ai}.
 
 \subsection{Building sample standalone
 artifacts}\label{building-sample-standalone-artifacts}
 
 This section explores the use of Deepseek-R1
 \cite{deepseek-aiDeepSeekR1IncentivizingReasoning2025} and SDXL 1.0
-\cite{podellSDXLImprovingLatent2023} in constructing documents and
-images, with the goal of demonstrating its viability in scenario
-construction. In particular, we focus on building artifacts similar in
-quality and theming to those found in the NIST CFReDS Data Leakage Case.
-Note that the approach detailed below can be generalized to any
-generative model producing text and images.
+\cite{podellSDXLImprovingLatent2023} in constructing various
+scenario artifacts. In particular, we focus on building artifacts
+similar in quality and theme to those found in the NIST CFReDS Data
+Leakage Case. Note that the approach detailed below can be generalized
+to other models, not just Deepseek and SDXL.
 
 As described previously, the Data Leakage Case contained files presented
-as technical documentation, but had content that was irrelevant to the
-scenario itself. Our goal, then, is to create comparable documents
-containing both text and images that are consistent with a theme
-provided to the models responsible for generating this content. We
-propose a three-step process to generating multimedia artifacts:
+as technical documentation but had content that was irrelevant to the
+scenario itself. Our goal is to create comparable documents containing
+text and images consistent with a theme provided to the models
+responsible for generating this content. We propose a three-step process
+for generating multimedia artifacts:
 
 \begin{itemize}
 \tightlist
 \item
   \textbf{Body text}: A prompt is provided to Deepseek-R1 to create
-  Markdown document(s) consistent with the scenario. The model is
-  instructed to insert suitable image generation prompts (with
-  configuration) throughout the document using a special syntax.
+  Markdown document(s) consistent with the scenario. Using a special
+  syntax, the model is instructed to insert suitable image generation
+  prompts throughout the document. The syntax allows the model to
+  configure image parameters, such as the size of the image.
 \item
   \textbf{Image generation}: The prompts are extracted from the Markdown
   document and passed to SDXL 1.0. The resulting images are saved to a
   temporary folder, and the special syntax is replaced with the standard
-  Markdown syntax for inserting inline images at a known path.
+  Markdown syntax for embedding images at a known path.
 \item
   \textbf{Rendering}: The resulting Markdown document is passed to a
   tool such as Pandoc to generate the final artifact, similar to the
-  approach taken in \textbf{39.5 - Output and validation\#5.3 - Human
-  readable reporting}. Pandoc supports various formats, including PDFs,
-  Microsoft Word, and Microsoft PowerPoint. Other tools could be used to
-  produce artifacts in other formats.
+  approach in \textbf{39.5 - Output and validation\#5.3 - Human readable
+  reporting}. Pandoc supports various formats, including PDFs, Microsoft
+  Word, and Microsoft PowerPoint. Other tools could be used to convert
+  Markdown to other formats.
 \end{itemize}
 
-The example document in \autoref{fig:artifact-document-example} was
-produced by following the steps above on locally-hosted instances of
+The document snippet shown in \autoref{fig:artifact-document-example}
+was produced by following the steps above on locally-hosted instances of
 Deepseek-R1 and SDXL 1.0, using Ollama \cite{OllamaOllama2025} and
 ComfyUI \cite{comfyanonymousComfyanonymousComfyUI2025} as
 interfaces. An instance of \passthrough{\lstinline!deepseek-r1:14b!} was
 directed to create a document describing the technical details of a
 fictional semiconductor manufacturing product under various constraints.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{pdf-example.png}
+\caption{Sample of an AI-generated PDF artifact to be used in a themed
+scenario}\label{fig:artifact-document-example}
+\end{figure}
+
 Of course, the process can be simplified to exclusively generating
 images. For example, the images in \autoref{fig:artifact-image-example}
-were generated by instructing Deepseek-R1 to provide a list of suitable
-image generation prompts that were related to semiconductor
-manufacturing, which were then passed to SDXL 1.0.
+were generated by instructing Deepseek-R1 to provide a list of image
+generation prompts related to semiconductor manufacturing. These were
+then passed to SDXL 1.0.
 
-Finally, we also noted that the Data Leakage case lacks a significant
-number of email conversations. Email conversations as part of a scenario
-can be divided into three categories:
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{collage.png}
+\caption{Collage of AI-generated images for use in a themed
+scenario}\label{fig:artifact-image-example}
+\end{figure}
+
+Finally, we noted that the Data Leakage case lacks background email
+conversations. Email conversations as part of a scenario can be divided
+into three categories:
 
 \begin{itemize}
 \tightlist
@@ -978,8 +992,8 @@ can be divided into three categories:
   persona included as part of the scenario, such as benign emails to
   coworkers
 \item
-  Emails that are wholly irrelevant to the scenario, such as marketing
-  or spam emails.
+  Emails wholly irrelevant to the scenario, such as marketing or spam
+  emails
 \end{itemize}
 
 To generate these emails, Deepseek-R1 was prompted to generate email
@@ -987,13 +1001,20 @@ conversations according to the three email categories above in a
 well-structured format that could easily be converted to a valid
 \passthrough{\lstinline!.eml!} file using the Python standard library.
 Deepseek-R1 was provided details such as the email address to use when
-sending/receiving emails, the corporate email domain to use in relevant
-emails, and so on. A sample email conversation can be seen in
-\autoref{fig:artifact-email-example}.
+sending/receiving emails and the corporate email domain to use in
+relevant emails. An excerpt of a sample email conversation can be seen
+in \autoref{fig:artifact-email-example}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{email_snippet.png}
+\caption{Sample of an AI-generated email
+conversation}\label{fig:artifact-email-example}
+\end{figure}
 
 Consistent with the architectural diagram depicted in
 \autoref{fig:architecture-full-a}, the use of generative AI in AKF is
-almost entirely decoupled from other parts of the framework, and can be
+almost entirely decoupled from other parts of the framework and can be
 applied outside of synthesizer contexts. Although the three-step process
 to generate the artifacts above was carried out manually, the same
 process could be implemented in standalone modules in the AKF library.
@@ -1013,11 +1034,11 @@ theme? Even with the automation routines provided by AKF and individual
 artifacts prepared (whether created manually or using generative AI), it
 still takes time to define a scenario, especially one that involves many
 different types of actions that cannot easily be simplified into a small
-number of synthesizer actions. This is true even if a simplified
-declarative syntax is used.
+number of synthesizer actions. This is true even with a simplified
+declarative syntax.
 
-One solution is providing the details of AKF's declarative syntax to an
-LLM and instructing it to generate valid declarative scripts. In
+One solution is to provide the details of AKF's declarative syntax to an
+LLM and instruct it to generate valid declarative scripts. In
 particular, there are two features of the declarative syntax that lends
 itself well to this process:
 
@@ -1028,12 +1049,12 @@ itself well to this process:
   a specific action that a human might take, such as visiting a set of
   websites.
 \item
-  The expected inputs for each module is well-defined, as they are
-  documented by the Pydantic model that is a required component of each
-  module.
+  The expected inputs for each module are well-defined, as they are
+  documented by the required Pydantic argument model for each module.
 \end{itemize}
 
 This information is sufficient for an LLM to ``understand'' the AKF
-syntax. Such details could be automatically provided as context to an
-LLM through automatically generated documentation, such as the contents
-of docstrings and Pydantic model schemas.
+syntax, such that it is able to generate its own declarative scripts.
+Such details could be automatically provided as context to an LLM
+through automatically generated documentation, such as the contents of
+docstrings and Pydantic model schemas.
