@@ -14,8 +14,10 @@ request) since the early days of the digital forensics field, though
 their sourcing and qualities have changed significantly over time. This
 topic was explored in far greater detail by Grajeda et al., who
 performed a survey of over 700 research articles to identify the various
-datasets used throughout the field. However, it is still important to
-highlight specific datasets relevant to the development of synthesizers.
+datasets used throughout the field
+\cite{grajedaAvailabilityDatasetsDigital2017}. However, it is still
+important to highlight specific datasets relevant to the development of
+synthesizers.
 
 Early datasets were primarily derived from real sources, whether made
 available to the public or otherwise. The earliest collections of real
@@ -53,8 +55,8 @@ applications, and SIM card images -- also grew more prevalent.
 Many of these datasets were not maintained as part of a larger
 collection with the explicit intent of providing them for digital
 forensics research. This began to change towards the late 2000s; for
-example, Garfinkel's collection of disk images would eventually evolve
-into the Real Data Corpus, growing to 30 terabytes by 2013
+example, Garfinkel's collection of disk images eventually evolved into
+the Real Data Corpus, growing to 30 terabytes by 2013
 \cite{garfinkelBringingScienceDigital2009,yannikosDataCorporaDigital2014}.
 The collection included disk images, flash drive images, and a variety
 of optical discs sourced from real-world usage, requiring institutional
@@ -71,11 +73,11 @@ There are other datasets that are relatively unique and are often
 maintained as part of a larger niche collection. Collections of malware
 samples have grown significantly, in part because of the modern threat
 intelligence ecosystem supported by platforms such as VirusTotal. There
-exist datasets focusing on the dark web, such as those operating on the
-Tor network, including ``black market'' sites on which illegal goods are
-bought and sold. Finally, there are also network captures from various
-novel sources, such as iterations of the Collegiate Cyber Defense
-Competition and the networking infrastructure of university IT
+exist datasets focusing on the dark web, including datasets for services
+operating on the Tor network and ``black market'' sites on which illegal
+goods are bought and sold. Finally, there are also network captures from
+various novel sources, such as iterations of the Collegiate Cyber
+Defense Competition and the networking infrastructures of university IT
 departments \cite{grajedaAvailabilityDatasetsDigital2017}.
 
 These datasets span a wide range of technologies -- including different
@@ -135,16 +137,15 @@ progression in the ability of synthesizers to generate specific
 artifacts is described in \autoref{analysis-of-existing-synthesizers}, which explores specific
 contributions made by each synthesizer.
 
-Of note is the generation of similar datasets that typically involve
-significant human interaction, such as public email distribution lists,
-photographs of human faces, and other transcripts of conversations.
-While prior synthesizers have not explored this in significant detail,
-it is explored as part of the generative AI work done as part of AKF in
-\autoref{chapter-six}.
+Of note is the generation of datasets that are derived from human
+interactions, such as public email distribution lists, photographs of
+human faces, and transcripts of conversations. While prior synthesizers
+have not explored this in depth, it is briefly addressed as part of the
+generative AI work done as part of AKF in \autoref{chapter-six}.
 
 The second issue, in which synthesizers must be extensible in such a way
 that they can support new applications, has been approached in several
-ways. This is described in greater detail in \autoref{chapter-three}, but has been a significant design consideration in the
+ways. This is described in greater detail in \autoref{chapter-three} and has been a significant design consideration in the
 development of most synthesizers.
 
 \section{Analysis of existing
@@ -160,12 +161,11 @@ functionality and availability of the frameworks described throughout
 the literature have varied considerably over time. However, the goal of
 these frameworks has largely remained consistent: they all aim to
 provide a rapid method for instructors to develop forensic labs for
-students. Note that low-level implementation details are described in
-later, more relevant sections throughout this thesis for clarity rather
-than providing detailed analyses as part of this chapter. Before
-analyzing and adapting the low-level implementations of prior
-synthesizers, it is best to first contextualize their broader
-contributions.
+students. Before analyzing and adapting the low-level implementations of
+prior synthesizers, it is best to first contextualize their broader
+contributions. (Note that low-level implementation details are described
+in later, more relevant sections throughout this thesis for clarity
+rather than providing detailed analyses as part of this chapter.)
 
 The first identified effort to streamline the creation of forensic labs
 through a high-level language was published by Adelstein et al.~in 2005
@@ -174,8 +174,8 @@ Exercises Conducted Over Networks
 \cite{adelsteinAutomaticallyCreatingRealistic2005}. It proposed an
 architecture for automatically creating lab exercises, deploying them to
 a virtual lab, and evaluating students' actions in the lab compared to
-the ground truth. Very few implementation details are provided in the
-paper, though some examples of its usage are included. Although not a
+the ground truth. Very few implementation details are provided in its
+paper, though it does include some examples of its usage. Although not a
 synthesizer, related concepts can be seen in the description of
 \textbf{CYDEST}, the CYber DEfenSe Trainer
 \cite{bruecknerAutomatedComputerForensics2008}, which similarly
@@ -221,11 +221,11 @@ approaches for updating web browsers and the Windows registry to reflect
 certain actions. Limited implementation details are provided, and it is
 unclear if a public implementation is available.
 
-\textbf{Yannikos et al.} define a framework for describing scenarios as
+\textbf{Yannikos et al.} describe a framework for defining scenarios as
 a series of Markov chains. The framework allows users to visually define
-scenarios through a graph view in which individual nodes represent
-distinct actions to be taken by the synthesizer, with probabilistic
-transitions deciding which node to execute next
+scenarios through a graph where individual nodes represent distinct
+actions to be taken by the synthesizer, with probabilistic transitions
+deciding which node to execute next
 \cite{yannikosDataCorporaDigital2014}. Its focus on non-determinism
 makes it well-suited for quickly developing variations of the same
 scenario, though it is unclear what application- or OS-specific routines
@@ -294,15 +294,15 @@ other is provided below:
   \cite{demmelDataSynthesisGoing2024}.
 \end{itemize}
 
-Clearly, a considerable amount of work has been done to streamline the
-process of developing images, although the availability and
-functionality of each framework vary greatly. Notably, with the
-exception of ForTrace, none of these works are direct extensions of past
-works, implying that at a fundamental level, it was necessary for new
-frameworks to be developed from scratch to support the framework
-authors' needs. This is not directly stated in any of these works, with
-the exception of hystck \cite{gobelNovelApproachGenerating2020}.
-However, it can be reasonably concluded that the lack of maturity,
-availability, and maintenance of prior works contributed to the
-independent development of the other frameworks. These issues -- and
-potential solutions -- will be addressed in more detail in \autoref{chapter-three}.
+Clearly, significant work has been done to streamline the process of
+developing images, although the availability and functionality of each
+framework vary greatly. Notably, with the exception of ForTrace, none of
+these synthesizers are direct extensions of prior works, implying that
+the framework authors' needs could only be met by developing new
+frameworks from scratch. This is not directly stated in any of these
+works, with the exception of hystck
+\cite{gobelNovelApproachGenerating2020}. However, it can be
+reasonably concluded that the limited maturity, availability, and
+maintenance of prior works contributed to the independent development of
+most frameworks. These issues -- and potential solutions -- will be
+addressed in greater detail in \autoref{chapter-three}.

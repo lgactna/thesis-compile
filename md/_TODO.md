@@ -157,7 +157,6 @@ Order of operations:
 - tada...
 
 # Actual chapter to-dos
-
 deadline by april 1st, after spring break, for committee to review. in addition to *finishing* the content for each section, the following need to happen:
 
 - **proofing**: proofread on grammarly

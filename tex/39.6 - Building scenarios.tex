@@ -77,13 +77,13 @@ underlying calls to the hypervisor from the scenario developer. This
 code-based approach represents an \emph{imperative} strategy for
 scenario creation, where the user describes how the dataset should be
 created by defining the exact order and means to perform synthesizer
-actions. (It is worth noting that the language used to interact with the
+actions. It is worth noting that the language used to interact with the
 synthesizer's API does not need to match the language used to implement
-the synthesizer itself (although this is often the case). For example,
+the synthesizer itself, although this is often the case. For example,
 the automation framework Playwright is implemented in TypeScript,
 initially exposing a Node.JS API
-\cite{MicrosoftPlaywrightpython2025}. Today, Playwright provides
-APIs in Python, Java, and C\#.)
+\cite{MicrosoftPlaywrightpython2025}; today, Playwright provides
+APIs in Python, Java, and C\#.
 
 In contrast, custom scenario formats provided by D-FET
 \cite{williamCloudbasedDigitalForensics2011}, SFX
@@ -100,7 +100,7 @@ Consider the following declarative SFX code taken from Russell et
 al.~shown in \autoref{lst:6.1a}
 \cite{russellForensicImageDescription2012}:
 
-\begin{lstlisting}[label={lst:6.1a}, caption={Declarative SFX scenario with web browsing}, language=XML]
+\begin{lstlisting}[label={lst:6.1a}, caption={Declarative SFX scenario with web browsing \cite{russellForensicImageDescription2012}}, language=XML]
 <disk>
     <partition index="p1" hidden="0" size="48M" type="ntfs">
         <base os="windows7x64"/>
@@ -300,27 +300,22 @@ from akflib.core.hypervisor.vbox import VBoxHypervisor
 from pathlib import Path
 
 # Instantiate a hypervisor object tied to a specific virtual machine
-
 vbox_obj = VBoxHypervisor("akf-windows-1")
 
 # Start the virtual machine
-
 vbox_obj.start_vm(wait_for_guest_additions=True)
 
 # Visit a single website
-
 with ChromiumServiceAPI.auto_connect(vbox_obj.get_maintenance_ip()) as chromium_service:
     chromium_service.kill_edge()
     chromium_service.set_browser("msedge")
     page = chromium_service.browser.new_page()
-    page.goto("[https://bbc.co.uk")](https://bbc.co.uk"))  
+    page.goto("bbc.co.uk")  
 
 # Stop the virtual machine
-
 vbox_obj.stop_vm(force=False)
 
 # Export the virtual machine to a disk image
-
 vbox_obj.create_disk_image(
     Path("C:/Users/kisun/Desktop/akf-windows_1.raw"),
     VBoxExportFormatEnum.RAW
@@ -369,7 +364,7 @@ creating imperative scripts, such that an experienced scenario developer
 can modify the generated imperative script as needed. Imperative scripts
 can be regenerated from the same declarative script to reflect updates
 in library usage so long as the interpreter is updated accordingly,
-inheriting the perennial nature of declarative scripts.
+inheriting the evergreen nature of declarative scripts.
 
 It is important to note that a declarative syntax, which may be more
 ``rigid'' in structure, does not preclude the use of non-determinism or
@@ -408,18 +403,20 @@ syntaxes, some of which are derived from Finkel and described as follows
 \end{itemize}
 
 The most important factor, however, is an awareness of the
-\emph{purpose} of the declarative syntax. The purpose of a synthesizer
+\textbf{purpose} of the declarative syntax. The purpose of a synthesizer
 is to make it easier to generate forensic artifacts and datasets. The
 declarative language should reflect this, focusing on making actions and
-artifacts as easy to declare and customize as possible.
+artifacts as easy to declare and customize as possible. (These five
+factors are particularly important in allowing LLMs to reliably generate
+declarative scenarios, as described in \autoref{using-llms-for-high-level-scenarios}.)
 
 In designing the AKF declarative syntax, the declarative syntaxes of
 prior synthesizers and unrelated technologies were evaluated. An
 analysis of some of these syntaxes, with examples, is described briefly
 in \autoref{historical-declarative-syntaxes}.
-However, two syntaxes in particular contributed the most to the AKF
-declarative syntax: those of ForTrace and Ansible, described in the
-following section.
+However, the two syntaxes that contributed most to the AKF declarative
+syntax were those of ForTrace and Ansible, described in the following
+section.
 
 \subsection{Existing declarative
 syntaxes}\label{existing-declarative-syntaxes}
@@ -453,7 +450,7 @@ hay:
 needles:
   n-http-0:
     application: http
-    file: [https://dasec.h-da.de/](https://dasec.h-da.de/)
+    url: dasec.h-da.de
     amount: 1
 dumps:
   d-dump-0:
@@ -521,7 +518,7 @@ ideas from other technologies that can be used to address them? That is,
 are there other technologies designed to execute a large set of complex
 actions using a simple but flexible and configurable syntax, and how
 does it work? Ansible, the second major inspiration for the AKF
-declarative syntax, precisely fills this need.
+declarative syntax, precisely addresses these questions.
 
 Ansible \cite{AnsibleAnsible2025} is an open-source automation
 framework often used to remotely configure Windows and Linux machines at
@@ -627,9 +624,9 @@ to these module-specific Pydantic models for validation, after which the
 \item
   \textbf{Translation}: When instructed to translate the declarative
   script, the \passthrough{\lstinline!AKFModule!} should generate the
-  equivalent code that \emph{would} perform related actions if executed
-  through a standard Python interpreter with the necessary libraries
-  installed.
+  equivalent code that \emph{would} perform the required actions if
+  executed through a standard Python interpreter with the necessary
+  libraries installed.
 \end{itemize}
 
 The ability of AKF to both execute and translate declarative scripts
@@ -638,7 +635,7 @@ our knowledge, prior synthesizers have only supported direct execution
 from declarative scripts, which limits the opportunities to use
 declarative scripts as a ``starting point'' for writing more complex
 imperative scripts. (In fact, the code in \autoref{lst:6.2a} was
-primarily derived from the auto-generated code using
+primarily derived from the auto-generated code shown in
 \autoref{lst:6.3.2a}.)
 
 An example of a minimal AKF scenario, carrying out the same actions as
@@ -647,7 +644,7 @@ the SFX, ForTrace, and imperative AKF script above, can be seen in
 
 \begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
 name: Minimal scenario
-description: Sample included with thesis
+description: Browses to the BBC website and exports a disk image.
 author: Lloyd Gonzales
 seed: "0"
 libraries:
@@ -669,7 +666,7 @@ actions:
     args:
       browser: "msedge"
       urls: 
-       - "[https://www.google.com"](https://www.google.com")
+       - "bbc.co.uk"
 
   # Stop the virtual machine and export the virtual machine to a disk image.
   - name: Stop the virtual machine
@@ -692,13 +689,10 @@ To use this declarative script with
 in \autoref{lst:6.3.2b} can be used:
 
 \begin{lstlisting}[label={lst:6.3.2b}, caption={Sample usage of the akf-translate utility}, language=sh]
-
 # Translate this scenario to a valid Python script and save it to disk
-
 akf-translate scenarios/thesis.yaml --translate --output-file scenarios/thesis.py
 
 # Execute this scenario directly
-
 akf-translate scenarios/thesis.yaml --execute
 \end{lstlisting}
 
@@ -811,9 +805,9 @@ objects. \\
 
 
 Although these declarative modules (and the imperative library) provide
-users with significant flexibility in \emph{using} AKF, the challenge of
-building artifacts and scenarios to generate through these execution
-options remains. The remainder of this chapter addresses this challenge.
+users with significant flexibility in \emph{using} AKF, there remains
+the challenge of building artifacts and scenarios to use with AKF. The
+remainder of this chapter addresses this challenge.
 
 \section{Using generative AI for individual
 artifacts}\label{using-generative-ai-for-individual-artifacts}
@@ -822,7 +816,7 @@ artifacts}\label{using-generative-ai-for-individual-artifacts}
 artifacts}\label{challenges-of-standalone-artifacts}
 
 Users of synthesizers must still perform a significant amount of work
-when generating individual artifacts. More precisely -- while AKF and
+when generating individual artifacts. More precisely -- although AKF and
 other synthesizers can streamline the process of placing and generating
 artifacts, users must still provide some of the artifacts themselves.
 For example:
@@ -906,7 +900,7 @@ It is important to note that the inclusion of generative AI into
 synthesizers does not necessarily require deep integration with the
 framework itself. Many existing synthesizers could be extended to use
 documents, images, or other data sourced from generative AI instead of
-user-defined files without the need to change the synthesizer's
+user-defined files without significantly changing the synthesizer's
 architecture. Directly integrating AI-driven actions into synthesizers
 is addressed further in \autoref{open-ended-automation-with-ai}.
 
@@ -931,11 +925,12 @@ for generating multimedia artifacts:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Body text}: A prompt is provided to DeepSeek-R1 to create
-  Markdown document(s) consistent with the scenario. Using a special
-  syntax, the model is instructed to insert suitable image generation
-  prompts throughout the document. The syntax allows the model to
-  configure image parameters, such as the size of the image.
+  \textbf{Text and prompt generation}: A prompt is provided to
+  DeepSeek-R1 to create Markdown document(s) consistent with the
+  scenario. Using a special syntax, the model is also instructed to
+  insert suitable image generation prompts throughout the document. The
+  syntax allows the model to configure image parameters, such as the
+  size of the image.
 \item
   \textbf{Image generation}: The prompts are extracted from the Markdown
   document and passed to SDXL 1.0. The resulting images are saved to a
@@ -944,8 +939,7 @@ for generating multimedia artifacts:
 \item
   \textbf{Rendering}: The resulting Markdown document is passed to a
   tool such as Pandoc to generate the final artifact, similar to the
-  approach in \textbf{39.5 - Output and validation\#5.3 - Human readable
-  reporting}. Pandoc supports various formats, including PDFs, Microsoft
+  approach in \autoref{human-readable-reporting}. Pandoc supports various formats, including PDFs, Microsoft
   Word, and Microsoft PowerPoint. Other tools could be used to convert
   Markdown to other formats.
 \end{itemize}
@@ -978,7 +972,7 @@ then passed to SDXL 1.0.
 scenario}\label{fig:artifact-image-example}
 \end{figure}
 
-Finally, we noted that the Data Leakage case lacks background email
+Finally, we noted that the Data Leakage Case lacks background email
 conversations. Email conversations as part of a scenario can be divided
 into three categories:
 
@@ -1119,10 +1113,11 @@ Additionally, DeepSeek-R1 would sometimes invoke modules incorrectly,
 such as providing arguments that did not exist or invoking them with the
 incorrect name. One notable example was that it incorrectly used
 \passthrough{\lstinline!vbox\_start\_machine!} to both start and stop
-the virtual machine, adding an \passthrough{\lstinline!action: "stop"!}
-argument when stopping the virtual machine. In some cases, DeepSeek-R1
-deviated significantly from the declarative syntax and used keys that
-did not exist, such as specifying module arguments outside of the
+the virtual machine, adding an erroneous
+\passthrough{\lstinline!action: "stop"!} argument when stopping the
+virtual machine. In some cases, DeepSeek-R1 deviated significantly from
+the declarative syntax and used keys that did not exist, such as
+specifying module arguments outside of the
 \passthrough{\lstinline!args!} dictionary.
 
 Despite these issues related to correctness, it was clear that DeepSeek
@@ -1133,11 +1128,11 @@ as a starting point for more complex declarative scripts. Furthermore,
 these issues could be alleviated by improving the details of the prompt,
 such as providing specific examples of module usage and the overall
 results they cause. In particular, DeepSeek-R1 is a reasoning model,
-which means that it ``thinks out loud'' before responding; the contents
-of the model's thoughts could be used to identify and eliminate
-vagueness or uncertainty in the provided prompt. Writing precise,
-detailed documentation with this LLM-oriented pipeline in mind could
-further improve the quality of generated outputs.
+which means that it ``thinks out loud'' before responding; the model's
+thoughts could be used to identify and eliminate vagueness or
+uncertainty in the provided prompt. Writing precise, detailed
+documentation with this LLM-oriented pipeline in mind could further
+improve the quality of generated outputs.
 
 As more declarative modules and functionality are added to AKF, it is
 clear that LLMs can significantly accelerate converting abstract

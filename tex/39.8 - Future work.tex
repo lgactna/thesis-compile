@@ -3,10 +3,10 @@ develop, and extend. Indeed, there are several use cases that AKF does
 not fulfill as of writing, primarily due to time constraints. Future
 work related to AKF can be characterized as either tasks that integrate
 cutting-edge advancements to implement new features or tasks that extend
-or improve existing functionality. \autoref{open-ended-automation-with-ai} describes the application of recent AI
-developments towards addressing tasks relevant to forensic dataset
-development; the remaining sections focus on extending existing concepts
-in AKF.
+or improve existing functionality. In particular, \autoref{open-ended-automation-with-ai} describes the application of
+recent AI developments towards addressing tasks relevant to forensic
+dataset development; the remaining sections focus on extending existing
+concepts in AKF.
 
 \section{Open-ended automation with
 AI}\label{open-ended-automation-with-ai}
@@ -175,11 +175,11 @@ example is the implementation of agents in languages other than Python.
 Using non-Python agents may cover needs for specific tasks (such as
 actions that can be automated using a library for which no Python
 equivalent exists) or specific deployment restrictions (such as avoiding
-specific forms of synthesis pollution). In general, the implementation
-for an agent can be written in any language, so long as a corresponding
-Python API exists; the burden would be on the author to handle any
-communication or discrepancies across disparate languages, such as
-writing a TCP-based protocol for issuing commands.
+extraneous data due to synthesizer operation). In general, the
+implementation for an agent can be written in any language, so long as a
+corresponding Python API exists; the burden would be on the author to
+handle any communication or discrepancies across disparate languages,
+such as writing a TCP-based protocol for issuing commands.
 
 \section{Distribution}\label{distribution}
 
@@ -197,8 +197,8 @@ algorithm such as LZMA. Specific core outputs, such as disk images, can
 be stored in a dynamically expandable image format such as VDI or VHD.
 Such formats only use as much space as is currently used on the disk
 image itself, even if the size reported to the operating system is much
-larger. Such reductions are ``lossless'' in that they can be reversed to
-reflect what a forensic analyst would encounter using real hardware.
+larger. These reductions are ``lossless'' in that they can be reversed
+to reflect what a forensic analyst would encounter using real hardware.
 
 However, more aggressive ``lossy'' reductions can be performed to
 further reduce dataset size. These can be broadly described as one of
@@ -323,7 +323,7 @@ modern investigation \cite{goncalvesRevisitingDatasetGap2022}.
 There has been limited work in developing forensic synthesizers for
 mobile platforms. Two notable examples are FADE
 \cite{ceballosdelgadoFADEForensicImage2022}, developed by Delgado et
-al.~in 2022, and an unnamed framework developed by Demmel et al.~in 2024
+al.~in 2022, and a branch of ForTrace developed by Demmel et al.~in 2024
 \cite{demmelDataSynthesisGoing2024}. FADE operates primarily through
 physical artifact generation, which it achieves by extracting and
 mounting partitions from an emulated, rooted Android device using the
@@ -338,8 +338,10 @@ elements, this framework leverages AVC to expose all interactable UI
 elements and programmatically ``touch'' these elements once the desired
 element has been found. This allows it to implement more complex
 application-specific functionality, such as using WhatsApp and opening
-Google Chrome. There has also been broader work in automating actions as
-part of testing pipelines for Android applications
+Google Chrome.
+
+There has also been broader work in automating actions as part of
+testing pipelines for Android applications
 \cite{janickiObstaclesOpportunitiesDeploying2012,nagowahNovelApproachAutomation2012,linares-vasquezHowDevelopersTest2017},
 though these primarily address application-specific actions, rather than
 automating actions across the entire device. Of note is the lack of

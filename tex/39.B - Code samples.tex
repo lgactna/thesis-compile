@@ -35,21 +35,15 @@ agent running on the target VM. For example, invoking a command to add a
 new user to the VM can be seen in \autoref{lst:b.2.a}:
 
 \begin{lstlisting}[label={lst:b.2.a}, caption={Creating a new user through ForTrace agent commands}, language=Python]
-
 # From Demo.py
-
 guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform="windows")
 
 # Wait for the VM to connect to the VMM
-
 guest.waitTillAgentIsConnected()
-
 # create userManagement object
-
 userManagement_obj = guest.application("userManagement", {})
 
 # Add different users
-
 logger.info("Adding user1")
 try:
     userManagement_obj.addUser("user1", "password")
@@ -123,8 +117,8 @@ modularity as needed:
 \item
   \passthrough{\lstinline!ApplicationVmmSide!}: Contains one function
   for each command implemented in
-  \passthrough{\lstinline!ApplicationGuestSide!}, building a message
-  that will be interpreted and acted upon by the corresponding
+  \passthrough{\lstinline!ApplicationGuestSide!}. Each function builds a
+  message that will be interpreted and acted upon by the corresponding
   \passthrough{\lstinline!ApplicationGuestSideCommands!} class.
 \item
   \passthrough{\lstinline!ApplicationVmmSideCommands!}: Accepts and
@@ -133,7 +127,7 @@ modularity as needed:
 \item
   \passthrough{\lstinline!ApplicationGuestSide!}: Implements the actual
   application-specific functionality for the agent, providing one
-  function for each separated command by this module.
+  function for each available command.
 \item
   \passthrough{\lstinline!ApplicationGuestSideCommands!}: Interprets
   commands and arguments, calling the respective function in the
@@ -207,7 +201,6 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
             raise Exception("error WebBrowserFirefoxVmmSide::open: " + str(e))
 
 # Example usage:
-
 browser = WebBrowserFirefoxVmmSide()
 browser.open("google.com")
 \end{lstlisting}
@@ -277,9 +270,7 @@ equivalent RPyC service and its corresponding API may be implemented as
 seen in \autoref{lst:b.2.h}:
 
 \begin{lstlisting}[label={lst:b.2.h}, caption={Minimal reimplementation of ForTrace module as an RPyC service}, language=Python]
-
 # Server-side code
-
 class ChromiumService(AKFService):
     def exposed_set_browser(
         self, browser_type: Literal["msedge", "chrome"], profile: str = "Default"
@@ -295,7 +286,6 @@ class ChromiumService(AKFService):
         return self.browser
 
 # Client-side API
-
 class ChromiumServiceAPI(WindowsServiceAPI):
     def __init__(self, host: str, port: int) -> None:
         """
@@ -393,15 +383,13 @@ must instead be accessed as a dictionary key with a non-intuitive name.
 facet = ApplicationFacet(application_identifier = "test", number_of_launches=3)
 
 # These attributes do not exist
-
 facet.application_identifier
 facet.number_of_launches
 
-# The number of launches must be accessed as a dictionary key, which does
-
-# not return a simple integer, but instead returns a dictionary
+# The number of launches must be accessed as a dictionary key, which
+# does not return a simple integer; instead, it returns a
+# dictionary
 app_facet['uco-observable:numberOfLaunches']
-
 # -> {"@type": "xsd:integer", "@value": "3"}
 \end{lstlisting}
 
@@ -451,12 +439,11 @@ with open("example.jsonld", "wt+") as f:
 Although the UCO/CASE 2.0 Python bindings developed as part of AKF
 significantly improve usability and flexibility over the existing CASE
 bindings, several limitations of the library do not make it fully
-compliant with the CASE ontology.
-
-In particular, the Python bindings aim to keep object definitions as
-simple as possible, preferring native Python types where possible. This
-means that some information from the ontology is lost when converting
-them to their respective Python class. Several examples include:
+compliant with the CASE ontology. In particular, the Python bindings aim
+to keep object definitions as simple as possible, preferring native
+Python types where possible. This means that some information from the
+ontology is lost when converting them to their respective Python class.
+Several examples include:
 
 \begin{itemize}
 \tightlist
@@ -489,7 +476,7 @@ them to their respective Python class. Several examples include:
   Turtle RDF files. However, the original name of the field is not
   preserved when serializing objects; although the simplest fix is to
   remove trailing underscores when serializing, a more robust solution
-  may be to attach the ``serialized name'' to the Pydantic field.
+  may be to attach the ``original'' name to the Pydantic field.
 \item
   \textbf{Dangling references}: There are no built-in mechanisms to
   ensure that an object is serialized in its ``full'' form at least
@@ -502,7 +489,7 @@ CASE allows objects to be of multiple types at once, such as a disk
 image marked as both an \passthrough{\lstinline!observable:File!} and an
 \passthrough{\lstinline!observable:Image!}. Python types can inherit
 from multiple types, but a single object may not be multiple types at
-once; it would be necessary to create a ``wrapper'' type that
+once; it might be necessary to create a ``wrapper'' type that
 encompasses both types and correctly serializes these types as expected.
 
 \section{Historical declarative
@@ -521,10 +508,9 @@ lack of detail may be attributed to the fact that the scenario creation
 enabled by these declarative syntaxes, rather than the syntaxes
 themselves, was the primary focus of these works.
 
-\textbf{D-FET} uses a custom language that does not depend on any
-existing text-based languages
-\cite{williamCloudbasedDigitalForensics2011}, as seen in the simple
-scenario in \autoref{lst:b.4.a}:
+\textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011} uses a
+custom language that does not depend on any existing text-based
+languages, as seen in the simple scenario in \autoref{lst:b.4.a}:
 
 \begin{lstlisting}[label={lst:b.4.a}, caption={Sample D-FET declarative scenario without events \cite{williamCloudbasedDigitalForensics2011}}, ]
 INSTANCE LOAD [Image=WINDOWS2003] 
@@ -560,9 +546,9 @@ ACTIVITY EVENT [Event=DELETEFILE; User=Fred; File=JPEF IMAGES]
 ACTIVITY EVENT [Event=LOGOUT; User=Fred ]
 \end{lstlisting}
 
-\textbf{SFX} uses an XML-based language with tags and attributes that
-are easily readable \cite{russellForensicImageDescription2012}, as
-shown in \autoref{lst:b.4.c}:
+\textbf{SFX} \cite{russellForensicImageDescription2012} uses an
+XML-based language with tags and attributes that are easily readable ,
+as shown in \autoref{lst:b.4.c}:
 
 \begin{lstlisting}[label={lst:b.4.c}, caption={Sample SFX declarative scenario expressed as XML \cite{russellForensicImageDescription2012}}, language=XML]
 <disk size="512M" alignment="cylinder" diskid="0x12345678">
@@ -606,10 +592,10 @@ distinct XML element name. Artifact generation features include copying
 files to the guest machine in bulk, inserting files in the slack space
 of an existing file, and using browser artifacts.
 
-Finally, the work of Yannikos et al.~is particularly notable because it
-appears to be fully GUI-based, expecting users to visually construct
-Markov chains to define scenarios
-\cite{yannikosDataCorporaDigital2014}. An example scenario from
+Finally, the work of Yannikos et al.
+\cite{yannikosDataCorporaDigital2014} is particularly notable
+because it appears to be fully GUI-based, expecting users to visually
+construct Markov chains to define scenarios. An example scenario from
 their publication can be seen in Figure \autoref{fig:yannikos-gui}:
 
 \begin{figure}[h]

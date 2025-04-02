@@ -60,10 +60,15 @@ def process_markdown_text(text: str) -> str:
     # Ensure that numbered lists have two line breaks before
     text = re.sub(r"(.)\n{1,2}((\d\. .*$\n)+)", r"\1\n\n\2", text, flags=re.MULTILINE)
 
-    # Ensure that section headings have two line breaks before and after
+    # Ensure that section headings have two line breaks before and after, but only if the
+    # following line starts with a capital letter (which should avoid Python code).
     text = re.sub(
-        r"(.)\n{1,2}(#+ .*$\n)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE
+        r"(.)\n{1,2}(#+ .*$\n{1,2})(?=[A-Z])\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE
     )
+    
+    # text = re.sub(
+    #     r"(.)\n{1,2}(#+ .*$\n)\n{0,}(.)", r"\1\n\n\2\n\n\3", text, flags=re.MULTILINE
+    # )
 
     # Reduce section headings by one level. Require that the heading contains at
     # least two hashes (which avoids Python comments).
@@ -315,6 +320,15 @@ def substitute_labels(tex_dir: Path) -> dict:
                     text,
                     flags=re.DOTALL | re.MULTILINE,
                 )
+
+        # The extra-special one because it's inside a bullet point and I can't
+        # figure out how to get it out of the textbf
+        text = re.sub(
+            r"\\textbf{39.5 - Output and validation\\#5.3 - Human readable\n  reporting}",
+            r"\\autoref{human-readable-reporting}",
+            text,
+            flags=re.DOTALL | re.MULTILINE,
+        )
 
         # Final pass - remove anything that looks like "1.2.3 -" inside any
         # tags, because it's already handled by the engine.

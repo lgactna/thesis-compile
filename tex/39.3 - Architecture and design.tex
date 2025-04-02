@@ -20,9 +20,8 @@ incompatible with the goals of newer works. For example, ForGe's
 architecture \cite{vistiAutomaticCreationComputer2015} focuses
 largely on direct filesystem manipulation to generate forensic artifacts
 and is unsuitable for a synthesizer requiring virtualization. Similarly,
-synthesizers such as VMPOP \cite{parkTREDEVMPOPCultivating2018},
-which exclusively leverage agentless artifact generation as described in
-\autoref{agentless-artifact-generation},
+synthesizers that exclusively leverage agentless artifact generation as
+described in \autoref{agentless-artifact-generation}, such as VMPOP \cite{parkTREDEVMPOPCultivating2018},
 require significant architectural changes to support agent-based
 artifact generation.
 
@@ -39,11 +38,10 @@ platforms.
 
 The inflexibility of prior synthesizers, combined with the overall lack
 of support and success of synthesizer-based datasets, contributes to the
-disparate codebases that are now observed today. However, this is not to
-say that the individual contributions of each prior synthesizer cannot
-be merged into a single project that resolves many of the architectural
-barriers that have limited the adoption and extension of existing
-synthesizers.
+lack of shared codebases. However, this is not to say that the
+individual contributions of each prior synthesizer cannot be merged into
+a single project that resolves many of the architectural barriers that
+have limited the adoption and extension of existing synthesizers.
 
 In turn, AKF is built on the following four pillars to help promote its
 long-term usage. In particular, these design principles allow it to
@@ -68,8 +66,9 @@ use of Python 3.11+ features, including type hinting and special type
 annotations, which allow for tools such as
 \passthrough{\lstinline!mypy!} \cite{PythonMypy2025} to perform
 static type checking. In addition to significantly improving the
-development experience, these practices also increase the likelihood of
-discovering errors earlier in the development process.
+development experience for new contributors, these practices also
+increase the likelihood of discovering errors earlier in the development
+process.
 
 Second, AKF takes a modular, agent-based approach to implementing
 application-specific functionality. This allows AKF to use existing
@@ -184,12 +183,11 @@ imperative language (Python 3) that dictates precisely \emph{how}
 scenarios should be constructed. However, AKF also supports a
 \emph{declarative} syntax, which allows users to specify \emph{what}
 forensic artifacts and datasets are generated without the need to
-understand the AKF libraries and write Python code. Additionally, AKF
-contains generative AI tools for constructing scenarios in the
-declarative syntax as well as individual artifacts. This is discussed in
-\autoref{chapter-six} and covers the \emph{scenario
+understand the AKF libraries and write Python code. These are discussed
+in \autoref{chapter-six} and covers the \emph{scenario
 construction library}, the \emph{translation unit}, and any scripts that
-leverage AKF libraries.
+leverage AKF libraries. We also discuss the use of generative AI tools
+for constructing individual artifacts and declarative scenarios.
 
 The following three chapters will focus on these module groups. In
 simpler terms, this thesis addresses the following questions in order:

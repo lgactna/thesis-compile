@@ -266,29 +266,29 @@ defend conclusions drawn from the investigation
 \cite{andersonComparativeStudyTeaching2006,conklinComputerForensics2022,cooperStandardsDigitalForensics2010}.
 
 In the context of research and education, most hands-on or practical
-training typically focuses on the analysis and reporting steps rather
-than the complete investigation process. That is to say, although the
-theory provided in training covers this entire process in detail, it is
-relatively rare for students to secure data from an organization, use a
-write blocker and other hardware needed to image devices, and then
-present the conclusions as an expert witness
-\cite{cooperStandardsDigitalForensics2010}. While experience here is
-important, it is often impractical; not every university will have a
-large forensics lab or a courtroom regularly available. Additionally,
-the techniques of analysis and reporting are arguably the most
-important; while the other steps can be learned ``on the job''
-relatively quickly, all students must be familiar with modern software
-and tooling, as well as recent advancements in forensic and
+training focuses on the analysis and reporting steps rather than the
+complete investigation process. Although the theory provided in training
+covers this entire process in detail, it is relatively rare for students
+to secure data from an organization, use a write blocker and other
+hardware needed to image devices, and then present the conclusions as an
+expert witness \cite{cooperStandardsDigitalForensics2010}. While
+experience here is important, it is often impractical; not every
+university will have a large forensics lab or a courtroom regularly
+available. Additionally, the techniques of analysis and reporting are
+arguably the most important; while the other steps can be learned ``on
+the job'' relatively quickly, all students must be familiar with modern
+software and tooling as well as recent advancements in forensic and
 anti-forensic techniques. As a more concrete example, deep technical
-knowledge of operating systems is not required to acquire disk images
-but is undoubtedly required for effective analysis and reporting.
+knowledge of operating systems is not required to acquire disk images,
+but it is undoubtedly required for effective analysis and reporting.
 
 It is for this reason that the vast majority of education and research
 focuses primarily on the analysis step. Improvements to the distribution
 and creation of training material -- such as the use of online labs and
 synthesizers -- are primarily driven by the fact that physical labs are
-not necessary, allowing institutions to instead focus on the software
-and skill set needed to analyze images and draw conclusions effectively
+not necessary. This allows institutions to instead focus on providing
+the software and skills needed for students to analyze images and draw
+conclusions effectively
 \cite{bruecknerAutomatedComputerForensics2008,lawrenceFrameworkDesignWebbased2009}.
 
 \subsection{In research}\label{in-research}
@@ -389,7 +389,7 @@ they require significantly more effort to develop.
 It should also be noted that this section provides a general overview of
 forensic datasets as they relate to education and research, providing
 the necessary context for forensic synthesizers. However, Horsman and
-Lyle have performed a more exhaustive description of dataset
+Lyle have developed a more exhaustive description of dataset
 construction and usage
 \cite{horsmanDatasetConstructionChallenges2021}.
 
@@ -402,7 +402,7 @@ artifacts, and other files that might be of interest in a real forensic
 investigation. Real datasets are most reflective of the scenarios that
 industry professionals face, allowing students to train themselves in
 separating relevant content from irrelevant content while identifying
-and synthesizing details from both a system and a human perspective.
+and synthesizing details from both a technical and human perspective.
 
 Real data can be sourced from far more than just the hard drives of
 computers. Other potential and previously used data sources include:
@@ -545,7 +545,7 @@ datasets can form a complete simulation of a scenario, whether based on
 actual events (such as the one developed by Moch and Freiling based on
 the Arno Funke blackmail case in Germany
 \cite{mochForensicImageGenerator2009}) or on common industry themes,
-such as the NIST CFReDS data leakage case
+such as the NIST CFReDS Data Leakage Case
 \cite{nationalinstituteofstandardsandtechnologyCFReDSDataLeakage}.
 
 \subsection{Motivation for synthetic
@@ -572,11 +572,11 @@ research. For example, the direct reuse of existing datasets is
 sometimes undesirable, as it is often the case that answer keys and
 walkthroughs have already been published online
 \cite{woodsCreatingRealisticCorpora2011}; additionally, students in
-the same class can simply replicate the exact methodology of other
-classmates to come to the same conclusions without needing to perform
-meaningful analysis. Even in labs where students' actions can be
-monitored to provide insight into their methodology and possible
-mistakes, such as in the \emph{CYDEST} platform developed by ATC-NY
+the same class can simply replicate the methodology of other classmates
+to come to the same conclusions without needing to perform meaningful
+analysis. Even in labs where students' actions can be monitored to
+provide insight into their methodology and possible mistakes, such as in
+the \emph{CYDEST} platform developed by ATC-NY
 \cite{bruecknerAutomatedComputerForensics2008}, it is still possible
 to copy the methodology of another student if the labs themselves do not
 differ.
@@ -651,21 +651,21 @@ of the instructor. While there are workarounds that could be considered
 trivial.
 
 The net result is that a scenario implied to take place over several
-days will also require several days of effort to create if done
-manually. This extended development period also comes with the challenge
-of addressing mistakes. If an unintended action is performed while
-constructing a dataset, instructors have several options. Documenting
-the deviation may be sufficient; in other cases, these must be corrected
-by directly editing the virtual hard drive. This was the approach taken
-by Woods et al.~in which at least one researcher logged into their
-personal email account while developing a fictional scenario; the
-resulting disk images were later scanned for personal identifiers and
-stripped as needed \cite{woodsCreatingRealisticCorpora2011}.
-However, consider a scenario in which it is essential that specific
-files are deleted and written in a particular order, perhaps to ensure
-the operating system behaves in an expected manner. In this case -- and
-possibly many others -- the only option may be to restart the process of
-developing the dataset.
+days will also require several days of effort to create manually. This
+extended development period also comes with the challenge of addressing
+mistakes. If an unintended action is performed while constructing a
+dataset, developers have several options. Documenting the deviation may
+be sufficient; in other cases, these must be corrected by directly
+editing the virtual hard drive. This was the approach taken by Woods et
+al.~in which at least one researcher logged into their personal email
+account while developing a fictional scenario; the resulting disk images
+were later scanned for personal identifiers and stripped as needed
+\cite{woodsCreatingRealisticCorpora2011}. However, consider a
+scenario in which it is essential that specific files are deleted and
+written in a particular order, perhaps to ensure the operating system
+behaves in an expected manner. In this case -- and possibly many others
+-- the only option may be to restart the process of developing the
+dataset.
 
 Furthermore, the non-determinism associated with human creation is a
 double-edged sword. Given the same general scenario, this allows
@@ -752,11 +752,10 @@ education with the following elements:
   framework and abstracting specific concepts where possible.
 \end{itemize}
 
-Furthermore, this thesis aims to leverage recent advancements in
-generative AI to streamline the development of complete forensic
-scenarios, as well as individual forensic artifacts to be added to a
-larger forensic dataset. Finally, this thesis will evaluate the
-viability of this framework in an actual classroom setting.
+This thesis also explores opportunities to leverage generative AI in
+streamlining the development of individual artifacts to be added to a
+larger forensic dataset, as well as the development of forensic
+scenarios as a whole.
 
 \section{Contribution}\label{contribution}
 
@@ -772,6 +771,6 @@ datasets, even as new developments and advancements in technology occur.
 
 In many ways, this thesis is intended to be the culmination of over 15
 years of development in the field of synthesizers (beginning with
-Forensig2 \cite{mochForensicImageGenerator2009}), re-implementing
-and adding to the unique contributions of previous synthesizers using
-modern techniques and technologies.
+Forensig2 \cite{mochForensicImageGenerator2009}) by adding to the
+unique contributions of previous synthesizers through modern techniques
+and technologies.

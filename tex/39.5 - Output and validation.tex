@@ -113,8 +113,8 @@ hypervisor.
 \item
   For \textbf{volatile memory dumps}, VBoxManage provides the command
   \passthrough{\lstinline!vboxmanage debugvm <machine\_name> dumpvmcore!},
-  which creates an ELF core file of the virtual machine's memory that
-  can be analyzed using a memory analysis tool such as Volatility
+  which creates an ELF core file of the virtual machine's volatile
+  memory that can be analyzed using a tool such as Volatility
   \cite{volatilityfoundationVolatility32025}.
 \end{itemize}
 
@@ -166,21 +166,23 @@ lack of labeled forensic datasets on major repositories can be
 attributed to the lack of a need for one; Grajeda et al.~demonstrated
 that scenarios are rarely shared between researchers, so there is seldom
 a need to label them for general-purpose usage. AKF has the opportunity
-to solve this issue by allowing for the mass production of labeled
-datasets adopting a single established standard.
+to solve this issue through the mass production of labeled datasets
+adopting a single established standard.
 
 Many forensic analysis tools support exporting investigation details in
-both proprietary and language-agnostic formats. For example,
-Cellebrite's UFED supports exporting to UFDR and XML files, Magnet Axiom
-supports exporting to XML, and Autopsy supports a variety of formats,
-including Excel, STIX, and HTML. Each format varies in structure and
-content and does not necessarily contain equivalent information for the
-same analyzed disk image using default settings. This is the primary
+both proprietary and language-agnostic formats, though these are not
+always suitable for generating ground truth. For example, Cellebrite's
+UFED supports exporting to UFDR and XML files, Magnet Axiom supports
+exporting to XML, and Autopsy supports a variety of formats, including
+Excel, STIX, and HTML. Each format varies in structure and content and
+does not necessarily contain equivalent information for the same
+analyzed disk image using default settings. This is the primary
 challenge with using an existing format, particularly a proprietary
-format subject to vendor changes; certain artifact types may be missing
-or change without warning. Similarly, many prior synthesizers (including
-AKF) generate structured log messages during artifact generation, though
-this is rarely suitable for documenting the contents of a dataset.
+format subject to vendor changes; details for certain artifact types may
+be missing or change without warning. Many prior synthesizers (including
+AKF) also generate human-readable log messages during artifact
+generation, though this is rarely suitable for documenting the contents
+of a dataset.
 
 There has been extensive work in other fields towards developing a
 structured ontology that describes relationships and low-level details.
@@ -323,7 +325,7 @@ generation}\label{fig:output-b}
 \end{figure}
 
 There are two distinct points at which CASE artifacts can be generated
-and attached to a scenario - during scenario generation and after
+and attached to a scenario -- during scenario generation and after
 scenario generation.
 
 Various functions and classes throughout the AKF core libraries and
@@ -331,8 +333,8 @@ agent API accept an optional CASE bundle when invoked or instantiated.
 As users call CASE-compatible functions, these functions can
 automatically add CASE objects corresponding to the artifacts generated
 through their execution. For example, if the agent subservice API for
-automating Chromium browser actions is instantiated with a CASE bundle,
-navigating to a page using the API will automatically generate a CASE
+automating Chromium browser actions is provided with a CASE bundle,
+navigating to a page using the API could automatically generate a CASE
 object describing the page visit and add it to the bundle. This process
 can occur entirely within the host, allowing CASE-related logic to
 remain out of the agent where needed.
@@ -457,7 +459,7 @@ The information contained in this report was derived from collected
 \passthrough{\lstinline!URLHistory!} CASE objects, which were then
 passed through their associated renderers. Each renderer generated
 Markdown documents containing the information in the report, which were
-then converted to a PDF with Pandoc. (Note that
+then combined and converted to a PDF with Pandoc. (Note that
 \autoref{fig:scenario-report} uses the Eisvogel template
 \cite{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
 significantly improving the appearance and readability of generated
