@@ -353,10 +353,10 @@ def join_tex_files(tex_dir: Path, output_file: Path, base_file: Path) -> None:
         "39.4 - Action automation": ("Action automation", "chapter-four"),
         "39.5 - Output and validation": ("Output and validation", "chapter-five"),
         "39.6 - Building scenarios": ("Building scenarios", "chapter-six"),
-        "39.7 - Evaluation and observations": (
-            "Evaluation and observations",
-            "chapter-seven",
-        ),
+        # "39.7 - Evaluation and observations": (
+        #     "Evaluation and observations",
+        #     "chapter-seven",
+        # ),
         "39.8 - Future work": ("Future work", "chapter-eight"),
         "39.9 - Conclusion": ("Conclusion", "chapter-nine"),
     }
