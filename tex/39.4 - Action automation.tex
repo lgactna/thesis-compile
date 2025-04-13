@@ -298,12 +298,16 @@ approaches. In particular, it allows application-specific functionality
 to be implemented using existing automation frameworks such as Selenium
 \cite{SeleniumHQSelenium2025}, Playwright
 \cite{MicrosoftPlaywrightpython2025}, and PyAutoGUI
-\cite{sweigartAsweigartPyautogui2025}. However, this approach often
-leads to the generation of extraneous data; besides the presence of
-software that would never exist on a typical user's machine, agents
-often do not interact with applications the same way that a human would.
-As a result, the synthesizer should document data that can be ignored
-for educational and testing purposes.
+\cite{sweigartAsweigartPyautogui2025}.
+
+It is worth noting that agent-based artifact creation often leads to the
+generation of extraneous artifacts that would never be seen in a
+real-world dataset. For example, agents often do not interact with
+applications in the same way that a human would, possibly creating
+additional artifacts that would not exist if a human had performed the
+same actions. As a result, the synthesizer should document
+synthesizer-related artifacts that can be ignored for educational and
+testing purposes.
 
 Relevant AKF submodules for agent-based generation are depicted as
 opaque elements in \autoref{fig:action-agent}.
@@ -626,7 +630,8 @@ physical artifact planting implemented by prior synthesizers. These are:
   \cite{vistiAutomaticCreationComputer2015} and EviPlant
   \cite{scanlonEviPlantEfficientDigital2017}, in which filesystem
   data structures are parsed to determine the physical address(es) of
-  the disk image to write to. (How EviPlant achieves this is not known.)
+  the disk image to write to. (It is unclear how EviPlant achieves this,
+  as its source code is not available.)
 \end{itemize}
 
 AKF supports all three to varying degrees, with significant improvements

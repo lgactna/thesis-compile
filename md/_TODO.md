@@ -1,3 +1,37 @@
+LaTourrette capitalized incorrectly in acknowledgements
+ - Fixed.
+
+Maybe grammar error on page 1?? Some word choice/order error in 1.1? smth about 
+
+- "analyze devices, though ==a== some hobbyists and software vendors began to develop..." corrected
+
+Page 2 semicolon - is it incorrect? double check
+
+- it's correct, but i have decided to rework it altogether
+
+Page 32: expand AKF, because it is the first actual use in the paper
+
+- it turns out it's not actually the first instance (it's mentioned in the introduction and expanded in full), but I have expanded it anyways.
+
+Page 36: remove "and datasets"; assert that "what" vs. "which" is correct
+
+- "and datasets" removed
+- "which" implies that there is an existing selection of artifacts to choose from. this is not the case; the user has the freedom to decide the actual artifacts they want to create, given the tools provided by the synthesizer. there are a finite number of options to create artifacts, but an infinite number of artifacts you can create from those options.
+
+Page 45: Consider defining synthesizer pollution more explicitly
+
+- Modified.
+
+Page 53: "How Eviplant achieves this is not known" -> "How EviPlant achieves is not published/no source code is available..." 
+
+- Modified.
+
+Page 120: First mention of AKF -> "AKF, the Automated Kinetic Framework, ..."
+
+- Modified.
+
+---
+
 See **_Chapters_v2**
 
 # The shortest term

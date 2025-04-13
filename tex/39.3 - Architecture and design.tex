@@ -1,13 +1,14 @@
 \section{Motivation}\label{motivation}
 
-As described previously in \autoref{analysis-of-existing-synthesizers}, with the notable exception of
-ForTrace \cite{gobelForTraceHolisticForensic2022} and its related
-synthesizers, no synthesizer has been an extension of another
-synthesizer. This raises the question -- why reinvent the wheel by
-developing yet another distinct architecture for this thesis? This
-section briefly explores the deficiencies in existing synthesizers and
-explains why these are issues that warrant building a new architecture
-from scratch rather than extending an existing synthesizer.
+As described previously in \autoref{analysis-of-existing-synthesizers}, with the notable exceptions of VMPOP
+\cite{parkTREDEVMPOPCultivating2018} and ForTrace
+\cite{gobelForTraceHolisticForensic2022}, no synthesizer has been an
+extension of another synthesizer. This raises the question -- why
+reinvent the wheel by developing yet another distinct architecture for
+this thesis? This section briefly explores the deficiencies in existing
+synthesizers and explains why these are issues that warrant building a
+new architecture from scratch rather than extending an existing
+synthesizer.
 
 The motivations for developing entirely new codebases instead of
 extending existing synthesizers have varied considerably. One reason is
@@ -43,13 +44,14 @@ individual contributions of each prior synthesizer cannot be merged into
 a single project that resolves many of the architectural barriers that
 have limited the adoption and extension of existing synthesizers.
 
-In turn, AKF is built on the following four pillars to help promote its
-long-term usage. In particular, these design principles allow it to
-generate datasets that address several of the considerations raised by
-Horsman and Lyle in the construction of various datasets, such as the
-need for comprehensive documentation, an awareness of the ``realism'' of
-the resulting dataset, and transparency in the scenario development
-process \cite{horsmanDatasetConstructionChallenges2021}.
+In turn, the \emph{automated kinetic framework} (AKF) is built on the
+following four pillars to help promote its long-term usage. In
+particular, these design principles allow it to generate datasets that
+address several of the considerations raised by Horsman and Lyle in the
+construction of various datasets, such as the need for comprehensive
+documentation, an awareness of the ``realism'' of the resulting dataset,
+and transparency in the scenario development process
+\cite{horsmanDatasetConstructionChallenges2021}.
 
 First, AKF conforms to modern Python development practices. This
 includes the use of modern project management practices (such as the use
@@ -180,11 +182,11 @@ The final set of modules is responsible for invoking AKF itself and
 supporting scenario development. AKF is an \emph{imperative}
 synthesizer, which means that commands are written and executed using an
 imperative language (Python 3) that dictates precisely \emph{how}
-scenarios should be constructed. However, AKF also supports a
+artifacts should be created. However, AKF also supports a
 \emph{declarative} syntax, which allows users to specify \emph{what}
-forensic artifacts and datasets are generated without the need to
-understand the AKF libraries and write Python code. These are discussed
-in \autoref{chapter-six} and covers the \emph{scenario
+forensic artifacts should be generated without the need to understand
+the AKF libraries and write actual Python code. These are discussed in
+\autoref{chapter-six} and covers the \emph{scenario
 construction library}, the \emph{translation unit}, and any scripts that
 leverage AKF libraries. We also discuss the use of generative AI tools
 for constructing individual artifacts and declarative scenarios.

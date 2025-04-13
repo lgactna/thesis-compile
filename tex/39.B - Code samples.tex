@@ -395,7 +395,7 @@ app_facet['uco-observable:numberOfLaunches']
 
 AKF's Pydantic-based bindings greatly simplify the declaration of
 individual CASE objects while allowing typical attribute-based access.
-For example, AKF's declaration of
+For example, AKF's complete declaration of
 \passthrough{\lstinline!ApplicationFacet!} is shown in
 \autoref{lst:b.3.d}:
 
@@ -404,12 +404,19 @@ from typing import Optional
 
 from uco import core
 
+# ... Other object definitions in same file
+
 class ApplicationFacet(core.Facet):
-    numberOfLaunches: Optional[int] = None
-    applicationIdentifier: Optional[str] = None
+    installedVersionHistory: ApplicationVersion | list[ApplicationVersion] | None = []
+    operatingSystem: ObservableObject | None = Field(
+        default=None, json_schema_extra={"IRI": True}
+    )
+    numberOfLaunches: int | None = None
+    applicationIdentifier: str | None = None
+    version: str | None = None
 \end{lstlisting}
 
-This definition is only three lines, which is 32 lines shorter than the
+This definition is only eight lines, which is 27 lines shorter than the
 declaration of \passthrough{\lstinline!ApplicationFacet!} provided by
 the CASE project's existing Python bindings (excluding the docstring).
 

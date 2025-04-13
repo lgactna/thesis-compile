@@ -229,7 +229,7 @@ And, of course, to my friends, family, and bed, who provided support and motivat
 
 \section*{Acknowledgments}
 
-I want to express my immense gratitude to Nancy Latourrette for her
+I want to express my immense gratitude to Nancy LaTourrette for her
 support, guidance, and mentorship throughout the development of this
 thesis. This thesis would be nowhere without her ideas and experience,
 and I am truly grateful and honored to have been able to work with her
@@ -284,8 +284,8 @@ with dedicated infrastructure and staff to support computers
 \cite{pollittHistoryDigitalForensics2010}. However, with the
 introduction of PCs that were more compact and accessible to the typical
 consumer, such as the Commodore 64 and the IBM PC, computer usage within
-the public grew. So did crimes committed with computers; people
-discovered that they could hack telephone networks to illegally obtain
+the public grew. This came with a corresponding growth in cybercrime, as
+people discovered they could hack telephone networks to illegally obtain
 software and ``free'' telephone services
 \cite{jonesInsightDigitalForensics2022}. In 1983, Canada would be
 the first government to amend its criminal code to cover cybercrime; the
@@ -294,13 +294,13 @@ the next decade.
 
 During this time, investigations were typically ad hoc and simple in
 nature. Teams often built their own software to analyze devices, though
-a some hobbyists and software vendors began to develop dedicated
-forensic tools. However, computers had yet to truly enter the
-mainstream; most individual computer owners were (relatively wealthy)
-hobbyists rather than the general public. In 1984, the U.S. Census
-Bureau determined that only about 8.2\% of U.S. households owned a
-computer \cite{robertkominskiComputerUseUnited1988}, nearly doubling
-to 15\% in 1989 \cite{robertkominskiComputerUseUnited1991}.
+some hobbyists and software vendors began to develop dedicated forensic
+tools. However, computers had yet to truly enter the mainstream; most
+individual computer owners were (relatively wealthy) hobbyists rather
+than the general public. In 1984, the U.S. Census Bureau determined that
+only about 8.2\% of U.S. households owned a computer
+\cite{robertkominskiComputerUseUnited1988}, nearly doubling to 15\%
+in 1989 \cite{robertkominskiComputerUseUnited1991}.
 
 As technology continued to advance throughout the 1990s, digital
 forensics -- and computing as a whole -- began to grow in scope and
@@ -1340,11 +1340,11 @@ other is provided below:
 
 Clearly, significant work has been done to streamline the process of
 developing images, although the availability and functionality of each
-framework vary greatly. Notably, with the exception of ForTrace, none of
-these synthesizers are direct extensions of prior works, implying that
-the framework authors' needs could only be met by developing new
-frameworks from scratch. This is not directly stated in any of these
-works, with the exception of hystck
+framework vary greatly. Notably, with the exception of ForTrace and
+VMPOP, none of these synthesizers are direct extensions of prior works,
+implying that the framework authors' needs could only be met by
+developing new frameworks from scratch. This is not directly stated in
+any of these works, with the exception of hystck
 \cite{gobelNovelApproachGenerating2020}. However, it can be
 reasonably concluded that the limited maturity, availability, and
 maintenance of prior works contributed to the independent development of
@@ -1355,14 +1355,15 @@ addressed in greater detail in \autoref{chapter-three}.
 
 \section{Motivation}\label{motivation}
 
-As described previously in \autoref{analysis-of-existing-synthesizers}, with the notable exception of
-ForTrace \cite{gobelForTraceHolisticForensic2022} and its related
-synthesizers, no synthesizer has been an extension of another
-synthesizer. This raises the question -- why reinvent the wheel by
-developing yet another distinct architecture for this thesis? This
-section briefly explores the deficiencies in existing synthesizers and
-explains why these are issues that warrant building a new architecture
-from scratch rather than extending an existing synthesizer.
+As described previously in \autoref{analysis-of-existing-synthesizers}, with the notable exceptions of VMPOP
+\cite{parkTREDEVMPOPCultivating2018} and ForTrace
+\cite{gobelForTraceHolisticForensic2022}, no synthesizer has been an
+extension of another synthesizer. This raises the question -- why
+reinvent the wheel by developing yet another distinct architecture for
+this thesis? This section briefly explores the deficiencies in existing
+synthesizers and explains why these are issues that warrant building a
+new architecture from scratch rather than extending an existing
+synthesizer.
 
 The motivations for developing entirely new codebases instead of
 extending existing synthesizers have varied considerably. One reason is
@@ -1398,13 +1399,14 @@ individual contributions of each prior synthesizer cannot be merged into
 a single project that resolves many of the architectural barriers that
 have limited the adoption and extension of existing synthesizers.
 
-In turn, AKF is built on the following four pillars to help promote its
-long-term usage. In particular, these design principles allow it to
-generate datasets that address several of the considerations raised by
-Horsman and Lyle in the construction of various datasets, such as the
-need for comprehensive documentation, an awareness of the ``realism'' of
-the resulting dataset, and transparency in the scenario development
-process \cite{horsmanDatasetConstructionChallenges2021}.
+In turn, the \emph{automated kinetic framework} (AKF) is built on the
+following four pillars to help promote its long-term usage. In
+particular, these design principles allow it to generate datasets that
+address several of the considerations raised by Horsman and Lyle in the
+construction of various datasets, such as the need for comprehensive
+documentation, an awareness of the ``realism'' of the resulting dataset,
+and transparency in the scenario development process
+\cite{horsmanDatasetConstructionChallenges2021}.
 
 First, AKF conforms to modern Python development practices. This
 includes the use of modern project management practices (such as the use
@@ -1535,11 +1537,11 @@ The final set of modules is responsible for invoking AKF itself and
 supporting scenario development. AKF is an \emph{imperative}
 synthesizer, which means that commands are written and executed using an
 imperative language (Python 3) that dictates precisely \emph{how}
-scenarios should be constructed. However, AKF also supports a
+artifacts should be created. However, AKF also supports a
 \emph{declarative} syntax, which allows users to specify \emph{what}
-forensic artifacts and datasets are generated without the need to
-understand the AKF libraries and write Python code. These are discussed
-in \autoref{chapter-six} and covers the \emph{scenario
+forensic artifacts should be generated without the need to understand
+the AKF libraries and write actual Python code. These are discussed in
+\autoref{chapter-six} and covers the \emph{scenario
 construction library}, the \emph{translation unit}, and any scripts that
 leverage AKF libraries. We also discuss the use of generative AI tools
 for constructing individual artifacts and declarative scenarios.
@@ -1861,12 +1863,16 @@ approaches. In particular, it allows application-specific functionality
 to be implemented using existing automation frameworks such as Selenium
 \cite{SeleniumHQSelenium2025}, Playwright
 \cite{MicrosoftPlaywrightpython2025}, and PyAutoGUI
-\cite{sweigartAsweigartPyautogui2025}. However, this approach often
-leads to the generation of extraneous data; besides the presence of
-software that would never exist on a typical user's machine, agents
-often do not interact with applications the same way that a human would.
-As a result, the synthesizer should document data that can be ignored
-for educational and testing purposes.
+\cite{sweigartAsweigartPyautogui2025}.
+
+It is worth noting that agent-based artifact creation often leads to the
+generation of extraneous artifacts that would never be seen in a
+real-world dataset. For example, agents often do not interact with
+applications in the same way that a human would, possibly creating
+additional artifacts that would not exist if a human had performed the
+same actions. As a result, the synthesizer should document
+synthesizer-related artifacts that can be ignored for educational and
+testing purposes.
 
 Relevant AKF submodules for agent-based generation are depicted as
 opaque elements in \autoref{fig:action-agent}.
@@ -2189,7 +2195,8 @@ physical artifact planting implemented by prior synthesizers. These are:
   \cite{vistiAutomaticCreationComputer2015} and EviPlant
   \cite{scanlonEviPlantEfficientDigital2017}, in which filesystem
   data structures are parsed to determine the physical address(es) of
-  the disk image to write to. (How EviPlant achieves this is not known.)
+  the disk image to write to. (It is unclear how EviPlant achieves this,
+  as its source code is not available.)
 \end{itemize}
 
 AKF supports all three to varying degrees, with significant improvements
@@ -4478,19 +4485,20 @@ artifacts, there are still opportunities to improve their flexibility
 and usability while promoting their usage throughout the forensic
 community.
 
-AKF introduces a modern approach to forensic synthesis through a modular
-architecture focusing on sustained development and community adoption.
-It provides significant advancements in artifact generation, logging and
-validation, and the overall construction of new scenarios. It improves
-artifact generation by integrating numerous technologies not leveraged
-by prior synthesizers, greatly simplifying the implementation of the
-overall architecture without compromising the breadth of features
-available through the framework. By using a centralized logging
-architecture and the CASE ontology, AKF is able to generate detailed,
-queryable metadata of the datasets it generates, allowing users to
-quickly identify artifacts of interest in a dataset. AKF also exposes a
-simple declarative syntax for generating artifacts, allowing users to
-develop scenarios without writing code using the underlying Python
+AKF, the \emph{automated kinetic framework}, introduces a modern
+approach to forensic synthesis through a modular architecture focusing
+on sustained development and community adoption. It provides significant
+advancements in artifact generation, logging and validation, and the
+overall construction of new scenarios. It improves artifact generation
+by integrating numerous technologies not leveraged by prior
+synthesizers, greatly simplifying the implementation of the overall
+architecture without compromising the breadth of features available
+through the framework. By using a centralized logging architecture and
+the CASE ontology, AKF is able to generate detailed, queryable metadata
+of the datasets it generates, allowing users to quickly identify
+artifacts of interest in a dataset. AKF also exposes a simple
+declarative syntax for generating artifacts, allowing users to develop
+scenarios without writing code using the underlying Python
 libraries.~Finally, it provides a demonstration of using LLMs to further
 streamline scenario development, both when constructing individual
 artifacts and when building a complete scenario.
@@ -5000,7 +5008,7 @@ app_facet['uco-observable:numberOfLaunches']
 
 AKF's Pydantic-based bindings greatly simplify the declaration of
 individual CASE objects while allowing typical attribute-based access.
-For example, AKF's declaration of
+For example, AKF's complete declaration of
 \passthrough{\lstinline!ApplicationFacet!} is shown in
 \autoref{lst:b.3.d}:
 
@@ -5009,12 +5017,19 @@ from typing import Optional
 
 from uco import core
 
+# ... Other object definitions in same file
+
 class ApplicationFacet(core.Facet):
-    numberOfLaunches: Optional[int] = None
-    applicationIdentifier: Optional[str] = None
+    installedVersionHistory: ApplicationVersion | list[ApplicationVersion] | None = []
+    operatingSystem: ObservableObject | None = Field(
+        default=None, json_schema_extra={"IRI": True}
+    )
+    numberOfLaunches: int | None = None
+    applicationIdentifier: str | None = None
+    version: str | None = None
 \end{lstlisting}
 
-This definition is only three lines, which is 32 lines shorter than the
+This definition is only eight lines, which is 27 lines shorter than the
 declaration of \passthrough{\lstinline!ApplicationFacet!} provided by
 the CASE project's existing Python bindings (excluding the docstring).
 
