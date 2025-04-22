@@ -149,7 +149,7 @@ by
 Lloyd Gonzales
 \vspace{0.5in}
 
-Nancy LaTourrette, Advisor \\
+Ms. Nancy LaTourrette, Advisor \\
 May 2025\\
 
 \end{center}
@@ -3610,7 +3610,6 @@ libraries:
   - akflib.modules
   - akf_windows.modules
 actions:
-  # Create a new CASE bundle and start a virtual machine.
   - name: Instantiate a hypervisor object tied to a specific virtual machine
     module: vbox_start
     args:
@@ -3878,8 +3877,8 @@ As described previously, the Data Leakage Case contained files presented
 as technical documentation but had content that was irrelevant to the
 scenario itself. Our goal is to create comparable documents containing
 text and images consistent with a theme provided to the models
-responsible for generating this content. We propose a three-step process
-for generating multimedia artifacts:
+responsible for generating this content. We introduce a three-step
+process for generating multimedia artifacts:
 
 \begin{itemize}
 \tightlist
@@ -4039,8 +4038,8 @@ documentation. For example, the table of available modules could be
 generated through existing code metadata, such as the contents of
 docstrings and Pydantic argument models.
 
-For example, we directed DeepSeek-R1 to create a simple scenario where a
-user visited news-related websites with Microsoft Edge and
+For example, DeepSeek-R1 was directed to create a simple scenario where
+a user visited news-related websites with Microsoft Edge and
 entertainment-related websites with Google Chrome, ensuring that the
 machine went through multiple power cycles throughout the scenario.
 Although DeepSeek-R1 was not provided with examples specific to invoking
@@ -4079,19 +4078,19 @@ the declarative syntax and used keys that did not exist, such as
 specifying module arguments outside of the
 \passthrough{\lstinline!args!} dictionary.
 
-Despite these issues related to correctness, it was clear that DeepSeek
-could convert abstract prompts into a sequence of actions based on the
-available modules provided. Much like using declarative scripts as a
-starting point for imperative scripts, these outputs can likely be used
-as a starting point for more complex declarative scripts. Furthermore,
-these issues could be alleviated by improving the details of the prompt,
-such as providing specific examples of module usage and the overall
-results they cause. In particular, DeepSeek-R1 is a reasoning model,
-which means that it ``thinks out loud'' before responding; the model's
-thoughts could be used to identify and eliminate vagueness or
-uncertainty in the provided prompt. Writing precise, detailed
-documentation with this LLM-oriented pipeline in mind could further
-improve the quality of generated outputs.
+Despite these issues related to correctness, it was clear that
+DeepSeek-R1 could convert abstract prompts into a sequence of actions
+based on the available modules provided. Much like using declarative
+scripts as a starting point for imperative scripts, these outputs can
+likely be used as a starting point for more complex declarative scripts.
+Furthermore, these issues could be alleviated by improving the details
+of the prompt, such as providing specific examples of module usage and
+the overall results they cause. In particular, DeepSeek-R1 is a
+reasoning model, which means that it ``thinks out loud'' before
+responding; the model's thoughts could be used to identify and eliminate
+vagueness or uncertainty in the provided prompt. Writing precise,
+detailed documentation with this LLM-oriented pipeline in mind could
+further improve the quality of generated outputs.
 
 As more declarative modules and functionality are added to AKF, it is
 clear that LLMs can significantly accelerate converting abstract

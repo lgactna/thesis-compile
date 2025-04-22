@@ -1,7 +1,7 @@
 LaTourrette capitalized incorrectly in acknowledgements
  - Fixed.
 
-Maybe grammar error on page 1?? Some word choice/order error in 1.1? smth about 
+Maybe grammar error on page 2?? Some word choice/order error in 1.1? smth about 
 
 - "analyze devices, though ==a== some hobbyists and software vendors began to develop..." corrected
 
@@ -29,6 +29,19 @@ Page 53: "How Eviplant achieves this is not known" -> "How EviPlant achieves is 
 Page 120: First mention of AKF -> "AKF, the Automated Kinetic Framework, ..."
 
 - Modified.
+
+Hello!
+
+The following changes have been made:
+
+- Page iii: Capitalization of "LaTourrette" fixed
+- Page 2: "So did crimes committed with computers; ..." -> "This came with a corresponding..." (reworded completely)
+- Page 2: "... to analyze devices, though a some hobbyists ..." -> "though some hobbyists" (deleted "a")
+- Page 32: "In turn, AKF is built..." -> "In turn, the automated kinetic framework (AKF)" (expanded first usage of acronym)
+- Page 36: "... allows users to specify what forensic artifacts and datasets are generated" -> "specify what forensic artifacts should be generated" (deleted "and datasets")
+- Page 45: Reworded everything after "However, this approach often leads to the..."
+- Page 53: "How EviPlant achieves this is not known." -> "It is unclear how EviPlant achieves this, as its source code is not available."
+- Page 120: "AKF introduces a modern" -> "AKF, the automated kinetic framework, introduces" (expanded usage of AKF in conclusion)
 
 ---
 
