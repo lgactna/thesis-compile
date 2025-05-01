@@ -274,13 +274,13 @@ disk state. These differences can be distributed to users, who can then
 use EviPlant's ``injection'' tool on the previously distributed base
 image to recreate the final disk image.
 
-This approach can described more generally as ``differential imaging'',
-in which only differences from some initial files are saved and
-transmitted to users. These differences are often significantly smaller
-than the disk images they are designed to build and are much easier to
-distribute than complete disk images. (This is very similar to the
-approach used by Vagrant to distribute and prepare reproducible virtual
-machines, as described in \autoref{setup-and-basic-usage}.) In exchange, each user must spend additional
+This approach can be described more generally as ``differential
+imaging'', in which only differences from some initial files are saved
+and transmitted to users. These differences are often significantly
+smaller than the disk images they are designed to build and are much
+easier to distribute than complete disk images. (This is very similar to
+the approach used by Vagrant to distribute and prepare reproducible
+virtual machines, as described in \autoref{setup-and-basic-usage}.) In exchange, each user must spend additional
 processing time before the image can be used for analysis. EviPlant's
 injection tool operates through a combination of logical and physical
 planting, which requires time, software, and resources that are not

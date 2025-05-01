@@ -98,6 +98,11 @@
 \addbibresource{thesis_bib.bib} 
 % \bibliographystyle{IEEEtran}
 
+% Borders around all figures?
+% \usepackage{adjustbox}
+% \let\origincludegraphics\includegraphics
+% \renewcommand{\includegraphics}[2][]{\adjustbox{frame}{\origincludegraphics[#1]{#2}}}
+
 % == End packages
 
 % \makeglossaries
@@ -154,7 +159,26 @@ May 2025\\
 
 \end{center}
 
+% == Copyright =================================================
+
+\newpage
+\thispagestyle{empty}
+\doublespacing
+
+\begin{center}
+
+\null
+
+\vspace{4in}
+
+Copyright by Lloyd Gonzales 2025\\
+All Rights Reserved\\
+
+\end{center}
+
 % == Committee Approval =================================================
+
+\includepdf[scale=1,pages=1, offset=0 -1.5cm]{ms-committee-final}
 
 % == Set page numbering style ============================================
 \pagenumbering{roman}
@@ -180,7 +204,7 @@ the manual development of new datasets. While viable, this approach is
 time-consuming and rarely produces datasets that accurately reflect
 real-world scenarios suitable for comprehensive training and education.
 In turn, there is ongoing research into forensic synthesizers, which
-automate the process of creating unique, synthetically created datasets
+automate the process of creating unique, synthetic datasets
 that can be publicly distributed without legal and other logistical
 concerns.
 
@@ -217,7 +241,7 @@ Rodney Rogers, Marc Miller, and Gabbi Bachand, whom I have limitless
 appreciation and admiration for;
 
 To those on the United States Cyber Team and the broader CTF
-community, for igniting my interest in digital forensics and supporting
+community for igniting my interest in digital forensics and supporting
 me even when I flailed like a fish out of water;
 
 And, of course, to my friends, family, and bed, who provided support and motivation.

@@ -7,7 +7,7 @@ specifically, this covers the modules and submodules seen in
 and \emph{action automation library} have been omitted for brevity.
 (Note that the ``imaging library'' and ``validation library'' are
 theoretical submodules that would fulfill the ``after the fact''
-analysis described in \autoref{human-readable-reporting}, and are not currently implemented.)
+analysis described in \autoref{human-readable-reporting} and are not currently implemented.)
 
 \begin{figure}[h]
 \centering
@@ -218,8 +218,8 @@ forensics community. DFAX later became the Cyber-investigation Analysis
 Standard Expression (CASE)
 \cite{caseyAdvancingCoordinatedCyberinvestigations2017}. CASE is
 perhaps the most comprehensive and actively supported ontology available
-for digital forensics; contributors include NIST with support from the
-Linux Foundation. As a result, AKF uses CASE as its primary format for
+for digital forensics, with support from both NIST and the Linux
+Foundation. As a result, AKF uses CASE as its primary format for
 documenting datasets, deliberately including support for CASE throughout
 various libraries.
 
@@ -305,10 +305,10 @@ process of maintaining Python bindings for UCO/CASE, as well as the
 overall design of the library for future needs.
 
 Note that there are certain inconsistencies between the Turtle CASE
-definitions and those of AKF. These issues are true of the public
-bindings for CASE/UCO 1.4 that are currently available, as well; this is
-not unique to AKF's Pydantic-based implementation. These are described
-in greater detail at the end of \autoref{case-python-bindings}.
+definitions and those of AKF. These issues are also true of the public
+bindings for CASE/UCO 1.4 that are currently available; this is not
+unique to AKF's Pydantic-based implementation. These are described in
+greater detail at the end of \autoref{case-python-bindings}.
 
 \subsection{CASE integration in
 AKF}\label{case-integration-in-akf}
@@ -330,14 +330,14 @@ scenario generation.
 
 Various functions and classes throughout the AKF core libraries and
 agent API accept an optional CASE bundle when invoked or instantiated.
-As users call CASE-compatible functions, these functions can
-automatically add CASE objects corresponding to the artifacts generated
-through their execution. For example, if the agent subservice API for
-automating Chromium browser actions is provided with a CASE bundle,
-navigating to a page using the API could automatically generate a CASE
-object describing the page visit and add it to the bundle. This process
-can occur entirely within the host, allowing CASE-related logic to
-remain out of the agent where needed.
+As CASE-compatible functions are called, they can automatically add CASE
+objects corresponding to the artifacts generated through their
+execution. For example, if the agent subservice API for automating
+Chromium browser actions is provided with a CASE bundle, navigating to a
+page using the API could automatically generate a CASE object describing
+the page visit and add it to the bundle. This process can occur entirely
+within the host, allowing CASE-related logic to remain out of the agent
+where needed.
 
 However, recall from \autoref{the-akf-agent} that using RPyC for agent communication allows AKF to pass
 complex objects between the agent and the host machine. This includes
@@ -497,8 +497,8 @@ primarily attributed to the \emph{availability} of forensic datasets in
 general, it can also be attributed to challenges in the
 \emph{reproducibility} of creating synthetic datasets.
 
-Before addressing the low-level use of AKF as part of \autoref{chapter-six}, we briefly discuss the infrastructure needed to
-support community usage of the outputs of AKF scenarios and synthetic
+Before addressing the low-level use of AKF as part of \autoref{chapter-six}, we will briefly discuss the infrastructure needed
+to support community usage of the outputs of AKF scenarios and synthetic
 datasets as a whole. Note that for the remainder of this section,
 scenarios and datasets are both implied to be synthetic, as the
 principles of reproducibility are less applicable to real-world
@@ -511,17 +511,17 @@ a dataset (and its results) reproducible:
 \tightlist
 \item
   Any core outputs or individual artifacts generated from the virtual
-  machine.
+  machine
 \item
   Any metadata, ground truth, or other reporting that describes the
-  scenario.
+  scenario
 \item
   The OS-specific ``base image'' used to create the dataset, typically a
   virtual machine with a newly installed operating system on which all
-  synthesizer actions are performed.
+  synthesizer actions are performed
 \item
   The precise instructions required to build the scenario from the
-  provided base image, whether human- or machine-readable instructions.
+  provided base image, whether human- or machine-readable instructions
 \end{itemize}
 
 Forensic datasets have long included core outputs and individual

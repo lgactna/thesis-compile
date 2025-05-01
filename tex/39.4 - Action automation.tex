@@ -169,17 +169,17 @@ scancodes to the virtual machine.
 
 This approach most accurately reflects how an actual human would
 interact with a machine. As a result, this greatly reduces the
-irrelevant data generated as a result of synthesizer operation. However,
-this often leads to verbose scripts that are only capable of performing
-very specific actions. The keyboard and mouse actions required to
-fulfill a particular action can change significantly between versions of
-the same application, versions of the same operating system, and varying
-screen sizes. For example, VMPOP handles User Account Control (UAC)
-prompts on machines prior to Windows 7 by sending an Alt+Tab keystroke
-to the machine, clicking the mouse at the center of the screen to focus
-the UAC prompt, and then sending Alt+C to accept the prompt. On machines
-running Windows 7 or later, this is instead achieved by focusing the UAC
-prompt with the mouse and then sending Alt+Y to accept the prompt.
+irrelevant data generated from using a synthesizer. However, this often
+leads to verbose scripts that are only capable of performing very
+specific actions. The keyboard and mouse actions required to fulfill a
+particular action can change significantly between versions of the same
+application, versions of the same operating system, and varying screen
+sizes. For example, VMPOP handles User Account Control (UAC) prompts on
+machines prior to Windows 7 by sending an Alt+Tab keystroke to the
+machine, clicking the mouse at the center of the screen to focus the UAC
+prompt, and then sending Alt+C to accept the prompt. On machines running
+Windows 7 or later, this is instead achieved by focusing the UAC prompt
+with the mouse and then sending Alt+Y to accept the prompt.
 
 Similarly, VMPOP interacts with browsers exclusively through the use of
 keyboard shortcuts. VMPOP supports simple interactions with a small
@@ -352,9 +352,9 @@ This common prefix is used to automatically discover the corresponding
 agent-side code given a command issued by the server-side code.
 
 Two key implementation details should be noted here. First, commands are
-sent through a simple string-based protocol. This simplicity makes it
-easy to debug issues arising from the protocol itself, but is relatively
-inflexible as a result. In particular, it is challenging to send complex
+sent through a simple string-based protocol. While this simplicity makes
+it easy to debug issues arising from the protocol itself, it also leads
+to inflexible code. In particular, it is challenging to send complex
 Python objects as arguments or return values since these objects often
 cannot be easily serialized to a string without loss of information. An
 example relevant to AKF is passing Playwright browser objects, which
@@ -602,11 +602,10 @@ write new files to disk through a virtual machine, possibly leading to
 the same outcome as simply writing these files directly to the
 filesystem without virtualization. As described previously, there is no
 guarantee that the new files will occupy the same physical clusters as
-the deleted files. However, this may be acceptable, such as a scenario
-in which an instructor merely wants to demonstrate examples of what
-could occur when deleting a file. If there is no need to carve deleted
-files from slack or unallocated space reliably, then logical approaches
-are sufficient.
+the deleted files. However, this may be acceptable in scenarios where an
+instructor only wants to demonstrate examples of what could occur when
+deleting a file. If there is no need to carve deleted files from slack
+or unallocated space reliably, then logical approaches are sufficient.
 
 \subsection{AKF implementation}\label{akf-implementation}
 
@@ -681,10 +680,10 @@ needed for offset-based editing, it is easier to perform this analysis
 at construction time and distribute the offsets to which data must be
 written to base images.
 
-However, the filesystem may not have been analyzed ahead of time such
-that the exact offsets and data needed to place a file on disk are
-known. This brings us to filesystem-aware direct editing, in which AKF
-makes significant improvements.
+However, the exact offsets and data needed to directly write a file to
+an existing filesystem are often not known ahead of time. This brings us
+to filesystem-aware direct editing, in which AKF makes significant
+improvements.
 
 ForGe implements its physical artifact generation by implementing NTFS
 and FAT32 data structures in Python, allowing it to create a fully
@@ -722,10 +721,9 @@ the low-level contents of a variety of filesystems, including
 filesystem-specific attributes and the sequence of disk clusters that
 form a file. \passthrough{\lstinline!libtsk!} supports a large variety
 of filesystems through a filesystem-agnostic interface, including the
-FAT family of filesystems, the ext family, NTFS, and a variety of other
-filesystems. ~It also supports various volume systems for
-multi-partition disks, such as GPT and MBR, as well as several
-filesystem containers and images.
+FAT family of filesystems, the ext family, and NTFS. It also supports
+various volume systems for multi-partition disks, such as GPT and MBR,
+as well as several filesystem containers and images.
 
 Python bindings for \passthrough{\lstinline!libtsk!} have existed for at
 least 15 years, with the most commonly used library being the
@@ -753,10 +751,10 @@ is derived from Plaso and Google Rapid Response, two open-source DFIR
 tools used in various contexts.) Much like
 \passthrough{\lstinline!libtsk!}, it exposes a variety of low-level
 filesystem concepts common across multiple filesystems, such as the
-metadata and individual segments comprising a file at a known path on
-the filesystem. This low-level detail makes it extremely powerful in
-performing filesystem-aware direct editing, especially because of its
-focus on exposing this detail through a consistent Python interface.
+metadata and individual segments comprising a file. This low-level
+detail makes it extremely powerful in performing filesystem-aware direct
+editing, especially because of its focus on exposing this detail through
+a consistent Python interface.
 
 AKF uses \passthrough{\lstinline!dfvfs!} to locate the clusters of a
 file at a known path in a filesystem, which can then be used to identify
@@ -765,9 +763,9 @@ unallocated space in the filesystem). By adding the physical offset of
 the cluster within the filesystem to the offset of the filesystem's
 partition in the disk image, AKF can write to the exact location of a
 file's slack space using the offset-based method described earlier. This
-achieves feature parity with ForGe, completely delegating filesystem and
-image-specific details to \passthrough{\lstinline!dfvfs!} and allowing
-for a filesystem-independent method for locating slack space.
+achieves feature parity with ForGe by completely delegating filesystem-
+and image-specific details to \passthrough{\lstinline!dfvfs!}, enabling
+a filesystem-independent method for locating slack space.
 
 More generally, this technique provides a deterministic method for
 inserting data within the slack space of a filesystem, simulating the
