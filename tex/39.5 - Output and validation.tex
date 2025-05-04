@@ -283,7 +283,7 @@ Examples of CASE-related definitions and a detailed comparison of AKF's
 bindings compared to the existing CASE bindings can be found in
 \autoref{case-python-bindings}. One notable example
 from this section is the simplification of a CASE object declaration
-from 35 lines in the existing CASE bindings to only three lines in AKF.
+from 35 lines in the existing CASE bindings to only eight lines in AKF.
 These simple declarations are possible primarily because the conversion
 of objects to valid JSON-LD elements is deferred until serialization
 instead of converting objects to dictionaries immediately upon
@@ -511,17 +511,17 @@ a dataset (and its results) reproducible:
 \tightlist
 \item
   Any core outputs or individual artifacts generated from the virtual
-  machine
+  machine.
 \item
   Any metadata, ground truth, or other reporting that describes the
-  scenario
+  scenario.
 \item
   The OS-specific ``base image'' used to create the dataset, typically a
   virtual machine with a newly installed operating system on which all
-  synthesizer actions are performed
+  synthesizer actions are performed.
 \item
   The precise instructions required to build the scenario from the
-  provided base image, whether human- or machine-readable instructions
+  provided base image, whether human- or machine-readable instructions.
 \end{itemize}
 
 Forensic datasets have long included core outputs and individual
@@ -539,10 +539,10 @@ M57-Patents scenario built by Woods et al.
 \cite{woodsCreatingRealisticCorpora2011} provides an instructor PDF
 with a high-level timeline of actions taken in English. This detail is
 sufficient for educational purposes but is too imprecise to guarantee
-that others following this timeline will construct the image in the same
-manner as intended. As described in \autoref{challenges-in-developing-synthetic-datasets}, non-determinism can be
-acceptable and even desirable in educational contexts but is less
-desirable for tool validation and research.
+that others following this timeline will construct the disk image in the
+same manner as intended. As described in \autoref{challenges-in-developing-synthetic-datasets},
+non-determinism can be acceptable and even desirable in educational
+contexts but is less desirable for tool validation and research.
 
 Even rarer in manually constructed datasets is the inclusion of a base
 image representing the machine's state before any actions are performed.
@@ -569,7 +569,7 @@ a format such as OVF), or another infrastructure-as-code solution to
 define and build virtual machines, such as Vagrant.
 
 AKF is designed to provide all four of these elements in every scenario
-it creates; elements 1, 2, and 4 are inherent to all synthesizers, while
+it creates; elements 1, 2, and 4 are inherent to AKF's design, while
 base images can be provided as Vagrantfiles as described in \autoref{setup-and-basic-usage}. This ensures the
 reproducibility of both the creation of AKF datasets and any results
 derived from them.

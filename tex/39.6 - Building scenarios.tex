@@ -237,7 +237,7 @@ other synthesizers, is as follows:
 \item
   Create an administrative user with known credentials. Configure the
   operating system as desired to reduce friction with the synthesizer
-  (such as disabling UAC prompts, enabling auto-logon, and so on.)
+  (such as disabling UAC prompts, enabling auto-logon, and so on).
 \item
   Build and copy the OS-specific AKF agent to the virtual machine,
   configuring it as a startup application. Add firewall rules to ensure
@@ -317,7 +317,7 @@ vbox_obj.stop_vm(force=False)
 
 # Export the virtual machine to a disk image
 vbox_obj.create_disk_image(
-    Path("C:/Users/kisun/Desktop/akf-windows_1.raw"),
+    Path("C:/Users/user/Desktop/akf-windows_1.raw"),
     VBoxExportFormatEnum.RAW
 )
 \end{lstlisting}
@@ -534,6 +534,7 @@ An example of an Ansible playbook can be seen in \autoref{lst:6.3.1b},
 which contains a single play to configure an Apache webserver.
 
 \begin{lstlisting}[label={lst:6.3.1b}, caption={Minimal Ansible playbook for updating an Apache server \cite{ansibleprojectcontributorsAnsiblePlaybooks}}, ]
+---
 
 - name: Update web servers
   hosts: webservers
@@ -979,14 +980,14 @@ into three categories:
 \tightlist
 \item
   Emails that are relevant to the focus or topic of the scenario, such
-  as corporate espionage
+  as corporate espionage.
 \item
   Emails that are irrelevant to the scenario but are consistent with the
   persona included as part of the scenario, such as benign emails to
-  coworkers
+  coworkers.
 \item
   Emails wholly irrelevant to the scenario, such as marketing or spam
-  emails
+  emails.
 \end{itemize}
 
 To generate these emails, DeepSeek-R1 was prompted to generate email
