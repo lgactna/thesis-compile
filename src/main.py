@@ -169,7 +169,7 @@ def process_latex_text(text: str) -> str:
     text = re.sub(r"\[@(.*?)\]", r"\\cite{\1}", text)
 
     # Convert \begin{figure} to \begin{figure}[h]
-    text = re.sub(r"^\\begin\{figure\}$", r"\\begin{figure}[h]", text, flags=re.MULTILINE)
+    text = re.sub(r"^\\begin\{figure\}$", r"\\begin{figure}[htbp]", text, flags=re.MULTILINE)
     
     # A \pandocbounded{\includegraphics[...]{...}} command should be substtituted
     # with \includegraphics[width=1\linewidth]{...}

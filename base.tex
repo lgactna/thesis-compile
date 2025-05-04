@@ -111,6 +111,13 @@
 % == Customizations ====================================================
 \allowdisplaybreaks
 
+% Prevent orphaned lines at bottom of page (clubs)
+\clubpenalty=10000
+% Prevent widow lines at top of page
+\widowpenalty=10000
+% Discourage breaking a page in the middle of a paragraph
+\displaywidowpenalty=10000
+
 % == Page Style ========================================================
 \pagestyle{fancyplain}
 \renewcommand{\headrulewidth}{0.0pt}				% gets rid of lines on header
