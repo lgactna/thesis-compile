@@ -1,3 +1,36 @@
+
+more generally:
+
+- ~~all the SFS monthlies~~
+
+**BEFORE GRADUATION**
+
+- this paper (for FSIDI submission)
+- all of claymore
+	- breaking off individual components into their own repositories (see [https://github.com/newren/git-filter-repo)](https://github.com/newren/git-filter-repo))
+	- the whole "undo warcrimes" effort... which may be easier if they're already in their own repositories to begin with
+
+- japanese
+- improvements to the ncl sheeter (by may 24)
+
+**MAYBE AFTER GRADUATION**
+
+- ret2wargames
+	- and cpe submission for ISC2, etc....
+	- may include cpes for CompTIA/SANS for NCL etc
+
+- us cyber games application (after graduation)
+- apartment hunting 
+	- note that relocation benefits don't take effect until two months before... so this might be something that can be stalled off until graduation
+
+- making the two CV and one "forensics" challenge (MFTs with a twist, with a custom provided parser implemented in a compiled/low-level language; goal is to reverse the filesystem structures and figure out what's recoverable from the data structures, particularly if the filesystem doesn't zero-out the data. also thought about having a cryptography component to it, where it insecurely encrypts items due to IV/key reuse on aes-ctr)
+	- parser could be written in cython if we really want python benefits...
+		- or we could just have a program that allows you to read/write to the disk without actually mounting it
+	- would be cool to just straight up give a shared object that allows you to mount it on a real filesystem...
+	- can have a funny pwn component if we were to expose the "parser" remotely and pretend it's a remote filesystem.
+
+---
+
 LaTourrette capitalized incorrectly in acknowledgements
  - Fixed.
 

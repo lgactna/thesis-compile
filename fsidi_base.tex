@@ -1,0 +1,78 @@
+% \documentclass[preprint,12pt]{elsarticle}
+
+%% Use the option review to obtain double line spacing
+%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
+
+%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
+%% for a journal layout:
+%% \documentclass[final,1p,times]{elsarticle}
+%% \documentclass[final,1p,times,twocolumn]{elsarticle}
+%% \documentclass[final,3p,times]{elsarticle}
+\documentclass[final,3p,times,twocolumn]{elsarticle}
+%% \documentclass[final,5p,times]{elsarticle}
+%% \documentclass[final,5p,times,twocolumn]{elsarticle}
+
+%% Fixing DOIs in the bibtex file, which otherwise don't play well with elsarticle.bst
+\usepackage{doi}
+
+\journal{Forensic Science International: Digital Investigation}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{AKF: A modern synthesis framework for building datasets in digital forensics}
+
+\author[unr]{Lloyd Gonzales}
+\author[unr]{Nancy LaTourrette}
+\author[unr]{Bill Doherty}
+%% Author affiliation
+\affiliation[unr]{organization={Department of Computer Science and Engineering, University of Nevada, Reno},%Department and Organization
+            addressline={1664 North Virginia Street}, 
+            city={Reno},
+            postcode={89557}, 
+            state={Nevada},
+            country={USA}}
+
+%% Abstract
+\begin{abstract}
+%% Text of abstract
+{{substitute_abstract}}
+\end{abstract}
+
+%% Graphical abstract
+% \begin{graphicalabstract}
+%\includegraphics{grabs}
+% \end{graphicalabstract}
+
+%% Research highlights
+\begin{highlights}
+\item Research highlight 1
+\item Research highlight 2
+\end{highlights}
+    
+
+%% Keywords
+\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+
+%% PACS codes here, in the form: \PACS code \sep code
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+%% Beginning of main text
+{{substitute_content}}
+
+%% Beginning of appendices
+\appendix
+
+%% Using bibtex to generate items, expecting thesis_bib.bib
+\bibliographystyle{elsarticle-num} 
+\bibliography{thesis_bib}
+
+\end{document}
