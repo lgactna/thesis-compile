@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from textwrap import dedent
+from textwrap import dedent, indent
 
 import re
 import subprocess
@@ -86,44 +86,40 @@ class TableMeta:
         parameters.
         """
         
-        # Extract Pandoc's auto-calculated tabcolsep value
-        match = re.search(r"(\d+)\\tabcolsep", table_text)
-        if match is None:
-            raise ValueError("Table does not contain tabcolsep")
+        # Extract headers
+        column_names = re.findall(
+            r"\\begin{minipage}.*?\\raggedright\n(.*?)\n\\end{minipage}",
+            table_text,
+            flags=re.DOTALL | re.MULTILINE,
+        )
         
-        tabcolsep = match.group(1)
+        # Create header row
+        header_row = " & ".join([f"\\textbf{{{name.strip()}}}" for name in column_names])
         
-        # Generate alignment lines for each column
-        alignments = ""
-        for alignment in self.alignments:
-            alignments += f"  >{{\\raggedright\\arraybackslash}}p{{(\\linewidth - {tabcolsep}\\tabcolsep) * \\real{{{alignment}}}}}\n"
         
-        # Extract the rest of the table, everything between \toprule\noalign{} and \end{longtable}
-        match = re.search(r"\\toprule\\noalign\{\}(.*?)\\end\{longtable\}", table_text, flags=re.DOTALL | re.MULTILINE)
-        if match is None:
-            print(table_text)
-            raise ValueError("Table does not contain top rule or noalign")
-        table_text = match.group(1)
+        # Extract data
+        data = re.search(
+            r"\\endlastfoot\n(.*?)\\end{longtable}",
+            table_text,
+            flags=re.DOTALL | re.MULTILINE,
+        ).group(1)
         
         template = dedent(
             f"""
-            {{
-            \\small % 10pt font
-            \\setstretch{{1}} % Single spacing
-            \\begin{{longtable}}[]{{@{{}}
-            <substitute_alignments>
-            @{{}}}}
-            \\caption{{{self.caption}}}\\label{{{self.label}}} \\\\
-            \\toprule\\noalign{{}}
+            \\begin{{table}}[t]
+            \\centering
+            \\begin{{tabular}}{{{' '.join(self.alignments)}}}
+            <substitute_header> \\\\ \hline
             <substitute_content>
-            \\end{{longtable}}
-            }}
+            \\end{{tabular}}
+            \caption{{{self.caption}}}\label{{{self.label}}}
+            \\end{{table}}
             """
         )
         
         # Substitute the alignments and content
-        template = template.replace("<substitute_alignments>", alignments.strip("\n"))
-        template = template.replace("<substitute_content>", table_text.strip("\n"))
+        template = template.replace("<substitute_header>", indent(header_row, "  "))
+        template = template.replace("<substitute_content>", indent(data.strip("\n"), "  "))
         
         return template
 
@@ -224,6 +220,14 @@ def process_tex_file(tex_file: Path):
         
     # Convert \autocite to \cite
     text = re.sub(r"\\autocite", r"\\cite", text)
+    
+    # Tightlists aren't real
+    # If they are, you have to do this:
+    """
+    \providecommand{\tightlist}{%
+        \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    """
+    text = re.sub(r"\\tightlist\n", r"", text)
     
     # Special syntax: if an lstlisting's first line contains a line of the form
     # !lst:caption|label, convert it to a lstlisting with a caption and label

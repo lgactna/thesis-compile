@@ -89,7 +89,7 @@ Each of the synthesizers described in **39.2 - Literature review#2.2 - Analysis 
 
 These three approaches are not mutually exclusive within a single synthesizer, though many prior synthesizers have supported only one approach to generate artifacts. **!tbl:prior-techniques** below denotes the approaches used by each of the synthesizers previously discussed. Where source code is unavailable, a best effort was made to identify the approach used by a particular synthesizer based on its published paper, if one exists; otherwise, the entire row contains question marks. 
 
-*!tbl:prior-techniques|Summary of artifact generation techniques in prior synthesizers|0.2,0.2666,0.2666,0.2666*
+*!tbl:prior-techniques|Summary of artifact generation techniques in prior synthesizers|l,l,l,l*
 
 | Synthesizer                                                                             | Physical                                                  | Agentless                   | Agent-based             |
 | --------------------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------- | ----------------------- |
@@ -166,7 +166,7 @@ Together, these three features significantly simplify the process of not only im
 
 The list of subservices supported by the AKF Windows agent is described in **!tbl:akf-applications** below. Although only three subservices are implemented, each subservice is an example of a distinct design pattern that could be easily adapted to implement other application-specific functionality. (Support for specific applications, such as Thunderbird or Firefox, has already been explored and implemented in prior works.)
 
-*!tbl:akf-applications|Implemented subservices for the AKF Windows agent|0.2,0.2,0.6*
+*!tbl:akf-applications|Implemented subservices for the AKF Windows agent|l,l,l*
 
 | Subservice  | Dependencies                                                            | Features                                                                                                                                   |
 | ----------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |

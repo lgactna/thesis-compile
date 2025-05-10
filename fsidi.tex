@@ -297,7 +297,6 @@ of forensic datasets should be able to cover as many use cases as
 possible. Synthesizers must fulfill two requirements to achieve this:
 
 \begin{itemize}
-\tightlist
 \item
   A synthesizer should be able to generate artifacts present in existing
   datasets, provided that the underlying technologies are still
@@ -379,7 +378,6 @@ frameworks -- many of which were identified by Göbel et al.~-- are
 described below:
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023} introduced
   the use of the VirtualBox SDK to automate various operations, forming
@@ -488,7 +486,6 @@ approaches to artifact generation, as partly described by Scanlon et al.
 \cite{scanlonEviPlantEfficientDigital2017}:
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{Physical}: No virtualization of software or hardware ever
   occurs; data is written directly to the target medium, such as a disk
@@ -515,62 +512,43 @@ published paper, if one exists; otherwise, the entire row contains
 question marks.
 
 
-{
-\small % 10pt font
-\setstretch{1} % Single spacing
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2666}}
-@{}}
-\caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques} \\
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Synthesizer
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Physical
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Agentless
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Agent-based
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\textbf{FALCON} \cite{adelsteinAutomaticallyCreatingRealistic2005},
-2005 & ? & ? & ? \\
-\textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008}, 2008
-& ? & ? & ? \\
-\textbf{Forensig2}
-\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
-2009 & Yes (filesystem mounting; filesystem-independent editing) & Yes
-(over SSH only) & No \\
-\textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011}, 2011 &
-Yes (filesystem mounting; filesystem-independent editing) & No & No \\
-\textbf{SFX} \cite{russellForensicImageDescription2012}, 2012 & Yes
-(filesystem mounting) & No & No \\
-\textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}, 2014
-& ? & ? & ? \\
-\textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
-Yes (hypervisor interfaces) & No \\
-\textbf{ForGe} \cite{vistiAutomaticCreationComputer2015}, 2015 & Yes
-(filesystem-aware editing) & No & No \\
-\textbf{ForGen} \cite{jjk422Jjk422ForGen2019}, 2016 & No & No &
-No \\
-\textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}, 2017 &
-Yes (filesystem-independent editing) & No & Yes (unknown mechanism) \\
-\textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
-(hypervisor interfaces) & No \\
-\textbf{hystck} \cite{gobelNovelApproachGenerating2020}, 2020 & No &
-No & Yes (Python agent) \\
-\textbf{TraceGen} \cite{duTraceGenUserActivity2021}, 2021 & No & No
-& Yes (unknown mechanism) \\
-\textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
-No & No & Yes (Python agent) \\
-\end{longtable}
-}
+\begin{table}[t]
+\centering
+\begin{tabular}{l l l l}
+  \textbf{Synthesizer} & \textbf{Physical} & \textbf{Agentless} & \textbf{Agent-based} \\ \hline
+  \textbf{FALCON} \cite{adelsteinAutomaticallyCreatingRealistic2005},
+  2005 & ? & ? & ? \\
+  \textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008}, 2008
+  & ? & ? & ? \\
+  \textbf{Forensig2}
+  \cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
+  2009 & Yes (filesystem mounting; filesystem-independent editing) & Yes
+  (over SSH only) & No \\
+  \textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011}, 2011 &
+  Yes (filesystem mounting; filesystem-independent editing) & No & No \\
+  \textbf{SFX} \cite{russellForensicImageDescription2012}, 2012 & Yes
+  (filesystem mounting) & No & No \\
+  \textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}, 2014
+  & ? & ? & ? \\
+  \textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
+  Yes (hypervisor interfaces) & No \\
+  \textbf{ForGe} \cite{vistiAutomaticCreationComputer2015}, 2015 & Yes
+  (filesystem-aware editing) & No & No \\
+  \textbf{ForGen} \cite{jjk422Jjk422ForGen2019}, 2016 & No & No &
+  No \\
+  \textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}, 2017 &
+  Yes (filesystem-independent editing) & No & Yes (unknown mechanism) \\
+  \textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
+  (hypervisor interfaces) & No \\
+  \textbf{hystck} \cite{gobelNovelApproachGenerating2020}, 2020 & No &
+  No & Yes (Python agent) \\
+  \textbf{TraceGen} \cite{duTraceGenUserActivity2021}, 2021 & No & No
+  & Yes (unknown mechanism) \\
+  \textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
+  No & No & Yes (Python agent) \\
+\end{tabular}
+\caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques}
+\end{table}
 
 
 There are advantages and disadvantages to each approach, in addition to
@@ -607,7 +585,6 @@ There are three primary techniques for physical artifact planting
 implemented by prior synthesizers. These are:
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{Filesystem mounting}, as done by Forensig2
   \cite{mochForensicImageGenerator2009} and SFX
@@ -650,7 +627,6 @@ implements a valuable feature not found in any other synthesizer to
 date), it is inflexible in two specific aspects:
 
 \begin{itemize}
-\tightlist
 \item
   ForGe does not provide a generic interface for the filesystems it
   supports. Although the NTFS and FAT32 wrappers provide the same
@@ -737,7 +713,6 @@ approach. However, AKF improves upon ForTrace by solving two specific
 issues:
 
 \begin{itemize}
-\tightlist
 \item
   Commands in ForTrace are sent through a simple string-based protocol.
   In particular, it is challenging to send complex Python objects as
@@ -835,39 +810,23 @@ such as Thunderbird or Firefox, has already been explored and
 implemented in prior works.)
 
 
-{
-\small % 10pt font
-\setstretch{1} % Single spacing
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.6}}
-@{}}
-\caption{Implemented subservices for the AKF Windows agent}\label{tbl:akf-applications} \\
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Subservice
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Dependencies
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Features
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-\passthrough{\lstinline!autogui!} & PyAutoGUI
-\cite{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
-mouse and keyboard control, as well as other PyAutoGUI features \\
-\passthrough{\lstinline!artifacts!} & Windows-Prefetch-Parser
-\cite{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
-Windows artifacts and conversion to corresponding CASE objects \\
-\passthrough{\lstinline!chromium!} & Playwright
-\cite{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
-also allows for performing complex actions such as completing forms and
-clicking links based on HTML selectors \\
-\end{longtable}
-}
+\begin{table}[t]
+\centering
+\begin{tabular}{l l l}
+  \textbf{Subservice} & \textbf{Dependencies} & \textbf{Features} \\ \hline
+  \passthrough{\lstinline!autogui!} & PyAutoGUI
+  \cite{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
+  mouse and keyboard control, as well as other PyAutoGUI features \\
+  \passthrough{\lstinline!artifacts!} & Windows-Prefetch-Parser
+  \cite{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
+  Windows artifacts and conversion to corresponding CASE objects \\
+  \passthrough{\lstinline!chromium!} & Playwright
+  \cite{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
+  also allows for performing complex actions such as completing forms and
+  clicking links based on HTML selectors \\
+\end{tabular}
+\caption{Implemented subservices for the AKF Windows agent}\label{tbl:akf-applications}
+\end{table}
 
 
 A generic hypervisor interface is used to support agent discovery and
@@ -1096,7 +1055,6 @@ There are four elements that must be distributed with a scenario to make
 a dataset (and its results) reproducible:
 
 \begin{itemize}
-\tightlist
 \item
   Any core outputs or individual artifacts generated from the virtual
   machine.
