@@ -54,6 +54,16 @@
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
+% Better table appearance, particularly for the long ones
+% https://tex.stackexchange.com/questions/373362/how-to-avoid-justified-text-in-tabularx
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{booktabs}
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\RaggedRight} X}
+
+% Set asset path.
+\graphicspath{{assets/}}
+
 \journal{Forensic Science International: Digital Investigation}
 
 \begin{document}

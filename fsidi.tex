@@ -54,6 +54,16 @@
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
+% Better table appearance, particularly for the long ones
+% https://tex.stackexchange.com/questions/373362/how-to-avoid-justified-text-in-tabularx
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{booktabs}
+\newcolumntype{L}[1]{>{\hsize=#1\hsize\RaggedRight} X}
+
+% Set asset path.
+\graphicspath{{assets/}}
+
 \journal{Forensic Science International: Digital Investigation}
 
 \begin{document}
@@ -203,7 +213,7 @@ long-term viability through its modular architecture, educators and
 researchers will be able to rapidly develop relevant datasets, even as
 new developments and advancements in technology occur. Our improvements
 are intended to address several challenges observed in prior
-synthesizers
+synthesizers\ldots{}
 
 This paper begins with an analysis of related work in \autoref{related-work}, covering existing dataset sources and the contributions
 of prior synthesizers. In \autoref{artifact-generation}, we
@@ -551,10 +561,13 @@ published paper, if one exists; otherwise, the entire row contains
 question marks.
 
 
-\begin{table}[t]
+\begin{table*}[tb]
+\footnotesize
 \centering
-\begin{tabular}{l l l l}
-  \textbf{Synthesizer} & \textbf{Physical} & \textbf{Agentless} & \textbf{Agent-based} \\ \hline
+\begin{tabularx}{\linewidth}{L{0.2} L{0.2666} L{0.2666} L{0.2666}}
+\toprule
+  \textbf{Synthesizer} & \textbf{Physical} & \textbf{Agentless} & \textbf{Agent-based} \\
+\midrule
   \textbf{FALCON} \cite{adelsteinAutomaticallyCreatingRealistic2005},
   2005 & ? & ? & ? \\
   \textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008}, 2008
@@ -584,10 +597,11 @@ question marks.
   \textbf{TraceGen} \cite{duTraceGenUserActivity2021}, 2021 & No & No
   & Yes (unknown mechanism) \\
   \textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
-  No & No & Yes (Python agent) \\
-\end{tabular}
+  No & No & Yes (Python agent) \\ \\
+\bottomrule
+\end{tabularx}
 \caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques}
-\end{table}
+\end{table*}
 
 
 There are advantages and disadvantages to each approach, in addition to
@@ -849,10 +863,13 @@ such as Thunderbird or Firefox, has already been explored and
 implemented in prior works.)
 
 
-\begin{table}[t]
+\begin{table*}[tb]
+\footnotesize
 \centering
-\begin{tabular}{l l l}
-  \textbf{Subservice} & \textbf{Dependencies} & \textbf{Features} \\ \hline
+\begin{tabularx}{\linewidth}{L{0.2} L{0.2} L{0.6}}
+\toprule
+  \textbf{Subservice} & \textbf{Dependencies} & \textbf{Features} \\
+\midrule
   \passthrough{\lstinline!autogui!} & PyAutoGUI
   \cite{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
   mouse and keyboard control, as well as other PyAutoGUI features \\
@@ -862,10 +879,11 @@ implemented in prior works.)
   \passthrough{\lstinline!chromium!} & Playwright
   \cite{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
   also allows for performing complex actions such as completing forms and
-  clicking links based on HTML selectors \\
-\end{tabular}
+  clicking links based on HTML selectors \\ \\
+\bottomrule
+\end{tabularx}
 \caption{Implemented subservices for the AKF Windows agent}\label{tbl:akf-applications}
-\end{table}
+\end{table*}
 
 
 A generic hypervisor interface is used to support agent discovery and

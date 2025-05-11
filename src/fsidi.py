@@ -104,16 +104,22 @@ class TableMeta:
             flags=re.DOTALL | re.MULTILINE,
         ).group(1)
         
+        alignments = " ".join([f"L{{{alignment}}}" for alignment in self.alignments])
+        
         template = dedent(
             f"""
-            \\begin{{table}}[t]
+            \\begin{{table*}}[tb]
+            \\footnotesize
             \\centering
-            \\begin{{tabular}}{{{' '.join(self.alignments)}}}
-            <substitute_header> \\\\ \hline
-            <substitute_content>
-            \\end{{tabular}}
+            \\begin{{tabularx}}{{\\linewidth}}{{{alignments}}}
+            \\toprule
+            <substitute_header> \\\\
+            \\midrule
+            <substitute_content> \\\\
+            \\bottomrule
+            \\end{{tabularx}}
             \caption{{{self.caption}}}\label{{{self.label}}}
-            \\end{{table}}
+            \\end{{table*}}
             """
         )
         
@@ -294,6 +300,8 @@ def process_tex_file(tex_file: Path):
             
     else:
         print("Table count and meta count do not match, won't perform substitutions")
+        print(f"Table count: {len(table_matches)}")
+        print(f"Meta count: {len(table_metas)}")
         
     with open(tex_file, "w", encoding="utf-8") as f:
         f.write(text)
