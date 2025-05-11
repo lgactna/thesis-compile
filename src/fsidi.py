@@ -255,6 +255,12 @@ def process_tex_file(tex_file: Path):
         r"\\includegraphics[width=1\\linewidth]{\2}",
         text,
     )
+    
+    # All figures are figure* environments
+    text = re.sub(r"\\begin\{figure\}", r"\\begin{figure*}", text)
+    text = re.sub(r"\\end\{figure\}", r"\\end{figure*}", text)
+    
+    # All monospace text is 
 
     # Special syntax for tables.
     # Start by finding all meta declarations for tables
