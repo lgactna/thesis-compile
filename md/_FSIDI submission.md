@@ -66,13 +66,13 @@ The inflexibility of prior synthesizers, combined with the overall lack of suppo
 
 # Artifact generation
 
-Each of the synthesizers described in **39.2 - Literature review#2.2 - Analysis of existing synthesizers** takes one of three approaches to artifact generation, as partly described by Scanlon et al. [@scanlonEviPlantEfficientDigital2017]:
+Each of the synthesizers described in **#Analysis of prior synthesizers** takes one of three approaches to artifact generation, as partly described by Scanlon et al. [@scanlonEviPlantEfficientDigital2017]:
 
 - **Physical**: No virtualization of software or hardware ever occurs; data is written directly to the target medium, such as a disk image or virtual hard drive. 
 - **Agentless logical**: The synthesizer interacts with a live VM to generate artifacts. Interaction is achieved without the need for custom software to be installed on the VM; instead, actions are achieved using the hypervisor itself or a remote management tool native to the virtualized operating system. 
 - **Agent-based logical**: The synthesizer interacts with a dedicated client, or agent, on a live VM to carry out actions. The VM must have the agent installed before any interaction can occur. 
 
-These three approaches are not mutually exclusive within a single synthesizer, though many prior synthesizers have supported only one approach to generate artifacts. **!tbl:prior-techniques** below denotes the approaches used by each of the synthesizers previously discussed. Where source code is unavailable, a best effort was made to identify the approach used by a particular synthesizer based on its published paper, if one exists; otherwise, the entire row contains question marks. 
+These three approaches are not mutually exclusive within a single synthesizer, though many prior synthesizers have supported only one approach to generate artifacts. **!tbl:prior-techniques** denotes the approaches used by each of the synthesizers previously discussed. Where source code is unavailable, a best effort was made to identify the approach used by a particular synthesizer based on its published paper, if one exists; otherwise, the entire row contains question marks. 
 
 *!tbl:prior-techniques|Summary of artifact generation techniques in prior synthesizers|0.2,0.2666,0.2666,0.2666*
 
@@ -93,7 +93,7 @@ These three approaches are not mutually exclusive within a single synthesizer, t
 | **TraceGen** [@duTraceGenUserActivity2021], 2021                                        | No                                                        | No                          | Yes (unknown mechanism) |
 | **ForTrace** [@gobelForTraceHolisticForensic2022], 2022                                 | No                                                        | No                          | Yes (Python agent)      |
 
-There are advantages and disadvantages to each approach, in addition to requiring distinct implementation techniques for each. Although AKF makes improvements in all three techniques, we only discuss physical and agentless generation, as they are where AKF makes the largest improvements. More specifically, this section addresses the functionality of the action automation library (`akflib`) to generate artifacts by either interacting with a live virtual machine or by directly editing disk images stored on the host.
+There are advantages and disadvantages to each approach, in addition to requiring distinct implementation techniques for each. Although AKF makes improvements in all three techniques, we only discuss physical and agentless generation, as they are where AKF makes the largest improvements. More specifically, this section addresses the implementation of the action automation library (`akflib`) to generate artifacts by either directly editing disk images or interacting with a live virtual machine.
 
 ## Physical generation
 
@@ -107,11 +107,7 @@ There are three primary techniques for physical artifact planting implemented by
 - **Filesystem-independent direct editing**, as done by EviPlant [@scanlonEviPlantEfficientDigital2017], in which edits to specific physical addresses on the disk image are made without any parsing or knowledge of the underlying filesystem.
 - **Filesystem-aware direct editing**, as done by ForGe [@vistiAutomaticCreationComputer2015] and EviPlant [@scanlonEviPlantEfficientDigital2017], in which filesystem data structures are parsed to determine the physical address(es) of the disk image to write to. (It is unclear how EviPlant achieves this, as its source code is not available.)
 
-AKF supports all three to varying degrees, as implemented in the opaque submodules indicated in **!fig:action-physical**.
-
-![Abridged submodule diagram for physical artifact creation](action-physical.png){#fig:action-physical}
-
-However, AKF makes the largest improvements in filesystem-aware direct editing over prior synthesizers. ForGe [@vistiAutomaticCreationComputer2015] implements its physical artifact generation by implementing NTFS and FAT32 data structures in Python, allowing it to create a fully virtual representation of these filesystems (with the assistance of a custom C program). This virtualized filesystem provides ForGe with the information necessary to efficiently insert data into known slack and unallocated space while maintaining filesystem consistency. While extremely powerful (and implements a valuable feature not found in any other synthesizer to date), it is inflexible in two specific aspects:
+AKF supports all three techniques to varying degrees; however, AKF makes the largest improvements in filesystem-aware direct editing. ForGe [@vistiAutomaticCreationComputer2015] implements this by implementing NTFS and FAT32 data structures in Python, allowing it to create a fully virtual representation of these filesystems. This virtualized filesystem provides ForGe with the information needed to insert data into known slack and unallocated space while maintaining filesystem consistency. While extremely powerful (and implements a valuable feature not found in any other synthesizer to date), it is inflexible in two specific aspects:
 
 - ForGe does not provide a generic interface for the filesystems it supports. Although the NTFS and FAT32 wrappers provide the same methods with the same signatures, this is not strictly enforced by a parent class. The lack of a generic interface means that the functionality supported across all filesystems is unclear, as is the functionality that must be implemented for new filesystems to be compatible with ForGe.
 - ForGe lacks a "frontend" to support arbitrary disk types, regardless of the underlying filesystem. ForGe does not support multi-partition disks or common non-raw disk formats such as VHD, VMDK, or VDI.
@@ -126,10 +122,6 @@ More generally, this technique provides a deterministic method for inserting dat
 
 **Agent-based artifact creation** involves the use of a dedicated executable on the VM that serves as an interface between the host machine and the guest machine. This program runs commands natively on the virtual machine on behalf of the host machine, accepting commands over a dedicated network interface. This allows for greater flexibility and more complex actions to be taken when compared to agentless approaches. In particular, it allows application-specific functionality to be implemented using existing automation frameworks such as Selenium [@SeleniumHQSelenium2025], Playwright [@MicrosoftPlaywrightpython2025], and PyAutoGUI [@sweigartAsweigartPyautogui2025]. 
 
-Relevant AKF submodules for agent-based generation are depicted as opaque elements in **!fig:action-agent**.
-
-![Abridged submodule diagram for agent-based artifact creation](action-agent.png){#fig:action-agent}
-
 Agent-based artifact creation is the approach taken by hystck/ForTrace [@gobelNovelApproachGenerating2020; @gobelForTraceHolisticForensic2022], which refers to its agent as an "interaction manager." Because ForTrace provides extensive agent functionality and is by far the most mature synthesizer, AKF's agents borrow heavily from ForTrace's approach. However, AKF improves upon ForTrace by solving two specific issues:
 
 - Commands in ForTrace are sent through a simple string-based protocol. In particular, it is challenging to send complex Python objects as arguments or return values since these objects often cannot be easily serialized to a string without loss of information. An example relevant to AKF is passing Playwright browser objects, which contain an internal state that is difficult to extract and reconstruct using strings alone.
@@ -139,9 +131,11 @@ AKF resolves these issues through the use of RPyC, a library for symmetric remot
 
 In "new-style" RPyC, this is achieved by running a *service* on the device where remote operations should be performed. Services expose a set of functions and attributes that may be accessed remotely by an RPyC client, listening on a specified TCP port for requests to access these exposed elements. Clients access these functions and attributes by name as if they were local objects; arguments passed to functions are serialized and deserialized in the background, as are the results of function calls and attribute accesses.
 
-AKF's application-specific functionality is divided into individual RPyC "subservices" created on demand. These subservices implement automation support for a specific application or group of actions, and are analogous to the agent-side code of individual ForTrace modules. The agent's main loop is itself a "root" RPyC service that is responsible for creating and destroying these subservices upon request; all subservices are known to the root service at initialization, eliminating the need to perform runtime introspection to find application-specific modules. 
+AKF's application-specific functionality is divided into individual RPyC "subservices" created on demand. These subservices implement automation support for a specific application or group of actions, and are analogous to the agent-side code of individual ForTrace modules. The agent's main loop is itself an RPyC service that is responsible for creating and destroying these subservices upon request; all subservices are known to this "dispatch" service at initialization, eliminating the need to perform runtime introspection to find application-specific modules. A high-level diagram of this design can be seen in **!fig:agent-modular**.
 
-From an implementation and usability perspective, this design provides three significant improvements over the ForTrace protocol. First, the routing of functions is wholly delegated to RPyC. Instead of manually constructing a message with the function name and its associated parameters (as strings) over the network, the process of serializing parameters and routing them to the correct function call is abstracted away by RPyC. 
+![AKF agent architecture](agent-modular.png){#fig:agent-modular}
+
+From an implementation and usability perspective, this design provides three significant improvements over ForTrace. First, the routing of functions is wholly delegated to RPyC. Instead of manually constructing a message with the function name and its associated parameters (as strings) over the network, the process of serializing parameters and routing them to the correct function call is abstracted away by RPyC. 
 
 Second, this allows us to pass and return arbitrarily complex objects (for which we do not have to manually write the serialization and deserialization logic). When passing complex objects from the agent to the server or vice versa, a reference to the object is sent over the network and wrapped by a *proxy object*, which behaves like the original object [@TheoryOperationRPyC]. Importantly, it is usually not necessary to distinguish between local and remote/proxy objects of the same type when writing code, which eliminates the extra complexity of using proxies.
 
@@ -167,7 +161,7 @@ There exists a gap in the ability of instructors and researchers to perform bulk
 
 For many datasets, an instructor or researcher must read through a PDF answer key (if one exists) or analyze the image themselves to determine if a particular artifact is present. Answer keys are not inherently machine-readable and are not suited for identifying specific artifact types in bulk. Additionally, the content of human-made reports may be limited to what the author believes is significant, even if other artifacts of interest are present in the image. In turn, it may be difficult to quickly determine if a dataset is useful in demonstrating a particular technique to students or validating a specific feature of a newly developed tool.
 
-This section describes not only our approach to providing machine- and human-readable reporting for AKF-generated datasets, but also AKF's role in providing a foundation for reproducible research.
+Now that we are able to generate artifacts using the techniques described in **#Artifact generation**, how do we document what was generated? This section describes not only our approach to providing machine- and human-readable reporting for AKF-generated datasets, but also AKF's role in providing a foundation for reproducible research.
 
 ## CASE bundles
 
@@ -210,28 +204,20 @@ After generating the scenario itself and any metadata and reporting that should 
 
 A key challenge identified by Grajeda et al. was the difficulty in reproducing results in the field of digital forensics. While this is primarily attributed to the *availability* of forensic datasets in general, it can also be attributed to challenges in the *reproducibility* of creating synthetic datasets. 
 
-Before addressing the low-level use of AKF as part of **#Dataset construction**, we will briefly discuss the infrastructure needed to support community usage of the outputs of AKF scenarios and synthetic datasets as a whole. Note that for the remainder of this section, scenarios and datasets are both implied to be synthetic, as the principles of reproducibility are less applicable to real-world datasets.
+Before addressing the low-level use of AKF as part of **#Dataset construction**, we will briefly discuss the infrastructure needed to support community usage of the outputs of AKF scenarios and synthetic datasets as a whole. Note that for the remainder of this section, datasets are implied to be synthetic, as the principles of reproducibility are less applicable to real-world datasets.
 
 There are four elements that must be distributed with a scenario to make a dataset (and its results) reproducible:
 
 - Any core outputs or individual artifacts generated from the virtual machine.
 - Any metadata, ground truth, or other reporting that describes the scenario.
-- The OS-specific "base image" used to create the dataset, typically a virtual machine with a newly installed operating system on which all synthesizer actions are performed.
 - The precise instructions required to build the scenario from the provided base image, whether human- or machine-readable instructions.
+- The OS-specific "base image" used to create the dataset, typically a virtual machine or disk with a newly installed operating system on which all synthesizer actions are performed. 
 
-Forensic datasets have long included core outputs and individual artifacts well before the development of AKF and other synthesizers; there is limited value in a forensic scenario without anything to analyze. Various forms of ground truth have also long been a part of forensic datasets in multiple forms; some educational datasets include PDF answer keys, while some research datasets have been labeled in a structured format to include metadata about the dataset.
+The first two have long been a part of many public datasets. However, less common are detailed instructions to build the overall scenario. A high-level timeline of actions taken, such as that provided by Woods et al. in their educational dataset [@woodsCreatingRealisticCorpora2011], is too imprecise to guarantee that that others will recreate the dataset in the exact same manner. Non-determinism can be acceptable and even desirable in education contexts, but it is less desirable for tool validation and research. Synthesizers improve on this through their machine-readable scripts, which document and execute the instructions needed to reconstruct a dataset. However, this also depends on the availability of an OS- and synthesizer-specific base image, which may not always be included with datasets due to legal or logistical constraints.
 
-However, less common are detailed instructions to build the overall scenario. Manually constructed datasets rarely describe the actions taken to create a scenario in detail; for example, the educational M57-Patents scenario built by Woods et al. [@woodsCreatingRealisticCorpora2011] provides an instructor PDF with a high-level timeline of actions taken in English. This detail is sufficient for educational purposes but is too imprecise to guarantee that others following this timeline will construct the disk image in the same manner as intended. Non-determinism can be acceptable and even desirable in education contexts, but it is less desirable for tool validation and research. 
+AKF is designed to provide all four of these elements in every scenario it creates; elements 1, 2, and 3 are inherent to AKF's design, while base images can be provided as Vagrantfiles as described in **#Setup and usage**. This ensures the reproducibility of both the creation of AKF datasets and any results derived from them. 
 
-Even rarer in manually constructed datasets is the inclusion of a base image representing the machine's state before any actions are performed. This may be attributable to both copyright concerns and a perception that knowledge of the operating system alone is sufficient to rebuild the base image; while it is true that setting up a virtual machine is straightforward, any need for human interpretation introduces a source of non-determinism that could be eliminated.
-
-Synthesizers significantly improve on the lack of precise instructions; their machine-readable scripts both document and execute the exact instructions needed to reconstruct a scenario. However, this depends on the availability of an OS- and synthesizer-specific base image; many synthesizers expect their users to follow a set of human-readable instructions to prepare a virtual machine specifically for use with that synthesizer. 
-
-Where copyright issues are not a concern, synthetic images should aim to include a complete definition of a virtual machine to be used as the base image. A base image may be a full, hypervisor-specific virtual machine (archiving and compressing the entirety of the associated virtual machine folder), a hypervisor-independent virtual appliance (in a format such as OVF), or another infrastructure-as-code solution to define and build virtual machines, such as Vagrant. 
-
-AKF is designed to provide all four of these elements in every scenario it creates; elements 1, 2, and 4 are inherent to AKF's design, while base images can be provided as Vagrantfiles as described in **39.6 - Building scenarios#6.2 - Setup and basic usage**. This ensures the reproducibility of both the creation of AKF datasets and any results derived from them.
-
-Although not explored as part of this thesis, the inclusion of all four of these elements as part of a well-structured, standardized distribution format could be used to build a distribution platform similar to CFReDS but with more powerful discovery and querying functionality. While the contents of the scenario are primarily described by CASE, it may also be possible to perform queries based on the contents of Vagrantfiles and AKF scripts. For example, a user may want to search for all images that use the agent-based Chromium artifact generation described in **39.4 - Action automation#4.3.2 - AKF implementation**, which can be achieved by searching for the inclusion of the relevant AKF libraries in the scenario's scripts. However, this does not address the challenge of storing and distributing scenarios efficiently to support such a platform; this is discussed in **39.8 - Future work#8.4 - Distribution**.
+The inclusion of these elements in a standardized distribution format could be used to build a distribution platform similar to CFReDS with more powerful discovery and querying functionality. While the contents of the dataset are primarily described by CASE, it may also be possible to perform queries based on the contents of Vagrantfiles and AKF scripts. For example, a user may want to search for all images that use the agent-based Chromium artifact generation described in **#Agent-based generation**, which can be achieved by searching for the inclusion of the relevant AKF libraries in the scenario's scripts. (However, this does not address the challenge of storing and distributing scenarios efficiently to support such a platform; this is discussed briefly in **#Conclusion and future work**.)
 
 With the reproducibility and value of AKF-generated scenarios established, we now discuss how to invoke and leverage the underlying technologies that provide these benefits.
 
@@ -245,9 +231,7 @@ Like many of its predecessors, AKF implements its functionality and exposes its 
 
 Users must install two foundational technologies for AKF to operate – Python 3.11+ and a supported hypervisor (currently only VirtualBox). AKF uses `pyproject.toml` to define Python library dependencies, which can be installed into a virtual environment using a package manager such as `pip` or `uv`. 
 
-At this point, a virtual machine must be prepared for use with AKF. As with prior synthesizers, it is possible to manually configure a machine by downloading a supported operating system and creating a new virtual machine from scratch. The manual process, which is similar to that of other synthesizers, involves installing an operating machine, configuring network interfaces, and installing the AKF agent onto the device and configuring it to run in the background on startup. The resulting virtual machine can be cloned and reused for multiple datasets as needed. 
-
-Although relatively straightforward, this process is still time-consuming, especially when adapted to new operating systems. While a prepared AKF virtual machine can be distributed in a virtual appliance format such as OVF, this can run into legal issues if the software on the underlying operating system is copyrighted. 
+At this point, a virtual machine must be prepared for use with AKF. As with prior synthesizers, it is possible to manually configure a machine by downloading a supported operating system and creating a new virtual machine from scratch. The manual process, which is similar to that of other synthesizers, involves installing an operating machine, configuring network interfaces, and installing the AKF agent onto the device and configuring it to run in the background on startup. The resulting virtual machine can be cloned and reused for multiple datasets as needed. Although relatively straightforward, this process is still time-consuming, especially when adapted to new operating systems. While a prepared AKF virtual machine can be distributed in a virtual appliance format such as OVF, this can run into legal issues if the software on the underlying operating system is copyrighted. 
 
 To help resolve this, AKF uses modern infrastructure-as-code solutions to vastly simplify the setup of new virtual machines. Vagrant, developed by HashiCorp, is a tool for rapidly building development environments [@HashicorpVagrant2025]. It allows users to define and build virtual machines on several virtualization platforms, including VirtualBox and VMWare. Virtual machines are built by configuring a base image according to a Vagrantfile, which describes hypervisor-specific configuration options and instructions to configure the machine. The Vagrantfile can be distributed to users, allowing them to build the same virtual machine without distributing full virtual drives.
 
@@ -338,6 +322,31 @@ actions:
 
 The execution flow of `akf-translate` itself is straightforward. Given a path to a YAML script, the interpreter will load the necessary libraries and configuration keys defined in the file and instantiate resources accordingly. Then, the interpreter runs each module under the `actions` key with the provided arguments and configuration in order, continuing until all actions have been processed. Modules can read and modify a global state dictionary that allows otherwise independent modules to cooperate. This is particularly useful in allowing for "outputs," such as CASE bundles, to be passed and gradually constructed across modules. This design allows for context-aware code generation and action execution.
 
+Modules are located and executed using Python's dynamic import system. These modules can be located in any library so long as they can be found through Python's import system. For example, both `akflib` and the AKF Windows agent contain their own declarative module libraries, leveraging functionality specific to each code repository. All modules in the script are located and "cached" at the start of script execution, which allows for verification and runtime efficiency.
+
+This design allows declarative modules to be written independently of the libraries they depend on, reducing the "impact" of supporting declarative features on the core imperative libraries. In fact, this independence allows for the AKF module system to be used in general-purpose scripting, similar to Ansible; it is not tightly bound to the creation of forensic scenarios and artifacts. That said, the existing declarative modules of AKF expose nearly all existing functionality provided by `akflib`, including PDF report generation, virtual machine interaction, and more.
+
+The list of declarative modules available through `akflib` and the Windows agent is described in **!tbl:akf-declarative-modules** below. Note that these modules are referred to by their alias, not their fully-qualified module paths.
+
+*!tbl:akf-declarative-modules|Available AKF declarative modules|0.3,0.7*
+
+| Name                     | Description                                                                                                       |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `create_akf_bundle`      | Creates a new CASE bundle for use throughout the declarative scenario.                                            |
+| `write_akf_bundle`       | Write the contents of the currently active CASE bundle to disk as a JSON-LD file.                                 |
+| `render_akf_bundle`      | Pass the currently active CASE bundle through a set of provided renderers and construct a valid PDF using Pandoc. |
+| `vbox_start`             | Create a new VirtualBox instance bound to a specific virtual machine by name.                                     |
+| `vbox_start_machine`     | Power on the currently active virtual machine.                                                                    |
+| `vbox_stop_machine`      | Power off the currently active virtual machine.                                                                   |
+| `vbox_create_disk_image` | Export a disk image of the current virtual machine.                                                               |
+| `artifact_service_start` | Remotely start and connect to the subservice responsible for collecting Windows artifacts.                        |
+| `artifact_service_stop`  | Disconnect from the subservice responsible for collecting Windows artifacts.                                      |
+| `prefetch`               | Analyze all prefetch files on disk and construct their corresponding CASE objects.                                |
+| `chromium_service_start` | Remotely start and connect to the subservice responsible for interacting with Chromium browsers.                  |
+| `chromium_service_stop`  | Disconnect from the subservice responsible for interacting with Chromium browsers.                                |
+| `chromium_visit_urls`    | Visit one or more URLs using a specified web browser.                                                             |
+| `chromium_history`       | Collect browsing history from a specified web browser and construct their corresponding CASE objects.             |
+
 Although these declarative modules (and the imperative library) provide users with significant flexibility in *using* AKF, there remains the challenge of building artifacts and scenarios to use with AKF. The following section addresses this challenge.
 
 ## Generative AI workflows
@@ -346,9 +355,29 @@ Users of synthesizers must still perform a significant amount of work when gener
 
 This is particularly relevant when adding background noise intended to emulate benign activity; a real user's device would have many email conversations irrelevant to a particular scenario, and would significantly contribute to the realism of a synthetic dataset. Existing datasets, such as the Data Leakage Case produced by NIST, contains many documents that are not truly specific to the scenario. For example, the "technical documents" present in the scenario are actually files from the general-purpose Govdocs corpora [@garfinkelBringingScienceDigital2009], with a cover page denoting their intended role in the scenario. One PowerPoint file is portrayed as a presentation of the detailed design of the product, but its actual contents are that of a Yale University presentation on brain physiology.
 
-Recent advancements in AI models have made it significantly easier to generate text, images, and other media from high-level descriptions that are consistent with a broader theme. Indeed, this can be used to produce individual artifacts; generative AI models such as DeepSeek-R1 [@deepseek-aiDeepSeekR1IncentivizingReasoning2025] and SDXL 1.0 [@podellSDXLImprovingLatent2023] can be used to produce standalone artifacts that can then be used as part of a dataset. 
+Recent advancements in AI models have made it significantly easier to generate text, images, and other media from high-level descriptions that are consistent with a broader theme. Indeed, this can be used to produce individual artifacts; generative AI models such as DeepSeek-R1 [@deepseek-aiDeepSeekR1IncentivizingReasoning2025] and SDXL 1.0 [@podellSDXLImprovingLatent2023] can be used to produce standalone artifacts that can then be used as part of a dataset. For example, a large language model (LLM) can be directed to create technical documentation, email conversations, or image generation prompts that are related to a corporate espionage scenario.
 
-However, perhaps a larger challenge is determining the specific actions that must be performed to create a dataset consistent with some larger theme. For example
+However, perhaps a larger challenge is determining the specific actions that must be performed to create a dataset consistent with some larger theme. Even with the automation features provided by AKF and the ability to create individual artifacts through generative AI, it still takes time to turn an idea into a specific sequence of actions. This is where AKF's simple, modular declarative scripting language is particularly powerful. In particular, there are two features of the declarative syntax that lends itself well to this process:
+
+- The role of each module is well-defined and corresponds one-to-one to a specific action that a human might take, such as visiting a set of websites. 
+- The expected inputs for each module are well-defined, as they are documented by the required Pydantic argument model for each module.
+
+In the same way that declarative scripts are an abstraction around imperative code, an LLM can be used to facilitate natural language prompts as an abstraction around creating declarative scripts. To explore this, an instance of `deepseek-r1:32b` was provided with the following information. (The actual prompts and outputs used to derive the content in this section are included with the scenario examples for the AKF Windows agent.)
+
+- An overview of the purpose of the declarative syntax.
+- The overall structure of the syntax, such as the required top-level keys and the structure of individual actions under the `actions` key.
+- A Markdown-formatted table in which each row contains the name, description, and arguments of available modules. Except for the arguments column, the table was equivalent to **!tbl:akf-declarative-modules**.
+- A prompt delimited by `<scenario_prompt>` tags that should be used to build the overall scenario.
+
+We observed that this information was generally sufficient for DeepSeek-R1 to "understand" the AKF syntax, allowing it to generate simple declarative scripts. Although the prompt containing this information was manually written, much of the prompt could be used as a template and substituted with the contents of automatically generated documentation. For example, the table of available modules could be generated through existing code metadata, such as the contents of docstrings and Pydantic argument models.
+
+In one notable case, DeepSeek-R1 was directed to create a simple scenario where a user visited news-related websites with Microsoft Edge and entertainment-related websites with Google Chrome, ensuring that the machine went through multiple power cycles throughout the scenario. Although DeepSeek-R1 was not provided with examples specific to invoking the `chromium_visit_urls` module, it correctly constructed an argument dictionary containing several thematically consistent websites for both browsers. Additionally, it correctly used the `vbox_start_machine` and `vbox_stop_machine` actions to perform multiple power cycles.
+
+However, DeepSeek-R1 struggled to understand the interactions between related modules without additional guidance. For example, it did not infer that the use of the `vbox_stop_machine` and `vbox_start_machine` actions required that a hypervisor instance had been previously created using `vbox_start`. Even when the module descriptions were modified to state these requirements explicitly, it continued to invoke `vbox_start_machine` without a preceding `vbox_start` action. In contrast, DeepSeek-R1 appeared to understand that `chromium_service_start` should be called before calling any other Chromium-related modules, even when this requirement was not stated. Indeed, the Chromium-related modules support, but do not require, the use of `chromium_service_start` to explicitly connect to the Chromium RPyC subservice.
+
+Additionally, DeepSeek-R1 would sometimes invoke modules incorrectly, such as providing arguments that did not exist or invoking them with the incorrect name. One notable example was that it incorrectly used `vbox_start_machine` to both start and stop the virtual machine, adding an erroneous `action: "stop"` argument when stopping the virtual machine. In some cases, DeepSeek-R1 deviated significantly from the declarative syntax and used keys that did not exist, such as specifying module arguments outside of the `args` dictionary.
+
+Despite these issues related to correctness, it was clear that DeepSeek-R1 could convert abstract prompts into a sequence of actions based on the available modules provided. Much like using declarative scripts as a starting point for imperative scripts, these outputs can likely be used as a starting point for more complex declarative scripts. Furthermore, these issues could be alleviated by improving the details of the prompt, such as providing specific examples of module usage and the overall results they cause. In particular, DeepSeek-R1 is a reasoning model, which means that it "thinks out loud" before responding; the model's thoughts could be used to identify and eliminate vagueness or uncertainty in the provided prompt. Writing precise, detailed documentation with this LLM-oriented pipeline in mind could further improve the quality of generated outputs.
 
 # Sample demonstration
 
@@ -369,7 +398,6 @@ so to demonstrate everything we have
 - extract browsing data
 - extract prefetch data
 - export disk image/network capture/vol
-- 
 
 # Conclusion and future work
 
