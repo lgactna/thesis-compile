@@ -263,11 +263,13 @@ def process_tex_file(tex_file: Path):
     )
     
     # All figures are figure* environments
-    text = re.sub(r"\\begin\{figure\}", r"\\begin{figure*}", text)
-    text = re.sub(r"\\end\{figure\}", r"\\end{figure*}", text)
+    #
+    # just kidding, only agent-modular and case-reporting are figure*, so it's
+    # fine to just do that manually after the fact
     
-    # All monospace text is 
-
+    # text = re.sub(r"\\begin\{figure\}", r"\\begin{figure*}", text)
+    # text = re.sub(r"\\end\{figure\}", r"\\end{figure*}", text)
+    
     # Special syntax for tables.
     # Start by finding all meta declarations for tables
     meta_matches = re.findall(

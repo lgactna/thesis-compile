@@ -711,11 +711,11 @@ this ``dispatch'' service at initialization, eliminating the need for
 runtime introspection to find application-specific modules. A high-level
 diagram of this design can be seen in \autoref{fig:agent-modular}.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{agent-modular.png}
 \caption{AKF agent architecture}\label{fig:agent-modular}
-\end{figure*}
+\end{figure}
 
 From an implementation and usability perspective, this design provides
 three significant improvements over ForTrace. First, the routing of
@@ -959,11 +959,11 @@ user needs for a specific use case. Furthermore, if new renderers are
 developed for artifacts that are present in older datasets, the
 human-readable report can be regenerated to include these artifacts.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{case-reporting.png}
 \caption{Diagram of modular rendering system}\label{fig:case-reporting}
-\end{figure*}
+\end{figure}
 
 This modular, ``evergreen'' approach to reporting allows these reports
 to be interpreted as a focused snapshot of what a dataset contains.
@@ -1519,11 +1519,11 @@ bundle, along with a PDF report detailing the bundle's contents, was
 also exported. Relevant sections of the PDF report can be seen in
 \autoref{fig:pdf-sample}.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{pdf-sample-scenario.png}
 \caption{Snippet of generated PDF report}\label{fig:pdf-sample}
-\end{figure*}
+\end{figure}
 
 \subsection{Analysis}\label{analysis}
 
@@ -1553,12 +1553,12 @@ well as the links shown in the PDF report in \autoref{fig:pdf-sample}.
 By extension, they are also consistent with the JSON-serialized CASE
 bundle.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{browser-db.png}
 \caption{Contents of Microsoft Edge SQLite
 database}\label{fig:browser-db}
-\end{figure*}
+\end{figure}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries
 contained in the disk image, allowing us to verify the results
@@ -1598,12 +1598,12 @@ the ransomware, as indicated in the decompiled code. Doing so reveals
 the exact parameters required to reconstruct the key, as shown in
 \autoref{fig:wireshark-analysis}.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{wireshark-analysis.png}
 \caption{Relevant web request observed in packet
 capture}\label{fig:wireshark-analysis}
-\end{figure*}
+\end{figure}
 
 Similarly, we can search the memory dump for the key information. Using
 a tool such as the Volatility framework or a hex editor, we can analyze
@@ -1611,11 +1611,11 @@ the dump to discover the same JSON in memory as seen in the packet
 capture. \autoref{fig:hex-analysis} depicts the JSON as seen in a hex
 editor.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{hex-analysis.png}
 \caption{Relevant data seen in sample RAM dump}\label{fig:hex-analysis}
-\end{figure*}
+\end{figure}
 
 At this point, a decryption program can be written based on the
 decompiled ransomware logic. To demonstrate that the information
