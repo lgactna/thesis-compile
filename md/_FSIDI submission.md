@@ -7,7 +7,7 @@ This work introduces the automated kinetic framework, or AKF, a modular synthesi
 
 # Introduction
 
-The investigation of cybercrime and other computer-related incidents requires the collection of forensic datasets, which can broadly be described as a collection of forensic artifacts. These artifacts are typically contained in a specific medium, such as a disk image or volatile memory dump. The collection and analysis of these artifacts are central to the field of digital forensics; they must be conducted in a manner that ensures the resulting evidence and conclusions are admissible in a court of law.  
+The investigation of cybercrime and other computer-related incidents requires the collection of forensic datasets, which can broadly be described as a collection of forensic artifacts. These artifacts are typically contained in a specific medium, such as a disk image or volatile memory dump. The collection and analysis of these artifacts are central to the field of digital forensics; they must be conducted in a manner that ensures the resulting evidence and conclusions are admissible in a court of law.
 
 From an education and training perspective, these datasets are critical in introducing new specialists to the field. Datasets in an educational setting typically cover a range of techniques and tools, allowing students to practice applying theoretical concepts learned through lectures and recitations [@adelsteinAutomaticallyCreatingRealistic2005]. Besides the specific technical skills covered by these scenarios, these datasets aim to develop the analytical skills needed for students to adapt to developments in tools and technology [@cooperStandardsDigitalForensics2010]. In other words, students should be familiar with standard tools and patterns in digital forensics, providing a foundation on which more niche techniques can be learned [@lawrenceFrameworkDesignWebbased2009]. 
 
@@ -91,7 +91,9 @@ These three approaches are not mutually exclusive within a single synthesizer, t
 | **TraceGen** [@duTraceGenUserActivity2021], 2021                                        | No                                                        | No                          | Yes (unknown mechanism) |
 | **ForTrace** [@gobelForTraceHolisticForensic2022], 2022                                 | No                                                        | No                          | Yes (Python agent)      |
 
-There are advantages and disadvantages to each approach, in addition to requiring distinct implementation techniques. Although AKF makes improvements in all three techniques, we only discuss physical and agentless generation, as they are where AKF makes the largest improvements. More specifically, this section addresses the implementation of the action automation library (`akflib`) to generate artifacts by either directly editing disk images or interacting with a live virtual machine.
+There are advantages and disadvantages to each approach, in addition to requiring distinct implementation techniques. Although AKF makes improvements in all three techniques, we only discuss physical and agentless generation, as they are where AKF makes the largest improvements. More specifically, this section addresses the implementation of the action automation library (`akflib` [^1]) to generate artifacts by either directly editing disk images or interacting with a live virtual machine.
+
+[^1]: `akflib` is publicly available at [https://github.com/lgactna/akflib](https://github.com/lgactna/akflib)
 
 ## Physical generation
 
@@ -141,7 +143,9 @@ Finally, the ability to interact with complex remote objects allows us to signif
 
 Together, these three features significantly simplify the process of not only implementing and managing support for individual applications, but also the actual use of the agent. Simplified application-specific support makes it easier for the community to extend AKF. Furthermore, this modular approach to application-specific support enables the addition or removal of functionality from the agent with minimal effort. Since not all automation frameworks are available on every platform or operating system, these "subservices" enable us to provide support for as many different platforms as possible with minimal changes to the underlying codebase.
 
-The list of subservices supported by the AKF Windows agent is described in **!tbl:akf-applications** below. Although only three subservices are implemented, each subservice is an example of a distinct design pattern that could be easily adapted to implement other application-specific functionality. (Support for specific applications, such as Thunderbird or Firefox, has already been explored and implemented in prior works such as ForTrace.)
+The list of subservices supported by the AKF Windows agent[^2] is described in **!tbl:akf-applications** below. Although only three subservices are implemented, each subservice is an example of a distinct design pattern that could be easily adapted to implement other application-specific functionality. (Support for specific applications, such as Thunderbird or Firefox, has already been explored and implemented in prior works such as ForTrace.)
+
+[^2]: The AKF Windows agent, or `akf-windows`, is publicly available at [https://github.com/lgactna/akf-windows](https://github.com/lgactna/akf-windows)
 
 *!tbl:akf-applications|Implemented subservices for the AKF Windows agent|0.2,0.2,0.6*
 
@@ -167,7 +171,9 @@ A rigid, well-defined format for ground truth is invaluable to researchers engag
 
 Because the CASE format itself is language-agnostic, it is necessary to write language-specific libraries that enable the instantiation of CASE objects. At the time of writing, the CASE project provides official Python bindings for CASE version 1.4 [@CaseworkCASEMappingPython]. Each unique object type is represented as a Python class, which can be instantiated to produce individual objects. However, this library has several limitations, particularly the need to manually maintain these definitions due to the instantiation and serialization logic contained in each class.
 
-AKF contributes and leverages its own bindings for CASE. Its foundation is the Pydantic library for Python, which allows developers to easily define classes with typed attributes based on Python type hints [@colvinPydantic2024]. This allows us to vastly simplify the declaration of individual CASE objects while providing runtime type validation and automatic casting. More importantly, this simplicity allows us to automatically generate our Python bindings directly from the Turtle definitions. This is particularly relevant when considering the active development of CASE version 2.0, which has significant differences from version 1.4.
+AKF contributes and leverages its own bindings for CASE[^3]. Its foundation is the Pydantic library for Python, which allows developers to easily define classes with typed attributes based on Python type hints [@colvinPydantic2024]. This allows us to vastly simplify the declaration of individual CASE objects while providing runtime type validation and automatic casting. More importantly, this simplicity allows us to automatically generate our Python bindings directly from the Turtle definitions. This is particularly relevant when considering the active development of CASE version 2.0, which has significant differences from version 1.4.
+
+[^3]: AKF's CASE bindings are publicly available at [https://github.com/lgactna/case-pydantic](https://github.com/lgactna/case-pydantic)
 
 Various functions and classes throughout the AKF core libraries and agent API accept an optional CASE bundle when invoked or instantiated. As CASE-compatible functions are called, they can automatically add CASE objects corresponding to the artifacts generated through their execution. For example, if the agent subservice API for automating Chromium browser actions is provided with a CASE bundle, navigating to a page using the API can also generate a CASE object describing the page visit and add it to the bundle. This process can occur entirely within the host, allowing CASE-related logic to remain out of the agent where needed.
 

@@ -70,7 +70,9 @@
 
 \begin{frontmatter}
 
-\title{AKF: A modern synthesis framework for building datasets in digital forensics}
+\title{AKF: A modern synthesis framework for building datasets in digital forensics
+    \footnote{The contents of this paper have been derived from Lloyd Gonzales's master's thesis of the same name.}
+}
 
 \author[unr]{Lloyd Gonzales}
 \author[unr]{Nancy LaTourrette}
@@ -527,8 +529,10 @@ improvements in all three techniques, we only discuss physical and
 agentless generation, as they are where AKF makes the largest
 improvements. More specifically, this section addresses the
 implementation of the action automation library
-(\passthrough{\lstinline!akflib!}) to generate artifacts by either
-directly editing disk images or interacting with a live virtual machine.
+(\passthrough{\lstinline!akflib!} \footnote{\passthrough{\lstinline!akflib!}
+  is publicly available at \url{https://github.com/lgactna/akflib}}) to
+generate artifacts by either directly editing disk images or interacting
+with a live virtual machine.
 
 \subsection{Physical generation}\label{physical-generation}
 
@@ -754,10 +758,12 @@ operating system, these ``subservices'' enable us to provide support for
 as many different platforms as possible with minimal changes to the
 underlying codebase.
 
-The list of subservices supported by the AKF Windows agent is described
-in \autoref{tbl:akf-applications} below. Although only three subservices
-are implemented, each subservice is an example of a distinct design
-pattern that could be easily adapted to implement other
+The list of subservices supported by the AKF Windows agent\footnote{The
+  AKF Windows agent, or \passthrough{\lstinline!akf-windows!}, is
+  publicly available at \url{https://github.com/lgactna/akf-windows}} is
+described in \autoref{tbl:akf-applications} below. Although only three
+subservices are implemented, each subservice is an example of a distinct
+design pattern that could be easily adapted to implement other
 application-specific functionality. (Support for specific applications,
 such as Thunderbird or Firefox, has already been explored and
 implemented in prior works such as ForTrace.)
@@ -852,9 +858,11 @@ individual objects. However, this library has several limitations,
 particularly the need to manually maintain these definitions due to the
 instantiation and serialization logic contained in each class.
 
-AKF contributes and leverages its own bindings for CASE. Its foundation
-is the Pydantic library for Python, which allows developers to easily
-define classes with typed attributes based on Python type hints
+AKF contributes and leverages its own bindings for CASE\footnote{AKF's
+  CASE bindings are publicly available at
+  \url{https://github.com/lgactna/case-pydantic}}. Its foundation is the
+Pydantic library for Python, which allows developers to easily define
+classes with typed attributes based on Python type hints
 \cite{colvinPydantic2024}. This allows us to vastly simplify the
 declaration of individual CASE objects while providing runtime type
 validation and automatic casting. More importantly, this simplicity
