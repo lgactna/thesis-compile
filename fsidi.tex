@@ -75,7 +75,6 @@
 
 \title{AKF: A modern synthesis framework for building datasets in digital forensics
     \footnote{The contents of this paper have been derived from Lloyd Gonzales's master's thesis of the same name.}
-    \footnote{The authors acknowledge the use of Grammarly and ChatGPT in making grammar and clarity improvements during proofreading.}
 }
 
 \author[unr]{Lloyd Gonzales}
@@ -163,14 +162,14 @@ in introducing new specialists to the field. Datasets in an educational
 setting typically cover a range of techniques and tools, allowing
 students to practice applying theoretical concepts learned through
 lectures and recitations
-\cite{adelsteinAutomaticallyCreatingRealistic2005}. Besides the
+\citep{adelsteinAutomaticallyCreatingRealistic2005}. Besides the
 specific technical skills covered by these scenarios, these datasets aim
 to develop the analytical skills needed for students to adapt to
 developments in tools and technology
-\cite{cooperStandardsDigitalForensics2010}. In other words, students
+\citep{cooperStandardsDigitalForensics2010}. In other words, students
 should be familiar with standard tools and patterns in digital
 forensics, providing a foundation on which more niche techniques can be
-learned \cite{lawrenceFrameworkDesignWebbased2009}.
+learned \citep{lawrenceFrameworkDesignWebbased2009}.
 
 Similarly, from a research perspective, these datasets serve two
 purposes. The first is in improving specific processes in the analytic
@@ -183,7 +182,7 @@ automatically carved files.
 
 There exist various collections of public datasets, such as the Computer
 Forensic Reference Datasets (CFReDS) platform
-\cite{nationalinstituteofstandardsandtechnologyCFReDSPortal}
+\citep{nationalinstituteofstandardsandtechnologyCFReDSPortal}
 maintained by the National Institute of Standards and Technology (NIST).
 However, the datasets in these collections are often limited in scope
 and realism. In many cases, this can be attributed to privacy and legal
@@ -192,18 +191,18 @@ their distribution and usage, even if they would otherwise be suitable
 for use. As a result, the community often uses \emph{synthetic}
 datasets, which are produced specifically for educational and research
 purposes as described by Park and Garfinkel et al.
-\cite{parkTREDEVMPOPCultivating2018,garfinkelBringingScienceDigital2009}.
+\citep{parkTREDEVMPOPCultivating2018,garfinkelBringingScienceDigital2009}.
 However, manually creating these datasets is a time-consuming process
 that tends to produce datasets with a very narrow scope and limited
 reproducibility
-\cite{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
+\citep{garfinkelBringingScienceDigital2009,grajedaAvailabilityDatasetsDigital2017}.
 It is challenging to develop hands-on labs that realistically and
 comprehensively support the ideas learned in theoretical courses
-\cite{adelsteinAutomaticallyCreatingRealistic2005,guptaDigitalForensicsLab2022,lawrenceFrameworkDesignWebbased2009}.
+\citep{adelsteinAutomaticallyCreatingRealistic2005,guptaDigitalForensicsLab2022,lawrenceFrameworkDesignWebbased2009}.
 Similarly, researchers often have specific needs that are not covered by
 existing public datasets, leading to the development of datasets that
 are rarely redistributed
-\cite{grajedaAvailabilityDatasetsDigital2017}.
+\citep{grajedaAvailabilityDatasetsDigital2017}.
 
 There is a clear need for a more streamlined, reproducible method of
 developing datasets for research and education -- one that is able to
@@ -215,7 +214,7 @@ the past 15 years, there has been significant research into the
 development of these synthesizers, each of which produces artifacts
 through distinct approaches. Synthesizers are a subset of broader
 automation efforts throughout digital forensics, as described by
-Michelet et al. \cite{micheletAutomationDigitalForensics2023}.
+Michelet et al. \citep{micheletAutomationDigitalForensics2023}.
 
 Our work, the \textbf{automated kinetic framework}, or \textbf{AKF},
 directly improves upon the foundations provided by prior synthesizers.
@@ -263,7 +262,7 @@ their sourcing and qualities have changed significantly over time. This
 topic was explored in far greater detail by Grajeda et al., who
 performed a survey of over 700 research articles to identify the various
 datasets used throughout the field
-\cite{grajedaAvailabilityDatasetsDigital2017}. However, it is still
+\citep{grajedaAvailabilityDatasetsDigital2017}. However, it is still
 important to highlight specific datasets relevant to the development of
 synthesizers.
 
@@ -271,10 +270,10 @@ Many early datasets were derived from real sources, such as the used
 hard drives collected by Garfinkel from 1998 to 2006, the Enron email
 corpus obtained during the federal investigation of Enron, the public
 Apache mailing archives, and facial recognition collections
-\cite{garfinkelForensicCorporaChallenge2007,grajedaAvailabilityDatasetsDigital2017,yannikosDataCorporaDigital2014,ricanekMORPHLongitudinalImage2006}.
+\citep{garfinkelForensicCorporaChallenge2007,grajedaAvailabilityDatasetsDigital2017,yannikosDataCorporaDigital2014,ricanekMORPHLongitudinalImage2006}.
 There were also some synthetic datasets developed during this period,
 such as the standalone test datasets created by NIST and those produced
-for academic conferences \cite{woodsCreatingRealisticCorpora2011}.
+for academic conferences \citep{woodsCreatingRealisticCorpora2011}.
 
 The variety of publicly available forensic datasets increased
 considerably in the late 2000s, which can be attributed to both the
@@ -286,11 +285,11 @@ and datasets for mobile phones. It was also during this time that
 non-disk datasets, such as volatile memory dumps and network captures,
 became more prevalent. Many of these datasets have been aggregated into
 platforms such as Digital Corpora
-\cite{garfinkelBringingScienceDigital2009,yannikosDataCorporaDigital2014}
+\citep{garfinkelBringingScienceDigital2009,yannikosDataCorporaDigital2014}
 and the NIST CFReDS project, which are actively maintained corpora of
 forensic datasets. In 2021, Xu et al.~compiled and published a
 repository of educational datasets that explicitly focuses on ease of
-use, realism, and breadth \cite{xuDesigningSharedDigital2022}.
+use, realism, and breadth \citep{xuDesigningSharedDigital2022}.
 
 These existing datasets are indeed expansive and serve as the basis for
 much of the training and research material used today. However, the
@@ -337,15 +336,15 @@ considerably over time. However, the goal of these frameworks has
 largely remained consistent: they all aim to reduce the effort required
 to produce datasets for research and education. The earliest efforts to
 streamline forensic lab development were observed in \textbf{FALCON}
-\cite{adelsteinAutomaticallyCreatingRealistic2005} and
-\textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008},
+\citep{adelsteinAutomaticallyCreatingRealistic2005} and
+\textbf{CYDEST} \citep{bruecknerAutomatedComputerForensics2008},
 published in 2005 and 2008 respectively, which aimed to simplify the
 deployment and evaluation of virtual lab environments to students.
 
 However, \textbf{Forensig2}, described by Moch and Freiling in 2009 and
 revisited in 2012, appears to be the first detailed description of a
 forensic synthesizer
-\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
+\citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
 Users define scenarios through a Python 2 library that provides
 abstractions around various virtual machine (VM) operations, such as
 formatting disks, creating partitions, and copying files from the host
@@ -357,29 +356,29 @@ The vast majority of later synthesizers are similar to Forensig2 in that
 they are all implemented in Python, exposing artifact generation
 features to users through a Python library. Notable exceptions include
 the \textbf{Digital Forensic Evaluation Test (D-FET)} platform
-\cite{williamCloudbasedDigitalForensics2011}, the \textbf{Summarized
+\citep{williamCloudbasedDigitalForensics2011}, the \textbf{Summarized
 Forensic XML (SFX)} language
-\cite{russellForensicImageDescription2012}, and the work described
-by \textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}.
+\citep{russellForensicImageDescription2012}, and the work described
+by \textbf{Yannikos et al.} \citep{yannikosDataCorporaDigital2014}.
 These synthesizers use custom languages for creating datasets, providing
 alternative abstractions around their functionality.
 
 A summary of the notable aspects of the remaining Python-based
 frameworks -- many of which were identified by Göbel et al.
-\cite{gobelForTraceHolisticForensic2022} -- is described below:
+\citep{gobelForTraceHolisticForensic2022} -- is described below:
 
 \begin{itemize}
 \item
-  \textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023} introduced
+  \textbf{ForGeOSI} \citep{maxfraggMaxfraggForGeOSI2023} introduced
   the use of the VirtualBox SDK to automate various operations, forming
   the basis for much of the work done as part of VMPOP.
 \item
-  \textbf{ForGe} \cite{vistiAutomaticCreationComputer2015} is
+  \textbf{ForGe} \citep{vistiAutomaticCreationComputer2015} is
   specifically designed to generate NTFS and FAT32 images, placing data
   directly onto disk images by maintaining and serializing custom data
   structures for supported filesystems.
 \item
-  \textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}
+  \textbf{EviPlant} \citep{scanlonEviPlantEfficientDigital2017}
   encompasses a novel method for efficiently distributing generated disk
   images, which is achieved by generating and distributing differential
   ``evidence packages'' to apply to a base image file. An OS-specific
@@ -388,7 +387,7 @@ frameworks -- many of which were identified by Göbel et al.
   reconstructed disk image is significantly smaller than if distributed
   as a standalone image.
 \item
-  \textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018} provides an
+  \textbf{VMPOP} \citep{parkTREDEVMPOPCultivating2018} provides an
   architecture for elaborate VirtualBox control (such as attaching USB
   devices and starting video captures) in addition to various
   OS-specific commands. Provided routines for Windows include creating
@@ -396,12 +395,12 @@ frameworks -- many of which were identified by Göbel et al.
   registry values, and more. Although the architecture as a whole is
   platform-independent, the provided implementations operate with
   VirtualBox and Windows. \textbf{TraceGen}
-  \cite{duTraceGenUserActivity2021} is similar in that it utilizes
+  \citep{duTraceGenUserActivity2021} is similar in that it utilizes
   the VirtualBox API for various operations, but is more like hystck in
   its use of a Python-based agent to carry out application-specific
   actions.
 \item
-  \textbf{hystck} \cite{gobelNovelApproachGenerating2020} provides
+  \textbf{hystck} \citep{gobelNovelApproachGenerating2020} provides
   routines for automating OS- and application-specific commands through
   both normal Python scripts and YAML configuration files (passed
   through an intermediate interpreter script). The framework produces
@@ -409,14 +408,14 @@ frameworks -- many of which were identified by Göbel et al.
   ``differential'' images that can be distributed and applied to
   ``template'' images.
 \item
-  \textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022} is the
+  \textbf{ForTrace} \citep{gobelForTraceHolisticForensic2022} is the
   most recently developed synthesizer, which directly builds upon hystck
   by providing volatile memory captures (alongside disk and network
   captures) in addition to various other new features (such as the
   ability to execute PowerShell scripts to create Windows artifacts),
   with a focus on a modular architecture. A variant focusing on Android
   artifact generation was developed in 2024
-  \cite{demmelDataSynthesisGoing2024}.
+  \citep{demmelDataSynthesisGoing2024}.
 \end{itemize}
 
 Clearly, significant work has been done to streamline the process of
@@ -425,21 +424,21 @@ framework vary greatly. However, except for ForTrace and VMPOP, none of
 these synthesizers are direct extensions of prior works, suggesting that
 the framework authors' needs could only be met by developing new
 frameworks from scratch. While this is not stated in any prior works
-(except for hystck \cite{gobelNovelApproachGenerating2020}), the
+(except for hystck \citep{gobelNovelApproachGenerating2020}), the
 limited maturity, availability, and maintenance of prior works likely
 contributed to the independent development of most synthesizers. For
 example, several synthesizers are not open source and thus cannot easily
 be extended, as is the case with Forensig2
-\cite{mochForensicImageGenerator2009} and TraceGen
-\cite{duTraceGenUserActivity2021}. Another reason is that the focus
+\citep{mochForensicImageGenerator2009} and TraceGen
+\citep{duTraceGenUserActivity2021}. Another reason is that the focus
 of certain synthesizers results in an architecture that is simply
 incompatible with the goals of newer works. For example, ForGe's
-architecture \cite{vistiAutomaticCreationComputer2015} focuses
+architecture \citep{vistiAutomaticCreationComputer2015} focuses
 primarily on direct filesystem manipulation to generate forensic
 artifacts and is unsuitable for a synthesizer requiring virtualization.
 Similarly, synthesizers that exclusively leverage agentless artifact
 generation as described in \autoref{artifact-generation}, such as
-VMPOP \cite{parkTREDEVMPOPCultivating2018}, require significant
+VMPOP \citep{parkTREDEVMPOPCultivating2018}, require significant
 architectural changes to support agent-based artifact generation.
 
 However, perhaps the largest motivation for constructing new
@@ -465,7 +464,7 @@ and dataset creation.
 
 Each of the synthesizers described in \autoref{analysis-of-prior-synthesizers} takes one of three approaches to artifact generation, as
 partly described by Scanlon et al.
-\cite{scanlonEviPlantEfficientDigital2017}:
+\citep{scanlonEviPlantEfficientDigital2017}:
 
 \begin{itemize}
 \item
@@ -500,35 +499,35 @@ if one exists; otherwise, the entire row contains question marks.
 \toprule
   \textbf{Synthesizer} & \textbf{Physical} & \textbf{Agentless} & \textbf{Agent-based} \\
 \midrule
-  \textbf{FALCON} \cite{adelsteinAutomaticallyCreatingRealistic2005},
+  \textbf{FALCON} \citep{adelsteinAutomaticallyCreatingRealistic2005},
   2005 & ? & ? & ? \\
-  \textbf{CYDEST} \cite{bruecknerAutomatedComputerForensics2008}, 2008
+  \textbf{CYDEST} \citep{bruecknerAutomatedComputerForensics2008}, 2008
   & ? & ? & ? \\
   \textbf{Forensig2}
-  \cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
+  \citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
   2009 & Yes (filesystem mounting; filesystem-independent editing) & Yes
   (over SSH only) & No \\
-  \textbf{D-FET} \cite{williamCloudbasedDigitalForensics2011}, 2011 &
+  \textbf{D-FET} \citep{williamCloudbasedDigitalForensics2011}, 2011 &
   Yes (filesystem mounting; filesystem-independent editing) & No & No \\
-  \textbf{SFX} \cite{russellForensicImageDescription2012}, 2012 & Yes
+  \textbf{SFX} \citep{russellForensicImageDescription2012}, 2012 & Yes
   (filesystem mounting) & No & No \\
-  \textbf{Yannikos et al.} \cite{yannikosDataCorporaDigital2014}, 2014
+  \textbf{Yannikos et al.} \citep{yannikosDataCorporaDigital2014}, 2014
   & ? & ? & ? \\
-  \textbf{ForGeOSI} \cite{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
+  \textbf{ForGeOSI} \citep{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
   Yes (hypervisor interfaces) & No \\
-  \textbf{ForGe} \cite{vistiAutomaticCreationComputer2015}, 2015 & Yes
+  \textbf{ForGe} \citep{vistiAutomaticCreationComputer2015}, 2015 & Yes
   (filesystem-aware editing) & No & No \\
-  \textbf{ForGen} \cite{jjk422Jjk422ForGen2019}, 2016 & No & No &
+  \textbf{ForGen} \citep{jjk422Jjk422ForGen2019}, 2016 & No & No &
   No \\
-  \textbf{EviPlant} \cite{scanlonEviPlantEfficientDigital2017}, 2017 &
+  \textbf{EviPlant} \citep{scanlonEviPlantEfficientDigital2017}, 2017 &
   Yes (filesystem-independent editing) & No & Yes (unknown mechanism) \\
-  \textbf{VMPOP} \cite{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
+  \textbf{VMPOP} \citep{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
   (hypervisor interfaces) & No \\
-  \textbf{hystck} \cite{gobelNovelApproachGenerating2020}, 2020 & No &
+  \textbf{hystck} \citep{gobelNovelApproachGenerating2020}, 2020 & No &
   No & Yes (Python agent) \\
-  \textbf{TraceGen} \cite{duTraceGenUserActivity2021}, 2021 & No & No
+  \textbf{TraceGen} \citep{duTraceGenUserActivity2021}, 2021 & No & No
   & Yes (unknown mechanism) \\
-  \textbf{ForTrace} \cite{gobelForTraceHolisticForensic2022}, 2022 &
+  \textbf{ForTrace} \citep{gobelForTraceHolisticForensic2022}, 2022 &
   No & No & Yes (Python agent) \\ \\
 \bottomrule
 \end{tabularx}
@@ -568,18 +567,18 @@ have been implemented by prior synthesizers. These are:
 \begin{itemize}
 \item
   \textbf{Filesystem mounting}, as done by Forensig2
-  \cite{mochForensicImageGenerator2009} and SFX
-  \cite{russellForensicImageDescription2012}, in which the
+  \citep{mochForensicImageGenerator2009} and SFX
+  \citep{russellForensicImageDescription2012}, in which the
   filesystem is mounted to the host and edited directly.
 \item
   \textbf{Filesystem-independent direct editing}, as done by EviPlant
-  \cite{scanlonEviPlantEfficientDigital2017}, in which edits to
+  \citep{scanlonEviPlantEfficientDigital2017}, in which edits to
   specific physical addresses on the disk image are made without any
   parsing or knowledge of the underlying filesystem.
 \item
   \textbf{Filesystem-aware direct editing}, as done by ForGe
-  \cite{vistiAutomaticCreationComputer2015} and EviPlant
-  \cite{scanlonEviPlantEfficientDigital2017}, in which filesystem
+  \citep{vistiAutomaticCreationComputer2015} and EviPlant
+  \citep{scanlonEviPlantEfficientDigital2017}, in which filesystem
   data structures are parsed to determine the physical address(es) of
   the disk image to write to. (It is unclear how EviPlant achieves this,
   as its source code is not available.)
@@ -587,7 +586,7 @@ have been implemented by prior synthesizers. These are:
 
 AKF supports all three physical techniques to varying degrees; however,
 AKF makes the largest improvements in filesystem-aware direct editing.
-ForGe \cite{vistiAutomaticCreationComputer2015} implements this by
+ForGe \citep{vistiAutomaticCreationComputer2015} implements this by
 implementing NTFS and FAT32 data structures in Python, allowing it to
 create a fully virtual representation of these filesystems. This
 virtualized filesystem provides ForGe with the information needed to
@@ -615,7 +614,7 @@ since the introduction of ForGe but have not been integrated into other
 synthesizers to achieve the same write capabilities as ForGe. Two such
 libraries are \passthrough{\lstinline!libtsk!} (also known as The Sleuth
 Kit), the C++ library that powers the open-source digital forensics
-software Autopsy \cite{SleuthkitSleuthkit2025}, and
+software Autopsy \citep{SleuthkitSleuthkit2025}, and
 \passthrough{\lstinline!libyal!}, a collection of libraries for
 analyzing formats not supported by \passthrough{\lstinline!libtsk!}.
 These libraries eventually supported the development of
@@ -623,7 +622,7 @@ These libraries eventually supported the development of
 System, a Python library that leverages \passthrough{\lstinline!libtsk!}
 and multiple libraries from the \passthrough{\lstinline!libyal!} project
 to provide a generic interface for analyzing a variety of disk image
-formats and filesystems \cite{Log2timelineDfvfs2025}.
+formats and filesystems \citep{Log2timelineDfvfs2025}.
 
 One application of these libraries is in deterministically inserting
 data into slack space. AKF uses \passthrough{\lstinline!dfvfs!} to
@@ -662,15 +661,15 @@ dedicated network interface. This allows for greater flexibility and
 more complex actions to be taken when compared to agentless approaches.
 In particular, it allows application-specific functionality to be
 implemented using existing automation frameworks such as Selenium
-\cite{SeleniumHQSelenium2025}, Playwright
-\cite{MicrosoftPlaywrightpython2025}, and PyAutoGUI
-\cite{sweigartAsweigartPyautogui2025}, rather than implementing such
+\citep{SeleniumHQSelenium2025}, Playwright
+\citep{MicrosoftPlaywrightpython2025}, and PyAutoGUI
+\citep{sweigartAsweigartPyautogui2025}, rather than implementing such
 functionality from scratch. For example, Playwright allows us to
 flexibly automate complex web browsing actions that prior synthesizers
 have often done through hardcoded mouse and keyboard inputs.
 
 Agent-based artifact creation is the approach taken by hystck/ForTrace
-\cite{gobelNovelApproachGenerating2020,gobelForTraceHolisticForensic2022},
+\citep{gobelNovelApproachGenerating2020,gobelForTraceHolisticForensic2022},
 which refers to its agent as an ``interaction manager.'' Because
 ForTrace provides extensive agent functionality and is by far the most
 mature synthesizer, AKF's agents borrow heavily from ForTrace's
@@ -695,7 +694,7 @@ implementation issues:
 
 AKF resolves these issues through the use of RPyC, a library for
 symmetric remote procedure calls, for agent communication
-\cite{TomerfilibaorgRpyc2025}. Although the RPyC protocol is
+\citep{TomerfilibaorgRpyc2025}. Although the RPyC protocol is
 symmetric, it is often used in typical client-server architectures to
 allow clients to manipulate remote Python objects as if they were local
 objects, as well as invoke remote (server) functions using local
@@ -743,7 +742,7 @@ Second, this allows us to pass and return arbitrarily complex objects
 deserialization logic). When passing complex objects from the agent to
 the server or vice versa, a reference to the object is sent over the
 network and wrapped by a \emph{proxy object}, which behaves like the
-original object \cite{TheoryOperationRPyC}. Importantly, it is
+original object \citep{TheoryOperationRPyC}. Importantly, it is
 usually not necessary to distinguish between local and remote/proxy
 objects of the same type when writing code, which eliminates the extra
 complexity of using proxies.
@@ -791,13 +790,13 @@ application-specific functionality.
   \textbf{Subservice} & \textbf{Dependencies} & \textbf{Features} \\
 \midrule
   \passthrough{\lstinline!autogui!} & PyAutoGUI
-  \cite{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
+  \citep{sweigartAsweigartPyautogui2025a} & Hypervisor-independent
   mouse and keyboard control, as well as other PyAutoGUI features \\
   \passthrough{\lstinline!artifacts!} & Windows-Prefetch-Parser
-  \cite{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
+  \citep{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
   Windows artifacts and conversion to corresponding CASE objects \\
   \passthrough{\lstinline!chromium!} & Playwright
-  \cite{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
+  \citep{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
   also allows for performing complex actions such as completing forms and
   clicking links based on HTML selectors \\ \\
 \bottomrule
@@ -811,7 +810,7 @@ application-specific functionality.
 There exists a gap in the ability of instructors and researchers to
 perform bulk searches for specific forensic artifacts in public
 datasets. For example, the NIST CFReDS repository
-\cite{nationalinstituteofstandardsandtechnologyCFReDSPortal}, one of
+\citep{nationalinstituteofstandardsandtechnologyCFReDSPortal}, one of
 the largest listings of public forensic datasets, does not have a
 unified standard for describing uploaded images. Although users can
 search by keywords and human-applied tags, detailed artifact information
@@ -839,7 +838,7 @@ in providing a foundation for reproducible forensic research.
 A rigid, well-defined format for ground truth is invaluable to
 researchers engaging in tool validation and development. We identified
 CASE, developed by Casey et al.
-\cite{caseyAdvancingCoordinatedCyberinvestigations2017}, as the best
+\citep{caseyAdvancingCoordinatedCyberinvestigations2017}, as the best
 format to meet these needs. CASE is a vendor-neutral format designed to
 document both technical and non-technical information about a digital
 forensics case. It aims to provide as many definitions as possible for
@@ -854,7 +853,7 @@ Because the CASE format itself is language-agnostic, it is necessary to
 write language-specific libraries that enable the instantiation of CASE
 objects. At the time of writing, the CASE project provides official
 Python bindings for CASE version 1.4
-\cite{CaseworkCASEMappingPython}. Each unique object type is
+\citep{CaseworkCASEMappingPython}. Each unique object type is
 represented as a Python class, which can be instantiated to produce
 individual objects. However, this library has several limitations,
 particularly the need to manually maintain these definitions due to the
@@ -865,7 +864,7 @@ AKF contributes and leverages its own bindings for CASE\footnote{AKF's
   \url{https://github.com/lgactna/case-pydantic}.}. Its foundation is
 the Pydantic library for Python, which allows developers to easily
 define classes with typed attributes based on Python type hints
-\cite{colvinPydantic2024}. This allows us to vastly simplify the
+\citep{colvinPydantic2024}. This allows us to vastly simplify the
 declaration of individual CASE objects while providing runtime type
 validation and automatic casting. More importantly, this simplicity
 allows us to automatically generate our Python bindings directly from
@@ -948,7 +947,7 @@ include formatted text, tables, images, and other visual elements. The
 results of each renderer are combined to form a larger Markdown document
 (or documents) with multiple sections, one for each renderer. The
 combined document can be converted to a PDF using Pandoc
-\cite{macfarlanePandoc2025}, a general-purpose tool for converting
+\citep{macfarlanePandoc2025}, a general-purpose tool for converting
 between documents of various types. Users can modify the generated
 Markdown documents before running Pandoc if desired.
 
@@ -977,7 +976,7 @@ biases and are rarely maintained in older datasets.
 \autoref{fig:pdf-sample} shows parts of an AKF-generated report for the
 sample dataset described in \autoref{sample-demonstration}. Note that
 \autoref{fig:pdf-sample} uses the Eisvogel template
-\cite{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
+\citep{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
 significantly improving the appearance and readability of generated
 documents.
 
@@ -1021,7 +1020,7 @@ The first two have long been a part of many public datasets. However,
 less common are detailed instructions to rebuild the dataset from
 scratch. A high-level timeline of actions taken, such as that provided
 by Woods et al.~in their educational dataset
-\cite{woodsCreatingRealisticCorpora2011}, is too imprecise to
+\citep{woodsCreatingRealisticCorpora2011}, is too imprecise to
 guarantee that others will recreate the dataset in the exact same
 manner. Non-determinism can be acceptable and even desirable in
 education contexts, but it is less desirable for tool validation and
@@ -1095,7 +1094,7 @@ the underlying operating system is copyrighted. To help resolve this,
 AKF uses modern infrastructure-as-code solutions to vastly simplify the
 setup of new virtual machines. Vagrant, developed by HashiCorp, is a
 tool for rapidly building development environments
-\cite{HashicorpVagrant2025}. It allows users to define and build
+\citep{HashicorpVagrant2025}. It allows users to define and build
 virtual machines on several virtualization platforms, including
 VirtualBox and VMWare. Virtual machines are built by configuring a base
 image according to a Vagrantfile, which describes hypervisor-specific
@@ -1110,7 +1109,7 @@ Vagrantfile(s) used to generate a dataset should be included with the
 dataset itself to maximize reproducibility, as described in
 \autoref{reproducibility}. A robust ecosystem of Vagrant boxes exists
 for Linux and Windows, many of which can be retrieved from the Vagrant
-public registry \cite{hashicorpHashiCorpCloudPlatform}. When
+public registry \citep{hashicorpHashiCorpCloudPlatform}. When
 combined with the flexibility of Vagrant across multiple virtualization
 platforms, this can significantly improve the reproducibility and
 usability of AKF. It should also be noted that Vagrant can configure and
@@ -1350,15 +1349,15 @@ datasets, such as the Data Leakage Case produced by NIST, contain many
 documents that are not thematically consistent. For example, the
 ``technical documents'' present in the scenario are actually files from
 the general-purpose Govdocs corpora
-\cite{garfinkelBringingScienceDigital2009}, with a cover page
+\citep{garfinkelBringingScienceDigital2009}, with a cover page
 denoting their intended role in the scenario.
 
 Recent advancements in AI models have made it significantly easier to
 generate text, images, and other media from high-level descriptions that
 are consistent with a broader theme. Indeed, this can be used to produce
 individual artifacts; generative AI models such as DeepSeek-R1
-\cite{deepseek-aiDeepSeekR1IncentivizingReasoning2025} and SDXL 1.0
-\cite{podellSDXLImprovingLatent2023} can be used to produce
+\citep{deepseek-aiDeepSeekR1IncentivizingReasoning2025} and SDXL 1.0
+\citep{podellSDXLImprovingLatent2023} can be used to produce
 standalone artifacts that can then be used as part of a dataset. For
 example, a large language model (LLM) can be directed to create
 technical documentation, email conversations, or image generation
@@ -1580,9 +1579,9 @@ are characteristic of a good educational dataset.
 First, we can observe that the ransomware is still present in the disk
 image located in the user's Downloads folder. The compiled Python
 bytecode can be extracted using a tool such as pyinstxtractor
-\cite{extremecoders-reExtremecodersrePyinstxtractor2025}, which can
+\citep{extremecoders-reExtremecodersrePyinstxtractor2025}, which can
 then be passed to a decompiler such as PyLingual
-\cite{wiedemeierPYLINGUALPerfectDecompilation2024}. Upon
+\citep{wiedemeierPYLINGUALPerfectDecompilation2024}. Upon
 decompilation, we can determine the mechanism by which files are
 encrypted, as well as the information required to decrypt them. Analysis
 reveals that the key information is generated randomly at runtime and
@@ -1656,7 +1655,7 @@ interface for agent communication.
 More generally, the topic of identifying artifacts generated as a side
 effect of using a synthesizer has been explored previously by Moch and
 Freiling in their discussion of Forensig2
-\cite{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
+\citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}.
 They came to similar conclusions, noting that evidence of synthesizer
 use is easily discoverable; indeed, the use of virtualized hardware and
 an agent is likely to produce many artifacts that would not be present
@@ -1730,10 +1729,10 @@ AKF does not address two notable topics that are prevalent in the field
 of dataset creation. The first topic is the distribution of generated
 datasets, which is particularly important in environments with limited
 bandwidth or storage space. Several synthesizers have explored this
-topic; for example, SFX \cite{russellForensicImageDescription2012}
+topic; for example, SFX \citep{russellForensicImageDescription2012}
 reduces dataset sizes by truncating irrelevant information in a process
 called ``partition squeezing,'' while EviPlant
-\cite{scanlonEviPlantEfficientDigital2017} uses a form of
+\citep{scanlonEviPlantEfficientDigital2017} uses a form of
 differential imaging in which only differences from some base image are
 distributed to users over the network. Such approaches could be
 implemented as part of AKF in the future.
@@ -1742,9 +1741,9 @@ The second topic is the application of synthesizers to the field of
 mobile datasets, which are comparable in importance to desktop datasets.
 There has been limited work in developing forensic synthesizers for
 mobile platforms. Two notable examples are FADE
-\cite{ceballosdelgadoFADEForensicImage2022}, developed by Delgado et
+\citep{ceballosdelgadoFADEForensicImage2022}, developed by Delgado et
 al.~in 2022, and a branch of ForTrace developed by Demmel et al.~in 2024
-\cite{demmelDataSynthesisGoing2024}. It may be possible to apply
+\citep{demmelDataSynthesisGoing2024}. It may be possible to apply
 some of the approaches used as part of AKF in mobile dataset creation,
 but more research is needed to determine viable options for streamlining
 the construction of both Android and iOS datasets.
@@ -1756,11 +1755,38 @@ will not only form the basis of future developments in dataset
 synthesis, but also advance research and education throughout digital
 forensics.
 
+
+% Final sections, not numbered
+\section*{CRediT authorship contribution statement}
+
+\textbf{Lloyd Gonzales}: Conceptualization, Methodology, Software, Validation, Visualization, Writing -- original draft, Writing -- review \& editing. 
+\textbf{Nancy LaTourrette}: Conceptualization, Methodology, Supervision, Writing -- review \& editing. 
+\textbf{Bill Doherty}: Conceptualization, Writing -- review \& editing.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+
+The authors used Grammarly and ChatGPT in making grammar and clarity improvements
+during proofreading. The authors have reviewed the content produced by these tools
+and take full responsibility for the content of this publication.
+
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or
+personal relationships that could have appeared to influence the work reported
+in this paper.
+
+% \section*{Acknowledgments}
+
+\section*{Data availability}
+
+All data is hosted in code repositories that have been linked in the text.
+
 %% Beginning of appendices
 \appendix
 
 %% Using bibtex to generate items, expecting article_bib.bib
-\bibliographystyle{elsarticle-num} 
+% \bibliographystyle{elsarticle-num} 
+\bibliographystyle{elsarticle-harv}\biboptions{authoryear}
 \bibliography{article_bib}
 
 \end{document}

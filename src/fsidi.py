@@ -224,8 +224,8 @@ def process_tex_file(tex_file: Path):
     with open(tex_file, "r", encoding="utf-8") as f:
         text = f.read()
         
-    # Convert \autocite to \cite
-    text = re.sub(r"\\autocite", r"\\cite", text)
+    # Convert \autocite to \citep (cite with parentheses)
+    text = re.sub(r"\\autocite", r"\\citep", text)
     
     # Tightlists aren't real
     # If they are, you have to do this:
