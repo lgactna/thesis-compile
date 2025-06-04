@@ -55,7 +55,7 @@ def process_md_file(md_file: Path):
     
     # Automatically identify valid URLs (http/https) and convert them to
     # Markdown hyperlinks, with the URL as the link text.
-    text = re.sub(r"(https?://\S+)", r"[\1](\1)", text)
+    # text = re.sub(r"(https?://\S+)", r"[\1](\1)", text)
     
 
     # Write the file
@@ -262,13 +262,13 @@ def process_tex_file(tex_file: Path):
         text,
     )
     
-    # All figures are figure* environments
-    #
-    # just kidding, only agent-modular and case-reporting are figure*, so it's
-    # fine to just do that manually after the fact
-    
+    # All figures are figure* environments    
     # text = re.sub(r"\\begin\{figure\}", r"\\begin{figure*}", text)
     # text = re.sub(r"\\end\{figure\}", r"\\end{figure*}", text)
+    
+    # Convert the first two figures to figure* environments (the rest are figure)
+    text = re.sub(r"\\begin\{figure\}", r"\\begin{figure*}", text, count=2)
+    text = re.sub(r"\\end\{figure\}", r"\\end{figure*}", text, count=2)
     
     # Special syntax for tables.
     # Start by finding all meta declarations for tables
