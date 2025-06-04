@@ -181,16 +181,16 @@ datasets are developed, such as verifying the correctness of
 automatically carved files.
 
 There exist various collections of public datasets, such as the Computer
-Forensic Reference Datasets (CFReDS) platform
-\citep{nationalinstituteofstandardsandtechnologyCFReDSPortal}
-maintained by the National Institute of Standards and Technology (NIST).
-However, the datasets in these collections are often limited in scope
-and realism. In many cases, this can be attributed to privacy and legal
-concerns. The sensitive information in real-world datasets often limits
-their distribution and usage, even if they would otherwise be suitable
-for use. As a result, the community often uses \emph{synthetic}
-datasets, which are produced specifically for educational and research
-purposes as described by Park and Garfinkel et al.
+Forensic Reference Datasets (CFReDS) platform maintained by the National
+Institute of Standards and Technology (NIST) \footnote{CFReDS is hosted
+  at \url{https://cfreds.nist.gov/}.}. However, the datasets in these
+collections are often limited in scope and realism. In many cases, this
+can be attributed to privacy and legal concerns. The sensitive
+information in real-world datasets often limits their distribution and
+usage, even if they would otherwise be suitable for use. As a result,
+the community often uses \emph{synthetic} datasets, which are produced
+specifically for educational and research purposes as described by Park
+and Garfinkel et al.
 \citep{parkTREDEVMPOPCultivating2018,garfinkelBringingScienceDigital2009}.
 However, manually creating these datasets is a time-consuming process
 that tends to produce datasets with a very narrow scope and limited
@@ -499,36 +499,35 @@ if one exists; otherwise, the entire row contains question marks.
 \toprule
   \textbf{Synthesizer} & \textbf{Physical} & \textbf{Agentless} & \textbf{Agent-based} \\
 \midrule
-  \textbf{FALCON} \citep{adelsteinAutomaticallyCreatingRealistic2005},
-  2005 & ? & ? & ? \\
-  \textbf{CYDEST} \citep{bruecknerAutomatedComputerForensics2008}, 2008
-  & ? & ? & ? \\
+  \textbf{FALCON} \citep{adelsteinAutomaticallyCreatingRealistic2005} &
+  ? & ? & ? \\
+  \textbf{CYDEST} \citep{bruecknerAutomatedComputerForensics2008} & ? &
+  ? & ? \\
   \textbf{Forensig2}
-  \citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012},
-  2009 & Yes (filesystem mounting; filesystem-independent editing) & Yes
-  (over SSH only) & No \\
-  \textbf{D-FET} \citep{williamCloudbasedDigitalForensics2011}, 2011 &
-  Yes (filesystem mounting; filesystem-independent editing) & No & No \\
-  \textbf{SFX} \citep{russellForensicImageDescription2012}, 2012 & Yes
+  \citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}
+  & Yes (filesystem mounting; filesystem-independent editing) & Yes (over
+  SSH only) & No \\
+  \textbf{D-FET} \citep{williamCloudbasedDigitalForensics2011} & Yes
+  (filesystem mounting; filesystem-independent editing) & No & No \\
+  \textbf{SFX} \citep{russellForensicImageDescription2012} & Yes
   (filesystem mounting) & No & No \\
-  \textbf{Yannikos et al.} \citep{yannikosDataCorporaDigital2014}, 2014
-  & ? & ? & ? \\
-  \textbf{ForGeOSI} \citep{maxfraggMaxfraggForGeOSI2023}, 2014 & No &
-  Yes (hypervisor interfaces) & No \\
-  \textbf{ForGe} \citep{vistiAutomaticCreationComputer2015}, 2015 & Yes
-  (filesystem-aware editing) & No & No \\
-  \textbf{ForGen} \citep{jjk422Jjk422ForGen2019}, 2016 & No & No &
-  No \\
-  \textbf{EviPlant} \citep{scanlonEviPlantEfficientDigital2017}, 2017 &
-  Yes (filesystem-independent editing) & No & Yes (unknown mechanism) \\
-  \textbf{VMPOP} \citep{parkTREDEVMPOPCultivating2018}, 2018 & No & Yes
+  \textbf{Yannikos et al.} \citep{yannikosDataCorporaDigital2014} & ? &
+  ? & ? \\
+  \textbf{ForGeOSI} \citep{maxfraggMaxfraggForGeOSI2023} & No & Yes
   (hypervisor interfaces) & No \\
-  \textbf{hystck} \citep{gobelNovelApproachGenerating2020}, 2020 & No &
-  No & Yes (Python agent) \\
-  \textbf{TraceGen} \citep{duTraceGenUserActivity2021}, 2021 & No & No
-  & Yes (unknown mechanism) \\
-  \textbf{ForTrace} \citep{gobelForTraceHolisticForensic2022}, 2022 &
-  No & No & Yes (Python agent) \\ \\
+  \textbf{ForGe} \citep{vistiAutomaticCreationComputer2015} & Yes
+  (filesystem-aware editing) & No & No \\
+  \textbf{ForGen} \citep{jjk422Jjk422ForGen2019} & No & No & No \\
+  \textbf{EviPlant} \citep{scanlonEviPlantEfficientDigital2017} & Yes
+  (filesystem-independent editing) & No & Yes (unknown mechanism) \\
+  \textbf{VMPOP} \citep{parkTREDEVMPOPCultivating2018} & No & Yes
+  (hypervisor interfaces) & No \\
+  \textbf{hystck} \citep{gobelNovelApproachGenerating2020} & No & No &
+  Yes (Python agent) \\
+  \textbf{TraceGen} \citep{duTraceGenUserActivity2021} & No & No & Yes
+  (unknown mechanism) \\
+  \textbf{ForTrace} \citep{gobelForTraceHolisticForensic2022} & No & No
+  & Yes (Python agent) \\ \\
 \bottomrule
 \end{tabularx}
 \caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques}
@@ -809,9 +808,7 @@ application-specific functionality.
 
 There exists a gap in the ability of instructors and researchers to
 perform bulk searches for specific forensic artifacts in public
-datasets. For example, the NIST CFReDS repository
-\citep{nationalinstituteofstandardsandtechnologyCFReDSPortal}, one of
-the largest listings of public forensic datasets, does not have a
+datasets. For example, the NIST CFReDS repository does not have a
 unified standard for describing uploaded images. Although users can
 search by keywords and human-applied tags, detailed artifact information
 is not available in a standardized format that can be programmatically
@@ -1579,8 +1576,8 @@ are characteristic of a good educational dataset.
 First, we can observe that the ransomware is still present in the disk
 image located in the user's Downloads folder. The compiled Python
 bytecode can be extracted using a tool such as pyinstxtractor
-\citep{extremecoders-reExtremecodersrePyinstxtractor2025}, which can
-then be passed to a decompiler such as PyLingual
+\citep{extremecodersExtremecodersrePyinstxtractor2025}, which can
+then be passed to a bytecode decompiler such as PyLingual
 \citep{wiedemeierPYLINGUALPerfectDecompilation2024}. Upon
 decompilation, we can determine the mechanism by which files are
 encrypted, as well as the information required to decrypt them. Analysis
