@@ -153,7 +153,7 @@ The list of subservices supported by our AKF agent for Windows[^2] is described 
 
 | Subservice  | Dependencies                                                            | Features                                                                                                                                   |
 | ----------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `autogui`   | PyAutoGUI [@sweigartAsweigartPyautogui2025a]                            | Hypervisor-independent mouse and keyboard control, as well as other PyAutoGUI features                                                     |
+| `autogui`   | PyAutoGUI [@sweigartAsweigartPyautogui2025]                             | Hypervisor-independent mouse and keyboard control, as well as other PyAutoGUI features                                                     |
 | `artifacts` | Windows-Prefetch-Parser [@wittPoorBillionaireWindowsPrefetchParser2025] | Collection of Windows artifacts and conversion to corresponding CASE objects                                                               |
 | `chromium`  | Playwright [@MicrosoftPlaywrightpython2025]                             | Automated webpage browsing; also allows for performing complex actions such as completing forms and clicking links based on HTML selectors |
 

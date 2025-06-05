@@ -338,11 +338,7 @@ def substitute_into_base(base_file: Path, input_file: Path, output_file: Path):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(text)
 
-def fix_bib():
-    # Input and output files
-    input_file = "thesis_bib.bib"
-    output_file = "thesis_bib_fixed.bib"
-
+def fix_bib(input_file: Path, output_file: Path):
     # Read the content of the original BibTeX file
     with open(input_file, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -406,6 +402,15 @@ def filter_bibliography(citekeys: set[str], bib_file: Path, output_file: Path):
     
     # Remove all file elements
     result = re.sub(r",\n  file = .*$", "", result, flags=re.MULTILINE)
+    result = re.sub(r",\n\tfile = .*$", "", result, flags=re.MULTILINE)
+    
+    # For each journaltitle field, re-add it as a journal field
+    # result = re.sub(
+    #     r",\n  journaltitle = (.*?)(,?)$",
+    #     r",\n  journal = \1,\n  journaltitle = \1\2",
+    #     result,
+    #     flags=re.MULTILINE
+    # )
     
     # Write the filtered entries to the output file
     with open(output_file, 'w', encoding='utf-8') as f:
@@ -463,14 +468,17 @@ if __name__ == "__main__":
         Path("fsidi.tex")
     )
     
-    fix_bib()
+    fix_bib(        
+        Path("standard.bibtex"),
+        Path("standard_fixed.bib")
+    )
     
     with open("citekeys.txt", "r", encoding="utf-8") as f:
         citekeys = {line.strip() for line in f if line.strip()}
     
     filter_bibliography(
         citekeys, 
-        Path("thesis_bib_fixed.bib"), 
-        Path("filtered_bibliography.bib")
+        Path("standard_fixed.bib"), 
+        Path("standard_fixed.bib")
     )
     
