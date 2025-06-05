@@ -721,12 +721,12 @@ agent's main loop is itself an RPyC service responsible for creating and
 destroying these subservices upon request. All subservices are known to
 this ``dispatch'' service at initialization, eliminating the need for
 runtime introspection to find application-specific modules. A high-level
-diagram of this design can be seen in \autoref{fig:agent-modular}.
+diagram of this design can be seen in \autoref{fig:figure-1}.
 
 \begin{figure*}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{agent-modular.png}
-\caption{AKF agent architecture}\label{fig:agent-modular}
+\includegraphics[width=1\linewidth]{figure_1.png}
+\caption{AKF agent architecture}\label{fig:figure-1}
 \end{figure*}
 
 From an implementation and usability perspective, this design provides
@@ -950,7 +950,7 @@ Markdown documents before running Pandoc if desired.
 
 A single CASE bundle can be passed through as many or as few renderers
 as needed to generate a suitable report for a dataset, as depicted in
-\autoref{fig:case-reporting}. So long as the original CASE bundle is
+\autoref{fig:figure-2}. So long as the original CASE bundle is
 available, users can reanalyze datasets with arbitrary renderers; this
 means that dataset reports can be regenerated with as much detail as a
 user needs for a specific use case. Furthermore, if new renderers are
@@ -959,8 +959,8 @@ human-readable report can be regenerated to include these artifacts.
 
 \begin{figure*}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{case-reporting.png}
-\caption{Diagram of modular rendering system}\label{fig:case-reporting}
+\includegraphics[width=1\linewidth]{figure_2.png}
+\caption{Diagram of modular rendering system}\label{fig:figure-2}
 \end{figure*}
 
 This modular, ``evergreen'' approach to reporting allows these reports
@@ -970,9 +970,9 @@ the CASE bundle remains the single, comprehensive source of truth.
 Compare this with human-written PDF reports, which may contain human
 biases and are rarely maintained in older datasets.
 
-\autoref{fig:pdf-sample} shows parts of an AKF-generated report for the
+\autoref{fig:figure-3} shows parts of an AKF-generated report for the
 sample dataset described in \autoref{sample-demonstration}. Note that
-\autoref{fig:pdf-sample} uses the Eisvogel template
+\autoref{fig:figure-3} uses the Eisvogel template
 \citep{waglerWandmalfarbePandoclatextemplate2025} for Pandoc,
 significantly improving the appearance and readability of generated
 documents.
@@ -1511,12 +1511,12 @@ machine (with the ransomware process still running), then turned the
 machine off and created a raw disk image of the machine. The CASE
 bundle, along with a PDF report detailing the bundle's contents, was
 also exported. Relevant sections of the PDF report can be seen in
-\autoref{fig:pdf-sample}.
+\autoref{fig:figure-3}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{pdf-sample-scenario.png}
-\caption{Snippet of generated PDF report}\label{fig:pdf-sample}
+\includegraphics[width=1\linewidth]{figure_3.png}
+\caption{Snippet of generated PDF report}\label{fig:figure-3}
 \end{figure}
 
 \subsection{Analysis}\label{analysis}
@@ -1541,17 +1541,16 @@ First, we wanted to verify that the web browsing artifacts were
 consistent with the list of URLs specified in the script. We began by
 extracting the SQLite database used to store Microsoft Edge browsing
 history and viewed the \passthrough{\lstinline!urls!} table containing
-browsing history, as shown in \autoref{fig:browser-db}. Indeed, the
+browsing history, as shown in \autoref{fig:figure-4}. Indeed, the
 entries of the History file are consistent with the URLs specified, as
-well as the links shown in the PDF report in \autoref{fig:pdf-sample}.
-By extension, they are also consistent with the JSON-serialized CASE
+well as the links shown in the PDF report in \autoref{fig:figure-3}. By
+extension, they are also consistent with the JSON-serialized CASE
 bundle.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{browser-db.png}
-\caption{Contents of Microsoft Edge SQLite
-database}\label{fig:browser-db}
+\includegraphics[width=1\linewidth]{figure_4.png}
+\caption{Contents of Microsoft Edge SQLite database}\label{fig:figure-4}
 \end{figure}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries
@@ -1589,25 +1588,25 @@ either the packet capture or the memory dump independently. If we choose
 to analyze the packet capture, we can search for the domain requested by
 the ransomware, as indicated in the decompiled code. Doing so reveals
 the exact parameters required to reconstruct the key, as shown in
-\autoref{fig:wireshark-analysis}.
+Wireshark in \autoref{fig:figure-5}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{wireshark-analysis.png}
+\includegraphics[width=1\linewidth]{figure_5.png}
 \caption{Relevant web request observed in packet
-capture}\label{fig:wireshark-analysis}
+capture}\label{fig:figure-5}
 \end{figure}
 
 Similarly, we can search the memory dump for the key information. Using
 a tool such as the Volatility framework or a hex editor, we can analyze
 the dump to discover the same JSON in memory as seen in the packet
-capture. \autoref{fig:hex-analysis} depicts the JSON as seen in a hex
+capture. \autoref{fig:figure-6} depicts the JSON as seen in a hex
 editor.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=1\linewidth]{hex-analysis.png}
-\caption{Relevant data seen in sample RAM dump}\label{fig:hex-analysis}
+\includegraphics[width=1\linewidth]{figure_6.png}
+\caption{Relevant data seen in sample RAM dump}\label{fig:figure-6}
 \end{figure}
 
 At this point, a decryption program can be written based on the

@@ -133,9 +133,9 @@ AKF resolves these issues through the use of RPyC, a library for symmetric remot
 
 In "new-style" RPyC, this is achieved by running a *service* on the device where remote operations should be performed. Services expose a set of functions and attributes that can be accessed remotely by an RPyC client, doing so by setting up a TCP listener for requests to access these exposed objects. Clients access these functions and attributes by name as if they were local objects; arguments passed to functions are serialized and deserialized in the background, as are the results of function calls and attribute accesses. These communications occur over a host-only network interface on the VM, concealing them from network captures on the Internet-communicating NAT interface.
 
-AKF's application-specific functionality is divided into individual RPyC "subservices" created on demand. These subservices implement automation support for a specific application or group of actions and are analogous to the agent-side code of individual ForTrace modules. The agent's main loop is itself an RPyC service responsible for creating and destroying these subservices upon request. All subservices are known to this "dispatch" service at initialization, eliminating the need for runtime introspection to find application-specific modules. A high-level diagram of this design can be seen in **!fig:agent-modular**.
+AKF's application-specific functionality is divided into individual RPyC "subservices" created on demand. These subservices implement automation support for a specific application or group of actions and are analogous to the agent-side code of individual ForTrace modules. The agent's main loop is itself an RPyC service responsible for creating and destroying these subservices upon request. All subservices are known to this "dispatch" service at initialization, eliminating the need for runtime introspection to find application-specific modules. A high-level diagram of this design can be seen in **!fig:figure-1**.
 
-![AKF agent architecture](agent-modular.png){#fig:agent-modular}
+![AKF agent architecture](figure_1.png){#fig:figure-1}
 
 From an implementation and usability perspective, this design provides three significant improvements over ForTrace. First, the routing of functions is wholly delegated to RPyC. Instead of manually constructing a message with the function name and its associated parameters (as strings) over the network, the process of serializing parameters and routing them to the correct function call is abstracted away by RPyC. 
 
@@ -191,13 +191,13 @@ Converting a rigid, well-defined format to a human-readable format is often easi
 
 AKF implements human-readable reporting through a set of "renderers." Each renderer accepts a complete CASE bundle and extracts all CASE objects of a particular type. The renderer then uses the information contained in these objects to generate a Markdown document, which can include formatted text, tables, images, and other visual elements. The results of each renderer are combined to form a larger Markdown document (or documents) with multiple sections, one for each renderer. The combined document can be converted to a PDF using Pandoc [@macfarlanePandoc2025], a general-purpose tool for converting between documents of various types. Users can modify the generated Markdown documents before running Pandoc if desired.
 
-A single CASE bundle can be passed through as many or as few renderers as needed to generate a suitable report for a dataset, as depicted in **!fig:case-reporting**. So long as the original CASE bundle is available, users can reanalyze datasets with arbitrary renderers; this means that dataset reports can be regenerated with as much detail as a user needs for a specific use case. Furthermore, if new renderers are developed for artifacts that are present in older datasets, the human-readable report can be regenerated to include these artifacts. 
+A single CASE bundle can be passed through as many or as few renderers as needed to generate a suitable report for a dataset, as depicted in **!fig:figure-2**. So long as the original CASE bundle is available, users can reanalyze datasets with arbitrary renderers; this means that dataset reports can be regenerated with as much detail as a user needs for a specific use case. Furthermore, if new renderers are developed for artifacts that are present in older datasets, the human-readable report can be regenerated to include these artifacts. 
 
-![Diagram of modular rendering system](case-reporting.png){#fig:case-reporting}
+![Diagram of modular rendering system](figure_2.png){#fig:figure-2}
 
 This modular, "evergreen" approach to reporting allows these reports to be interpreted as a focused snapshot of what a dataset contains. Importantly, this can be done without compromising the dataset itself; the CASE bundle remains the single, comprehensive source of truth. Compare this with human-written PDF reports, which may contain human biases and are rarely maintained in older datasets.
 
-**!fig:pdf-sample** shows parts of an AKF-generated report for the sample dataset described in **#Sample demonstration**. Note that **!fig:pdf-sample** uses the Eisvogel template [@waglerWandmalfarbePandoclatextemplate2025] for Pandoc, significantly improving the appearance and readability of generated documents.
+**!fig:figure-3** shows parts of an AKF-generated report for the sample dataset described in **#Sample demonstration**. Note that **!fig:figure-3** uses the Eisvogel template [@waglerWandmalfarbePandoclatextemplate2025] for Pandoc, significantly improving the appearance and readability of generated documents.
 
 After generating forensic artifacts and any documentation that should be included with the dataset, the challenge of distributing this information remains. We now describe our contributions to developing a format and platform for distributing datasets that are accessible, reusable, and discoverable.
 
@@ -386,9 +386,9 @@ As part of this scenario, we generated a disk image, network traffic capture, an
 
 To prepare a suitable virtual machine for this scenario, we used a Vagrantfile to automate the process of creating and configuring a Windows 11 VirtualBox machine with the AKF agent installed. We configured two network adapters for the machine: a NAT adapter connected to the internet and a host-only adapter for communicating with the agent. We then enabled packet capturing over the NAT adapter, which would allow us to capture the key sent by the ransomware. Finally, we created a CASE bundle for use throughout the scenario, which will include some of the relevant artifacts generated as part of this dataset.
 
-Once the machine was turned on, we directed the agent to visit a series of posts on the Reddit platform according to a predefined list of URLs. This was achieved by using the Chromium subservice, which uses Playwright to interact with webpages. For each post, we saved a screenshot of the page to the Downloads folder, which the ransomware would later encrypt. After visiting several Reddit posts, we had the agent navigate to and download the ransomware. We then used the PyAutoGUI subservice to run the ransomware in File Explorer using a sequence of keystrokes, emulating how a human would normally run the ransomware. Shortly after, we created a volatile memory dump of the machine (with the ransomware process still running), then turned the machine off and created a raw disk image of the machine. The CASE bundle, along with a PDF report detailing the bundle's contents, was also exported. Relevant sections of the PDF report can be seen in **!fig:pdf-sample**.
+Once the machine was turned on, we directed the agent to visit a series of posts on the Reddit platform according to a predefined list of URLs. This was achieved by using the Chromium subservice, which uses Playwright to interact with webpages. For each post, we saved a screenshot of the page to the Downloads folder, which the ransomware would later encrypt. After visiting several Reddit posts, we had the agent navigate to and download the ransomware. We then used the PyAutoGUI subservice to run the ransomware in File Explorer using a sequence of keystrokes, emulating how a human would normally run the ransomware. Shortly after, we created a volatile memory dump of the machine (with the ransomware process still running), then turned the machine off and created a raw disk image of the machine. The CASE bundle, along with a PDF report detailing the bundle's contents, was also exported. Relevant sections of the PDF report can be seen in **!fig:figure-3**.
 
-![Snippet of generated PDF report](pdf-sample-scenario.png){#fig:pdf-sample}
+![Snippet of generated PDF report](figure_3.png){#fig:figure-3}
 
 ## Analysis
 
@@ -398,9 +398,9 @@ Now, we turn to a manual analysis of the generated dataset. As part of this, we 
 - That the generated artifacts are consistent with the documentation generated by AKF (when analyzed using external tools).
 - That it is possible to reverse the operations performed by the ransomware by utilizing multiple aspects of the dataset, specifically the disk image, volatile memory dump, and network capture.
 
-First, we wanted to verify that the web browsing artifacts were consistent with the list of URLs specified in the script. We began by extracting the SQLite database used to store Microsoft Edge browsing history and viewed the `urls` table containing browsing history, as shown in **!fig:browser-db**. Indeed, the entries of the History file are consistent with the URLs specified, as well as the links shown in the PDF report in **!fig:pdf-sample**. By extension, they are also consistent with the JSON-serialized CASE bundle.
+First, we wanted to verify that the web browsing artifacts were consistent with the list of URLs specified in the script. We began by extracting the SQLite database used to store Microsoft Edge browsing history and viewed the `urls` table containing browsing history, as shown in **!fig:figure-4**. Indeed, the entries of the History file are consistent with the URLs specified, as well as the links shown in the PDF report in **!fig:figure-3**. By extension, they are also consistent with the JSON-serialized CASE bundle.
 
-![Contents of Microsoft Edge SQLite database](browser-db.png){#fig:browser-db}
+![Contents of Microsoft Edge SQLite database](figure_4.png){#fig:figure-4}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries contained in the disk image, allowing us to verify the results documented in the generated PDF (and the CASE bundle).
 As expected, both indicate that a file called `cats.exe` was run, as was Microsoft Edge. More generally, we noted that although the run times and actual executable names were consistent, the execution counts recorded by AKF were not. Indeed, AKF uses a different library than PECmd, which may explain the discrepancy between the two. 
@@ -411,13 +411,13 @@ To demonstrate the value of each part of the dataset in a digital forensics, inc
 
 First, we can observe that the ransomware is still present in the disk image located in the user's Downloads folder. The compiled Python bytecode can be extracted using a tool such as pyinstxtractor [@extremecodersExtremecodersrePyinstxtractor2025], which can then be passed to a bytecode decompiler such as PyLingual [@wiedemeierPYLINGUALPerfectDecompilation2024]. Upon decompilation, we can determine the mechanism by which files are encrypted, as well as the information required to decrypt them. Analysis reveals that the key information is generated randomly at runtime and then forwarded to a remote server.
 
-To retrieve the information necessary for decryption, we can analyze either the packet capture or the memory dump independently. If we choose to analyze the packet capture, we can search for the domain requested by the ransomware, as indicated in the decompiled code. Doing so reveals the exact parameters required to reconstruct the key, as shown in **!fig:wireshark-analysis**.
+To retrieve the information necessary for decryption, we can analyze either the packet capture or the memory dump independently. If we choose to analyze the packet capture, we can search for the domain requested by the ransomware, as indicated in the decompiled code. Doing so reveals the exact parameters required to reconstruct the key, as shown in Wireshark in **!fig:figure-5**.
 
-![Relevant web request observed in packet capture](wireshark-analysis.png){#fig:wireshark-analysis}
+![Relevant web request observed in packet capture](figure_5.png){#fig:figure-5}
 
-Similarly, we can search the memory dump for the key information. Using a tool such as the Volatility framework or a hex editor, we can analyze the dump to discover the same JSON in memory as seen in the packet capture. **!fig:hex-analysis** depicts the JSON as seen in a hex editor.
+Similarly, we can search the memory dump for the key information. Using a tool such as the Volatility framework or a hex editor, we can analyze the dump to discover the same JSON in memory as seen in the packet capture. **!fig:figure-6** depicts the JSON as seen in a hex editor.
 
-![Relevant data seen in sample RAM dump](hex-analysis.png){#fig:hex-analysis}
+![Relevant data seen in sample RAM dump](figure_6.png){#fig:figure-6}
 
 At this point, a decryption program can be written based on the decompiled ransomware logic. To demonstrate that the information contained in the dataset is sufficient to write a decryption script, we passed the decompiled ransomware to a large language model and asked it to produce a decryption script. The resulting script, after simplification, was successfully used to decrypt the contents of the Downloads folder. This script is included with our dataset.
 

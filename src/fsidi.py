@@ -371,6 +371,50 @@ def fix_bib():
 
     print(f"Modified BibTeX saved to {output_file}")
     
+def filter_bibliography(citekeys: set[str], bib_file: Path, output_file: Path):
+    """
+    Filter a BibTeX file to include only entries matching the specified citation keys.
+    
+    Args:
+        citekeys_file (str): Path to a file with newline-separated citation keys.
+        bib_file (str): Path to the bibliography file (.bib).
+        output_file (str, optional): Path for the filtered bibliography output.
+            If not provided, defaults to 'filtered_bibliography.bib'.
+    
+    Returns:
+        int: Number of bibliography entries included in the output file.
+    """
+    # Read the bibliography file
+    with open(bib_file, 'r', encoding='utf-8') as f:
+        bib_content = f.read()
+    
+    # Find all bibliography entries
+    # This regex matches BibTeX entries starting with @type{key,... and ending with closing brace
+    entry_pattern = re.compile(r'@\w+\{([^,]+),.*?(?=\n@|\Z)', re.DOTALL)
+    entries = entry_pattern.finditer(bib_content)
+    
+    filtered_entries = []
+    included_count = 0
+    
+    for entry in entries:
+        citekey = entry.group(1).strip()
+        if citekey in citekeys:
+            filtered_entries.append(entry.group(0))
+            included_count += 1
+    
+    result = "\n\n".join(filtered_entries)
+    
+    # Remove all file elements
+    result = re.sub(r",\n  file = .*$", "", result, flags=re.MULTILINE)
+    
+    # Write the filtered entries to the output file
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(result)
+    
+    print(f"Found {included_count} of {len(citekeys)} requested citations.")
+    print(f"Filtered bibliography saved to {output_file}")
+    
+    return included_count
 
 if __name__ == "__main__":
     
@@ -420,4 +464,13 @@ if __name__ == "__main__":
     )
     
     fix_bib()
+    
+    with open("citekeys.txt", "r", encoding="utf-8") as f:
+        citekeys = {line.strip() for line in f if line.strip()}
+    
+    filter_bibliography(
+        citekeys, 
+        Path("thesis_bib_fixed.bib"), 
+        Path("filtered_bibliography.bib")
+    )
     
