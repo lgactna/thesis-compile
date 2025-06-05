@@ -1,4 +1,4 @@
-% \documentclass[preprint,12pt]{elsarticle}
+\documentclass[preprint,12pt]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
@@ -10,9 +10,9 @@
 %% \documentclass[final,3p,times]{elsarticle}
 % \documentclass[final,3p,times,twocolumn]{elsarticle}
 %% \documentclass[final,5p,times]{elsarticle}
-\documentclass[final,5p,times,twocolumn]{elsarticle}
+% \documentclass[final,5p,times,twocolumn]{elsarticle}
 
-%% Fixing DOIs in the bibtex file, which otherwise don't play well with elsarticle.bst
+%% Fixing DOIs in the bibtex file, which otherwise don't play well with elsarticle
 \usepackage{doi}
 
 % Code listings. We use inconsolata for the font.
@@ -46,11 +46,11 @@
     showstringspaces=false,
     showtabs=false,                  
     tabsize=2,
-    aboveskip=10pt, % Adjust spacing above listings
-    belowskip=0pt, % Adjust spacing below listings
+    % aboveskip=10pt, % Adjust spacing above listings
+    % belowskip=0pt, % Adjust spacing below listings
 }
 
-% Less spacing in between items in \begin{itemize} environments.
+% Less spacing between items in \begin{itemize} environments.
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
@@ -64,6 +64,10 @@
 % No footnotes across pages.
 \interfootnotelinepenalty=10000
 
+% Fix hyperref warnings related to author definitions.
+% https://tex.stackexchange.com/questions/504814/package-hyperref-warning-token-not-allowed-in-a-pdf-string-pdfdocencoding
+\hypersetup{pdfauthor=author}
+
 % Set asset path.
 % \graphicspath{{assets/}}
 
@@ -73,13 +77,16 @@
 
 \begin{frontmatter}
 
-\title{AKF: A modern synthesis framework for building datasets in digital forensics
-    \footnote{The contents of this paper have been derived from Lloyd Gonzales's master's thesis of the same name.}
-}
+\title{AKF: A modern synthesis framework for building datasets in digital forensics}
 
-\author[unr]{Lloyd Gonzales}
+\author[unr]{Lloyd Gonzales\corref{cor1}\fnref{fn1}}
+\ead{lloydg@unr.edu}
+\cortext[cor1]{Corresponding author.}
+\fntext[fn1]{Present affiliation. The contents of this paper have been derived from this author's master's thesis of the same name.}
 \author[unr]{Nancy LaTourrette}
+\ead{nancy@unr.edu}
 \author[unr]{Bill Doherty}
+\ead{wdoherty@unr.edu}
 %% Author affiliation
 \affiliation[unr]{organization={Department of Computer Science and Engineering, University of Nevada, Reno},%Department and Organization
             addressline={1664 North Virginia Street}, 
@@ -530,7 +537,7 @@ if one exists; otherwise, the entire row contains question marks.
   & Yes (Python agent) \\ \\
 \bottomrule
 \end{tabularx}
-\caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques}
+\caption{Summary of artifact generation techniques in prior synthesizers.}\label{tbl:prior-techniques}
 \end{table*}
 
 
@@ -726,7 +733,8 @@ diagram of this design can be seen in \autoref{fig:figure-1}.
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_1.png}
-\caption{AKF agent architecture}\label{fig:figure-1}
+\caption{Simplified diagram of the AKF agent
+architecture.}\label{fig:figure-1}
 \end{figure*}
 
 From an implementation and usability perspective, this design provides
@@ -800,7 +808,7 @@ application-specific functionality.
   clicking links based on HTML selectors \\ \\
 \bottomrule
 \end{tabularx}
-\caption{Implemented subservices for the AKF Windows agent}\label{tbl:akf-applications}
+\caption{Implemented subservices for the AKF Windows agent.}\label{tbl:akf-applications}
 \end{table*}
 
 
@@ -960,7 +968,7 @@ human-readable report can be regenerated to include these artifacts.
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_2.png}
-\caption{Diagram of modular rendering system}\label{fig:figure-2}
+\caption{Diagram of AKF's modular rendering system.}\label{fig:figure-2}
 \end{figure*}
 
 This modular, ``evergreen'' approach to reporting allows these reports
@@ -1124,7 +1132,7 @@ output generation are handled explicitly through a script executed
 through the Python interpreter. A Python script demonstrating web
 browsing and disk image creation can be seen in \autoref{lst:6.2a}.
 
-\begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario}, language=Python]
+\begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario.}, language=Python]
 from akf_windows.api.chromium import ChromiumServiceAPI
 from akflib.core.hypervisor.vbox import VBoxExportFormatEnum
 from akflib.core.hypervisor.vbox import VBoxHypervisor
@@ -1206,7 +1214,7 @@ from the script shown in \autoref{lst:6.3.2a}.) An example of a minimal
 AKF scenario, carrying out the same actions as the imperative AKF script
 in the prior section, can be seen in \autoref{lst:6.3.2a}:
 
-\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
+\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario.}, ]
 name: Minimal scenario
 description: Browses to the BBC website and exports a disk image.
 author: User
@@ -1516,7 +1524,8 @@ also exported. Relevant sections of the PDF report can be seen in
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_3.png}
-\caption{Snippet of generated PDF report}\label{fig:figure-3}
+\caption{Two sections from the AKF-generated PDF
+report.}\label{fig:figure-3}
 \end{figure}
 
 \subsection{Analysis}\label{analysis}
@@ -1550,7 +1559,8 @@ bundle.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_4.png}
-\caption{Contents of Microsoft Edge SQLite database}\label{fig:figure-4}
+\caption{The contents of the Microsoft Edge SQLite database in the
+sample dataset.}\label{fig:figure-4}
 \end{figure}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries
@@ -1593,8 +1603,8 @@ Wireshark in \autoref{fig:figure-5}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_5.png}
-\caption{Relevant web request observed in packet
-capture}\label{fig:figure-5}
+\caption{The ransomware's web request as seen in the packet
+capture.}\label{fig:figure-5}
 \end{figure}
 
 Similarly, we can search the memory dump for the key information. Using
@@ -1606,7 +1616,8 @@ editor.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_6.png}
-\caption{Relevant data seen in sample RAM dump}\label{fig:figure-6}
+\caption{The ransomware's web request as seen in the volatile memory
+dump.}\label{fig:figure-6}
 \end{figure}
 
 At this point, a decryption program can be written based on the

@@ -1,4 +1,4 @@
-% \documentclass[preprint,12pt]{elsarticle}
+\documentclass[preprint,12pt]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
@@ -10,9 +10,9 @@
 %% \documentclass[final,3p,times]{elsarticle}
 % \documentclass[final,3p,times,twocolumn]{elsarticle}
 %% \documentclass[final,5p,times]{elsarticle}
-\documentclass[final,5p,times,twocolumn]{elsarticle}
+% \documentclass[final,5p,times,twocolumn]{elsarticle}
 
-%% Fixing DOIs in the bibtex file, which otherwise don't play well with elsarticle.bst
+%% Fixing DOIs in the bibtex file, which otherwise don't play well with elsarticle
 \usepackage{doi}
 
 % Code listings. We use inconsolata for the font.
@@ -46,11 +46,11 @@
     showstringspaces=false,
     showtabs=false,                  
     tabsize=2,
-    aboveskip=10pt, % Adjust spacing above listings
-    belowskip=0pt, % Adjust spacing below listings
+    % aboveskip=10pt, % Adjust spacing above listings
+    % belowskip=0pt, % Adjust spacing below listings
 }
 
-% Less spacing in between items in \begin{itemize} environments.
+% Less spacing between items in \begin{itemize} environments.
 \usepackage{enumitem}
 \setitemize{noitemsep}
 
@@ -64,6 +64,10 @@
 % No footnotes across pages.
 \interfootnotelinepenalty=10000
 
+% Fix hyperref warnings related to author definitions.
+% https://tex.stackexchange.com/questions/504814/package-hyperref-warning-token-not-allowed-in-a-pdf-string-pdfdocencoding
+\hypersetup{pdfauthor=author}
+
 % Set asset path.
 % \graphicspath{{assets/}}
 
@@ -73,13 +77,16 @@
 
 \begin{frontmatter}
 
-\title{AKF: A modern synthesis framework for building datasets in digital forensics
-    \footnote{The contents of this paper have been derived from Lloyd Gonzales's master's thesis of the same name.}
-}
+\title{AKF: A modern synthesis framework for building datasets in digital forensics}
 
-\author[unr]{Lloyd Gonzales}
+\author[unr]{Lloyd Gonzales\corref{cor1}\fnref{fn1}}
+\ead{lloydg@unr.edu}
+\cortext[cor1]{Corresponding author.}
+\fntext[fn1]{Present affiliation. The contents of this paper have been derived from this author's master's thesis of the same name.}
 \author[unr]{Nancy LaTourrette}
+\ead{nancy@unr.edu}
 \author[unr]{Bill Doherty}
+\ead{wdoherty@unr.edu}
 %% Author affiliation
 \affiliation[unr]{organization={Department of Computer Science and Engineering, University of Nevada, Reno},%Department and Organization
             addressline={1664 North Virginia Street}, 

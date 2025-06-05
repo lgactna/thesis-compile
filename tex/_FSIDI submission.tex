@@ -412,7 +412,7 @@ if one exists; otherwise, the entire row contains question marks.
   & Yes (Python agent) \\ \\
 \bottomrule
 \end{tabularx}
-\caption{Summary of artifact generation techniques in prior synthesizers}\label{tbl:prior-techniques}
+\caption{Summary of artifact generation techniques in prior synthesizers.}\label{tbl:prior-techniques}
 \end{table*}
 
 
@@ -608,7 +608,8 @@ diagram of this design can be seen in \autoref{fig:figure-1}.
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_1.png}
-\caption{AKF agent architecture}\label{fig:figure-1}
+\caption{Simplified diagram of the AKF agent
+architecture.}\label{fig:figure-1}
 \end{figure*}
 
 From an implementation and usability perspective, this design provides
@@ -682,7 +683,7 @@ application-specific functionality.
   clicking links based on HTML selectors \\ \\
 \bottomrule
 \end{tabularx}
-\caption{Implemented subservices for the AKF Windows agent}\label{tbl:akf-applications}
+\caption{Implemented subservices for the AKF Windows agent.}\label{tbl:akf-applications}
 \end{table*}
 
 
@@ -842,7 +843,7 @@ human-readable report can be regenerated to include these artifacts.
 \begin{figure*}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_2.png}
-\caption{Diagram of modular rendering system}\label{fig:figure-2}
+\caption{Diagram of AKF's modular rendering system.}\label{fig:figure-2}
 \end{figure*}
 
 This modular, ``evergreen'' approach to reporting allows these reports
@@ -1006,7 +1007,7 @@ output generation are handled explicitly through a script executed
 through the Python interpreter. A Python script demonstrating web
 browsing and disk image creation can be seen in \autoref{lst:6.2a}.
 
-\begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario}, language=Python]
+\begin{lstlisting}[label={lst:6.2a}, caption={Example of an imperative AKF scenario.}, language=Python]
 from akf_windows.api.chromium import ChromiumServiceAPI
 from akflib.core.hypervisor.vbox import VBoxExportFormatEnum
 from akflib.core.hypervisor.vbox import VBoxHypervisor
@@ -1088,7 +1089,7 @@ from the script shown in \autoref{lst:6.3.2a}.) An example of a minimal
 AKF scenario, carrying out the same actions as the imperative AKF script
 in the prior section, can be seen in \autoref{lst:6.3.2a}:
 
-\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario}, ]
+\begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario.}, ]
 name: Minimal scenario
 description: Browses to the BBC website and exports a disk image.
 author: User
@@ -1398,7 +1399,8 @@ also exported. Relevant sections of the PDF report can be seen in
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_3.png}
-\caption{Snippet of generated PDF report}\label{fig:figure-3}
+\caption{Two sections from the AKF-generated PDF
+report.}\label{fig:figure-3}
 \end{figure}
 
 \subsection{Analysis}\label{analysis}
@@ -1432,7 +1434,8 @@ bundle.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_4.png}
-\caption{Contents of Microsoft Edge SQLite database}\label{fig:figure-4}
+\caption{The contents of the Microsoft Edge SQLite database in the
+sample dataset.}\label{fig:figure-4}
 \end{figure}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries
@@ -1475,8 +1478,8 @@ Wireshark in \autoref{fig:figure-5}.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_5.png}
-\caption{Relevant web request observed in packet
-capture}\label{fig:figure-5}
+\caption{The ransomware's web request as seen in the packet
+capture.}\label{fig:figure-5}
 \end{figure}
 
 Similarly, we can search the memory dump for the key information. Using
@@ -1488,7 +1491,8 @@ editor.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=1\linewidth]{figure_6.png}
-\caption{Relevant data seen in sample RAM dump}\label{fig:figure-6}
+\caption{The ransomware's web request as seen in the volatile memory
+dump.}\label{fig:figure-6}
 \end{figure}
 
 At this point, a decryption program can be written based on the

@@ -74,7 +74,7 @@ Each of the synthesizers described in **#Analysis of prior synthesizers** takes 
 
 These three approaches are not mutually exclusive within a single synthesizer, though many prior synthesizers have supported only one approach to generate artifacts. **!tbl:prior-techniques** denotes the approaches used by each of the synthesizers previously discussed. Where source code is unavailable, a best effort was made to identify the approach used by a particular synthesizer based on its published paper, if one exists; otherwise, the entire row contains question marks. 
 
-*!tbl:prior-techniques|Summary of artifact generation techniques in prior synthesizers|0.2,0.2666,0.2666,0.2666*
+*!tbl:prior-techniques|Summary of artifact generation techniques in prior synthesizers.|0.2,0.2666,0.2666,0.2666*
 
 | Synthesizer                                                                       | Physical                                                  | Agentless                   | Agent-based             |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------- | ----------------------- |
@@ -135,7 +135,7 @@ In "new-style" RPyC, this is achieved by running a *service* on the device where
 
 AKF's application-specific functionality is divided into individual RPyC "subservices" created on demand. These subservices implement automation support for a specific application or group of actions and are analogous to the agent-side code of individual ForTrace modules. The agent's main loop is itself an RPyC service responsible for creating and destroying these subservices upon request. All subservices are known to this "dispatch" service at initialization, eliminating the need for runtime introspection to find application-specific modules. A high-level diagram of this design can be seen in **!fig:figure-1**.
 
-![AKF agent architecture](figure_1.png){#fig:figure-1}
+![Simplified diagram of the AKF agent architecture.](figure_1.png){#fig:figure-1}
 
 From an implementation and usability perspective, this design provides three significant improvements over ForTrace. First, the routing of functions is wholly delegated to RPyC. Instead of manually constructing a message with the function name and its associated parameters (as strings) over the network, the process of serializing parameters and routing them to the correct function call is abstracted away by RPyC. 
 
@@ -149,7 +149,7 @@ The list of subservices supported by our AKF agent for Windows[^2] is described 
 
 [^2]: The AKF Windows agent, or `akf-windows`, is publicly available at [https://github.com/lgactna/akf-windows](https://github.com/lgactna/akf-windows).
 
-*!tbl:akf-applications|Implemented subservices for the AKF Windows agent|0.2,0.2,0.6*
+*!tbl:akf-applications|Implemented subservices for the AKF Windows agent.|0.2,0.2,0.6*
 
 | Subservice  | Dependencies                                                            | Features                                                                                                                                   |
 | ----------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -193,7 +193,7 @@ AKF implements human-readable reporting through a set of "renderers." Each rende
 
 A single CASE bundle can be passed through as many or as few renderers as needed to generate a suitable report for a dataset, as depicted in **!fig:figure-2**. So long as the original CASE bundle is available, users can reanalyze datasets with arbitrary renderers; this means that dataset reports can be regenerated with as much detail as a user needs for a specific use case. Furthermore, if new renderers are developed for artifacts that are present in older datasets, the human-readable report can be regenerated to include these artifacts. 
 
-![Diagram of modular rendering system](figure_2.png){#fig:figure-2}
+![Diagram of AKF's modular rendering system.](figure_2.png){#fig:figure-2}
 
 This modular, "evergreen" approach to reporting allows these reports to be interpreted as a focused snapshot of what a dataset contains. Importantly, this can be done without compromising the dataset itself; the CASE bundle remains the single, comprehensive source of truth. Compare this with human-written PDF reports, which may contain human biases and are rarely maintained in older datasets.
 
@@ -239,7 +239,7 @@ The AKF Windows agent includes a Vagrantfile for creating a new Windows 11 virtu
 Following setup, developers can build scenarios using the AKF core libraries (`akflib`) and the API of the platform-specific agent installed onto the virtual machine (such as `akf_windows`). This reflects typical imperative usage, in which environment setup, artifact generation, and output generation are handled explicitly through a script executed through the Python interpreter. A Python script demonstrating web browsing and disk image creation can be seen in **!lst:6.2a**.
 
 ```python
-!lst:6.2a|Example of an imperative AKF scenario
+!lst:6.2a|Example of an imperative AKF scenario.
 from akf_windows.api.chromium import ChromiumServiceAPI
 from akflib.core.hypervisor.vbox import VBoxExportFormatEnum
 from akflib.core.hypervisor.vbox import VBoxHypervisor
@@ -282,7 +282,7 @@ Declarative scripts are comprised of metadata, global configuration, a set of li
 The ability of AKF to both execute and translate declarative scripts provides significant flexibility to scenario developers. To the best of our knowledge, prior synthesizers have only supported direct execution from declarative scripts, which limits the opportunities to use declarative scripts as a "starting point" for writing more complex imperative scripts. (In fact, the code in **!lst:6.2a** was derived from the script shown in **!lst:6.3.2a**.) An example of a minimal AKF scenario, carrying out the same actions as the imperative AKF script in the prior section, can be seen in **!lst:6.3.2a**:
 
 ```yaml
-!lst:6.3.2a|Example of a declarative AKF scenario
+!lst:6.3.2a|Example of a declarative AKF scenario.
 name: Minimal scenario
 description: Browses to the BBC website and exports a disk image.
 author: User
@@ -388,7 +388,7 @@ To prepare a suitable virtual machine for this scenario, we used a Vagrantfile t
 
 Once the machine was turned on, we directed the agent to visit a series of posts on the Reddit platform according to a predefined list of URLs. This was achieved by using the Chromium subservice, which uses Playwright to interact with webpages. For each post, we saved a screenshot of the page to the Downloads folder, which the ransomware would later encrypt. After visiting several Reddit posts, we had the agent navigate to and download the ransomware. We then used the PyAutoGUI subservice to run the ransomware in File Explorer using a sequence of keystrokes, emulating how a human would normally run the ransomware. Shortly after, we created a volatile memory dump of the machine (with the ransomware process still running), then turned the machine off and created a raw disk image of the machine. The CASE bundle, along with a PDF report detailing the bundle's contents, was also exported. Relevant sections of the PDF report can be seen in **!fig:figure-3**.
 
-![Snippet of generated PDF report](figure_3.png){#fig:figure-3}
+![Two sections from the AKF-generated PDF report.](figure_3.png){#fig:figure-3}
 
 ## Analysis
 
@@ -400,7 +400,7 @@ Now, we turn to a manual analysis of the generated dataset. As part of this, we 
 
 First, we wanted to verify that the web browsing artifacts were consistent with the list of URLs specified in the script. We began by extracting the SQLite database used to store Microsoft Edge browsing history and viewed the `urls` table containing browsing history, as shown in **!fig:figure-4**. Indeed, the entries of the History file are consistent with the URLs specified, as well as the links shown in the PDF report in **!fig:figure-3**. By extension, they are also consistent with the JSON-serialized CASE bundle.
 
-![Contents of Microsoft Edge SQLite database](figure_4.png){#fig:figure-4}
+![The contents of the Microsoft Edge SQLite database in the sample dataset.](figure_4.png){#fig:figure-4}
 
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries contained in the disk image, allowing us to verify the results documented in the generated PDF (and the CASE bundle).
 As expected, both indicate that a file called `cats.exe` was run, as was Microsoft Edge. More generally, we noted that although the run times and actual executable names were consistent, the execution counts recorded by AKF were not. Indeed, AKF uses a different library than PECmd, which may explain the discrepancy between the two. 
@@ -413,11 +413,11 @@ First, we can observe that the ransomware is still present in the disk image loc
 
 To retrieve the information necessary for decryption, we can analyze either the packet capture or the memory dump independently. If we choose to analyze the packet capture, we can search for the domain requested by the ransomware, as indicated in the decompiled code. Doing so reveals the exact parameters required to reconstruct the key, as shown in Wireshark in **!fig:figure-5**.
 
-![Relevant web request observed in packet capture](figure_5.png){#fig:figure-5}
+![The ransomware's web request as seen in the packet capture.](figure_5.png){#fig:figure-5}
 
 Similarly, we can search the memory dump for the key information. Using a tool such as the Volatility framework or a hex editor, we can analyze the dump to discover the same JSON in memory as seen in the packet capture. **!fig:figure-6** depicts the JSON as seen in a hex editor.
 
-![Relevant data seen in sample RAM dump](figure_6.png){#fig:figure-6}
+![The ransomware's web request as seen in the volatile memory dump.](figure_6.png){#fig:figure-6}
 
 At this point, a decryption program can be written based on the decompiled ransomware logic. To demonstrate that the information contained in the dataset is sufficient to write a decryption script, we passed the decompiled ransomware to a large language model and asked it to produce a decryption script. The resulting script, after simplification, was successfully used to decrypt the contents of the Downloads folder. This script is included with our dataset.
 
