@@ -406,6 +406,10 @@ def filter_bibliography(citekeys: set[str], bib_file: Path, output_file: Path):
     result = re.sub(r",\n  file = .*$", "", result, flags=re.MULTILINE)
     result = re.sub(r",\n\tfile = .*$", "", result, flags=re.MULTILINE)
     
+    # Remove all note elements
+    result = re.sub(r",\n  note = .*$", ",", result, flags=re.MULTILINE)
+    result = re.sub(r",\n\tnote = .*$", ",", result, flags=re.MULTILINE)
+    
     # For each journaltitle field, re-add it as a journal field
     # result = re.sub(
     #     r",\n  journaltitle = (.*?)(,?)$",
