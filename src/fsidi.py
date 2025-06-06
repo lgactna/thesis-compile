@@ -391,12 +391,14 @@ def filter_bibliography(citekeys: set[str], bib_file: Path, output_file: Path):
     
     filtered_entries = []
     included_count = 0
+    located_citekeys = set()
     
     for entry in entries:
         citekey = entry.group(1).strip()
         if citekey in citekeys:
             filtered_entries.append(entry.group(0))
             included_count += 1
+            located_citekeys.add(citekey)
     
     result = "\n\n".join(filtered_entries)
     
@@ -418,6 +420,11 @@ def filter_bibliography(citekeys: set[str], bib_file: Path, output_file: Path):
     
     print(f"Found {included_count} of {len(citekeys)} requested citations.")
     print(f"Filtered bibliography saved to {output_file}")
+    
+    if difference := citekeys - located_citekeys:
+        print("Warning: Some requested citations were not found in the bibliography:")
+        for missing_key in difference:
+            print(f"  - {missing_key}")
     
     return included_count
 
@@ -469,13 +476,21 @@ if __name__ == "__main__":
     )
     
     fix_bib(        
-        Path("standard.bibtex"),
+        Path("standard.bibtex"), # does not autoupdate
         Path("standard_fixed.bib")
     )
     
-    with open("citekeys.txt", "r", encoding="utf-8") as f:
-        citekeys = {line.strip() for line in f if line.strip()}
+    # Search fsidi.tex for all \citep commands and extract the citekeys
+    with open("fsidi.tex", "r", encoding="utf-8") as f:
+        tex_content = f.read()
     
+    results = re.findall(r"\\citep\{([^}]+)\}", tex_content)
+    citekeys = set()
+    for result in results:
+        # For each citep, split by comma and add to a set
+        for key in result.split(","):
+            citekeys.add(key.strip())
+        
     filter_bibliography(
         citekeys, 
         Path("standard_fixed.bib"), 

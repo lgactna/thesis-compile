@@ -63,16 +63,17 @@ datasets are developed, such as verifying the correctness of
 automatically carved files.
 
 There exist various collections of public datasets, such as the Computer
-Forensic Reference Datasets (CFReDS) platform maintained by the National
-Institute of Standards and Technology (NIST) \footnote{CFReDS is hosted
-  at \url{https://cfreds.nist.gov/}.}. However, the datasets in these
-collections are often limited in scope and realism. In many cases, this
-can be attributed to privacy and legal concerns. The sensitive
-information in real-world datasets often limits their distribution and
-usage, even if they would otherwise be suitable for use. As a result,
-the community often uses \emph{synthetic} datasets, which are produced
-specifically for educational and research purposes as described by Park
-and Garfinkel et al.
+Forensic Reference Datasets (CFReDS) platform
+\citep{nationalinstituteofstandardsandtechnologyCFReDSPortal}
+maintained by the National Institute of Standards and Technology
+(NIST)\footnote{CFReDS is hosted at \url{https://cfreds.nist.gov/}.}.
+However, the datasets in these collections are often limited in scope
+and realism. In many cases, this can be attributed to privacy and legal
+concerns. The sensitive information in real-world datasets often limits
+their distribution and usage, even if they would otherwise be suitable
+for use. As a result, the community often uses \emph{synthetic}
+datasets, which are produced specifically for educational and research
+purposes as described by Park and Garfinkel et al.
 \citep{parkTREDEVMPOPCultivating2018,garfinkelBringingScienceDigital2009}.
 However, manually creating these datasets is a time-consuming process
 that tends to produce datasets with a very narrow scope and limited
@@ -238,8 +239,8 @@ The vast majority of later synthesizers are similar to Forensig2 in that
 they are all implemented in Python, exposing artifact generation
 features to users through a Python library. Notable exceptions include
 the \textbf{Digital Forensic Evaluation Test (D-FET)} platform
-\citep{williamCloudbasedDigitalForensics2011}, the \textbf{Summarized
-Forensic XML (SFX)} language
+\citep{buchananCloudbasedDigitalForensics2010}, the
+\textbf{Summarized Forensic XML (SFX)} language
 \citep{russellForensicImageDescription2012}, and the work described
 by \textbf{Yannikos et al.} \citep{yannikosDataCorporaDigital2014}.
 These synthesizers use custom languages for creating datasets, providing
@@ -389,7 +390,7 @@ if one exists; otherwise, the entire row contains question marks.
   \citep{mochForensicImageGenerator2009,mochEvaluatingForensicImage2012}
   & Yes (filesystem mounting; filesystem-independent editing) & Yes (over
   SSH only) & No \\
-  \textbf{D-FET} \citep{williamCloudbasedDigitalForensics2011} & Yes
+  \textbf{D-FET} \citep{buchananCloudbasedDigitalForensics2010} & Yes
   (filesystem mounting; filesystem-independent editing) & No & No \\
   \textbf{SFX} \citep{russellForensicImageDescription2012} & Yes
   (filesystem mounting) & No & No \\
@@ -692,10 +693,10 @@ application-specific functionality.
 There exists a gap in the ability of instructors and researchers to
 perform bulk searches for specific forensic artifacts in public
 datasets. For example, the NIST CFReDS repository does not have a
-unified standard for describing uploaded images. Although users can
-search by keywords and human-applied tags, detailed artifact information
-is not available in a standardized format that can be programmatically
-queried.
+unified standard for describing the artifacts in uploaded datasets.
+Although users can search by keywords and human-applied tags, detailed
+artifact information is not available in a standardized format that can
+be programmatically queried.
 
 For many datasets, an instructor or researcher must read through a PDF
 answer key (if one exists) or analyze the image themselves to determine
@@ -904,17 +905,36 @@ by Woods et al.~in their educational dataset
 guarantee that others will recreate the dataset in the exact same
 manner. Non-determinism can be acceptable and even desirable in
 education contexts, but it is less desirable for tool validation and
-research. Synthesizers address this through their machine-readable
-scripts, which document and execute the instructions needed to
-reconstruct a dataset. However, this also depends on the availability of
-an OS- and synthesizer-specific base image, which may not always be
-included with datasets due to legal or logistical constraints.
+research. Synthesizers, including AKF, provide these instructions
+through their machine-readable scripts, which document and execute the
+procedure needed to reconstruct a dataset.
+
+However, the fourth element has not been included in
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+However, the fourth element is often not included; this depends on the
+availability of an OS- and synthesizer-specific base image, which may
+not always be included with datasets due to legal or logistical
+constraints.
 
 AKF is designed to provide all four of these elements in every scenario
 it creates; elements 1, 2, and 3 are inherent to AKF's design, while
 base images can be provided as Vagrantfiles (described in greater detail
-in \autoref{setup-and-usage}). This ensures the reproducibility of both
-the creation of AKF datasets and any results derived from them.
+in \autoref{setup-and-usage}).
+
+Vagrantfiles themselves do not contain copyrighted content, and can be
+freely distributed
+
+This significantly increases the reproducibility of both the creation of
+AKF datasets and any results derived from them. While this does not
+guarantee a perfect recreation of the dataset (for example, external
+resources accessed as part of the scenario can change over time),
+
+This ensures the reproducibility of both the creation of AKF datasets
+and any results derived from them.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 The inclusion of these elements in a standardized distribution format
 could be used to build a distribution platform similar to CFReDS with
@@ -1366,8 +1386,9 @@ As part of this scenario, we generated a disk image, network traffic
 capture, and a volatile memory dump. These contain the information
 needed to both understand how the ransomware was downloaded and reverse
 the encryption performed by the ransomware. The scripts and other
-resources used to construct the scenario are included with the
-akf-windows repository; the resulting dataset is available on CFReDS.
+resources used to construct this dataset are included in the repository
+for the AKF Windows agent\footnote{\url{https://github.com/lgactna/akf-windows/tree/main/scenarios/fsidi}},
+and can be used to reproduce the results of this section.
 
 To prepare a suitable virtual machine for this scenario, we used a
 Vagrantfile to automate the process of creating and configuring a

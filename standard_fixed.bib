@@ -37,6 +37,15 @@
 }
 
 
+@misc{nationalinstituteofstandardsandtechnologyCFReDSPortal,
+	title = {Computer {Forensic} {Reference} {Datasets} ({CFReDS})},
+	url = {https://cfreds.nist.gov/},
+	urldate = {2023-12-04},
+	author = {{National Institute of Standards and Technology}},
+	note = {tex.shortauthor: NIST}
+}
+
+
 @inproceedings{adelsteinAutomaticallyCreatingRealistic2005,
 	title = {Automatically {Creating} {Realistic} {Targets} for {Digital} {Forensics} {Investigation}},
 	url = {https://www.semanticscholar.org/paper/Automatically-Creating-Realistic-Targets-for-Adelstein-Gao/750d289378fa28f7d78fa2959194fdf6756f55c6},
@@ -97,7 +106,7 @@
 	author = {Lawrence, Kevin R. and Chi, Hongmei},
 	month = mar,
 	year = {2009},
-	keywords = {digital forensics, e-learning, forensics tools, hand-on labs, information systems, research/image-purpose, research/image-purpose/education, semantic web, web-based},
+	keywords = {research/image-purpose, research/image-purpose/education, digital forensics, e-learning, forensics tools, hand-on labs, information systems, semantic web, web-based},
 	pages = {1--4}
 }
 
@@ -162,7 +171,7 @@
 	author = {Garfinkel, Simson},
 	month = jan,
 	year = {2007},
-	keywords = {research/image-gaps, research/image-purpose}
+	keywords = {research/image-purpose, research/image-gaps}
 }
 
 
@@ -189,7 +198,7 @@
 	author = {Brueckner, Stephen and Guaspari, David and Adelstein, Frank and Weeks, Joseph},
 	month = sep,
 	year = {2008},
-	keywords = {Automated assessment, Automated evaluation, Computer training, Digital forensic training, research/synthesizer-details, Virtualized training},
+	keywords = {research/synthesizer-details, Automated assessment, Automated evaluation, Computer training, Digital forensic training, Virtualized training},
 	pages = {S105--S111}
 }
 
@@ -363,7 +372,7 @@
 	author = {Casey, Eoghan and Barnum, Sean and Griffith, Ryan and Snyder, Jonathan and Nelson, Alex and van Beek, Harm},
 	month = sep,
 	year = {2017},
-	keywords = {Cyber-investigation, CybOX, DFAX, DFXML, Digital evidence exchange, Digital forensics, Evidence provenance, Information sharing, Specification language, Standard representation, Unified cyber ontology},
+	keywords = {Digital forensics, CybOX, DFAX, DFXML, Standard representation, Cyber-investigation, Digital evidence exchange, Evidence provenance, Information sharing, Specification language, Unified cyber ontology},
 	pages = {14--45}
 }
 
@@ -385,7 +394,9 @@
 	title = {casework/{CASE}-{Mapping}-{Python}},
 	url = {https://github.com/casework/CASE-Mapping-Python},
 	urldate = {2024-12-14},
-	author = {Nelson, Alex and Turchi, Fabrizio and Chason, Keith and Protopapas, Panos}
+	author = {Nelson, Alex and Turchi, Fabrizio and Chason, Keith and Protopapas, Panos},
+	month = apr,
+	year = {2025}
 }
 
 
@@ -455,7 +466,9 @@
 	title = {Theory of {Operation} — {RPyC}},
 	url = {https://rpyc.readthedocs.io/en/latest/docs/theory.html#theory},
 	urldate = {2025-02-06},
-	author = {Fibila, Tomer}
+	author = {Fibila, Tomer},
+	month = mar,
+	year = {2025}
 }
 
 
@@ -491,7 +504,9 @@
 	url = {https://portal.cloud.hashicorp.com/vagrant/discover},
 	urldate = {2025-02-23},
 	journal = {Vagrant Public Registry},
-	author = {{HashiCorp}}
+	author = {{HashiCorp}},
+	month = feb,
+	year = {2025}
 }
 
 
@@ -573,7 +588,7 @@
 	url = {https://github.com/Jjk422/ForGen},
 	abstract = {Forensic generator},
 	urldate = {2025-03-08},
-	author = {Jjk422},
+	author = {Keighley, Jason},
 	month = aug,
 	year = {2019},
 	note = {original-date: 2016-06-08T12:56:23Z},
@@ -650,19 +665,6 @@
 }
 
 
-@misc{sweigartAsweigartPyautogui2025a,
-	title = {asweigart/pyautogui},
-	copyright = {BSD-3-Clause},
-	url = {https://github.com/asweigart/pyautogui},
-	abstract = {A cross-platform GUI automation Python module for human beings. Used to programmatically control the mouse \& keyboard.},
-	urldate = {2025-03-28},
-	author = {Sweigart, Al},
-	month = mar,
-	year = {2025},
-	note = {original-date: 2014-07-17T23:30:38Z},
-}
-
-
 @inproceedings{wiedemeierPYLINGUALPerfectDecompilation2024,
 	title = {{PYLINGUAL}: {Toward} {Perfect} {Decompilation} of {Evolving} {High}-{Level} {Languages}},
 	isbn = {979-8-3315-2236-0},
@@ -692,13 +694,17 @@
 	month = may,
 	year = {2025},
 	note = {original-date: 2020-03-25T11:24:09Z},
-	keywords = {decompile, pyc, pyc-files, pyinstaller, pyinstaller-extractor, python, python-decompiler, reverse-engineering},
+	keywords = {python, pyinstaller, decompile, pyc, pyc-files, pyinstaller-extractor, python-decompiler, reverse-engineering},
 }
 
 
-@article{williamCloudbasedDigitalForensics2011,
+@inproceedings{buchananCloudbasedDigitalForensics2010,
 	title = {Cloud-based digital forensics evaluation test ({D}-{FET}) platform.},
-	journal = {Cyberforensics},
+	url = {http://researchrepository.napier.ac.uk/id/eprint/4429},
+	abstract = {This paper outlines the specification of the Cloud-based DFET platform which is used to evaluate the performance of digital forensics tools, which aim to detect the presence of trails of evidence, such as for the presence of illicit images and determination of user accounts from a host. Along with measuring key quality metrics, such as truepositives, and false-positives, it also measures operational performance, such as for the speed of success, CPU utilization and memory usage. This is used to determine the basic footprint of the package-under-test. The paper presents a proof-of-concept of the system using the VMware vSphere Hypervisor (ESXi) within the vCenter Cloud management infrastructure, which provides a cluster environment, and supports the creation and instantiation of a well-defined virtual test operation system. The infrastructure has been used within a teaching environment for two semesters, and has been shown to cope well in terms of performance and administration. Two key evaluation points related to whether a cloudbased infrastructure will provide improvement on existing stand-alone and workstation-based virtualisation are related to the improvement in energy consumption and in the CPU utilization footprint for each virtual machine. Thus the results show some metrics related to the energy and CPU consumptions of the created digital forensics instances, which can be used to justify the improvements in energy consumption, as opposed to stand-alone instances, and in the scalability of the infrastructure.},
+	publisher = {University of Strathclyde, Glasgow},
 	author = {Buchanan, William J and Macfarlane, Richard and Flandrin, Flavien and Graves, Jamie and Fan, Lu and Ekonomou, Elias and Bose, Niladri and Ludwiniak, Robert},
-	year = {2011}
+	year = {2010},
+	note = {tex.publicationstatus: Published},
+	keywords = {digital forensics, Cloud computing, D-Fet platform, evidence trails, VMware vSphere Hypervisor (ESXi)},
 }
