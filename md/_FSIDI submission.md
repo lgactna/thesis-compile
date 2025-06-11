@@ -327,7 +327,7 @@ These modules can be located in any library so long as they can be found through
 
 The list of declarative modules available through `akflib` and the Windows agent is described in **!tbl:akf-declarative-modules**. Note that these modules are referred to by their alias, not their fully-qualified module paths.
 
-*!tbl:akf-declarative-modules|Available AKF declarative modules|0.3,0.7*
+*!tbl:akf-declarative-modules|Available AKF declarative modules.|0.3,0.7*
 
 | Name                     | Description                                                                                                       |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
