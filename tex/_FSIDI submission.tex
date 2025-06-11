@@ -1,6 +1,6 @@
 \section{Abstract}\label{abstract}
 
-The forensic community depends on datasets containing disk images,
+The forensic@wittPoorBillionaireWindowsPrefetchParser2021k images,
 network captures, and other forensic artifacts for education and
 research. These datasets must be reflective of the artifacts that
 real-world analysts encounter, which can evolve rapidly as new software
@@ -221,8 +221,8 @@ to produce datasets for research and education. The earliest efforts to
 streamline forensic lab development were observed in \textbf{FALCON}
 \citep{adelsteinAutomaticallyCreatingRealistic2005} and
 \textbf{CYDEST} \citep{bruecknerAutomatedComputerForensics2008},
-published in 2005 and 2008 respectively, which aimed to simplify the
-deployment and evaluation of virtual lab environments to students.
+which aimed to simplify the deployment and evaluation of virtual lab
+environments for students.
 
 However, \textbf{Forensig2}, described by Moch and Freiling in 2009 and
 revisited in 2012, appears to be the first detailed description of a
@@ -248,13 +248,14 @@ alternative abstractions around their functionality.
 
 A summary of the notable aspects of the remaining Python-based
 frameworks -- many of which were identified by Göbel et al.
-\citep{gobelForTraceHolisticForensic2022} -- is described below:
+\citep{gobelForTraceHolisticForensic2022} -- is described as follows:
 
 \begin{itemize}
 \item
   \textbf{ForGeOSI} \citep{maxfraggMaxfraggForGeOSI2023} introduced
-  the use of the VirtualBox SDK to automate various operations, forming
-  the basis for much of the work done as part of VMPOP.
+  the use of the VirtualBox SDK to automate various operations (such as
+  attaching USB devices and starting video captures), forming the basis
+  for much of the work done as part of VMPOP.
 \item
   \textbf{ForGe} \citep{vistiAutomaticCreationComputer2015} is
   specifically designed to generate NTFS and FAT32 images, placing data
@@ -271,8 +272,7 @@ frameworks -- many of which were identified by Göbel et al.
   as a standalone image.
 \item
   \textbf{VMPOP} \citep{parkTREDEVMPOPCultivating2018} provides an
-  architecture for elaborate VirtualBox control (such as attaching USB
-  devices and starting video captures) in addition to various
+  architecture for elaborate VirtualBox control in addition to various
   OS-specific commands. Provided routines for Windows include creating
   restore points, installing programs, mapping network drives, setting
   registry values, and more. Although the architecture as a whole is
@@ -285,11 +285,10 @@ frameworks -- many of which were identified by Göbel et al.
 \item
   \textbf{hystck} \citep{gobelNovelApproachGenerating2020} provides
   routines for automating OS- and application-specific commands through
-  both normal Python scripts and YAML configuration files (passed
-  through an intermediate interpreter script). The framework produces
-  network captures and disk images; similar to EviPlant, it supports
-  ``differential'' images that can be distributed and applied to
-  ``template'' images.
+  both normal Python scripts and YAML configuration files. The framework
+  produces network captures and disk images; similar to EviPlant, it
+  supports ``differential'' images that can be distributed and applied
+  to ``template'' images.
 \item
   \textbf{ForTrace} \citep{gobelForTraceHolisticForensic2022} is the
   most recently developed synthesizer, which directly builds upon hystck
@@ -469,7 +468,7 @@ have been implemented by prior synthesizers. These are:
 AKF supports all three physical techniques to varying degrees; however,
 AKF makes the largest improvements in filesystem-aware direct editing.
 ForGe \citep{vistiAutomaticCreationComputer2015} implements this by
-implementing NTFS and FAT32 data structures in Python, allowing it to
+maintaining NTFS and FAT32 data structures in Python, allowing it to
 create a fully virtual representation of these filesystems. This
 virtualized filesystem provides ForGe with the information needed to
 insert data into known slack and unallocated space while maintaining
@@ -540,9 +539,9 @@ executable on a VM. This executable serves as an interface between the
 host machine and the guest machine. This program runs commands natively
 on the VM on behalf of the host machine, accepting commands over a
 dedicated network interface. This allows for greater flexibility and
-more complex actions to be taken when compared to agentless approaches.
-In particular, it allows application-specific functionality to be
-implemented using existing automation frameworks such as Selenium
+action complexity when compared to agentless approaches. In particular,
+it allows application-specific functionality to be implemented using
+existing automation frameworks such as Selenium
 \citep{SeleniumHQSelenium2025}, Playwright
 \citep{MicrosoftPlaywrightpython2025}, and PyAutoGUI
 \citep{sweigartAsweigartPyautogui2025}, rather than implementing such
@@ -659,10 +658,10 @@ The list of subservices supported by our AKF agent for
 Windows\footnote{The AKF Windows agent, or
   \passthrough{\lstinline!akf-windows!}, is publicly available at
   \url{https://github.com/lgactna/akf-windows}.} is described in
-\autoref{tbl:akf-applications} below. Although only three subservices
-are implemented, each subservice is an example of a distinct design
-pattern that could be easily adapted to implement other
-application-specific functionality.
+\autoref{tbl:akf-applications}. Although only three subservices are
+implemented, each subservice is an example of a distinct design pattern
+that could be easily adapted to implement other application-specific
+functionality.
 
 
 \begin{table*}[tb]
@@ -676,7 +675,7 @@ application-specific functionality.
   \citep{sweigartAsweigartPyautogui2025} & Hypervisor-independent mouse
   and keyboard control, as well as other PyAutoGUI features \\
   \passthrough{\lstinline!artifacts!} & Windows-Prefetch-Parser
-  \citep{wittPoorBillionaireWindowsPrefetchParser2025} & Collection of
+  \citep{wittPoorBillionaireWindowsPrefetchParser2021} & Collection of
   Windows artifacts and conversion to corresponding CASE objects \\
   \passthrough{\lstinline!chromium!} & Playwright
   \citep{MicrosoftPlaywrightpython2025} & Automated webpage browsing;
@@ -692,11 +691,11 @@ application-specific functionality.
 
 There exists a gap in the ability of instructors and researchers to
 perform bulk searches for specific forensic artifacts in public
-datasets. For example, the NIST CFReDS repository does not have a
-unified standard for describing the artifacts in uploaded datasets.
-Although users can search by keywords and human-applied tags, detailed
-artifact information is not available in a standardized format that can
-be programmatically queried.
+datasets. For example, the NIST CFReDS repository lacks a unified
+standard for describing the artifacts in uploaded datasets. Although
+users can search by keywords and human-applied tags, detailed artifact
+information is not available in a standardized format that can be
+programmatically queried.
 
 For many datasets, an instructor or researcher must read through a PDF
 answer key (if one exists) or analyze the image themselves to determine
@@ -816,9 +815,9 @@ into human-readable reports.
 Converting a rigid, well-defined format to a human-readable format is
 often easier than performing the reverse operation. This is the approach
 taken by AKF, which does not create human-readable reports as an
-immediate output of dataset generation. Instead, AKF supports a simple
-yet flexible system for generating human-readable PDF reports from
-existing CASE bundles after generating a dataset.
+immediate output of artifact generation. Instead, AKF supports a simple
+yet flexible system for generating human-readable PDF reports from CASE
+bundles produced during artifact generation.
 
 AKF implements human-readable reporting through a set of ``renderers.''
 Each renderer accepts a complete CASE bundle and extracts all CASE
@@ -897,7 +896,7 @@ a dataset (and its results) reproducible:
   which all synthesizer actions are performed.
 \end{itemize}
 
-The first two have long been a part of many public datasets. However,
+The first two have long been a part of many public datasets; however,
 less common are detailed instructions to rebuild the dataset from
 scratch. A high-level timeline of actions taken, such as that provided
 by Woods et al.~in their educational dataset
@@ -909,32 +908,16 @@ research. Synthesizers, including AKF, provide these instructions
 through their machine-readable scripts, which document and execute the
 procedure needed to reconstruct a dataset.
 
-However, the fourth element has not been included in
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-However, the fourth element is often not included; this depends on the
-availability of an OS- and synthesizer-specific base image, which may
-not always be included with datasets due to legal or logistical
-constraints.
-
-AKF is designed to provide all four of these elements in every scenario
-it creates; elements 1, 2, and 3 are inherent to AKF's design, while
-base images can be provided as Vagrantfiles (described in greater detail
-in \autoref{setup-and-usage}).
-
-Vagrantfiles themselves do not contain copyrighted content, and can be
-freely distributed
-
-This significantly increases the reproducibility of both the creation of
-AKF datasets and any results derived from them. While this does not
-guarantee a perfect recreation of the dataset (for example, external
-resources accessed as part of the scenario can change over time),
-
-This ensures the reproducibility of both the creation of AKF datasets
-and any results derived from them.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+However, the distribution of a ``base image'' is perhaps the most
+uncommon, even among synthesizers. Besides the extra resources required
+to distribute and use virtual disks and appliances, there are also
+concerns associated with including copyrighted software, such as Windows
+system files. AKF solves this by distributing Vagrantfiles (described in
+greater detail in \autoref{setup-and-usage}), which provides a
+reproducible method for creating a base image without including
+copyrighted content. In doing so, AKF can reliably provide all four
+elements noted above, vastly increasing the reproducibility of both the
+creation of AKF datasets and any results derived from them.
 
 The inclusion of these elements in a standardized distribution format
 could be used to build a distribution platform similar to CFReDS with
@@ -947,16 +930,31 @@ achieved by searching for the inclusion of the relevant AKF libraries in
 the scenario's scripts. Discussed briefly in \autoref{conclusion-and-future-work} is the related challenge of efficiently storing and
 distributing these datasets to support such a platform.
 
+It is worth noting that copyright concerns may also apply to the
+artifacts themselves, such as disk images and volatile memory dumps that
+contain Microsoft executables. Prior educational datasets have addressed
+this issue by rendering the OS unbootable
+\citep{woodsCreatingRealisticCorpora2011,garfinkelBringingScienceDigital2009},
+although this reduces realism. As observed by the authors of TraceGen
+\citep{duTraceGenUserActivity2021}, synthesizers alleviate this by
+allowing users to distribute only the scripts and base images used to
+create a dataset. While this does not guarantee a perfect recreation of
+the dataset as intended by the authors (for example, external resources
+accessed as part of the scenario can change over time), many artifacts
+will likely remain consistent with the original dataset. Thus, the
+overall value of the dataset is preserved across different users, even
+if the original dataset itself cannot be distributed.
+
 With the reproducibility and value of AKF-generated scenarios
 established, we now discuss how to invoke and leverage the underlying
 technologies that provide these benefits.
 
 \section{Dataset construction}\label{dataset-construction}
 
-At this point, we have provided the functionality for automating
-artifact generation in a near-deterministic manner with comprehensive
-logging and reporting. However, there is still the challenge of exposing
-this functionality in a user-friendly manner. This section explores the
+At this point, we have described the functionality for automating
+artifact generation in a reproducible manner with comprehensive logging
+and reporting. However, there is still the challenge of exposing this
+functionality in a user-friendly manner. This section explores the
 various improvements AKF makes in simplifying the initial setup process,
 writing scripts to create new datasets, and converting abstract ideas
 into a coherent script.
@@ -989,11 +987,11 @@ needed.
 Although relatively straightforward, this process is still
 time-consuming, especially when adapted to new operating systems. While
 a prepared AKF virtual machine can be distributed in a virtual appliance
-format such as OVF, this can run into legal issues if the software on
-the underlying operating system is copyrighted. To help resolve this,
-AKF uses modern infrastructure-as-code solutions to vastly simplify the
-setup of new virtual machines. Vagrant, developed by HashiCorp, is a
-tool for rapidly building development environments
+format such as OVF, this is not always possible due to the copyright
+concerns raised in the previous section. To help resolve this, AKF uses
+modern infrastructure-as-code solutions to vastly simplify the setup of
+new virtual machines. Vagrant, developed by HashiCorp, is a tool for
+rapidly building development environments
 \citep{HashicorpVagrant2025}. It allows users to define and build
 virtual machines on several virtualization platforms, including
 VirtualBox and VMWare. Virtual machines are built by configuring a base
@@ -1073,7 +1071,7 @@ users to perform complex actions by writing simple YAML scripts.
 In designing the AKF declarative syntax, the declarative syntaxes of
 prior synthesizers and unrelated technologies were evaluated. The two
 syntaxes that contributed most to the AKF declarative syntax were those
-of ForTrace and Ansible; in particular, the modular nature of both
+of ForTrace and Ansible. In particular, the modular nature of both
 syntaxes was adapted to AKF, as was the overall structure of Ansible's
 YAML scripts.
 
@@ -1162,21 +1160,21 @@ These modules can be located in any library so long as they can be found
 through Python's import system. For example, both
 \passthrough{\lstinline!akflib!} and the AKF Windows agent contain their
 own declarative module libraries, leveraging functionality specific to
-each code repository. All modules in the script are located and
-``cached'' at the start of script execution, which allows for validation
-and runtime efficiency. This design allows declarative modules to be
-written independently of the libraries they depend on, reducing the
-``impact'' of supporting declarative features on the core imperative
-libraries. In fact, this independence allows for the AKF module system
-to be used in general-purpose scripting, similar to Ansible; it is not
-tightly bound to the creation of forensic scenarios and artifacts. That
-said, the existing declarative modules of AKF expose nearly all existing
+each code repository. All modules in the script are located and stored
+at the start of script execution, which allows for validation and
+runtime efficiency. This design allows declarative modules to be written
+independently of the libraries they depend on, reducing the ``impact''
+of supporting declarative features on the core imperative libraries. In
+fact, this independence allows for the AKF module system to be used in
+general-purpose scripting, similar to Ansible; it is not tightly bound
+to the creation of forensic scenarios and artifacts. That said, the
+existing declarative modules of AKF expose nearly all existing
 functionality provided by \passthrough{\lstinline!akflib!}, including
 PDF report generation, virtual machine interaction, and more.
 
 The list of declarative modules available through
 \passthrough{\lstinline!akflib!} and the Windows agent is described in
-\autoref{tbl:akf-declarative-modules} below. Note that these modules are
+\autoref{tbl:akf-declarative-modules}. Note that these modules are
 referred to by their alias, not their fully-qualified module paths.
 
 
@@ -1270,13 +1268,13 @@ to create individual artifacts through generative AI, it still takes
 time to turn an idea into a specific sequence of actions. This is where
 AKF's simple, modular declarative scripting language is particularly
 powerful. In particular, there are two features of the declarative
-syntax that lends itself well to this process:
+syntax that enable this process:
 
 \begin{itemize}
 \item
-  The role of each module is well-defined and corresponds one-to-one to
-  a specific action that a human might take, such as visiting a set of
-  websites.
+  The role of each module is well-defined and often corresponds
+  one-to-one to a specific action that a human might take, such as
+  visiting a set of websites.
 \item
   The expected inputs for each module are well-defined, as they are
   documented by the required Pydantic argument model for each module.
@@ -1323,16 +1321,17 @@ machine underwent multiple power cycles throughout the scenario.
 Although DeepSeek-R1 was not provided with examples specific to invoking
 the \passthrough{\lstinline!chromium\_visit\_urls!} module, it correctly
 constructed an argument dictionary containing several websites that are
-thematically consistent for both browsers. Additionally, it correctly
-used the \passthrough{\lstinline!vbox\_start\_machine!} and
+thematically consistent for both browsers. It also attempted to use the
+\passthrough{\lstinline!vbox\_start\_machine!} and
 \passthrough{\lstinline!vbox\_stop\_machine!} actions to perform
 multiple power cycles.
 
-However, DeepSeek-R1 struggled to understand the interactions between
-related modules without additional guidance. For example, it did not
-infer that the use of the \passthrough{\lstinline!vbox\_stop\_machine!}
-and \passthrough{\lstinline!vbox\_start\_machine!} actions required that
-a hypervisor instance had been previously created using
+However, DeepSeek-R1 sometimes struggled to understand the interactions
+between related modules without additional guidance. For example, it did
+not infer that the use of the
+\passthrough{\lstinline!vbox\_stop\_machine!} and
+\passthrough{\lstinline!vbox\_start\_machine!} actions required that a
+hypervisor instance had been previously created using
 \passthrough{\lstinline!vbox\_start!}. Even when the module descriptions
 were modified to explicitly state these requirements, it continued to
 invoke \passthrough{\lstinline!vbox\_start\_machine!} without a
@@ -1379,16 +1378,17 @@ user visits websites, saves photos, and then downloads and runs
 ``ransomware.'' This ransomware simply encrypts the contents of the
 Downloads folder before sending the key details and a unique identifier
 to a remote web server over HTTP. The ransomware was written in Python
-and bundled into an executable with PyInstaller, then uploaded publicly
-to Google Drive, with a link posted on Pastebin.
+and bundled into an executable using PyInstaller. It was then uploaded
+publicly to Google Drive, with the share link posted on an unlisted
+Pastebin note.
 
 As part of this scenario, we generated a disk image, network traffic
 capture, and a volatile memory dump. These contain the information
 needed to both understand how the ransomware was downloaded and reverse
 the encryption performed by the ransomware. The scripts and other
 resources used to construct this dataset are included in the repository
-for the AKF Windows agent\footnote{\url{https://github.com/lgactna/akf-windows/tree/main/scenarios/fsidi}},
-and can be used to reproduce the results of this section.
+for the AKF Windows agent\footnote{\url{https://github.com/lgactna/akf-windows/tree/main/scenarios/fsidi}}.
+These can be used to reproduce the results described in this section.
 
 To prepare a suitable virtual machine for this scenario, we used a
 Vagrantfile to automate the process of creating and configuring a
@@ -1397,7 +1397,7 @@ configured two network adapters for the machine: a NAT adapter connected
 to the internet and a host-only adapter for communicating with the
 agent. We then enabled packet capturing over the NAT adapter, which
 would allow us to capture the key sent by the ransomware. Finally, we
-created a CASE bundle for use throughout the scenario, which will
+explored a CASE bundle for use throughout the scenario, which will
 include some of the relevant artifacts generated as part of this
 dataset.
 
@@ -1462,11 +1462,11 @@ sample dataset.}\label{fig:figure-4}
 We also used Eric Zimmerman's PECmd tool to analyze the prefetch entries
 contained in the disk image, allowing us to verify the results
 documented in the generated PDF (and the CASE bundle). As expected, both
-indicate that a file called \passthrough{\lstinline!cats.exe!} was run,
-as was Microsoft Edge. More generally, we noted that although the run
-times and actual executable names were consistent, the execution counts
-recorded by AKF were not. Indeed, AKF uses a different library than
-PECmd, which may explain the discrepancy between the two.
+indicate that our ransomware was run, as was Microsoft Edge. More
+generally, we noted that although the run times and actual executable
+names were consistent, the execution counts recorded by AKF were not.
+This may be explained by the differences in the libraries used by PECmd
+and our agent subservice.
 
 It is worth noting that several artifacts contained in the Microsoft
 Edge database and the Prefetch folder are specific to AKF. These
@@ -1474,9 +1474,9 @@ synthesizer-specific artifacts are discussed in \autoref{discussion}.
 
 To demonstrate the value of each part of the dataset in a digital
 forensics, incident response, and reverse engineering context, we will
-now attempt to decrypt the contents of the Downloads folder using only
-the data provided in the dataset. This process involves many skills that
-are characteristic of a good educational dataset.
+now decrypt the contents of the Downloads folder using only the data
+provided in the dataset. This process involves many skills that are
+characteristic of a good educational dataset.
 
 First, we can observe that the ransomware is still present in the disk
 image located in the user's Downloads folder. The compiled Python
@@ -1537,17 +1537,16 @@ example.
 
 Several observations can also be made regarding the presence of
 artifacts specific to synthesizer use. First, as mentioned previously,
-several applications that were explicitly installed as part of the
-scenario were present in both Prefetch reports. In particular, multiple
-processes associated with the VirtualBox Guest Additions were present.
-Additionally, the default user created by Vagrant was still present, as
-were various PowerShell scripts executed by our Vagrant during setup.
-These detract from the realism of the disk images but do not affect the
-analysis performed above. Additionally, many of these artifacts are
-likely to be consistent across Vagrant-produced virtual machines and can
-likely be documented and ignored for most purposes. Notably, the AKF
-agent was absent from the Prefetch reports produced by either AKF or
-PECmd.
+several applications that were installed to support AKF were present in
+both Prefetch reports. In particular, multiple processes associated with
+the VirtualBox Guest Additions were present. Additionally, the default
+user created by Vagrant was still present, as were various PowerShell
+scripts executed by our Vagrant during setup. These detract from the
+realism of the disk images but do not affect the analysis performed
+above. However, many of these artifacts are likely to be consistent
+across Vagrant-produced virtual machines and can likely be documented
+and ignored in the future. Notably, the AKF agent was absent from the
+Prefetch reports produced by either AKF or PECmd.
 
 Similar observations can be made about the volatile memory dump. Most
 processes are realistic, with the exception of the AKF agent and the
