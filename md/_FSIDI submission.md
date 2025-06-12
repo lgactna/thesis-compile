@@ -278,8 +278,8 @@ In designing the AKF declarative syntax, the declarative syntaxes of prior synth
 
 Declarative scripts are comprised of metadata, global configuration, a set of libraries to import, and individual tasks to execute as part of the scenario. Each task refers to a single *module* by name, accepting a dictionary of arguments that determine how the module behaves. Each module encapsulates some specific functionality, such as visiting a group of websites or generating a disk image. AKF's interpreter `akf-translate`, which implements support for our language, parses the script and does one of two things:
 
-- **Execution**: When instructed to perform actions directly from the declarative script, the interpreter should import AKF core libraries and agent APIs to perform the required actions encapsulated by each task.
-- **Translation**: When instructed to translate the declarative script, the interpreter should generate the equivalent code that *would* perform the required actions if executed through a standard Python interpreter with the necessary libraries installed.
+- **Execution**: When instructed to perform actions directly from the declarative script, the interpreter imports AKF core libraries and agent APIs to perform the required actions encapsulated by each task.
+- **Translation**: When instructed to translate the declarative script, the interpreter generates the equivalent code that *would* perform the required actions if executed through a standard Python interpreter with the necessary libraries installed.
 
 The ability of AKF to both execute and translate declarative scripts provides significant flexibility to scenario developers. To the best of our knowledge, prior synthesizers have only supported direct execution from declarative scripts, which limits the opportunities to use declarative scripts as a "starting point" for writing more complex imperative scripts. (In fact, the code in **!lst:6.2a** was derived from the script shown in **!lst:6.3.2a**.) An example of a minimal AKF scenario, carrying out the same actions as the imperative AKF script in the prior section, can be seen in **!lst:6.3.2a**:
 

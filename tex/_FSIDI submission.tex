@@ -1087,12 +1087,11 @@ support for our language, parses the script and does one of two things:
 \begin{itemize}
 \item
   \textbf{Execution}: When instructed to perform actions directly from
-  the declarative script, the interpreter should import AKF core
-  libraries and agent APIs to perform the required actions encapsulated
-  by each task.
+  the declarative script, the interpreter imports AKF core libraries and
+  agent APIs to perform the required actions encapsulated by each task.
 \item
   \textbf{Translation}: When instructed to translate the declarative
-  script, the interpreter should generate the equivalent code that
+  script, the interpreter generates the equivalent code that
   \emph{would} perform the required actions if executed through a
   standard Python interpreter with the necessary libraries installed.
 \end{itemize}
