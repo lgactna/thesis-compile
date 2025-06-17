@@ -47,7 +47,7 @@ lectures and recitations
 \citep{adelsteinAutomaticallyCreatingRealistic2005}. Besides the
 specific technical skills covered by these scenarios, these datasets aim
 to develop the analytical skills needed for students to adapt to
-developments in tools and technology
+developments in the field
 \citep{cooperStandardsDigitalForensics2010}. In other words, students
 should be familiar with standard tools and patterns in digital
 forensics, providing a foundation on which more niche techniques can be
@@ -58,9 +58,9 @@ purposes. The first is in improving specific processes in the analytic
 step of a forensic investigation. Examples include the development of
 novel techniques for niche platforms and the improvement of existing,
 well-established techniques. The second is in upholding the quality of
-the investigation process as new techniques and tools for analyzing
-datasets are developed, such as verifying the correctness of
-automatically carved files.
+the investigation process as new approaches for analyzing datasets are
+developed, such as verifying the correctness of automatically carved
+files.
 
 There exist various collections of public datasets, such as the Computer
 Forensic Reference Datasets (CFReDS) platform
@@ -69,11 +69,11 @@ maintained by the National Institute of Standards and Technology
 (NIST)\footnote{CFReDS is hosted at \url{https://cfreds.nist.gov/}.}.
 However, the datasets in these collections are often limited in scope
 and realism. In many cases, this can be attributed to privacy and legal
-concerns. The sensitive information in real-world datasets often limits
-their distribution and usage, even if they would otherwise be suitable
-for use. As a result, the community often uses \emph{synthetic}
-datasets, which are produced specifically for educational and research
-purposes as described by Park and Garfinkel et al.
+concerns. The sensitive information in real-world datasets limits their
+distribution and usage, even if they would otherwise be suitable for
+use. As a result, the community often uses \emph{synthetic} datasets,
+which are produced specifically for educational and research purposes as
+described by Park and Garfinkel et al.
 \citep{parkTREDEVMPOPCultivating2018,garfinkelBringingScienceDigital2009}.
 However, manually creating these datasets is a time-consuming process
 that tends to produce datasets with a very narrow scope and limited
@@ -638,10 +638,10 @@ virtual machine} can be given to the host machine. Instead of writing
 individual methods for opening pages, navigating to specific elements,
 and so on, we can use the methods that already exist in the Playwright
 object -- any local calls on the host's proxy object will lead to remote
-outcomes on the host, as desired. This does not preclude the ability to
-write convenience methods for more complex actions requiring the
-Playwright object, such as randomly navigating to webpages based on a
-provided file containing URLs.
+outcomes on the virtual machine, as desired. This does not preclude the
+ability to write convenience methods for more complex actions requiring
+the Playwright object, such as randomly navigating to webpages based on
+a provided file containing URLs.
 
 Together, these three features significantly simplify the process of not
 only implementing and managing support for individual applications, but
@@ -758,7 +758,7 @@ As CASE-compatible functions are called, they can automatically add CASE
 objects corresponding to the artifacts generated through their
 execution. For example, if the agent subservice API for automating
 Chromium browser actions is provided with a CASE bundle, navigating to a
-page using the API can also generate a CASE object describing the page
+page using the API may also generate a CASE object describing the page
 visit and add it to the bundle. This process can occur entirely within
 the host, allowing CASE-related logic to remain out of the agent when
 possible.
@@ -777,7 +777,9 @@ requiring separate tooling. CASE-oriented functionality can also be
 implemented in existing subservices; for example, the
 \passthrough{\lstinline!chromium!} subservice can create CASE objects
 for Chrome and Edge browser history after all browser automation actions
-have been performed.
+have been performed. (This is the actual approach taken by the agent
+rather than supporting CASE object generation on individual page
+visits.)
 
 The flexibility of automatic and on-demand CASE object generation makes
 it possible to construct CASE objects in a manner that requires little
@@ -1108,7 +1110,7 @@ in the prior section, can be seen in \autoref{lst:6.3.2a}:
 
 \begin{lstlisting}[label={lst:6.3.2a}, caption={Example of a declarative AKF scenario.}, ]
 name: Minimal scenario
-description: Browses to the BBC website and exports a disk image.
+description: Browse to the BBC website and export a disk image.
 author: User
 seed: "0"
 libraries:
@@ -1396,7 +1398,7 @@ configured two network adapters for the machine: a NAT adapter connected
 to the internet and a host-only adapter for communicating with the
 agent. We then enabled packet capturing over the NAT adapter, which
 would allow us to capture the key sent by the ransomware. Finally, we
-explored a CASE bundle for use throughout the scenario, which will
+created a CASE bundle for use throughout the scenario, which will
 include some of the relevant artifacts generated as part of this
 dataset.
 
@@ -1518,7 +1520,7 @@ dump.}\label{fig:figure-6}
 At this point, a decryption program can be written based on the
 decompiled ransomware logic. To demonstrate that the information
 contained in the dataset is sufficient to write a decryption script, we
-passed the decompiled ransomware to a large language model and asked it
+provided the decompiled ransomware to OpenAI's GPT-4o model and asked it
 to produce a decryption script. The resulting script, after
 simplification, was successfully used to decrypt the contents of the
 Downloads folder. This script is included with our dataset.
@@ -1594,7 +1596,7 @@ writing code using the underlying Python libraries. This declarative
 syntax can be used with generative AI to further streamline scenario
 development, both when constructing individual artifacts and when
 building a complete scenario. Finally, we provide a sample ransomware
-dataset that highlights various features of the framework.
+scenario that highlights various features of the framework.
 
 Of course, there are still limitations to what AKF can accomplish.
 Numerous opportunities exist to leverage existing and emerging
