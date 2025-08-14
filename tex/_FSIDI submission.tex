@@ -115,33 +115,33 @@ lack of standardized ground truth, and the difficulty of preparing and
 using these synthesizers.
 
 In particular, AKF provides the following novel functionality, each of
-which promotes its usage in the broader forensic community.
+which promotes its use in the broader forensic community.
 
 \begin{itemize}
 \item
-  \textbf{Significantly simplified library usage and development}: AKF
-  uses modern libraries and approaches to greatly simplify the
-  implementation of many of its features, including agent communication
-  and disk image modification. It also uses technologies such as Vagrant
-  to both reduce the difficulty of setting up AKF and improve the
-  reproducibility of datasets created by AKF.
+  \textbf{Simplified library usage and development}: AKF uses modern
+  libraries and approaches to significantly simplify the implementation
+  of many of its features, including agent communication and disk image
+  modification. It also uses technologies such as Vagrant to both reduce
+  the difficulty of setting up AKF and improve the reproducibility of
+  datasets created by AKF.
 \item
-  \textbf{Automated dataset documentation in both human- and
-  machine-readable formats using the CASE ontology}: Many functions
-  throughout AKF generate CASE objects, which document well-known
-  artifacts in a structured, queryable format
+  \textbf{Dataset documentation in both human- and machine-readable
+  formats using the CASE ontology}: Many functions throughout AKF
+  generate CASE objects, which document well-known artifacts in a
+  structured, queryable format
   \citep{caseyAdvancingCoordinatedCyberinvestigations2017}. We also
   provide functionality to extract the information from supported CASE
   object types and produce a corresponding PDF report. This is supported
-  by our custom CASE object definitions, which simplifies use of the
-  CASE ontology for Python.
+  by our custom CASE library, which simplifies use of the CASE ontology
+  for Python.
 \item
-  \textbf{Vastly simplified dataset creation using a custom scripting
-  language and AI-assisted workflows}: We provide a YAML-based scripting
-  language that provides simplified access to the functionality normally
-  exposed by our Python libraries. Additionally, we explore the
-  viability of generative AI in creating these YAML scripts, allowing
-  datasets to be developed from natural language prompts.
+  \textbf{Simplified dataset creation using a custom scripting language
+  and AI-assisted workflows}: We provide a YAML-based scripting language
+  that provides simplified access to the functionality normally exposed
+  by our Python libraries. Additionally, we explore the viability of
+  generative AI in creating these YAML scripts, allowing datasets to be
+  developed from natural language prompts.
 \end{itemize}
 
 This paper begins with an analysis of related work in \autoref{related-work}, covering existing dataset sources and the contributions of prior
@@ -186,7 +186,7 @@ Apache mailing archives, and facial recognition collections
 There were also some synthetic datasets developed during this period,
 such as the standalone test datasets created by NIST
 \citep{woodsCreatingRealisticCorpora2011}. More recent examples
-include synthetic datasets produced for the DFRWS Forensics Rodeos and
+include challenge datasets produced for the DFRWS Forensics Rodeos and
 vendor capture-the-flag (CTF) competitions, such as Cellebrite CTF and
 Magnet CTF.
 
@@ -688,13 +688,14 @@ as many different platforms as possible with minimal changes to the
 underlying codebase.
 
 \autoref{tbl:akf-comparison} provides brief examples of use cases that
-demonstrate how AKF improves upon ForTrace's design.
+demonstrate how AKF improves upon ForTrace's design from a development
+perspective.
 
 
 \begin{table*}[tb]
 \footnotesize
 \centering
-\begin{tabularx}{\linewidth}{L{0.3} L{0.35} L{0.35}}
+\begin{tabularx}{\linewidth}{L{0.25} L{0.375} L{0.375}}
 \toprule
   \textbf{Use case} & \textbf{Implementation in ForTrace} & \textbf{Implementation in AKF} \\
 \midrule
@@ -702,14 +703,14 @@ demonstrate how AKF improves upon ForTrace's design.
   valid string containing the name of the function and its serialized
   parameters; implement deserialization and routing logic to correctly
   import and call the corresponding function in the VM. & Call the
-  function by name through the RPyC connection using native Python
-  objects. Explicit routing logic is not required. \\
+  function by name through the RPyC connection, as if it were an instance
+  method. Routing logic is handled by RPyC. \\
   Sending an object from the VM to the host & Extract the internal state
-  of the object and convert it to a string (which may not be difficult);
+  of the object and convert it to a string (which may be very difficult);
   manually implement deserialization logic that will correctly
   re-instantiate the object based on the extracted state. & All
   serialization logic is already automatically handled by RPyC on both
-  ends. Developers typically do not need to add extra logic to transmit
+  ends. Developers typically do not need to write extra logic to transmit
   complex objects. \\
   Expose the methods of a Python object existing on the VM to the host
   machine & Implement wrapper functions for each method to expose on the
@@ -855,9 +856,9 @@ Sample CASE objects generated by AKF can be seen in \autoref{lst:5.1}.
 These CASE objects were part of the full CASE bundle generated as part
 of \autoref{sample-demonstration}, and were used to generate the PDF in
 \autoref{fig:figure-3}. Both of these CASE objects were generated
-immediately before the final disk image was produced (as opposed to
-generating them as soon as their corresponding artifacts were created),
-as described in the prior paragraph.
+immediately before creating a disk image (as opposed to generating them
+as soon as their corresponding artifacts were created), as described in
+the prior paragraph.
 
 \begin{lstlisting}[label={lst:5.1}, caption={Samples of CASE objects contained in the CASE bundle. Note that some JSON elements have been omitted for brevity.}, ]
 {
@@ -1127,7 +1128,7 @@ allowing them to build the same virtual machine as intended by a
 scenario author. Notably, Vagrant boxes are often self-contained and do
 not require access to vendor resources, such as an update server or
 licensing server; this makes them more resilient to loss of support from
-vendors.
+platform vendors.
 
 The AKF Windows agent includes a Vagrantfile for creating a new Windows
 11 virtual machine with the agent installed and configured, which can
@@ -1299,9 +1300,9 @@ report generation, virtual machine interaction, and more. The list of
 declarative modules available through \passthrough{\lstinline!akflib!}
 and the Windows agent is described in
 \autoref{tbl:akf-declarative-modules}. Note that these modules are
-referred to by their alias, not their fully-qualified module paths that
-are also valid names for the \passthrough{\lstinline!module!} key in the
-YAML script.
+referred to by their aliases, not their fully-qualified module paths
+that are also valid names for the \passthrough{\lstinline!module!} key
+in the YAML script.
 
 
 \begin{table*}[tb]
@@ -1318,8 +1319,8 @@ YAML script.
   \passthrough{\lstinline!render\_akf\_bundle!} & Pass the currently
   active CASE bundle through a set of provided renderers and construct a
   valid PDF using Pandoc. \\
-  \passthrough{\lstinline!vbox\_init!} & Create a new VirtualBox instance
-  bound to a specific virtual machine by name. \\
+  \passthrough{\lstinline!vbox\_init!} & Create an active VirtualBox
+  instance bound to a specific virtual machine by name. \\
   \passthrough{\lstinline!vbox\_start\_vm!} & Power on the currently
   active virtual machine. \\
   \passthrough{\lstinline!vbox\_stop\_vm!} & Power off the currently
@@ -1385,7 +1386,7 @@ individual artifacts; generative AI models such as DeepSeek-R1
 standalone artifacts that can then be used as part of a dataset. For
 example, a large language model (LLM) can be directed to create
 technical documentation, email conversations, or image generation
-prompts that are related to a corporate espionage scenario, which can
+prompts that are related to a corporate espionage scenario. These can
 then be used when building a corresponding educational disk image.
 
 However, perhaps a larger challenge is determining the specific actions
@@ -1412,10 +1413,10 @@ imperative code, an LLM can be used to facilitate natural language
 prompts as an abstraction around creating declarative scripts. To
 explore this, we used Ollama to set up a local instance of the
 \passthrough{\lstinline!deepseek-r1:32b!} model, interacting with it
-through Open WebUI. DeepSeek-R1 was chosen because of its comparable
-performance on various benchmarks to proprietary LLMs; the 32 billion
-parameter model was chosen as it was the largest model with reasonable
-performance on our hardware.
+through a locally-hosted instance of Open WebUI. DeepSeek-R1 was chosen
+because of its comparable performance on various benchmarks to
+proprietary LLMs; the 32 billion parameter model was chosen as it was
+the largest model with reasonable performance on our hardware.
 
 To create AI-generated YAML scripts, we provided our instance of
 DeepSeek-R1 with the following information. (The actual prompts and
@@ -1505,7 +1506,9 @@ particular, DeepSeek-R1 is a reasoning model, which means that it
 used to identify and eliminate vagueness or uncertainty in the provided
 prompt. For both users and AKF developers, writing precise prompts and
 documentation with this LLM-oriented pipeline could further improve the
-quality of generated outputs.
+quality of generated outputs. Additional work is needed to determine the
+information that must be provided to an LLM for it to generate
+high-quality outputs.
 
 It is important to stress that it remains the user's responsibility to
 verify the accuracy and content of AI-generated content. While an LLM
@@ -1679,8 +1682,8 @@ provided the decompiled ransomware to OpenAI's GPT-4o model and asked it
 to produce a decryption script. The resulting script, after
 simplification, was successfully used to decrypt the contents of the
 Downloads folder. This script is included with our dataset. Note that an
-online LLM is used solely to aid in the reproducibility of our analysis;
-public models should not be used to analyze confidential datasets.
+online LLM is used solely for demonstration; publicly available models
+should not be used to analyze confidential datasets.
 
 \subsection{Discussion}\label{discussion}
 
@@ -1787,9 +1790,9 @@ support of many automation frameworks. As with any tool, AKF requires
 community feedback and ``field testing'' to identify areas of
 improvement in its different components, such as declarative scripting,
 artifact reporting, the API documentation, and AI-assisted usage. In the
-future, we intend to evaluate AKF from the perspective of scenario
+future, we intend to evaluate AKF from the experiences of scenario
 developers such as educators (who will be using AKF itself), as well as
-the perspective of students (who will be trained on AKF-generated
+the experiences of students (who will be trained on AKF-generated
 outputs).
 
 AKF does not address two notable topics that are prevalent in the field
