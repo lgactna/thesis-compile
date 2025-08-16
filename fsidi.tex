@@ -144,7 +144,6 @@ Forensic image creation \sep
 User emulation \sep
 Artifact documentation \sep
 Dataset documentation \sep
-Generative AI \sep
 \end{keyword}
 
 \end{frontmatter}
@@ -244,12 +243,12 @@ which promotes its use in the broader forensic community.
 
 \begin{itemize}
 \item
-  \textbf{Simplified library usage and development}: AKF uses modern
-  libraries and approaches to significantly simplify the implementation
-  of many of its features, including agent communication and disk image
-  modification. It also uses technologies such as Vagrant to both reduce
-  the difficulty of setting up AKF and improve the reproducibility of
-  datasets created by AKF.
+  \textbf{Improved installation, usage, and development}: AKF uses
+  modern libraries and approaches to significantly simplify the
+  implementation and usage of many of its features, including agent
+  communication and disk image modification. It also uses technologies
+  such as Vagrant to both reduce the difficulty of setting up AKF and
+  improve the reproducibility of datasets created by AKF.
 \item
   \textbf{Dataset documentation in both human- and machine-readable
   formats using the CASE ontology}: Many functions throughout AKF
@@ -1073,23 +1072,25 @@ bundles produced during artifact generation.
 AKF implements human-readable reporting through a set of ``renderers.''
 Each renderer accepts a complete CASE bundle and extracts all CASE
 objects of a particular type. The renderer then uses the information
-contained in these objects to generate a Markdown document, which can
-include formatted text, tables, images, and other visual elements. The
-results of each renderer are combined to form a larger Markdown document
-(or documents) with multiple sections, one for each renderer. The
-combined document can be converted to a PDF using Pandoc
-\citep{macfarlanePandoc2025}, a general-purpose tool for converting
-between documents of various types. Users can modify the generated
-Markdown documents before running Pandoc if desired.
+contained in these objects to generate a standalone Markdown document,
+which can include formatted text, tables, images, and other visual
+elements. The partial documents from each renderer are combined to form
+a larger Markdown document (or documents). The combined document can be
+converted to a PDF using Pandoc \citep{macfarlanePandoc2025}, a
+general-purpose tool for converting between documents of various types.
+Users can modify the generated Markdown documents before running Pandoc
+if desired.
 
 A single CASE bundle can be passed through as many or as few renderers
 as needed to generate a suitable report for a dataset, as depicted in
-\autoref{fig:figure-2}. So long as the original CASE bundle is
-available, users can reanalyze datasets with arbitrary renderers; this
-means that dataset reports can be regenerated with as much detail as a
-user needs for a specific use case. Furthermore, if new renderers are
-developed for artifacts that are present in older datasets, the
-human-readable report can be regenerated to include these artifacts.
+\autoref{fig:figure-2}. Each renderer produces an independent section
+that can be included or excluded from reports as desired. So long as the
+original CASE bundle is available, users can reanalyze datasets with
+arbitrary renderers; this means that dataset reports can be regenerated
+with as much detail as a user needs for a specific use case.
+Furthermore, if new renderers are developed for artifacts that are
+present in older datasets, the human-readable report can be regenerated
+to include these artifacts.
 
 \begin{figure*}[htbp]
 \centering
@@ -1536,9 +1537,10 @@ syntax that enable this process:
 In the same way that declarative scripts are an abstraction around
 imperative code, an LLM can be used to facilitate natural language
 prompts as an abstraction around creating declarative scripts. To
-explore this, we used Ollama to set up a local instance of the
-\passthrough{\lstinline!deepseek-r1:32b!} model, interacting with it
-through a locally-hosted instance of Open WebUI. DeepSeek-R1 was chosen
+explore this, we used Ollama \citep{ollamaOllamaOllama2025} to set up
+a local instance of the \passthrough{\lstinline!deepseek-r1:32b!} model,
+interacting with it through a locally-hosted instance of Open WebUI
+\citep{openwebuiOpenwebuiOpenwebui2025}. DeepSeek-R1 was chosen
 because of its comparable performance on various benchmarks to
 proprietary LLMs; the 32 billion parameter model was chosen as it was
 the largest model with reasonable performance on our hardware.
@@ -1572,7 +1574,10 @@ information was manually written, much of the prompt could be used as a
 template and substituted with the contents of automatically generated
 documentation. For example, the table of available modules and their
 descriptions could be generated through existing code metadata, such as
-the contents of docstrings and Pydantic argument models. Although not
+the contents of function docstrings and Pydantic argument models.
+Developer-provided docstrings are particularly relevant for both humans
+and LLMs, as they contain information about the function's arguments,
+preconditions, CASE objects generated, and so on. Although not
 implemented, this use of existing internal documentation is expected to
 provide the necessary context for an LLM to function in the future.
 
@@ -1651,7 +1656,10 @@ with a broader human evaluation of AI-generated outputs.
 Further research is needed to identify common pitfalls when generating
 AKF scenarios and individual artifacts through AI, as well as best
 practices for similar research- and education-related AI workflows
-throughout digital forensics.
+throughout digital forensics. Another area of research is in creating
+standalone AI-generated artifacts at scale, such as email conversations
+and images, that can then be referred to as part of AI-generated
+declarative scripts.
 
 \section{Sample demonstration}\label{sample-demonstration}
 
@@ -1918,7 +1926,8 @@ artifact reporting, the API documentation, and AI-assisted usage. In the
 future, we intend to evaluate AKF from the experiences of scenario
 developers such as educators (who will be using AKF itself), as well as
 the experiences of students (who will be trained on AKF-generated
-outputs).
+outputs). We also intend to publish an online version of the internal
+API documentation, as well as a user guide.
 
 AKF does not address two notable topics that are prevalent in the field
 of dataset creation. The first topic is the distribution of generated
@@ -1970,7 +1979,9 @@ The authors declare that they have no known competing financial interests or
 personal relationships that could have appeared to influence the work reported
 in this paper.
 
-% \section*{Acknowledgments}
+\section*{Acknowledgments}
+
+This material is based upon work supported by the National Science Foundation under Award No. 2146146.
 
 \section*{Data availability}
 
